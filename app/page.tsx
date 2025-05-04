@@ -1,6 +1,7 @@
-import { Language as PrismaLanguage } from '@prisma/client';
+//import { Language as PrismaLanguage } from '@prisma/client';
 import Games from './games'; // Deine Client-Komponente
 import { prisma } from "../lib/db";  // Dein Prisma Client
+import { Language as PrismaLanguage } from '@prisma/client';
 
 
 // Definiere den TransformedLanguage-Typ, der alle Felder von Language enthält
