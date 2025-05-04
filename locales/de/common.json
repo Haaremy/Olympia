@@ -1,0 +1,21 @@
+{
+    "fsr_long": "Fachschaftsrat Informatik und Sprachen",
+    "games": "Spiele",
+    "map": "Karte",
+    "calender": "Kalender",
+    "loc_0": "Erdgeschoss",
+    "loc_1": "Obergeschoss",
+    "mapImageGR": "eg",
+    "mapImage1st": "og",
+    "author": "Autor",
+    "capacity":"Kapazität:",
+    "howTo": "Anleitung:",
+    "descriptionPoints":"Punkt Eintragen:",
+    "save":"speichern",
+    "browserSettings":"Browser Einstellungen",
+    "dark":"Dunkel",
+    "light":"Hell",
+    "enterPlayer":"<Name Spieler",
+    "enterTeam": "<Name des Teams>"
+  }
+  

@@ -1,0 +1,21 @@
+{
+    "fsr_long": "Student Council of Computer Science and Languages",
+    "games": "Games",
+    "map": "Map",
+    "calender": "Calender",
+    "loc_0": "Groundfloor",
+    "loc_1": "1th Floor",
+    "mapImageGR": "gr",
+    "mapImage1st": "1st",
+    "author": "Author",
+    "capacity":"Capacity:",
+    "howTo": "How to:",
+    "descriptionPoints":"Enter Points:",
+    "save":"save",
+    "browserSettings":"Browser Settings",
+    "dark":"Dark",
+    "light":"Light",
+    "enterPlayer":"<Name Player",
+    "enterTeam": "<Name of Teams>"
+  }
+  
