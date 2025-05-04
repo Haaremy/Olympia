@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt", // JWT-based sessions
     maxAge: 43200, // 12 hours
   },
-  /*callbacks: {
+  callbacks: {
     async jwt({ token, user }) {
       console.log("JWT Callback", { token, user });  // Log token and user to debug
       if (user) {
@@ -95,4 +95,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-*/};
+};

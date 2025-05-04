@@ -237,7 +237,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                         <div className="text-right">
                             <button
                             className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300"
-                            onClick={() => handleSave}
+                            onClick={handleSave}
                              aria-label="Save settings"
                             >
                                 &#x1F4BE;<div className="text-xl">{t('save')}</div>
