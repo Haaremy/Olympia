@@ -1,7 +1,6 @@
-// /lib/authOptions.ts
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./db";  // Dein Prisma Client
+import { prisma } from "./db";  // Prisma Client
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,25 +14,25 @@ export const authOptions: NextAuthOptions = {
         const username = credentials?.username;
         const password = credentials?.password;
 
-        // Überprüfe, ob sowohl der Benutzername als auch das Passwort vorhanden sind
+        // Check if both username and password are provided
         if (!username || !password) {
-          console.error("Fehlende Anmeldeinformationen.");
+          console.error("Missing login credentials.");
           return null;
         }
 
         try {
-          // Suche nach dem Team in der Datenbank anhand des Benutzernamens
+          // Search for the team in the database using the username
           const team = await prisma.team.findUnique({
             where: { credentials: username },
           });
 
-          // Überprüfe, ob das Team existiert und das Passwort übereinstimmt
+          // Check if team exists and password matches
           if (!team || team.password !== password) {
-            console.error("Ungültiger Benutzername oder Passwort.");
+            console.error("Invalid username or password.");
             return null;
           }
 
-          // Falls alles in Ordnung ist, gibt die Nutzerinformationen zurück
+          // If everything is correct, return user information
           return {
             id: String(team.id),
             name: team.name,
@@ -47,20 +46,22 @@ export const authOptions: NextAuthOptions = {
             pointsTotal: team.pointsTotal,
           };
         } catch (error) {
-          // Fehlerbehandlung für den Fall, dass die Prisma-Abfrage fehlschlägt
-          console.error("Fehler beim Abrufen des Teams:", error);
+          // Handle errors, e.g., Prisma query errors
+          console.error("Error fetching team:", error);
           return null;
         }
       },
     }),
   ],
   session: {
-    strategy: "jwt", // JWT-basierte Sitzungen
-    maxAge: 43200, // 12 Stunden
+    strategy: "jwt", // JWT-based sessions
+    maxAge: 43200, // 12 hours
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log("JWT Callback", { token, user });  // Log token and user to debug
       if (user) {
+        // Store user data in the token
         token.id = user.id;
         token.name = user.name;
         token.credentials = user.credentials;
@@ -75,7 +76,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      console.log("Session Callback", { session, token });  // Log session and token
       if (token) {
+        // Attach the token data to the session object
         session.user = {
           id: token.id as string,
           name: token.name as string,
