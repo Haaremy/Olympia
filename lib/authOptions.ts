@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./db";  // Prisma Client
 
@@ -11,6 +11,22 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+
+        const user: User = {
+          id: '2',
+          name: 'DummyTeam#1',
+          role: 'USER',
+          language: 'de',
+          user1: 'Testi',
+          user2: 'Bruder von Testi',
+          pointsTotal: 0,
+          credentials: "DUMMY",
+          user3: "",
+          user4: ""
+        };
+
+       
+
         const username = credentials?.username;
         const password = credentials?.password;
 
@@ -31,9 +47,9 @@ export const authOptions: NextAuthOptions = {
             console.error("Invalid username or password.");
             return null;
           }
-
+          return user;
           // If everything is correct, return user information
-          return {
+          /*return {
             id: String(team.id),
             name: team.name,
             credentials: team.credentials,
@@ -44,7 +60,7 @@ export const authOptions: NextAuthOptions = {
             user3: team.user3 || "",
             user4: team.user4 || "",
             pointsTotal: team.pointsTotal,
-          };
+          };*/
         } catch (error) {
           // Handle errors, e.g., Prisma query errors
           console.error("Error fetching team:", error);
