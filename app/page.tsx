@@ -1,43 +1,41 @@
-//import { Language as PrismaLanguage } from '@prisma/client';
 import Games from './games'; // Deine Client-Komponente
 import { prisma } from "../lib/db";  // Dein Prisma Client
-import { Language as PrismaLanguage } from '@prisma/client';
+import { Language } from '@prisma/client';  // Importing Language type directly from Prisma
 
-
-// Definiere den TransformedLanguage-Typ, der alle Felder von Language enthält
-type TransformedLanguage = Omit<PrismaLanguage, 'descriptionGame' | 'descriptionPoints'> & {
-  content: string; // Ersetze 'descriptionGame' mit 'content'
-  points: string;  // Ersetze 'descriptionPoints' mit 'points'
+// Define the TransformedLanguage type based on the structure of the Language model
+type TransformedLanguage = Omit<Language, 'descriptionGame' | 'descriptionPoints'> & {
+  content: string;  // Replace 'descriptionGame' with 'content'
+  points: string;   // Replace 'descriptionPoints' with 'points'
 };
 
 export default async function Page() {
-  // Hole alle Spiele mit ihren Sprachversionen aus der Datenbank
+  // Fetch all games with their language versions from the database
   const games = await prisma.game.findMany({
     include: {
-      languages: true, // Lade die Sprachversionen mit
+      languages: true, // Include the language versions with the game
     },
   });
 
-  // Umwandlung der Sprachversionen von Array zu Record<string, TransformedLanguage>
+  // Transform the language versions from an array to a record
   const transformedGames = games.map(game => {
     const languages = game.languages.reduce((acc, language) => {
       acc[language.language] = {
-        ...language, // Behalte alle Felder von PrismaLanguage bei
-        content: language.descriptionGame, // Ersetze 'descriptionGame' mit 'content'
-        points: language.descriptionPoints, // Ersetze 'descriptionPoints' mit 'points'
+        ...language, // Keep all fields from the Language model
+        content: language.descriptionGame, // Replace 'descriptionGame' with 'content'
+        points: language.descriptionPoints, // Replace 'descriptionPoints' with 'points'
       };
       return acc;
     }, {} as Record<string, TransformedLanguage>);
 
     return {
       ...game,
-      languages, // Ersetze das 'languages' Array durch das Record
+      languages, // Replace the 'languages' array with the transformed record
     };
   });
 
   return (
     <div>
-      <Games games={transformedGames} /> {/* Gib die transformierten Daten an die Client-Komponente weiter */}
+      <Games games={transformedGames} /> {/* Pass transformed data to the client component */}
     </div>
   );
 }
