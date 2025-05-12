@@ -1,4 +1,5 @@
 # Umgebung
+Debian Version 12
 node -v 20.9.0
 npm -v 10.1.0
 
