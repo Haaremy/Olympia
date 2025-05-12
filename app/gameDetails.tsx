@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react';
-import Saved from './infoBox'; 
+import Infobox from './infoBox'; 
 import { gamesEG, gamesOG } from "./common/mapPos";
 import MapSection from './common/map';
 import { useTranslation } from 'next-i18next';
@@ -24,13 +24,24 @@ interface ModalProps {
     onClose: () => void;
 }
 
+type PointEntry = {
+  id: number;
+  gameId: number;
+  teamId: number;
+  player: string;
+  value: number;
+  lastUpdated: Date;
+};
+
+
 const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const { setIsModalOpen } = useUI();
-    
     const [showSaved, setShowSaved] = useState(false); 
     const [showNotSaved, setShowNotSaved] = useState(false); 
-    //const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const [showMap, setShowMap] = useState(false);
+    const [points, setPoints] = useState<PointEntry[]>([]);
+    let globalPoints: PointEntry[] = [];
 
     const { t } = useTranslation(); 
 
@@ -51,10 +62,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const team = session?.user as TeamUser | undefined;
 
     const [playerInputs, setPlayerInputs] = useState({
-        user1: team?.user1 || "",
-        user2: team?.user2 || "",
-        user3: team?.user3 || "",
-        user4: team?.user4 || "",
+        user1: team?.user1 || undefined,
+        user2: team?.user2 || undefined,
+        user3: team?.user3 || undefined,
+        user4: team?.user4 || undefined
     });
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -98,7 +109,16 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     };
 
     const handleSave = async () => {
+     
         try {
+            if(!playerInputs.user1 || !playerInputs.user2) {
+                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
+                throw new Error("Fehler beim Speichern.");
+            }
+            if((team?.user3 && !playerInputs.user3) || (team?.user4 && !playerInputs.user4)) {
+                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
+                throw new Error("Fehler beim Speichern.");
+            }
             const response = await fetch("/api/points/submit", {
                 method: "POST",
                 headers: {
@@ -116,14 +136,89 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
             if (!response.ok) throw new Error("Fehler beim Speichern");
     
             setShowSaved(true);
+const savedData: PointEntry[] = [
+  {
+    id: message.id,
+    gameId: message.id,
+    teamId: session?.user.id,
+    player: "1",
+    value: Number(playerInputs.user1) || 0,
+    lastUpdated: new Date(),
+  },
+  {
+    id: message.id,
+    gameId: message.id,
+    teamId: session?.user.id,
+    player: "2",
+    value: Number(playerInputs.user2) || 0,
+    lastUpdated: new Date(),
+  },
+  {
+    id: message.id,
+    gameId: message.id,
+    teamId: session?.user.id,
+    player: "3",
+    value: Number(playerInputs.user3) || 0,
+    lastUpdated: new Date(),
+  },
+  {
+    id: message.id,
+    gameId: message.id,
+    teamId: session?.user.id,
+    player: "4",
+    value: Number(playerInputs.user4) || 0,
+    lastUpdated: new Date(),
+  },
+];
+
+setPoints(savedData);
+            
             setTimeout(() => setShowSaved(false), 3000);
         } catch (error) {
-            console.error("Speichern fehlgeschlagen:", error);
+           // console.error("Speichern fehlgeschlagen:", error);
             setShowNotSaved(true);
             setTimeout(() => setShowNotSaved(false), 3000);
         }
     };
     
+ useEffect(() => {
+  const fetchData = async () => {
+    if (message?.id) {
+      
+  try {
+    const res = await fetch(`/api/points/get?gameId=${message.id}`);
+    if (!res.ok) throw new Error('Fehler beim Laden der Punkte');
+
+    const data = await res.json();
+    globalPoints = data.points || []; // Speichern in der globalen Variable
+
+    // Punkte direkt nach Reihenfolge auf user1..user4 mappen
+    const inputUpdates: Partial<typeof playerInputs> = {};
+
+    globalPoints.forEach((point: PointEntry, index: number) => {
+      const key = `user${index + 1}` as keyof typeof playerInputs;
+      inputUpdates[key] = String(point.value);
+    });
+
+    console.log("Global User1: "+globalPoints[1]?.value);
+    setPoints(globalPoints);
+
+    setPlayerInputs(prev => ({ ...prev, ...inputUpdates }));
+  } catch (err: any) {
+    console.error('Fehler beim Laden der Punkte:', err.message);
+  }
+};
+    }
+
+
+  fetchData();
+}, [message?.id]);
+
+
+
+
+
+
     
 
     return (
@@ -203,49 +298,57 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                     <div className={`space-y-4 ${team?.user1 ? "" : "hidden"}`}>
                         <div className='flex space-x-4'>
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={`Player 1`}
-                                defaultValue={team?.user1 || ""}
-                                value={playerInputs.user1}
+                                value={points[0]?.value ?? playerInputs.user1}                                
+                                name="user1"
                                 onChange={handleInputChange}
+                                disabled=  {!!points[0]?.value || points[0]?.value==0}
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user1 ? "" : "hidden"}`}
                             />
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={`Player 2`}
-                                value={team?.user2 || ""}
+                                name="user2"
                                 onChange={handleInputChange}
+                                value={points[1]?.value ?? playerInputs.user2}
+                                disabled=  {!!points[1]?.value || points[1]?.value==0}
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user2 ? "" : "hidden"}`}
                             />
                         </div>
                         <div className='flex space-x-4'>
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={`Player 3`}
-                                value={team?.user3 || ""}
+                                name="user3"
                                 onChange={handleInputChange}
+                                value={points[2]?.value ?? playerInputs.user3}
+                                disabled=  {!!points[2]?.value  || points[2]?.value==0}
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user3 ? "" : "hidden"}`}
                             />
                             <input
-                                type="text"
+                                type="number"
                                 placeholder={`Player 4`}
-                                value={team?.user4 || ""}
+                                name="user4"
                                 onChange={handleInputChange}
+                                value={points[3]?.value ?? playerInputs.user4}
+                                disabled=  {!!points[3]?.value  || points[3]?.value==0}
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user4 ? "" : "hidden"}`}
                             />
                         </div>
-                        <div className="text-right">
+                        {!points[1]?.value && <div className={`text-right `}>
                             <button
-                            className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300"
+                            className={`ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300`}
                             onClick={handleSave}
-                             aria-label="Save settings"
+                             aria-label="Save"
                             >
                                 &#x1F4BE;<div className="text-xl">{t('save')}</div>
                             </button>
 
                         </div>
-                        
+                        }
                     </div>
+                    
 
                     {/* Tutorial-Link */}
                     {message.url && (
@@ -278,23 +381,12 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
 
             {/* Speicherbestätigung Popup */}
             {showSaved && (
-                <Saved onClose={handleSavedClose} message="Speichern erfolgreich!" />
+                <Infobox onClose={handleSavedClose} message="Speichern erfolgreich!" title='Gespeichert' color="pink" />
             )}
 
             {/* Speicherfehler Popup */}
             {showNotSaved && (
-                <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50">
-                    <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-xs">
-                        <h2 className="text-xl font-semibold text-red-500">Fehler!</h2>
-                        <p>{/*errormessage*/}</p>
-                        <button
-                            onClick={handleNotSavedClose}
-                            className="mt-4 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-                        >
-                            X
-                        </button>
-                    </div>
-                </div>
+                <Infobox onClose={handleNotSavedClose} message={errorMessage} title='Fehler' color="red" />
             )}
         </div>
     );
