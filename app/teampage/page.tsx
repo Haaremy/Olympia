@@ -110,7 +110,7 @@ export default function Page() {
       <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 ${darkMode ? 'bg-gray-900' : 'bg-pink-50'} transition-all duration-300`}>
         {/* Hauptbereich */}
         <div className="flex-1 w-full max-w-3xl transition-all duration-300">
-        {showSaved && <InfoBox message={infoMessage} onClose={handleClose}></InfoBox> }
+        {showSaved && <InfoBox message={infoMessage} title="Fehler" color="red" onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
             Team

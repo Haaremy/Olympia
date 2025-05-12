@@ -143,7 +143,7 @@ export default function Page() {
       
 
       <div className="flex flex-col w-full max-w-3xl justify-center text-center">
-      {showSaved && <InfoBox message={infoMessage} onClose={handleClose}></InfoBox> }
+      {showSaved && <InfoBox message={infoMessage} title="Fehler" color="red" onClose={handleClose}></InfoBox> }
       <div className="w-full flex justify-center items-center px-4 py-2 mt-20 mb-10">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       </div>

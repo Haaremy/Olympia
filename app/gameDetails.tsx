@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showMap, setShowMap] = useState(false);
     const [points, setPoints] = useState<PointEntry[]>([]);
-    let globalPoints: PointEntry[] = [];
+    const globalPointsRef = useRef<PointEntry[]>([]);
 
     const { t } = useTranslation(); 
 
@@ -183,32 +183,33 @@ setPoints(savedData);
     
  useEffect(() => {
   const fetchData = async () => {
-    if (message?.id) {
-      
   try {
     const res = await fetch(`/api/points/get?gameId=${message.id}`);
     if (!res.ok) throw new Error('Fehler beim Laden der Punkte');
 
     const data = await res.json();
-    globalPoints = data.points || []; // Speichern in der globalen Variable
+    globalPointsRef.current = data.points || []; // Speichern des Werts in useRef
 
     // Punkte direkt nach Reihenfolge auf user1..user4 mappen
     const inputUpdates: Partial<typeof playerInputs> = {};
 
-    globalPoints.forEach((point: PointEntry, index: number) => {
+    globalPointsRef.current.forEach((point, index) => {
       const key = `user${index + 1}` as keyof typeof playerInputs;
       inputUpdates[key] = String(point.value);
     });
 
-    console.log("Global User1: "+globalPoints[1]?.value);
-    setPoints(globalPoints);
-
+    setPoints(globalPointsRef.current);
     setPlayerInputs(prev => ({ ...prev, ...inputUpdates }));
-  } catch (err: any) {
-    console.error('Fehler beim Laden der Punkte:', err.message);
+  } catch (err) {
+    // Typisiere den Fehler als Instanz von Error
+    if (err instanceof Error) {
+      console.error('Fehler beim Laden der Punkte:', err.message);
+    } else {
+      // Wenn der Fehler kein Error ist (z. B. bei unerwarteten Fehlern)
+      console.error('Unbekannter Fehler:', err);
+    }
   }
 };
-    }
 
 
   fetchData();
