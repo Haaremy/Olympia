@@ -175,7 +175,7 @@ setPoints(savedData);
             
             setTimeout(() => setShowSaved(false), 3000);
         } catch (error) {
-           // console.error("Speichern fehlgeschlagen:", error);
+            console.log("Speichern fehlgeschlagen:", error);
             setShowNotSaved(true);
             setTimeout(() => setShowNotSaved(false), 3000);
         }
