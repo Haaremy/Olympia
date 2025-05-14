@@ -8,6 +8,8 @@ import { useTranslation } from 'next-i18next';
 import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
+import Login from "./login";
+import Link from 'next/link';
 
 interface ModalProps {
     message: {
@@ -34,6 +36,7 @@ type PointEntry = {
 };
 
 
+
 const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const { setIsModalOpen } = useUI();
     const [showSaved, setShowSaved] = useState(false); 
@@ -49,6 +52,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
 
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
+    const [updateSite, setUpdateSite] = useState(false);
 
     type TeamUser = {
         user1?: string;
@@ -62,10 +66,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const team = session?.user as TeamUser | undefined;
 
     const [playerInputs, setPlayerInputs] = useState({
-        user1: team?.user1 || undefined,
-        user2: team?.user2 || undefined,
-        user3: team?.user3 || undefined,
-        user4: team?.user4 || undefined
+        user1: "",
+        user2: "",
+        user3: "",
+        user4: ""
     });
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -109,9 +113,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     };
 
     const handleSave = async () => {
+        console.log(playerInputs["user1"]);
      
         try {
-            if(!playerInputs.user1 || !playerInputs.user2) {
+            if((!playerInputs.user1 || playerInputs.user1=="-1") || !playerInputs.user2) {
                 setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
                 throw new Error("Fehler beim Speichern.");
             }
@@ -126,53 +131,18 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                 },
                 body: JSON.stringify({
                     game: message.id,
-                    user1: Number(playerInputs.user1) || 0,
-                    user2: Number(playerInputs.user2) || 0,
-                    user3: Number(playerInputs.user3) || 0,
-                    user4: Number(playerInputs.user4) || 0,
+                    user1: Number(playerInputs.user1) || -1,
+                    user2: Number(playerInputs.user2) || -1,
+                    user3: Number(playerInputs.user3) || -1,
+                    user4: Number(playerInputs.user4) || -1,
                 }),
             });
     
             if (!response.ok) throw new Error("Fehler beim Speichern");
     
             setShowSaved(true);
-const savedData: PointEntry[] = [
-  {
-    id: message.id,
-    gameId: message.id,
-    teamId: session?.user.id,
-    player: "1",
-    value: Number(playerInputs.user1) || 0,
-    lastUpdated: new Date(),
-  },
-  {
-    id: message.id,
-    gameId: message.id,
-    teamId: session?.user.id,
-    player: "2",
-    value: Number(playerInputs.user2) || 0,
-    lastUpdated: new Date(),
-  },
-  {
-    id: message.id,
-    gameId: message.id,
-    teamId: session?.user.id,
-    player: "3",
-    value: Number(playerInputs.user3) || 0,
-    lastUpdated: new Date(),
-  },
-  {
-    id: message.id,
-    gameId: message.id,
-    teamId: session?.user.id,
-    player: "4",
-    value: Number(playerInputs.user4) || 0,
-    lastUpdated: new Date(),
-  },
-];
 
-setPoints(savedData);
-            
+            setUpdateSite(true);
             setTimeout(() => setShowSaved(false), 3000);
         } catch (error) {
             console.log("Speichern fehlgeschlagen:", error);
@@ -210,16 +180,18 @@ setPoints(savedData);
     }
   }
 };
-
+    
 
   fetchData();
-}, [message?.id]);
+  setUpdateSite(false);
+}, [message?.id, session, updateSite]);
 
 
 
 
-
-
+const [showLogin, setShowLogin] = useState(false);
+const handleLoginClose = () => setShowLogin(false);
+const handleShowLogin = () => setShowLogin(true);
     
 
     return (
@@ -271,27 +243,28 @@ setPoints(savedData);
 
                     {/* Points Description */}
                     <p className="text-sm mb-4">
-  {t("descriptionPoints")} 
-  {team?.user1 ? (
-    <>
-      <br />
-      <span>{message.points }</span>
-      <br />
-    </>
-  ) : team?.credentials ? (
-    <button 
-    className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
-    >
-        {t("Edit Team")}
-  </button>
-  ) : (
-    <button 
-    className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
-  >
-        {t("Login now")}
-  </button>
-  )}
-</p>
+                    {t("descriptionPoints")} 
+                    {team?.user1 ? (
+                    <>
+                        <br />
+                        <span>{message.points }</span>
+                        <br />
+                    </>
+                    ) : team?.credentials ? (
+                        <Link
+                            href="/adminpage"
+                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                        >
+                            {t("Edit Team")}
+                        </Link> 
+                    ) : (
+                        <button className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2" onClick={handleShowLogin}>
+                            {t("Login now")}
+                        </button>
+                        
+                    )}
+                    
+                    </p>
 
                 
 
@@ -301,10 +274,10 @@ setPoints(savedData);
                             <input
                                 type="number"
                                 placeholder={`Player 1`}
-                                value={points[0]?.value ?? playerInputs.user1}                                
+                                value={points[0]?.value ?? playerInputs.user1 ?  playerInputs.user1 : ""}                                
                                 name="user1"
                                 onChange={handleInputChange}
-                                disabled=  {!!points[0]?.value || points[0]?.value==0}
+                                disabled=  {!!points[0]?.value || points[0]?.value==0 || !session?.user.user1}
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user1 ? "" : "hidden"}`}
                             />
                             <input
@@ -337,7 +310,7 @@ setPoints(savedData);
                                 className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user4 ? "" : "hidden"}`}
                             />
                         </div>
-                        {!points[1]?.value && <div className={`text-right `}>
+                        {!points[0]?.value && <div className={`text-right `}>
                             <button
                             className={`ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300`}
                             onClick={handleSave}
@@ -381,6 +354,9 @@ setPoints(savedData);
             
 
             {/* Speicherbestätigung Popup */}
+            {showLogin && (
+                <Login onClose={handleLoginClose} />
+            )}
             {showSaved && (
                 <Infobox onClose={handleSavedClose} message="Speichern erfolgreich!" title='Gespeichert' color="pink" />
             )}
@@ -394,3 +370,5 @@ setPoints(savedData);
 };
 
 export default Modal;
+
+

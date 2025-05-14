@@ -78,12 +78,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 aria-labelledby="modal-title"
             >
                 {/* Modal Header (Icon + Title + Close Button) */}
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4 ">
                     <div className="flex items-center">
                         <Image
                             src={`/images/globe.svg`}
                             alt="Globe Icon"
-                            className="w-full h-8 object-cover bg-gray-300"
+                            className="w-full h-8 object-cover bg-gray-300 rounded-lg"
                             width={50}
                             height={50}
                         />

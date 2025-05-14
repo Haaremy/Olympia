@@ -7,6 +7,7 @@ import '../../lib/i18n';
 import { t } from "i18next";
 import { useRef } from "react";
 import InfoBox from "../infoBox";
+import Image from "next/image";
 
 
 
@@ -18,6 +19,8 @@ export default function Page() {
   const router = useRouter();
   const [showSaved, handleShowSaved] = useState(false);
   const [infoMessage, setInfoMessage] = useState("");
+  const [infoTitle, setInfoTitle] = useState("!?!?!");
+  const [infoColor, setInfoColor] = useState("red");
 
   const nameTRef = useRef<HTMLInputElement>(null);
   const user1Ref = useRef<HTMLInputElement>(null);
@@ -35,12 +38,12 @@ export default function Page() {
     // --- Validierung ---
   if (!user1 || !user2) {
     //alert("");
-    handleSavedMessage("Bitte fülle mindestens Spieler 1 und Spieler 2 aus.");
+    handleSavedMessage("Bitte fülle mindestens Spieler 1 und Spieler 2 aus.", "Fehler", "red");
     return;
   }
 
   if ((user3 && !user4) || (!user3 && user4)) {
-    handleSavedMessage("Bitte fülle entweder beide zusätzlichen Spieler (3 & 4) aus oder lasse beide leer.");
+    handleSavedMessage("Bitte fülle entweder beide zusätzlichen Spieler (3 & 4) aus oder lasse beide leer.", "Fehler", "red");
     return;
   }
 
@@ -64,9 +67,9 @@ export default function Page() {
     if (res.ok) {
       await getSession(); // Session neu holen
       router.refresh(); // ⬅️ Nur bei App Router (du verwendest `useRouter` also passt es!)
-      handleSavedMessage("Team erfolgreich gespeichert.");
+      handleSavedMessage("Team erfolgreich gespeichert.", "Gespeichert", "pink");
     } else {
-      handleSavedMessage("Fehler beim Speichern. Bitte versuche es erneut.");
+      handleSavedMessage("Fehler beim Speichern. Bitte versuche es erneut.", "Fehler", "red");
     }
   };
 
@@ -77,8 +80,10 @@ export default function Page() {
     localStorage.setItem("language", lang);
   };
 
-  const handleSavedMessage = (info: string) => {
+  const handleSavedMessage = (info: string, title: string, color: string) => {
     setInfoMessage(info);
+    setInfoTitle(title);
+    setInfoColor(color);
     handleShowSaved(true);
   }
 
@@ -110,7 +115,7 @@ export default function Page() {
       <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 ${darkMode ? 'bg-gray-900' : 'bg-pink-50'} transition-all duration-300`}>
         {/* Hauptbereich */}
         <div className="flex-1 w-full max-w-3xl transition-all duration-300">
-        {showSaved && <InfoBox message={infoMessage} title="Fehler" color="red" onClose={handleClose}></InfoBox> }
+        {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
             Team
@@ -160,7 +165,7 @@ export default function Page() {
           </button>
 
           {/* Weitere Eingabefelder erscheinen, wenn der Button gedrückt wird (User 3 und User 4 nebeneinander) */}
-          {showAdditionalPlayers && (
+          {(showAdditionalPlayers || !!session.user.user3) && (
             <div className="flex gap-4 mt-6">
               <div className="flex-1">
                 <label className="block text-gray-800 dark:text-white text-lg">Player 3:</label>
@@ -193,7 +198,15 @@ export default function Page() {
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{t("browserSettings")}</h2>
 
             <div className="mt-4">
-              <label className="block text-gray-800 dark:text-white">Hier Icon von Welt</label>
+              <div className="flex items-center">
+                <Image
+                  src={`/images/globe.svg`}
+                  alt="Globe Icon"
+                  className="max-w-8 h-8 object-cover bg-gray-300 rounded-lg"
+                  width={50}
+                  height={50}
+                  />
+              </div>
               <select
                 value={i18n.language}
                 onChange={(e) => handleLanguage(e.target.value)}
