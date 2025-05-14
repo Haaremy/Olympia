@@ -12,18 +12,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
 
-        const user: User = {
-          id: '2',
-          name: 'DummyTeam#1',
-          role: 'USER',
-          language: 'de',
-          user1: 'Testi',
-          user2: 'Bruder von Testi',
-          pointsTotal: 0,
-          credentials: "DUMMY",
-          user3: "",
-          user4: ""
-        };
+        
 
        
 
@@ -47,20 +36,29 @@ export const authOptions: NextAuthOptions = {
             console.error("Invalid username or password.");
             return null;
           }
+          const user: User = {
+          //id: '2',
+          id: String(team.id),
+          //credentials: "DUMMY",
+          credentials: team.credentials,
+          //role: 'USER',
+          role: team.role,
+          //language: 'de',
+          language: team.language,
+          //name: 'DummyTeam#1',
+          name: team.name,
+          //user1: 'Testi',
+          user1: team.user1,
+          //user2: 'Bruder von Testi',
+          user2: team.user2,
+          //user3: "",
+          user3: team.user3 || "",
+          //user4: "",
+          user4: team.user4 || "",
+          //pointsTotal: 0
+          pointsTotal: team.pointsTotal
+        };
           return user;
-          // If everything is correct, return user information
-          /*return {
-            id: String(team.id),
-            name: team.name,
-            credentials: team.credentials,
-            role: team.role,
-            language: team.language,
-            user1: team.user1,
-            user2: team.user2,
-            user3: team.user3 || "",
-            user4: team.user4 || "",
-            pointsTotal: team.pointsTotal,
-          };*/
         } catch (error) {
           // Handle errors, e.g., Prisma query errors
           console.error("Error fetching team:", error);
