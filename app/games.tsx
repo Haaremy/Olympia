@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import InfoBox from "./gameDetails";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
@@ -175,7 +175,7 @@ export default function GamesPage({ games }: { games: Game[] }) {
   };
 
 
-const fetchPointsForGames = async () => {
+const fetchPointsForGames = useCallback( async () => {
       const map: Record<number, boolean> = {};
   
       await Promise.all(
@@ -197,14 +197,14 @@ const fetchPointsForGames = async () => {
       
   
       setGamePointsMap(map);
-    };
+    },[games]);
 
   useEffect(() => {
   
     if (team?.id) {
       fetchPointsForGames();
     }
-  }, [games, team?.id]);
+  }, [games, team?.id, fetchPointsForGames]);
   
 
   return (

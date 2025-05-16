@@ -195,7 +195,7 @@ useEffect(() => {
     fetchData();
     setUpdateSite(false);
   }
-}, [updateSite, fetchData]);
+}, [updateSite]);
 
   useEffect(() => {
   if (!session?.user?.credentials) return;

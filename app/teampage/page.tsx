@@ -1,6 +1,6 @@
 'use client'
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import '../../lib/i18n';
@@ -111,14 +111,14 @@ export default function Page() {
     router.push('/');
   };
 
- const getTeam = async () => {
+ const getTeam = useCallback(async () => {
       const res = await fetch(`/api/team/search?query=${session?.user.credentials}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     }); 
     const data = await res.json();
     return data;
-    };
+    },[]);
 
   useEffect(() => {
     if (status !== "loading" && !session) {
@@ -135,7 +135,7 @@ export default function Page() {
       fetchTeam();
     }
     setUpdateData(false);
-  }, [status, session, router, updateData]);
+  }, [status, session, router, updateData, getTeam]);
   
   if (status === "loading") {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>; // Oder ein Skeleton Loader
