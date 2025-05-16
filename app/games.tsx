@@ -177,12 +177,25 @@ export default function GamesPage({ games }: { games: Game[] }) {
 
 const fetchPointsForGames = useCallback( async () => {
       const map: Record<number, boolean> = {};
-  
+      let playedGames="";
       await Promise.all(
         games.map(async (game) => {
           try {
+            
+            const temp = localStorage.getItem("playedGames");
 
-            const playedGames = "1"//localStorage.getItem("playedGames");
+            if (!temp){
+              const res = await fetch(`/api/hasPoints?teamId=${team?.id}&gameId=${game.id}`);
+              if (!res.ok) {return}
+              const text = await res.text();
+              const data = text ? JSON.parse(text) : { hasPoints: false };
+              if (data.hasPoints){
+                playedGames += "+"+game.id;
+              }
+            } else 
+             playedGames = temp;
+             localStorage.setItem("playedGames",playedGames);             
+  
             if (!playedGames || playedGames.includes(game.id<10 ? "0"+game.id : game.id.toString())) {
 
             map[game.id] = true;

@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../lib/db'
 import { gameEntries } from './gamesEntries'
 import { teamEntries } from './teamEntries'
 import { gameSettings} from './gameSettings'
 
-const prisma = new PrismaClient()
+//const prisma = new PrismaClient()
 
 async function cleanDB() {
   await prisma.points.deleteMany({});

@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
-import { fetchData } from 'next-auth/client/_utils';
 
 interface ModalProps {
     message: {
@@ -54,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
 
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
-    const [updateSite, setUpdateSite] = useState(false);
+    const [updateSite, setUpdateSite] = useState(true);
       const [updateData, setUpdateData] = useState(false);
   const [teamData, setTeamData] = useState<{
   id?: number;
@@ -189,7 +188,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
       console.error('Unbekannter Fehler:', err);
     }
   }
-},[]); 
+},[message.id]); 
 
 useEffect(() => {
   if (updateSite) {

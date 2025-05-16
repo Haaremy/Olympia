@@ -118,7 +118,7 @@ export default function Page() {
     }); 
     const data = await res.json();
     return data;
-    },[]);
+    },[session?.user.credentials]);
 
   useEffect(() => {
     if (status !== "loading" && !session) {
