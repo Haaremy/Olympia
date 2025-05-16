@@ -12,7 +12,19 @@ export async function GET() {
     },
   });
 
-  const result = games.map(game => {
+  type GameWithPointsAndTeam = {
+  id: number;
+  points: {
+    player: string;
+    value: number;
+    team: {
+      id: number;
+      name: string;
+    };
+  }[];
+};
+
+  const result = games.map((game: GameWithPointsAndTeam) => {
     const top = game.points[0];
     return {
       gameId: game.id,

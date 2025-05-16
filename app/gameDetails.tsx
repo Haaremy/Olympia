@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Infobox from './infoBox'; 
 import { gamesEG, gamesOG } from "./common/mapPos";
 import MapSection from './common/map';
@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
+import { fetchData } from 'next-auth/client/_utils';
 
 interface ModalProps {
     message: {
@@ -161,7 +162,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
         }
     };
 
-   const fetchData = async () => {
+   const fetchData = useCallback(async () => {
   try {
     const res = await fetch(`/api/points/get?gameId=${message.id}`);
     if (!res.ok) throw new Error('Fehler beim Laden der Punkte');
@@ -188,14 +189,14 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
       console.error('Unbekannter Fehler:', err);
     }
   }
-}; 
+},[]); 
 
 useEffect(() => {
   if (updateSite) {
     fetchData();
     setUpdateSite(false);
   }
-}, [updateSite]);
+}, [updateSite, fetchData]);
 
   useEffect(() => {
   if (!session?.user?.credentials) return;
