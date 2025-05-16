@@ -7,6 +7,19 @@ npm -v 10.1.0
 npm i
 npm i pm2 -g
 nano .env
+´´´
+# .env.production
+NEXTAUTH_URL=<URL zum Server>
+NEXTAUTH_SECRET=<generate Seceret>
+
+# Database configuration (example)
+DATABASE_URL="file:./dev.db"
+#DIRECT_URL=<URL zum Datenbank Server, falls vorhanden>
+
+# Security headers
+SECURE_COOKIES=true
+COOKIE_DOMAIN=<Domain>
+´´´
 npm run build
 pm2 run "npm run start" --name "Olympia"
 
