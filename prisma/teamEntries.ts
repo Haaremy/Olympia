@@ -43,6 +43,14 @@ export async function teamEntries() {
         })
       });
 
+      const dummyTeam2 = await prisma.team.create({
+        data: getEmptyTeam({
+          credentials: 'DUMMY2',
+          password: 'TEST',
+          role: 'USER'
+        })
+      });
+
       const userTeam1 = await prisma.team.create({
         data: getEmptyTeam({
           credentials: 'GSIA7',

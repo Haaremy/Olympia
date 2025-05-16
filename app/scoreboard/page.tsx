@@ -24,10 +24,11 @@ interface Team {
 }
 
 interface Record {
-  gameId: number;
-  gameUrl: string;
-  topPlayer: string;
-  maxPoints: number;
+  gameId: number,
+      language: string,
+      topPlayer: string,
+      topPoints: number,
+      team: Team
 }
 
 // Main Component
@@ -51,8 +52,10 @@ export default function ScoreboardTabs() {
         const scoreboardData = await scoreboardRes.json();
         const recordsData = await recordsRes.json();
   
-        setTeams(scoreboardData);
-        setRecords(recordsData);
+        setTeams([...scoreboardData]); // neuer Array → re-render
+
+        setRecords([...recordsData]); // neuer Array → re-render
+
       } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
         // Hier könntest du auch Fehlerbehandlung einfügen, falls API-Aufrufe fehlschlagen
@@ -60,8 +63,14 @@ export default function ScoreboardTabs() {
         setLoading(false); // Ladezustand zurücksetzen
       }
     };
-  
+    
+    
+    const interval = setInterval(() => {
     fetchScoreboardAndRecords();
+  }, 3000);
+
+  // Intervall beim Unmount aufräumen
+  return () => clearInterval(interval);
   }, []);
 
   const formatDate = (date: Date) => {
@@ -141,13 +150,40 @@ export default function ScoreboardTabs() {
                           <summary className="cursor-pointer text-pink-600 dark:text-pink-400 hover:underline">
                             Details anzeigen
                           </summary>
-                          <ul className="list-disc ml-6 mt-2 text-sm">
-                            {team.points.map((p) => (
-                              <li key={p.id}>
-                                Spiel {p.game.id} – {p.player} – {p.value} Punkte
-                              </li>
-                            ))}
-                          </ul>
+                          <table className="w-full mt-4 text-xs text-center border rounded-md">
+  <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+    <tr>
+      <th className="border px-2 py-1">Spiel</th>
+      <th className="border px-2 py-1">{team.user1}</th>
+      <th className="border px-2 py-1">{team.user2}</th>
+      <th className="border px-2 py-1">{team.user3 || "Spieler 3"}</th>
+      <th className="border px-2 py-1">{team.user4 || "Spieler 4"}</th>
+      <th className="border px-2 py-1">Letztes Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    {[...new Set(team.points.map((p) => p.game.id))].map((gameId) => {
+      const pointsForGame = team.points.filter((p) => p.game.id === gameId);
+      const getValue = (player: string | undefined) =>
+        pointsForGame.find((p) => p.player === player)?.value ?? "-";
+      const updated = pointsForGame[0]?.lastUpdated
+        ? formatDate(pointsForGame[0].lastUpdated)
+        : "-";
+
+      return (
+        <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
+          <td className="border px-2 py-1">{gameId}</td>
+          <td className="border px-2 py-1">{getValue(team.user1)}</td>
+          <td className="border px-2 py-1">{getValue(team.user2)}</td>
+          <td className="border px-2 py-1">{getValue(team.user3)}</td>
+          <td className="border px-2 py-1">{getValue(team.user4)}</td>
+          <td className="border px-2 py-1">{updated}</td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
+
                         </details>
                       </td>
                     </tr>
@@ -158,23 +194,34 @@ export default function ScoreboardTabs() {
           </table>
         </div>
       ) : (
+
+
+
+
+
+
+
+
+
+
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
-            records.map((record) => (
+            records.map((record) => record.topPlayer && (
               <div
                 key={record.gameId}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
               >
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
                   Spiel {record.gameId}
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
-                  URL: <span className="text-sm italic">{record.gameUrl}</span>
+                <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+                  👑 {record.team.name} - {record.topPlayer}
                 </p>
-                <p className="text-pink-600 dark:text-pink-400 mt-2 font-medium">
-                  👑 {record.topPlayer} mit {record.maxPoints} Punkten
+                <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+                  {record.topPoints} Punkte:
                 </p>
               </div>
             ))

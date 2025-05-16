@@ -13,9 +13,10 @@ datasource db {
 model Game {
   id        Int        @id @default(autoincrement())
   url       String
-  language  String
   languages Language[]  // Viele-Sprachen-Beziehung
   points    Points[]    // Umkehrbeziehung zu Points
+  entries   Entries[]
+  hidden    Boolean    @default(false) // ob punkte werte versteckt werden müssen
 }
 
 model Language {
@@ -25,7 +26,7 @@ model Language {
   language          String
   title             String
   story             String
-  station          String  // Location-Feld hinzufügen
+  station           String  // Location-Feld hinzufügen
   capacity          String  // Capacity-Feld hinzufügen
   descriptionGame   String  // Beschreibung des Spiels hinzufügen
   descriptionPoints String  // Beschreibung der Punkte hinzufügen
@@ -41,8 +42,9 @@ model Team {
   user3        String?
   user4        String?
   role         Role       @default(USER)
-  pointsTotal  Int
+  pointsTotal  Float
   points       Points[]  // Beziehung zu Points (umkehrbare Beziehung)
+  entries   Entries[]
   language     String @default("de")
 }
 
@@ -52,6 +54,17 @@ enum Role{
 }
 
 model Points {
+  id          Int       @id @default(autoincrement())
+  team        Team      @relation(fields: [teamId], references: [id])
+  teamId      Int
+  game        Game      @relation(fields: [gameId], references: [id])
+  gameId      Int
+  player      String
+  value       Int
+  lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
+}
+
+model Entries {
   id          Int       @id @default(autoincrement())
   team        Team      @relation(fields: [teamId], references: [id])
   teamId      Int

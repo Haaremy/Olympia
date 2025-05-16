@@ -3,6 +3,7 @@
 export interface PointsInput {
   game: number;
   userPoints: number;
+  multiplier: number;
 }
 
 export interface PointsResult {
@@ -12,12 +13,12 @@ export interface PointsResult {
 /**
  * Beispiel: Summiert alle Punkte und gibt die Differenz zwischen User1 und User2 zurück.
  */
-export function calculatePoints({ game, userPoints }: PointsInput): number {
+export function calculatePoints({ game, userPoints, multiplier }: PointsInput): number {
   let result = 0;
 
   if (game==1){
     if (userPoints!=0){
-        result = 1;
+        result = 1*multiplier;
     }
   }
   if (game==2){

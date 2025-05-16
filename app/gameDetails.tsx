@@ -24,6 +24,7 @@ interface ModalProps {
         languages: { language: string; title: string; story: string }[];
     };
     onClose: () => void;
+    onSave: () => void;
 }
 
 type PointEntry = {
@@ -37,7 +38,7 @@ type PointEntry = {
 
 
 
-const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     const { setIsModalOpen } = useUI();
     const [showSaved, setShowSaved] = useState(false); 
     const [showNotSaved, setShowNotSaved] = useState(false); 
@@ -53,17 +54,22 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
     const [updateSite, setUpdateSite] = useState(false);
+      const [updateData, setUpdateData] = useState(false);
+  const [teamData, setTeamData] = useState<{
+  id?: number;
+  credentials?: string;
+  name?: string;
+  players?: string[];
+}>({
+  id: 0,
+  credentials: "",
+  name: "",
+  players: ["","","",""]
+});
 
-    type TeamUser = {
-        user1?: string;
-        user2?: string;
-        user3?: string;
-        user4?: string;
-        credentials?: boolean;
-      };
+
 
     const { data: session } = useSession();
-    const team = session?.user as TeamUser | undefined;
 
     const [playerInputs, setPlayerInputs] = useState({
         user1: "",
@@ -120,7 +126,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                 setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
                 throw new Error("Fehler beim Speichern.");
             }
-            if((team?.user3 && !playerInputs.user3) || (team?.user4 && !playerInputs.user4)) {
+            if((teamData.players?.[2] && !playerInputs.user3) || (teamData.players?.[3] && !playerInputs.user4)) {
                 setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
                 throw new Error("Fehler beim Speichern.");
             }
@@ -143,16 +149,19 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
             setShowSaved(true);
 
             setUpdateSite(true);
+            const playedGames = localStorage.getItem("playedGames");
+            const tempGames = playedGames+"+"+(message.id<10? "0"+message.id : message.id);
+            localStorage.setItem("playedGames", tempGames);
             setTimeout(() => setShowSaved(false), 3000);
+            onSave();
         } catch (error) {
             console.log("Speichern fehlgeschlagen:", error);
             setShowNotSaved(true);
             setTimeout(() => setShowNotSaved(false), 3000);
         }
     };
-    
- useEffect(() => {
-  const fetchData = async () => {
+
+   const fetchData = async () => {
   try {
     const res = await fetch(`/api/points/get?gameId=${message.id}`);
     if (!res.ok) throw new Error('Fehler beim Laden der Punkte');
@@ -179,14 +188,38 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
       console.error('Unbekannter Fehler:', err);
     }
   }
-};
-    
+}; 
 
-  fetchData();
-  setUpdateSite(false);
-}, [message?.id, session, updateSite]);
+useEffect(() => {
+  if (updateSite) {
+    fetchData();
+    setUpdateSite(false);
+  }
+}, [updateSite, fetchData]);
 
+  useEffect(() => {
+  if (!session?.user?.credentials) return;
 
+  const fetchTeam = async () => {
+    try {
+      const res = await fetch(`/api/team/search?query=${session.user.credentials}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+
+      const data = await res.json();
+      setTeamData(data.team); // Nur das team-Objekt setzen
+    } catch (error) {
+      console.error("Team-Fehler:", error);
+    } finally {
+      setUpdateData(false); // Immer nach dem Versuch zurücksetzen
+    }
+  };
+
+  fetchTeam();
+}, [session, updateData]);
 
 
 const [showLogin, setShowLogin] = useState(false);
@@ -244,15 +277,15 @@ const handleShowLogin = () => setShowLogin(true);
                     {/* Points Description */}
                     <p className="text-sm mb-4">
                     {t("descriptionPoints")} 
-                    {team?.user1 ? (
+                    {teamData.players?.[0] ? (
                     <>
                         <br />
                         <span>{message.points }</span>
                         <br />
                     </>
-                    ) : team?.credentials ? (
+                    ) : !teamData.name ? (
                         <Link
-                            href="/adminpage"
+                            href="/teampage"
                             className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
                         >
                             {t("Edit Team")}
@@ -269,7 +302,7 @@ const handleShowLogin = () => setShowLogin(true);
                 
 
                     {/* Player Inputs */}
-                    <div className={`space-y-4 ${team?.user1 ? "" : "hidden"}`}>
+                    <div className={`space-y-4 ${teamData.players?.[0] ? "" : "hidden"}`}>
                         <div className='flex space-x-4'>
                             <input
                                 type="number"
@@ -277,8 +310,8 @@ const handleShowLogin = () => setShowLogin(true);
                                 value={points[0]?.value ?? playerInputs.user1 ?  playerInputs.user1 : ""}                                
                                 name="user1"
                                 onChange={handleInputChange}
-                                disabled=  {!!points[0]?.value || points[0]?.value==0 || !session?.user.user1}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user1 ? "" : "hidden"}`}
+                                disabled=  {!!points[0]?.value || points[0]?.value==0}
+                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[0] ? "" : "hidden"}`}
                             />
                             <input
                                 type="number"
@@ -287,7 +320,7 @@ const handleShowLogin = () => setShowLogin(true);
                                 onChange={handleInputChange}
                                 value={points[1]?.value ?? playerInputs.user2}
                                 disabled=  {!!points[1]?.value || points[1]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user2 ? "" : "hidden"}`}
+                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[1] ? "" : "hidden"}`}
                             />
                         </div>
                         <div className='flex space-x-4'>
@@ -298,7 +331,7 @@ const handleShowLogin = () => setShowLogin(true);
                                 onChange={handleInputChange}
                                 value={points[2]?.value ?? playerInputs.user3}
                                 disabled=  {!!points[2]?.value  || points[2]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user3 ? "" : "hidden"}`}
+                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[2] ? "" : "hidden"}`}
                             />
                             <input
                                 type="number"
@@ -307,7 +340,7 @@ const handleShowLogin = () => setShowLogin(true);
                                 onChange={handleInputChange}
                                 value={points[3]?.value ?? playerInputs.user4}
                                 disabled=  {!!points[3]?.value  || points[3]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${team?.user4 ? "" : "hidden"}`}
+                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[3] ? "" : "hidden"}`}
                             />
                         </div>
                         {!points[0]?.value && <div className={`text-right `}>

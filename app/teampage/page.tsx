@@ -1,5 +1,5 @@
 'use client'
-import { getSession, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -21,12 +21,28 @@ export default function Page() {
   const [infoMessage, setInfoMessage] = useState("");
   const [infoTitle, setInfoTitle] = useState("!?!?!");
   const [infoColor, setInfoColor] = useState("red");
+  const [updateData, setUpdateData] = useState(false);
+  const [teamData, setTeamData] = useState<{
+  id?: number;
+  credentials?: string;
+  name?: string;
+  players?: string[];
+}>({
+  id: 0,
+  credentials: "",
+  name: "",
+  players: ["","","",""]
+});
+
 
   const nameTRef = useRef<HTMLInputElement>(null);
   const user1Ref = useRef<HTMLInputElement>(null);
   const user2Ref = useRef<HTMLInputElement>(null);
   const user3Ref = useRef<HTMLInputElement>(null);
   const user4Ref = useRef<HTMLInputElement>(null);
+
+  
+
 
   const handleSave = async () => {
     const name = nameTRef.current?.value || null;
@@ -60,14 +76,11 @@ export default function Page() {
       }),
     });
 
-    const result = await res.json();
-    console.log(result);
-
-    // 🌀 Session neuladen nach erfolgreichem Speichern (optional)
     if (res.ok) {
-      await getSession(); // Session neu holen
-      router.refresh(); // ⬅️ Nur bei App Router (du verwendest `useRouter` also passt es!)
+      
       handleSavedMessage("Team erfolgreich gespeichert.", "Gespeichert", "pink");
+      //await new Promise((resolve) => setTimeout(resolve, 10000));
+      setUpdateData(true);
     } else {
       handleSavedMessage("Fehler beim Speichern. Bitte versuche es erneut.", "Fehler", "red");
     }
@@ -94,14 +107,35 @@ export default function Page() {
   const handleLogout = async () => {
     await signOut({ redirect: false });
     // Du kannst hier auch eine benutzerdefinierte Weiterleitung hinzufügen:
+    localStorage.setItem("playedGames", "")
     router.push('/');
   };
+
+ const getTeam = async () => {
+      const res = await fetch(`/api/team/search?query=${session?.user.credentials}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    }); 
+    const data = await res.json();
+    return data;
+    };
 
   useEffect(() => {
     if (status !== "loading" && !session) {
       router.push("/");
+    } else if (session?.user?.credentials) {
+     
+
+   
+      const fetchTeam = async () => {
+      const response = await getTeam();
+      setTeamData(response.team); // setze nur das team-Objekt
+      
+      }
+      fetchTeam();
     }
-  }, [status, session, router]);
+    setUpdateData(false);
+  }, [status, session, router, updateData]);
   
   if (status === "loading") {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>; // Oder ein Skeleton Loader
@@ -124,8 +158,8 @@ export default function Page() {
               ref={nameTRef}
               className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
               placeholder={t("enterTeam")}
-              defaultValue={session.user?.name || ""}
-              disabled={!!session.user.name}
+              defaultValue={teamData.name || ""}
+              disabled={!!teamData.name}
             />
           </h1>
 
@@ -138,8 +172,8 @@ export default function Page() {
                 ref={user1Ref}
                 className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                 placeholder={`${t("enterPlayer")} 1`}
-                defaultValue={session.user.user1 || ""}
-                disabled={!!session.user.user1}  // Disable if player already exists
+                defaultValue={teamData?.players?.[0] || ""}
+                disabled={!!teamData?.players?.[0] }
               />
             </div>
 
@@ -150,8 +184,8 @@ export default function Page() {
                 ref={user2Ref}
                 className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                 placeholder={`${t("enterPlayer")} 2`}
-                defaultValue={session.user.user2 || ""}
-                disabled={!!session.user.user2}  // Disable if player already exists
+                defaultValue={teamData?.players?.[1] || ""}
+                disabled={!!teamData?.players?.[1] }
               />
             </div>
           </div>
@@ -174,8 +208,8 @@ export default function Page() {
                   ref={user3Ref}
                   className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                   placeholder={`${t("enterPlayer")} 3`}
-                  defaultValue={session.user.user3 || ""}
-                  disabled={!!session.user.user3}  // Disable if player already exists
+                  defaultValue={teamData?.players?.[2] || ""}
+                disabled={!!teamData?.players?.[2] }
                 />
               </div>
 
@@ -186,8 +220,8 @@ export default function Page() {
                   ref={user4Ref}
                   className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                   placeholder={`${t("enterPlayer")} 4`}
-                  defaultValue={session.user.user4 || ""}
-                  disabled={!!session.user.user4}  // Disable if player already exists
+                  defaultValue={teamData?.players?.[3] || ""}
+                disabled={!!teamData?.players?.[3] }
                 />
               </div>
             </div>

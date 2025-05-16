@@ -73,7 +73,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("JWT Callback", { token, user });  // Log token and user to debug
       if (user) {
         // Store user data in the token
         token.id = user.id;
@@ -87,10 +86,10 @@ export const authOptions: NextAuthOptions = {
         token.user4 = user.user4;
         token.pointsTotal = user.pointsTotal;
       }
+
       return token;
     },
     async session({ session, token }) {
-      console.log("Session Callback", { session, token });  // Log session and token
       if (token) {
         // Attach the token data to the session object
         session.user = {

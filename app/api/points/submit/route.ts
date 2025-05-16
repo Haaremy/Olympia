@@ -44,8 +44,19 @@ export async function POST(req: NextRequest) {
       user3: team.user3,
       user4: team.user4,
     };
-
+    
+    
     const scores = { user1, user2, user3, user4 };
+    
+   let pointValues = (await prisma.team.findUnique({
+  where: { id: team.id },
+  select: {
+    pointsTotal: true,
+  },
+}))?.pointsTotal ?? 0;
+
+
+    
     const pointsToInsert = [];
 
     for (let i = 1; i <= 4; i++) {
@@ -55,7 +66,15 @@ export async function POST(req: NextRequest) {
 
       if (typeof userPoints !== 'number' || !playerName) continue;
 
-      const value = calculatePoints({ game, userPoints });
+    let multiplier = 1;
+    if(user3==-1){
+       multiplier = 2;
+    } else {
+      multiplier = 1.1;
+    }
+
+      let value = calculatePoints({ game, userPoints, multiplier });
+      value = Math.ceil(value);
 
       pointsToInsert.push({
         teamId: team.id,
@@ -63,9 +82,23 @@ export async function POST(req: NextRequest) {
         player: playerName,
         value,
       });
-    }
+    pointValues += value;
+}
 
-    await prisma.points.createMany({ data: pointsToInsert });
+    await prisma.points.createMany({
+  data: pointsToInsert, // <-- enthält teamId pro Eintrag!
+});
+
+
+    
+
+await prisma.team.update({
+  where: { id: team.id },
+  data: {
+    pointsTotal: pointValues,
+  },
+});
+
 
     return NextResponse.json({ success: true, inserted: pointsToInsert }, { status: 200 });
 

@@ -6,7 +6,7 @@ export async function gameEntries() {
   const game1 = await prisma.game.create({
     data: {
       url: 'https://www.youtube.com/embed/709ZC7t-8RU',
-      language: 'de', // Hauptsprache des Spiels, z.B. Deutsch
+      hidden: false,
       languages: {
         create: [
           {
@@ -16,7 +16,7 @@ export async function gameEntries() {
             station: 'Obergeschoss 1 - Foyer',
             capacity: 'Mehrere Teams',
             descriptionGame: 'Auf dem Tisch stehen 4 Gewürze (#1 - #4). Davor liegen mögliche Beschriftungen (1 - 20) der Behälter. Besprecht euch im Team, welche Beschriftung zu welchem Behälter passt.',
-            descriptionPoints: 'Tragt im entsprechenden <a href="./Weihnachtsolympiade/Scoreboard/team?gameQuery=01" style="color: #ec4899;">&#x1F517;#Feld</a> die Lösungszahl der Beschriftung ein.'
+            descriptionPoints: 'Tragt im entsprechenden #Feld die Lösungszahl der Beschriftung ein.'
           },
           {
             language: 'en',   // Englische Version
@@ -25,7 +25,7 @@ export async function gameEntries() {
             station: 'First Floor – Foyer',
             capacity: 'Multiple Teams',
             descriptionGame: 'There are 4 spices on the table (#1 - #4), and 20 possible labels for the containers. Discuss as a team which label (1 - 20) goes with which container.',
-            descriptionPoints: 'Enter the number of the label in the corresponding <a href="./Olympia/Scoreboard/team?gameQuery=01" style="color: #ec4899;">&#x1F517;#field</a>.'
+            descriptionPoints: 'Enter the number of the label in the corresponding #field.'
           }
         ]
       }
@@ -36,7 +36,7 @@ export async function gameEntries() {
 const game2 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/t5hXlxVnxfo',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -55,7 +55,7 @@ const game2 = await prisma.game.create({
           station: 'First Floor – Foyer',
           capacity: 'Multiple teams',
           descriptionGame: 'There are letters in front of you and you have to fill in the 4 word-boxes (in your head). There are clues next to the boxes, just like in a crossword puzzle. Discuss as a team.',
-          descriptionPoints: 'The letters have numerical values. Enter the numerical value in the corresponding <a href="./Olympia/Scoreboard/team?gameQuery=02" style="color: #ec4899;">&#x1F517;#field</a> of the letter.'
+          descriptionPoints: 'The letters have numerical values. Enter the numerical value in the corresponding #field of the letter.'
         }
       ]
     }
@@ -66,7 +66,7 @@ const game2 = await prisma.game.create({
 const game3 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -76,7 +76,7 @@ const game3 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 106',
           capacity: '1 Team',
           descriptionGame: 'Es gibt einen Stationsleiter! Ihr erhaltet Tipps zum Lied ',
-          descriptionPoints: 'Ihr erhaltet 10 Punkte pro <a href=\'./Weihnachtsolympiade/Scoreboard/team?gameQuery=03\' style=\'color: #ec4899;\'>&#x1F517;#Lied</a>. Jeder Tipp gibt -2 Punkte.'
+          descriptionPoints: 'Ihr erhaltet 10 Punkte pro #Feld. Jeder Tipp gibt -2 Punkte.'
         },
         {
           language: 'en',
@@ -85,7 +85,7 @@ const game3 = await prisma.game.create({
           station: 'Ground Floor – Room 106',
           capacity: '1 Team',
           descriptionGame: 'Listen to the station coordinator! You will receive tips on the song. ',
-          descriptionPoints: 'You will receive 10 points per <a href=\'./Olympia/Scoreboard/team?gameQuery=03\' style=\'color: #ec4899;\'>&#x1F517;#song</a>. Each tip is worth -2 points.'
+          descriptionPoints: 'You will receive 10 points per #field. Each tip is worth -2 points.'
         }
       ]
     }
@@ -96,7 +96,7 @@ const game3 = await prisma.game.create({
 const game4 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -115,7 +115,7 @@ const game4 = await prisma.game.create({
           station: 'INS Department',
           capacity: 'Multiple teams',
           descriptionGame: 'Follow the hints: <br />Riddle <br /><br />#1: Look for the place where the aroma of food fills the air and fellowship is built around the table.<br /><br />#2: Go to where everyone starts their journey through the building.<br /><br />#3: Look for places where flickering images create the illusion of a warm fire.<br /><br />#4: Seek out the space where reality disappears in front of a green screen and creative worlds emerge.',
-          descriptionPoints: 'Each item has a #number and an answer number. Enter the numbers in the <a href="./Olympia/Scoreboard/team?gameQuery=04" style="color: #ec4899;">&#x1F517;#field</a> as soon as you have them all.'
+          descriptionPoints: 'Each item has a #number and an answer number. Enter the numbers in the #field as soon as you have them all.'
         }
       ]
     }
@@ -126,7 +126,7 @@ const game4 = await prisma.game.create({
 const game5 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/8Gcw61fFrD4',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -145,7 +145,7 @@ const game5 = await prisma.game.create({
           station: 'First Floor – Room 110',
           capacity: '1 Team',
           descriptionGame: 'Each team member selects one item. Time is stopped for 30 seconds while they tie a bow. Then, the bows are removed again.',
-          descriptionPoints: 'Each player with a bow that holds enters a 1 in their <a href="./Olympia/Scoreboard/team?gameQuery=05" style="color: #ec4899;">&#x1F517;#field</a>.'
+          descriptionPoints: 'Each player with a bow that holds enters a 1 in their #field.'
         }
       ]
     }
@@ -156,7 +156,7 @@ const game5 = await prisma.game.create({
 const game6 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/YyZ09UlBV94',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -175,7 +175,7 @@ const game6 = await prisma.game.create({
           station: 'Ground Floor – West wing corridor',
           capacity: 'Solo Team',
           descriptionGame: 'Each player has 5 shots and the game is played in succession. The player kneels or crouches in front of the mark and tries to hit the circle by sliding the puck along the floor.',
-          descriptionPoints: 'Each hit in the outer circle is worth 1 point, the inner circle is worth 2 points. Add up your points and enter them in your <a href="./Olympia/Scoreboard/team?gameQuery=06" style="color: #ec4899;">&#x1F517;#field</a>.'
+          descriptionPoints: 'Each hit in the outer circle is worth 1 point, the inner circle is worth 2 points. Add up your points and enter them in your #field.'
         }
       ]
     }
@@ -186,7 +186,7 @@ const game6 = await prisma.game.create({
 const game7 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -205,7 +205,7 @@ const game7 = await prisma.game.create({
           station: 'First Floor – West wing corridor',
           capacity: '1 to 2 teams',
           descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time.',
-          descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding <a href="./Olympia/Scoreboard/team?gameQuery=07" style="color: #ec4899;">&#x1F517;#field</a>.'
+          descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding #field.'
         }
       ]
     }
@@ -216,7 +216,7 @@ const game7 = await prisma.game.create({
 const game8 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/ucl7HeabPO0',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -235,7 +235,7 @@ const game8 = await prisma.game.create({
           station: 'First Floor – Foyer',
           capacity: 'Multiple teams',
           descriptionGame: 'Estimate the number of sweets.',
-          descriptionPoints: 'Enter the estimate in the respective <a href="./Olympia/Scoreboard/team?gameQuery=08" style="color: #ec4899;">&#x1F517;#field</a>.'
+          descriptionPoints: 'Enter the estimate in the respective #field.'
         }
       ]
     }
@@ -246,7 +246,7 @@ const game8 = await prisma.game.create({
 const game9 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/sKCM5yMr4Js',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -265,7 +265,7 @@ const game9 = await prisma.game.create({
           station: 'Ground Floor - Foyer',
           capacity: '1 Team',
           descriptionGame: 'Each player has 5 throws. You throw at the cans on the table (elves). After the round, the game is set up for the next player.',
-          descriptionPoints: 'Enter the number of cans that have fallen off the table in the corresponding <a href="./Olympia/Scoreboard/team?gameQuery=09" style="color: #ec4899;">&#x1F517;#field</a>.'
+          descriptionPoints: 'Enter the number of cans that have fallen off the table in the corresponding #field.'
         }
       ]
     }
@@ -276,7 +276,7 @@ const game9 = await prisma.game.create({
 const game10 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -286,7 +286,7 @@ const game10 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 110',
           capacity: 'Multiple Teams',
           descriptionGame: 'Vier Freunde – Elias(#1), Fiona(#2), Greta(#3) und Hannes(#4) – backen Kekse für Weihnachten. Jeder von ihnen hat einen anderen Keksfavoriten: Lebkuchen (1), Zimtsterne (2), Vanillekipferl (3) oder Spekulatius (4). Außerdem backt jeder eine andere Anzahl an Keksen (5, 6, 7 oder 9). Findet heraus, wer welchen Keks mag und wie viele Kekse jede Person gebacken hat, basierend auf den folgenden Hinweise: Findet ihr an der Station.',
-          descriptionPoints: "Tragt in jedes <a href='./Weihnachtsolympiade/Scoreboard/team?gameQuery=10' style='color: #ec4899;'>&#x1F517;#Feld</a> die Anzahl der Kekse mit der Zahl (ID) des Kekses (bspw 2 Zimtstern (9) = 29) ein."
+          descriptionPoints: "Tragt in jedes #Feld die Anzahl der Kekse mit der Zahl (ID) des Kekses (bspw 2 Zimtstern (9) = 29) ein."
         },
         {
           language: 'en',
@@ -295,7 +295,7 @@ const game10 = await prisma.game.create({
           station: 'Ground Floor - Room 110',
           capacity: 'Multiple teams',
           descriptionGame: "Four friends - Elias(#1), Fiona(#2), Greta(#3) and Hannes(#4) - bake cookies for Christmas. Each of them has a different cookie favorite: gingerbread (1), cinnamon stars (2), vanilla crescents (3) or speculoos (4). In addition, everyone bakes a different number of cookies (5, 6, 7 or 9). Find out who likes which cookie and how many cookies each person has baked based on the following clues: Find them at the station.",
-          descriptionPoints: "Enter into every <a href='./Olympia/Scoreboard/team?gameQuery=10' style='color: #ec4899;'>&#x1F517;#field</a> the number of cookies with the number (id) of the cookie (e.g. 2 cinnamon stars (9) = 29)."
+          descriptionPoints: "Enter into every #field the number of cookies with the number (id) of the cookie (e.g. 2 cinnamon stars (9) = 29)."
         }
       ]
     }
@@ -306,7 +306,7 @@ const game10 = await prisma.game.create({
 const game11 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/fZ_udkVJbec',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -336,7 +336,7 @@ const game11 = await prisma.game.create({
 const game12 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/koXin1tVOHs',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -346,7 +346,7 @@ const game12 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 107',
           capacity: 'Solo Team',
           descriptionGame: 'Jeder Spieler hat 2 Würfe. Der Spieler stellt sich vor die Markierung und wirf die Weihnachtsbaum-Kugel. Die Kugel muss dabei so viele Kegel umwerfen wie möglich. Nach den 2 Würfen wird das Feld für den nächsten Spieler wieder aufgestellt.',
-          descriptionPoints: "Strike (alle im 1. Wurf): 10 Punkte, Spare (alle im 2. Wurf): 8 Punkte, Ansonsten 1 Punkt pro Kegel. Tragt die Punktzahl in euer <a href='./Weihnachtsolympiade/Scoreboard/team?gameQuery=12' style='color: #ec4899;'>&#x1F517;#Feld</a> ein."
+          descriptionPoints: "Strike (alle im 1. Wurf): 10 Punkte, Spare (alle im 2. Wurf): 8 Punkte, Ansonsten 1 Punkt pro Kegel. Tragt die Punktzahl in euer #Feld ein."
         },
         {
           language: 'en',
@@ -366,7 +366,7 @@ const game12 = await prisma.game.create({
 const game13 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -376,7 +376,7 @@ const game13 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 107',
           capacity: 'Multiple Teams',
           descriptionGame: 'Vor euch liegen #4 Bilder. Jedes Bild hat Makel zu seinem Kontrollbild daneben. Tipp: macht euch Fotos der Bilder und besprecht euch im Team.',
-          descriptionPoints: "Zählt die Makel und tragt sie im entsprechenden <a href='./Weihnachtsolympiade/Scoreboard/team?gameQuery=13' style='color: #ec4899;'>&#x1F517;#Feld</a> ein."
+          descriptionPoints: "Zählt die Makel und tragt sie im entsprechenden #Feld ein."
         },
         {
           language: 'en',
@@ -396,7 +396,7 @@ const game13 = await prisma.game.create({
 const game14 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/OHYBwpMBtqU',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -426,7 +426,7 @@ const game14 = await prisma.game.create({
 const game15 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -436,7 +436,7 @@ const game15 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 106',
           capacity: '1 Team',
           descriptionGame: 'Startet einen Timer für 30 Sekunden und versucht mit euren Angeln die Zuckerstangen aus dem Pool zu fischen.',
-          descriptionPoints: "Jeder trägt sich die gefangenen Zuckerstangen in sein <a href='./Weihnachtsolympiade/Scoreboard/team?gameQuery=15' style='color: #ec4899;'>&#x1F517;#Feld</a> ein."
+          descriptionPoints: "Jeder trägt sich die gefangenen Zuckerstangen in sein #Feld ein."
         },
         {
           language: 'en',
@@ -445,7 +445,7 @@ const game15 = await prisma.game.create({
           station: 'Ground Floor - Room 106',
           capacity: '1 Team',
           descriptionGame: 'Start a timer for 30 seconds and try to fish the candy canes out of the pool with your fishing rods.',
-          descriptionPoints: "Everyone enters the candy canes they have caught in their #Feld."
+          descriptionPoints: "Everyone enters the candy canes they have caught in their #field."
         }
       ]
     }
@@ -455,7 +455,7 @@ const game15 = await prisma.game.create({
 const game16 = await prisma.game.create({
   data: {
     url: '',
-    language: 'de',
+    hidden: false,
     languages: {
       create: [
         {
@@ -465,7 +465,7 @@ const game16 = await prisma.game.create({
           station: 'Obergeschoss 1 - Raum 216',
           capacity: 'Multiple Teams',
           descriptionGame: 'Ihr benötigt einen Timer. Jeder Spieler baut einen Turm aus Marshmallows. Das Spiel ist nach 1 Minute beendet.',
-          descriptionPoints: "Tragt die Anzahl der Marshmallow-Etagen in sein jeweiliges <a href='./Weihnachtsolympiade/Scoreboard/team?gameQuery=16' style='color: #ec4899;'>&#x1F517;#Feld</a>."
+          descriptionPoints: "Tragt die Anzahl der Marshmallow-Etagen in sein jeweiliges #Feld."
         },
         {
           language: 'en',
@@ -474,7 +474,7 @@ const game16 = await prisma.game.create({
           station: 'First Floor – Room 216',
           capacity: 'Multiple teams',
           descriptionGame: 'Each player builds a marshmallow tower. You always stack 1 on top of another. The game is over when the tower falls.',
-          descriptionPoints: "Enter the number of marshmallow layers in your respective #Feld."
+          descriptionPoints: "Enter the number of marshmallow layers in your respective #field."
         }
       ]
     }
@@ -485,7 +485,7 @@ const game16 = await prisma.game.create({
 const game17 = await prisma.game.create({
     data: {
       url: 'https://www.youtube.com/embed/M6CUG7MWq30',
-      language: 'de', // Hauptsprache des Spiels, z.B. Deutsch
+      hidden: false,
       languages: {
         create: [
           {
@@ -500,11 +500,11 @@ const game17 = await prisma.game.create({
           {
             language: 'en',   // Englische Version
             title: 'Ice hockey',
-            story: 'Our favorite ice hockey team, the "INS ICE Pythons", have revealed their secret training tips. We take the opportunity to share our knowledge with you (with permission, of course). We then have an important game against the North Polar Bears over the Christmas break.',
+            story: 'Our favorite ice hockey team, the "INS ICE Pythons", have revealed their hidden training tips. We take the opportunity to share our knowledge with you (with permission, of course). We then have an important game against the North Polar Bears over the Christmas break.',
             station: 'First Floor - Foyer',
             capacity: '2 teams',
             descriptionGame: 'A goal is set up in front of you, with obstacles in the way. Stand at the starting mark and shoot at the goal. Everyone shoots 5 times.',
-            descriptionPoints: 'Enter your number of hits in your <a href="./Olympia/Scoreboard/team?gameQuery=17" style="color: #ec4899;">&#x1F517;#field</a>.',
+            descriptionPoints: 'Enter your number of hits in your #field.',
           }
         ]
       }
@@ -515,7 +515,7 @@ const game17 = await prisma.game.create({
 const game18 = await prisma.game.create({
     data: {
         url: '',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -534,7 +534,7 @@ const game18 = await prisma.game.create({
                     station: 'First Floor – Room 216',
                     capacity: '1 to 4 teams',
                     descriptionGame: 'You play Mario Kart Grand Prix on 100ccm against other teams and COMs. Each player plays one route. Listen to the station coordinator!',
-                    descriptionPoints: 'Your ranking in the round will be entered in your <a href="./Olympia/Scoreboard/team?gameQuery=18" style="color: #ec4899;">&#x1F517;#field</a>.'
+                    descriptionPoints: 'Your ranking in the round will be entered in your #field.'
                 }
             ]
         }
@@ -545,7 +545,7 @@ const game18 = await prisma.game.create({
 const game19 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/VvXDp5jZL4A',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -564,7 +564,7 @@ const game19 = await prisma.game.create({
                     station: 'Ground Floor - Room 108',
                     capacity: '2x 2 teams',
                     descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. The teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
-                    descriptionPoints: 'Each player enters the cups they have hit in their <a href="./Olympia/Scoreboard/team?gameQuery=19" style="color: #ec4899;">&#x1F517;#field</a>.'
+                    descriptionPoints: 'Each player enters the cups they have hit in their #field.'
                 }
             ]
         }
@@ -575,7 +575,7 @@ const game19 = await prisma.game.create({
 const game20 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/WXbwk-7uOTg',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -594,7 +594,7 @@ const game20 = await prisma.game.create({
                     station: 'Ground floor – East wing corridor',
                     capacity: '1 team or 2 teams',
                     descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
-                    descriptionPoints: 'In the game evaluation, the time in seconds must be entered in <a href="./Olympia/Scoreboard/team?gameQuery=20" style="color: #ec4899;">&#x1F517;#field</a> 1. Fields 2 to 4 are filled in with 0.'
+                    descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1. Fields 2 to 4 are filled in with 0.'
                 }
             ]
         }
@@ -605,7 +605,7 @@ const game20 = await prisma.game.create({
 const game21 = await prisma.game.create({
     data: {
         url: '',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -624,7 +624,7 @@ const game21 = await prisma.game.create({
                     station: 'First Floor – Foyer at the Christmas Tree',
                     capacity: 'Multiple teams',
                     descriptionGame: 'You can lift, shake, turn and rotate the gifts, but not open them.',
-                    descriptionPoints: 'Enter your answer (number) from the wish list in the <a href="./Olympia/Scoreboard/team?gameQuery=21" style="color: #ec4899;">&#x1F517;#field</a> with the gift number.'
+                    descriptionPoints: 'Enter your answer (number) from the wish list in the #field with the gift number.'
                 }
             ]
         }
@@ -635,7 +635,7 @@ const game21 = await prisma.game.create({
 const game22 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/cKgvAcYoHl0',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -654,7 +654,7 @@ const game22 = await prisma.game.create({
                     station: 'Ground Floor – Room 108',
                     capacity: '2x 1 team',
                     descriptionGame: "Unlike the story, it is a team game. You need 2 reindeer and 2 elves. Each elf has 5 throws and must throw at the reindeer's antlers. The reindeer tries to help by moving skillfully.",
-                    descriptionPoints: "Enter in your #Field how many rings you have hit/captured."
+                    descriptionPoints: "Enter in your #field how many rings you have hit/captured."
                 }
             ]
         }
@@ -665,7 +665,7 @@ const game22 = await prisma.game.create({
 const game23 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/8eaXJIdMzq0',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -684,7 +684,7 @@ const game23 = await prisma.game.create({
                     station: 'Ground Floor – Room 109',
                     capacity: 'Solo Team',
                     descriptionGame: 'One player on your team is given a pen and paper and an envelope with words. They draw the words and the other team members guess what is being drawn. The time limit is 2 minutes per person. So you take turns and play 4 rounds with 4 team members. Words that have already been used are put to one side and put back in the envelope at the end.',
-                    descriptionPoints: 'Each player enters the number of words explained and guessed by the team in their <a href="./Olympia/Scoreboard/team?gameQuery=23" style="color: #ec4899;">&#x1F517;#field</a>.'
+                    descriptionPoints: 'Each player enters the number of words explained and guessed by the team in their #field.'
                 }
             ]
         }
@@ -695,7 +695,7 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
-        language: 'de',
+        hidden: false,
         languages: {
             create: [
                 {
@@ -704,8 +704,8 @@ const game24 = await prisma.game.create({
                     story: 'Heiligabend ist im vollen Gange. Schon seit Jahrhunderten beliefert Santa die Kinder, aber noch nie war es so schwer wie heutzutage. Alarmanlagen und SmartHome-Überwachung sind überall. Und dann noch dieser Zeitdruck...',
                     station: 'Obergeschoss 1 - Raum 210',
                     capacity: '1 Team',
-                    descriptionGame: 'Ihr braucht 1 Zeit-Stopper und 1 bis 3 Elfen/Weihnachtsmänner. Der Stopper gibt das Signal zum Start und das Bescherungsteam muss durch den Parkour. In der Mitte sind 3 Zahlen, welche einem <a href="./Weihnachtsolympiade/Scoreboard/team?gameQuery=" style="color: #ec4899;">&#x1F517;#Feld</a> zugeordnet sind. Wenn alle wieder über der Start/Ziellinie sind, wird die Zeit gestoppt.',
-                    descriptionPoints: 'In #Feld 1 wird die Zeit in Sekunden eingetragen. In <a href="./Weihnachtsolympiade/Scoreboard/team?gameQuery=" style="color: #ec4899;">&#x1F517;#Feld</a> 2 bis 4 die entsprechende Lösung.'
+                    descriptionGame: 'Ihr braucht 1 Zeit-Stopper und 1 bis 3 Elfen/Weihnachtsmänner. Der Stopper gibt das Signal zum Start und das Bescherungsteam muss durch den Parkour. In der Mitte sind 3 Zahlen, welche einem #Feld zugeordnet sind. Wenn alle wieder über der Start/Ziellinie sind, wird die Zeit gestoppt.',
+                    descriptionPoints: 'In #Feld 1 wird die Zeit in Sekunden eingetragen. In #Feld 2 bis 4 die entsprechende Lösung.'
                 },
                 {
                     language: 'en',
@@ -713,8 +713,8 @@ const game24 = await prisma.game.create({
                     story: 'Christmas Eve is in full swing. For centuries, Santa has been delivering gifts to children, but it has never been as difficult as it is today. Alarm systems and smart home monitoring are everywhere. And then there\'s the time pressure...',
                     station: 'First Floor – Room 210',
                     capacity: '1 Team',
-                    descriptionGame: 'You need 1 time stopper and 1 to 3 elves/Santa Clauses. The stopper gives the signal to start, and the gift-giving team must navigate through the parkour. In the center are 3 numbers, which are assigned to a <a href="./Olympia/Scoreboard/team?gameQuery=" style="color: #ec4899;">&#x1F517;#field</a>. When everyone has crossed the start/finish line again, the time is stopped.',
-                    descriptionPoints: 'The time in seconds is entered in <a href="./Olympia/Scoreboard/team?gameQuery=24" style="color: #ec4899;">&#x1F517;#field</a> 1. In <a href="./Olympia/Scoreboard/team?gameQuery=24" style="color: #ec4899;">&#x1F517;#field</a> 2 to 4 the corresponding answers.'
+                    descriptionGame: 'You need 1 time stopper and 1 to 3 elves/Santa Clauses. The stopper gives the signal to start, and the gift-giving team must navigate through the parkour. In the center are 3 numbers, which are assigned to a #field. When everyone has crossed the start/finish line again, the time is stopped.',
+                    descriptionPoints: 'The time in seconds is entered in #field 1. In #field 2 to 4 the corresponding answers.'
                 }
             ]
         }

@@ -147,7 +147,7 @@ export default function GamesPage({ games }: { games: Game[] }) {
     }
   }, [hydrated]);
 
-  // Öffnet das InfoBox mit den Daten des Spiels
+  // Öffnet die InfoBox mit den Daten des Spiels
   const handleInfoOpen = (game: Game) => {
     const selectedLanguage = game.languages[language];
     const gameData: GameData = {
@@ -175,26 +175,19 @@ export default function GamesPage({ games }: { games: Game[] }) {
   };
 
 
-  useEffect(() => {
-    const fetchPointsForGames = async () => {
+const fetchPointsForGames = async () => {
       const map: Record<number, boolean> = {};
   
       await Promise.all(
         games.map(async (game) => {
           try {
-            const res = await fetch(`/api/hasPoints?teamId=${team?.id}&gameId=${game.id}`);
-            
-            // Überprüfen, ob die Antwort erfolgreich war
-            if (!res.ok) {
-              return
-            }
-      
-            // Überprüfen, ob die Antwort leer ist
-            const text = await res.text(); // Verwende text(), um den Roh-Body zu erhalten
-            const data = text ? JSON.parse(text) : { hasPoints: false }; // Falls leer, setze Standardwert
-      
-            // Weisen Sie den Wert zu
-            map[game.id] = data.hasPoints || false;
+
+            const playedGames = "1"//localStorage.getItem("playedGames");
+            if (!playedGames || playedGames.includes(game.id<10 ? "0"+game.id : game.id.toString())) {
+
+            map[game.id] = true;
+          
+          }
           } catch (error) {
             console.error(`Fehler bei Spiel ${game.id}:`, error);
             map[game.id] = false; // Falls ein Fehler auftritt, standardmäßig false
@@ -205,6 +198,8 @@ export default function GamesPage({ games }: { games: Game[] }) {
   
       setGamePointsMap(map);
     };
+
+  useEffect(() => {
   
     if (team?.id) {
       fetchPointsForGames();
@@ -260,7 +255,7 @@ export default function GamesPage({ games }: { games: Game[] }) {
             </div>
           ))}
         </div>
-        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose} />}
+        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose} onSave={fetchPointsForGames} />}
       </div>
     </main>
   );
