@@ -13,15 +13,18 @@ datasource db {
 model Game {
   id        Int        @id @default(autoincrement())
   url       String
+  hidden    Boolean    @default(false) // ob punkte werte versteckt werden müssen
+  tagged    String?     
   languages Language[]  // Viele-Sprachen-Beziehung
   points    Points[]    // Umkehrbeziehung zu Points
   entries   Entries[]
-  hidden    Boolean    @default(false) // ob punkte werte versteckt werden müssen
+  
+
 }
 
 model Language {
   id                Int    @id @default(autoincrement())
-  game              Game   @relation(fields: [gameId], references: [id])
+  game              Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId            Int
   language          String
   title             String
@@ -55,9 +58,9 @@ enum Role{
 
 model Points {
   id          Int       @id @default(autoincrement())
-  team        Team      @relation(fields: [teamId], references: [id])
+  team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int
-  game        Game      @relation(fields: [gameId], references: [id])
+  game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId      Int
   player      String
   value       Int
@@ -66,9 +69,9 @@ model Points {
 
 model Entries {
   id          Int       @id @default(autoincrement())
-  team        Team      @relation(fields: [teamId], references: [id])
+  team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int
-  game        Game      @relation(fields: [gameId], references: [id])
+  game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId      Int
   player      String
   value       Int

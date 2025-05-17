@@ -76,14 +76,14 @@ export default function Home() {
           title={t('loc_0')}
           imageSrc={`/images/map_${t('mapImageGR')}.jpg`}
           games={gamesEG}
-          searchQuery={""}
+          searchQuery={searchQuery}
         />
 
         <MapSection
           title={t('loc_1')}
           imageSrc={`/images/map_${t('mapImage1st')}.jpg`}
           games={gamesOG}
-          searchQuery={""}
+          searchQuery={searchQuery}
         />
       </div>
     </main>

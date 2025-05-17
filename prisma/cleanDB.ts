@@ -6,6 +6,8 @@ import { gameSettings} from './gameSettings'
 //const prisma = new PrismaClient()
 
 async function cleanDB() {
+  await prisma.entries.deleteMany({});
+  await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Entries'`;
   await prisma.points.deleteMany({});
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Points'`;
   await prisma.language.deleteMany({});

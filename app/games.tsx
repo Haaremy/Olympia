@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 import InfoBox from "./gameDetails";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
@@ -9,17 +9,12 @@ import { useUI } from "./context/UIContext";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
 
-// Typisierung für die Spiele-Daten
-type GameData = {
+type Game = {
   id: number;
-  title: string;
-  story: string;
-  capacity: string;
-  content: string;
-  points: string;
-  station: string;
   url: string;
-  languages: { language: string; title: string; story: string }[];
+  languages: Record<string, TransformedLanguage>;
+  hidden: boolean;
+  tagged: string | null;
 };
 
 // Typ für die transformierte Sprache
@@ -32,11 +27,24 @@ type TransformedLanguage = {
   station: string;
 };
 
-type Game = {
+// Typisierung für die Spiele-Daten
+type GameData = {
   id: number;
+  title: string;
+  story: string;
+  capacity: string;
+  content: string;
+  points: string;
+  station: string;
   url: string;
-  languages: Record<string, TransformedLanguage>;
+  hidden: boolean;
+  tagged: string;
+  languages: { language: string; title: string; story: string }[];
 };
+
+
+
+
 
 export default function GamesPage({ games }: { games: Game[] }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,6 +56,7 @@ export default function GamesPage({ games }: { games: Game[] }) {
   const team = session?.user as Session["user"];
   const { i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
   const [gamePointsMap, setGamePointsMap] = useState<Record<number, boolean>>({});
+  const [fetchPointsForGames, setfetchPointsForGames] = useState(false);
 
 
   // Setze die Sprache basierend auf i18n
@@ -58,11 +67,16 @@ export default function GamesPage({ games }: { games: Game[] }) {
 
   // Filtere Spiele basierend auf der Suche
   const filteredGames = useMemo(() => {
-    return games.filter((game) => 
-      game.id.toString().includes(searchQuery) || 
-      game.languages[language]?.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [games, searchQuery, language]);
+  return games.filter((game) => {
+    const gameIdString = game.id < 10 ? "0" + game.id : game.id.toString();
+    const matchesId = gameIdString.includes(searchQuery);
+    const matchesTitle = game.languages[language]?.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesId || matchesTitle;
+  });
+}, [games, searchQuery, language]);
 
   const [randomizedGames, setRandomizedGames] = useState(games);
 
@@ -158,6 +172,8 @@ export default function GamesPage({ games }: { games: Game[] }) {
       content: selectedLanguage?.content || "Keine Anleitung verfügbar",
       points: selectedLanguage?.points || "Keine Punkte verfügbar",
       station: selectedLanguage?.station || "Keine Station verfügbar",
+      hidden: game.hidden || false,
+      tagged: game.tagged || "",
       url: game.url,
       languages: Object.keys(game.languages).map((key) => ({
         language: key,
@@ -175,49 +191,65 @@ export default function GamesPage({ games }: { games: Game[] }) {
   };
 
 
-const fetchPointsForGames = useCallback( async () => {
+const handleFetchPointsForGames = () => {
+  setfetchPointsForGames(true);
+}
+
+useEffect(() => {
+    const teamId = Number(team?.id);
+    const isValidTeamId = !isNaN(teamId) && teamId > 0;
+    console.log("team?.id:", team?.id);
+    console.log("isValidTeamId:", isValidTeamId);
+
+    if (!isValidTeamId) return;
+
+    const loadGamePoints = async () => {
+      const temp = localStorage.getItem("playedGames") || "";
+      let playedGames = temp || "0+";
+
       const map: Record<number, boolean> = {};
-      let playedGames="";
+
       await Promise.all(
         games.map(async (game) => {
           try {
-            
-            const temp = localStorage.getItem("playedGames");
+            if (temp.includes("0+") && !temp.includes(team.id)) {
+              const res = await fetch(`/api/hasPoints?teamId=${teamId}&gameId=${game.id}`);
+              if (!res.ok) return;
 
-            if (!temp){
-              const res = await fetch(`/api/hasPoints?teamId=${team?.id}&gameId=${game.id}`);
-              if (!res.ok) {return}
               const text = await res.text();
               const data = text ? JSON.parse(text) : { hasPoints: false };
-              if (data.hasPoints){
-                playedGames += "+"+game.id;
-              }
-            } else 
-             playedGames = temp;
-             localStorage.setItem("playedGames",playedGames);             
-  
-            if (!playedGames || playedGames.includes(game.id<10 ? "0"+game.id : game.id.toString())) {
 
-            map[game.id] = true;
-          
-          }
-          } catch (error) {
-            console.error(`Fehler bei Spiel ${game.id}:`, error);
-            map[game.id] = false; // Falls ein Fehler auftritt, standardmäßig false
+              if (data.hasPoints || temp.includes("+"+team.id+"+")) {
+                playedGames += `+${game.id}+`;
+              }
+            }
+
+            if (
+              playedGames.includes(
+                game.id < 10 ? `0${game.id}` : game.id.toString()
+              )
+            ) {
+              map[game.id] = true;
+            }
+          } catch (err) {
+            console.error(`Fehler bei Spiel ${game.id}:`, err);
+            map[game.id] = false;
           }
         })
       );
-      
-  
-      setGamePointsMap(map);
-    },[games]);
 
-  useEffect(() => {
-  
-    if (team?.id) {
-      fetchPointsForGames();
-    }
-  }, [games, team?.id, fetchPointsForGames]);
+      localStorage.setItem("playedGames", playedGames);
+      setGamePointsMap(map);
+
+
+    };
+
+    loadGamePoints();
+    setfetchPointsForGames(false);
+  }, [team?.id, games, fetchPointsForGames]);
+
+
+
   
 
   return (
@@ -268,7 +300,7 @@ const fetchPointsForGames = useCallback( async () => {
             </div>
           ))}
         </div>
-        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose} onSave={fetchPointsForGames} />}
+        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose} onSave={handleFetchPointsForGames} />}
       </div>
     </main>
   );

@@ -11,7 +11,7 @@ export async function GET() {
       },
       orderBy: { pointsTotal: "desc" },
       include: {
-        points: {
+        entries: {
           include: {
             game: true,
           },

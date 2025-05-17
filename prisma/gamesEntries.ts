@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 
@@ -96,7 +96,8 @@ const game3 = await prisma.game.create({
 const game4 = await prisma.game.create({
   data: {
     url: '',
-    hidden: false,
+    hidden: true,
+    tagged: "overridePlayers",
     languages: {
       create: [
         {
@@ -576,6 +577,7 @@ const game20 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/WXbwk-7uOTg',
         hidden: false,
+        tagged: "field1,lowest",
         languages: {
             create: [
                 {
@@ -695,7 +697,8 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
-        hidden: false,
+        hidden: true,
+        tagged: "overridePlayer,field1,lowest",
         languages: {
             create: [
                 {

@@ -11,7 +11,7 @@ interface Team {
   user3: string;
   user4: string;
   pointsTotal: number;
-  points: {
+  entries: {
     id: number;
     value: number;
     player: string;
@@ -19,6 +19,8 @@ interface Team {
     game: {
       id: number;
       language: string;
+      hidden: boolean;
+      tagged: string;
     };
   }[];
 }
@@ -26,8 +28,11 @@ interface Team {
 interface Record {
   gameId: number,
       language: string,
+      hidden: boolean,
+      tagged: string,
       topPlayer: string,
       topPoints: number,
+      topEntries: number,
       team: Team
 }
 
@@ -141,7 +146,7 @@ export default function ScoreboardTabs() {
                       <td className="px-6 py-4">{team.name}</td>
                       <td className="px-6 py-4">{team.pointsTotal}</td>
                       <td className="px-6 py-4">
-                        {team.points.length > 0 && formatDate(team.points[team.points.length - 1].lastUpdated)}
+                        {team.entries.length > 0 && formatDate(team.entries[team.entries.length - 1].lastUpdated)}
                       </td>
                     </tr>
                     <tr className="border-b border-gray-200 dark:border-gray-600">
@@ -162,8 +167,8 @@ export default function ScoreboardTabs() {
     </tr>
   </thead>
   <tbody>
-    {[...new Set(team.points.map((p) => p.game.id))].map((gameId) => {
-      const pointsForGame = team.points.filter((p) => p.game.id === gameId);
+    {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
+      const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
       const getValue = (player: string | undefined) =>
         pointsForGame.find((p) => p.player === player)?.value ?? "-";
       const updated = pointsForGame[0]?.lastUpdated
@@ -173,10 +178,10 @@ export default function ScoreboardTabs() {
       return (
         <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
           <td className="border px-2 py-1">{gameId}</td>
-          <td className="border px-2 py-1">{getValue(team.user1)}</td>
-          <td className="border px-2 py-1">{getValue(team.user2)}</td>
-          <td className="border px-2 py-1">{getValue(team.user3)}</td>
-          <td className="border px-2 py-1">{getValue(team.user4)}</td>
+          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user1)==-1  ? "-" : getValue(team.user1)}</td>
+          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user2)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
+          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user3)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
+          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user4)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
           <td className="border px-2 py-1">{updated}</td>
         </tr>
       );
@@ -209,7 +214,7 @@ export default function ScoreboardTabs() {
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
-            records.map((record) => record.topPlayer && (
+            records.map((record) => record.topPlayer && !record.hidden && (
               <div
                 key={record.gameId}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
@@ -221,7 +226,7 @@ export default function ScoreboardTabs() {
                   👑 {record.team.name} - {record.topPlayer}
                 </p>
                 <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-                  {record.topPoints} Punkte:
+                  {record.topPoints} Punkte: {record.topEntries}
                 </p>
               </div>
             ))

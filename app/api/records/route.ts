@@ -3,17 +3,30 @@ import { prisma } from '@/lib/db';
 
 export async function GET() {
   const games = await prisma.game.findMany({
-    include: {
-      points: {
-        orderBy: { value: 'desc' },
-        take: 1,
-        include: { team: true },
-      },
+  include: {
+    entries: {
+      include: { team: true },
     },
-  });
+    points: {
+      include: { team: true },
+    },
+  },
+});
 
-  type GameWithPointsAndTeam = {
+
+
+ type GameWithPointsAndTeam = {
   id: number;
+  hidden: boolean;
+  tagged: string | null;
+  entries: {
+    player: string;
+    value: number;
+    team: {
+      id: number;
+      name: string;
+    };
+  }[];
   points: {
     player: string;
     value: number;
@@ -24,18 +37,89 @@ export async function GET() {
   }[];
 };
 
-  const result = games.map((game: GameWithPointsAndTeam) => {
-    const top = game.points[0];
-    return {
-      gameId: game.id,
-      topPlayer: top?.player || null,
-      topPoints: top?.value || null,
-      team: top?.team ? {
-        id: top.team.id,
-        name: top.team.name,
-      } : null,
-    };
+const result = games.map((game: GameWithPointsAndTeam) => {
+  const { order, field } = parseTagged(game.tagged || "");
+  const getValue = (item: typeof game.points[0]): string | number => {
+  switch (field) {
+    case "field1":
+      return item.player;
+    case "field2":
+      return item.value;
+    case "field3":
+      return item.team.name;
+    default:
+      return ""; // Fallback
+  }
+};
+  const topP = getTopPlayer(game.points, { order, getValue  });
+
+  const matchingEntry = game.entries.find(e => e.team.id === topP?.team.id);
+
+  return {
+    gameId: game.id,
+    hidden: game.hidden,
+    topPlayer: topP?.player || null,
+    topPoints: topP?.value || null,
+    topEntries: matchingEntry?.value || null,
+    team: topP?.team
+      ? {
+          id: topP.team.id,
+          name: topP.team.name,
+        }
+      : null,
+  };
+});
+
+
+
+function parseTagged(tagged: string): { order: 'asc' | 'desc'; field: 'field1' | 'field2' | 'field3' } {
+  const order: 'asc' | 'desc' = tagged.includes("lowest") ? "asc" : "desc";
+
+  let field: 'field1' | 'field2' | 'field3' = 'field1'; // Default
+
+  if (tagged.includes("field1")) field = 'field1';
+  else if (tagged.includes("field2")) field = 'field2';
+  else if (tagged.includes("field3")) field = 'field3';
+
+  return { order, field };
+}
+
+
+
+
+function getTopPlayer<T>(
+  items: T[],
+  options: { order: 'asc' | 'desc'; getValue: (item: T) => string | number }
+): T | null {
+  const { order, getValue } = options;
+
+  if (!items.length) return null;
+
+  const sorted = items.slice().sort((a, b) => {
+    const aValue = getValue(a);
+    const bValue = getValue(b);
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return order === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    }
+
+    return 0;
   });
+
+  return sorted[0];
+}
+
+
+
+
+
+ 
+
+
 
   return NextResponse.json(result);
 }

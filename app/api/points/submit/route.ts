@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
 
     
     const pointsToInsert = [];
+    const inputsToInsert = [];
 
     for (let i = 1; i <= 4; i++) {
       const userKey = `user${i}` as keyof typeof scores;
@@ -66,31 +67,43 @@ export async function POST(req: NextRequest) {
 
       if (typeof userPoints !== 'number' || !playerName) continue;
 
-    let multiplier = 1;
-    if(user3==-1){
+    let multiplier = 1.15; // 4 Spieler
+    if (user4 ==-1){ // 3 Spieler
+      multiplier = 1.6;
+    }
+    if(user3==-1){ // 2 Spieler
        multiplier = 2;
-    } else {
-      multiplier = 1.1;
     }
 
       let value = calculatePoints({ game, userPoints, multiplier });
       value = Math.ceil(value);
 
+     
+
       pointsToInsert.push({
         teamId: team.id,
         gameId: game,
         player: playerName,
-        value,
+        value: value,
       });
-    pointValues += value;
+
+       inputsToInsert.push({
+        teamId: team.id,
+        gameId: game,
+        player: playerName,
+        value: userPoints,
+      })
+
+      pointValues += value;
 }
 
     await prisma.points.createMany({
   data: pointsToInsert, // <-- enthält teamId pro Eintrag!
 });
 
-
-    
+await prisma.entries.createMany({
+  data: inputsToInsert, // <-- enthält teamId pro Eintrag!
+});
 
 await prisma.team.update({
   where: { id: team.id },

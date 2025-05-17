@@ -21,6 +21,8 @@ interface ModalProps {
         points: string;
         station: string;
         url: string;
+        hidden: boolean;
+        tagged: string;
         languages: { language: string; title: string; story: string }[];
     };
     onClose: () => void;
@@ -122,14 +124,23 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
         console.log(playerInputs["user1"]);
      
         try {
-            if((!playerInputs.user1 || playerInputs.user1=="-1") || !playerInputs.user2) {
+            if((!playerInputs.user1 || playerInputs.user1=="-1")) {
                 setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
                 throw new Error("Fehler beim Speichern.");
             }
-            if((teamData.players?.[2] && !playerInputs.user3) || (teamData.players?.[3] && !playerInputs.user4)) {
+            if((!playerInputs.user2 || playerInputs.user2=="-1")) {
                 setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
                 throw new Error("Fehler beim Speichern.");
             }
+            if((!playerInputs.user3 || playerInputs.user3=="-1") && message.tagged.includes("overridePlayer")) {
+                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
+                throw new Error("Fehler beim Speichern.");
+            }
+            if((!playerInputs.user4 || playerInputs.user4=="-1") && message.tagged.includes("overridePlayer")) {
+                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
+                throw new Error("Fehler beim Speichern.");
+            }
+
             const response = await fetch("/api/points/submit", {
                 method: "POST",
                 headers: {
@@ -150,7 +161,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
 
             setUpdateSite(true);
             const playedGames = localStorage.getItem("playedGames");
-            const tempGames = playedGames+"+"+(message.id<10? "0"+message.id : message.id);
+            const tempGames = playedGames+"+"+(message.id<10? "0"+message.id : message.id)+"+";
             localStorage.setItem("playedGames", tempGames);
             setTimeout(() => setShowSaved(false), 3000);
             onSave();
@@ -283,7 +294,7 @@ const handleShowLogin = () => setShowLogin(true);
                         <span>{message.points }</span>
                         <br />
                     </>
-                    ) : !teamData.name ? (
+                    ) : teamData.name ? (
                         <Link
                             href="/teampage"
                             className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
@@ -302,59 +313,77 @@ const handleShowLogin = () => setShowLogin(true);
                 
 
                     {/* Player Inputs */}
-                    <div className={`space-y-4 ${teamData.players?.[0] ? "" : "hidden"}`}>
-                        <div className='flex space-x-4'>
-                            <input
-                                type="number"
-                                placeholder={`Player 1`}
-                                value={points[0]?.value ?? playerInputs.user1 ?  playerInputs.user1 : ""}                                
-                                name="user1"
-                                onChange={handleInputChange}
-                                disabled=  {!!points[0]?.value || points[0]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[0] ? "" : "hidden"}`}
-                            />
-                            <input
-                                type="number"
-                                placeholder={`Player 2`}
-                                name="user2"
-                                onChange={handleInputChange}
-                                value={points[1]?.value ?? playerInputs.user2}
-                                disabled=  {!!points[1]?.value || points[1]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[1] ? "" : "hidden"}`}
-                            />
-                        </div>
-                        <div className='flex space-x-4'>
-                            <input
-                                type="number"
-                                placeholder={`Player 3`}
-                                name="user3"
-                                onChange={handleInputChange}
-                                value={points[2]?.value ?? playerInputs.user3}
-                                disabled=  {!!points[2]?.value  || points[2]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[2] ? "" : "hidden"}`}
-                            />
-                            <input
-                                type="number"
-                                placeholder={`Player 4`}
-                                name="user4"
-                                onChange={handleInputChange}
-                                value={points[3]?.value ?? playerInputs.user4}
-                                disabled=  {!!points[3]?.value  || points[3]?.value==0}
-                                className={`w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white ${teamData.players?.[3] ? "" : "hidden"}`}
-                            />
-                        </div>
-                        {!points[0]?.value && <div className={`text-right `}>
-                            <button
-                            className={`ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300`}
-                            onClick={handleSave}
-                             aria-label="Save"
-                            >
-                                &#x1F4BE;<div className="text-xl">{t('save')}</div>
-                            </button>
+                   <div className={`space-y-4 ${teamData.players?.[0] ? "" : "hidden"}`}>
+  <div className="grid grid-cols-2 gap-4">
+    {/* Player 1 */}
+    <input
+      type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+      placeholder={`Player 1`}
+      value={points[0]?.value && message.hidden ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      name="user1"
+      onChange={handleInputChange}
+      disabled={!!points[0]?.value || points[0]?.value === 0}
+      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+    />
 
-                        </div>
-                        }
-                    </div>
+    {/* Player 2 */}
+    <input
+      type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+      placeholder={`Player 2`}
+      name="user2"
+      onChange={handleInputChange}
+      value={points[0]?.value && message.hidden ? "00000" : points[1]?.value !== undefined && points[1]?.value !== null ? points[1].value : (playerInputs.user2 ?? "")}
+      disabled={!!points[1]?.value || points[1]?.value === 0}
+      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+    />
+
+    {/* Player 3 */}
+    {teamData.players?.[2] || message.tagged.includes("overridePlayer") ? (
+      <input
+        type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+        placeholder={`Player 3`}
+        name="user3"
+        onChange={handleInputChange}
+        value={points[0]?.value && message.hidden ? "00000" : points[2]?.value !== undefined && points[2]?.value !== null ? points[2].value : (playerInputs.user3 ?? "")}
+        disabled={!!points[2]?.value || points[2]?.value === 0}
+        className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+      />
+    ) : (
+      // Wenn Player 3 nicht existiert, leeres div für Layout
+      <div></div>
+    )}
+
+    {/* Player 4 */}
+    {teamData.players?.[3] || message.tagged.includes("overridePlayer") ? (
+      <input
+        type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+        placeholder={`Player 4`}
+        name="user4"
+        onChange={handleInputChange}
+        value={points[0]?.value && message.hidden ? "00000" : points[3]?.value !== undefined && points[3]?.value !== null ? points[3].value : (playerInputs.user4 ?? "")}
+        disabled={!!points[3]?.value || points[3]?.value === 0}
+        className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+      />
+    ) : (
+      // Leer lassen, damit Player 3 nicht breiter wird
+      <div></div>
+    )}
+  </div>
+
+  {!points[0]?.value && (
+    <div className="text-right">
+      <button
+        className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300"
+        onClick={handleSave}
+        aria-label="Save"
+      >
+        &#x1F4BE;
+        <div className="text-xl">{t("save")}</div>
+      </button>
+    </div>
+  )}
+</div>
+
                     
 
                     {/* Tutorial-Link */}
