@@ -31,3 +31,12 @@ npx prisma generate
 npx tsx prisma/cleanDB.ts
 npx prisma migrate deploy
 
+
+
+## Game Entries Tags:
+|Tag|Beschreibung|
+|lowest|Weltrekord filter nach niedrigstem Wert.|
+|field1|Weltrekord filter relavantes Feld.|
+|:unit:sec:unit:|Weltrekord Einheit des Rekords: Sekunden|
+|overridePlayers|Spielerfelder Punkte Eintragung unabhängig der Teamgröße|
+|hidden|Punkte und Werte sind geheim zu halten.|

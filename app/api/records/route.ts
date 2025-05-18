@@ -5,7 +5,6 @@ export async function GET() {
 const games = await prisma.game.findMany({
   select: {
     id: true,
-    hidden: true,
     tagged: true, // ✅ Das Feld, das sonst fehlt
     entries: {
       select: {
@@ -37,7 +36,6 @@ const games = await prisma.game.findMany({
 
  type GameWithPointsAndTeam = {
   id: number;
-  hidden: boolean;
   tagged: string | null;
   entries: {
     player: string;
@@ -81,10 +79,10 @@ const result = games.map((game: GameWithPointsAndTeam) => {
 
   return {
     gameId: game.id,
-    hidden: game.hidden,
     topPlayer: topP?.player || null,
     topPoints: topP?.value || null,
     topEntries: matchingEntry?.value || null,
+    tagged: game.tagged,
     team: topP?.team
       ? {
           id: topP.team.id,

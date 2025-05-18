@@ -13,9 +13,13 @@ type Game = {
   id: number;
   url: string;
   languages: Record<string, TransformedLanguage>;
-  hidden: boolean;
   tagged: string | null;
 };
+
+type Settings = {
+  started: boolean;
+  ending: Date;
+}
 
 // Typ für die transformierte Sprache
 type TransformedLanguage = {
@@ -36,8 +40,9 @@ type GameData = {
   content: string;
   points: string;
   station: string;
+  timeLeft: number;
+  started: boolean;
   url: string;
-  hidden: boolean;
   tagged: string;
   languages: { language: string; title: string; story: string }[];
 };
@@ -46,7 +51,7 @@ type GameData = {
 
 
 
-export default function GamesPage({ games }: { games: Game[] }) {
+export default function GamesPage({ games, settings }: { games: Game[], settings: Settings }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showInfo, setShowInfo] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameData | null>(null);
@@ -162,7 +167,7 @@ export default function GamesPage({ games }: { games: Game[] }) {
   }, [hydrated]);
 
   // Öffnet die InfoBox mit den Daten des Spiels
-  const handleInfoOpen = (game: Game) => {
+  const handleInfoOpen = (game: Game, settings:Settings) => {
     const selectedLanguage = game.languages[language];
     const gameData: GameData = {
       id: game.id,
@@ -172,7 +177,8 @@ export default function GamesPage({ games }: { games: Game[] }) {
       content: selectedLanguage?.content || "Keine Anleitung verfügbar",
       points: selectedLanguage?.points || "Keine Punkte verfügbar",
       station: selectedLanguage?.station || "Keine Station verfügbar",
-      hidden: game.hidden || false,
+      timeLeft: (settings.ending.getTime() - Date.now()),
+      started: !!settings.started,
       tagged: game.tagged || "",
       url: game.url,
       languages: Object.keys(game.languages).map((key) => ({
@@ -282,7 +288,7 @@ useEffect(() => {
             <div
               key={game.id}
               className="relative flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105"
-              onClick={() => handleInfoOpen(game)}
+              onClick={() => handleInfoOpen(game, settings)}
             >
               <Image
                 src={`/images/christmas_calender${game.id % 5}.jpg`}

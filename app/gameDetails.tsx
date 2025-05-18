@@ -11,6 +11,7 @@ import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
 
+
 interface ModalProps {
     message: {
         id: number;
@@ -21,8 +22,9 @@ interface ModalProps {
         points: string;
         station: string;
         url: string;
-        hidden: boolean;
         tagged: string;
+        timeLeft: number;
+        started: boolean;
         languages: { language: string; title: string; story: string }[];
     };
     onClose: () => void;
@@ -35,6 +37,7 @@ type PointEntry = {
   teamId: number;
   player: string;
   value: number;
+  slot: number;
   lastUpdated: Date;
 };
 
@@ -120,57 +123,65 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
         setPlayerInputs(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSave = async () => {
-        console.log(playerInputs["user1"]);
-     
-        try {
-            if((!playerInputs.user1 || playerInputs.user1=="-1")) {
-                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
-                throw new Error("Fehler beim Speichern.");
-            }
-            if((!playerInputs.user2 || playerInputs.user2=="-1")) {
-                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
-                throw new Error("Fehler beim Speichern.");
-            }
-            if((!playerInputs.user3 || playerInputs.user3=="-1") && message.tagged.includes("overridePlayer")) {
-                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
-                throw new Error("Fehler beim Speichern.");
-            }
-            if((!playerInputs.user4 || playerInputs.user4=="-1") && message.tagged.includes("overridePlayer")) {
-                setErrorMessage("Nicht alle Spieler oder Punktefelder falsch ausgefüllt.");
-                throw new Error("Fehler beim Speichern.");
-            }
-
-            const response = await fetch("/api/points/submit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    game: message.id,
-                    user1: Number(playerInputs.user1) || -1,
-                    user2: Number(playerInputs.user2) || -1,
-                    user3: Number(playerInputs.user3) || -1,
-                    user4: Number(playerInputs.user4) || -1,
-                }),
-            });
-    
-            if (!response.ok) throw new Error("Fehler beim Speichern");
-    
-            setShowSaved(true);
-
-            setUpdateSite(true);
-            const playedGames = localStorage.getItem("playedGames");
-            const tempGames = playedGames+"+"+(message.id<10? "0"+message.id : message.id)+"+";
-            localStorage.setItem("playedGames", tempGames);
-            setTimeout(() => setShowSaved(false), 3000);
-            onSave();
-        } catch (error) {
-            console.log("Speichern fehlgeschlagen:", error);
-            setShowNotSaved(true);
-            setTimeout(() => setShowNotSaved(false), 3000);
-        }
+  const handleSave = async () => {
+  try {
+    const players: { [key: string]: number } = {
+      user1: Number(playerInputs.user1) || -1,
+      user2: Number(playerInputs.user2) || -1,
+      user3: Number(playerInputs.user3) || -1,
+      user4: Number(playerInputs.user4) || -1,
     };
+
+    // Grundregel: user1 & user2 müssen immer gesetzt sein
+    if (players.user1 === -1 || players.user2 === -1) {
+      setErrorMessage("Felder wurden fehlerhaft ausgefüllt. (1 o 2)");
+      throw new Error("Ungültige Eingaben");
+    }
+
+    if (!message.tagged.includes("overridePlayer") && !!teamData?.players?.[2] && players.user3 === -1) {
+      setErrorMessage("Felder wurden fehlerhaft ausgefüllt.");
+      throw new Error("Ungültige Eingaben");
+    }
+
+    if (!message.tagged.includes("overridePlayer") && !!teamData?.players?.[3] && players.user4 === -1) {
+      setErrorMessage("Felder wurden fehlerhaft ausgefüllt.");
+      throw new Error("Ungültige Eingaben");
+    }
+
+    // Wenn overridePlayer-Tag gesetzt ist, dann auch user3/4 validieren
+    if (message.tagged.includes("overridePlayer")) {
+      if (players.user3 === -1 || players.user4 === -1) {
+        setErrorMessage("Alle vier Spieler müssen ausgefüllt sein.");
+        throw new Error("Ungültige Eingaben");
+      }
+    }
+
+    // Senden
+    const response = await fetch("/api/points/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ game: message.id, ...players }),
+    });
+
+    if (!response.ok) throw new Error("Fehler beim Speichern");
+
+    setShowSaved(true);
+    setUpdateSite(true);
+
+    const playedGames = localStorage.getItem("playedGames") || "";
+    const formattedId = message.id < 10 ? `0${message.id}` : message.id;
+    localStorage.setItem("playedGames", `${playedGames}+${formattedId}+`);
+
+    setTimeout(() => setShowSaved(false), 3000);
+    onSave();
+
+  } catch (error) {
+    console.log("Speichern fehlgeschlagen:", error);
+    setShowNotSaved(true);
+    setTimeout(() => setShowNotSaved(false), 3000);
+  }
+};
+
 
    const fetchData = useCallback(async () => {
   try {
@@ -183,10 +194,13 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     // Punkte direkt nach Reihenfolge auf user1..user4 mappen
     const inputUpdates: Partial<typeof playerInputs> = {};
 
-    globalPointsRef.current.forEach((point, index) => {
-      const key = `user${index + 1}` as keyof typeof playerInputs;
-      inputUpdates[key] = String(point.value);
-    });
+    globalPointsRef.current.forEach((point) => {
+  const slot = point.slot; // oder point.field, je nach DB
+  if (!slot || slot < 1 || slot > 4) return; // Sicherheit
+
+  const key = `user${slot}` as keyof typeof playerInputs;
+  inputUpdates[key] = String(point.value);
+});
 
     setPoints(globalPointsRef.current);
     setPlayerInputs(prev => ({ ...prev, ...inputUpdates }));
@@ -236,7 +250,42 @@ useEffect(() => {
 const [showLogin, setShowLogin] = useState(false);
 const handleLoginClose = () => setShowLogin(false);
 const handleShowLogin = () => setShowLogin(true);
-    
+const offsetMinutes = new Date().getTimezoneOffset()* 60 * 1000;
+const [timeLeft, setTimeLeft] = useState(message.timeLeft + offsetMinutes);
+
+useEffect(() => {
+  
+  const interval = setInterval(() => {
+    setTimeLeft((prevTime) => {
+      if (prevTime <= 1000) {
+        clearInterval(interval);
+        return 0;
+      }
+      return prevTime - 1000;
+    });
+  }, 1000);
+
+  return () => clearInterval(interval);
+});
+
+
+
+
+
+const formatTime = (ms: number) => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const hoursStr = hours > 0 ? `${hours}h ` : '';
+  const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : '';
+  const secondsStr = `${seconds}s`;
+
+
+  return `${hoursStr}${minutesStr}${secondsStr}`;
+};
+   
 
     return (
         
@@ -294,7 +343,7 @@ const handleShowLogin = () => setShowLogin(true);
                         <span>{message.points }</span>
                         <br />
                     </>
-                    ) : teamData.name ? (
+                    ) : session ? (
                         <Link
                             href="/teampage"
                             className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
@@ -317,9 +366,9 @@ const handleShowLogin = () => setShowLogin(true);
   <div className="grid grid-cols-2 gap-4">
     {/* Player 1 */}
     <input
-      type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+      type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
       placeholder={`Player 1`}
-      value={points[0]?.value && message.hidden ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
       name="user1"
       onChange={handleInputChange}
       disabled={!!points[0]?.value || points[0]?.value === 0}
@@ -328,11 +377,11 @@ const handleShowLogin = () => setShowLogin(true);
 
     {/* Player 2 */}
     <input
-      type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+      type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
       placeholder={`Player 2`}
       name="user2"
       onChange={handleInputChange}
-      value={points[0]?.value && message.hidden ? "00000" : points[1]?.value !== undefined && points[1]?.value !== null ? points[1].value : (playerInputs.user2 ?? "")}
+      value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[1]?.value !== undefined && points[1]?.value !== null ? points[1].value : (playerInputs.user2 ?? "")}
       disabled={!!points[1]?.value || points[1]?.value === 0}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
     />
@@ -340,11 +389,11 @@ const handleShowLogin = () => setShowLogin(true);
     {/* Player 3 */}
     {teamData.players?.[2] || message.tagged.includes("overridePlayer") ? (
       <input
-        type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+        type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
         placeholder={`Player 3`}
         name="user3"
         onChange={handleInputChange}
-        value={points[0]?.value && message.hidden ? "00000" : points[2]?.value !== undefined && points[2]?.value !== null ? points[2].value : (playerInputs.user3 ?? "")}
+        value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[2]?.value !== undefined && points[2]?.value !== null ? points[2].value : (playerInputs.user3 ?? "")}
         disabled={!!points[2]?.value || points[2]?.value === 0}
         className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
       />
@@ -356,11 +405,11 @@ const handleShowLogin = () => setShowLogin(true);
     {/* Player 4 */}
     {teamData.players?.[3] || message.tagged.includes("overridePlayer") ? (
       <input
-        type={`${message.hidden? !!points[0]?.value? "password" : "number" : "number"}`}
+        type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
         placeholder={`Player 4`}
         name="user4"
         onChange={handleInputChange}
-        value={points[0]?.value && message.hidden ? "00000" : points[3]?.value !== undefined && points[3]?.value !== null ? points[3].value : (playerInputs.user4 ?? "")}
+        value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[3]?.value !== undefined && points[3]?.value !== null ? points[3].value : (playerInputs.user4 ?? "")}
         disabled={!!points[3]?.value || points[3]?.value === 0}
         className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
       />
@@ -370,16 +419,22 @@ const handleShowLogin = () => setShowLogin(true);
     )}
   </div>
 
-  {!points[0]?.value && (
+  {!points[0]?.value && timeLeft>0 && message.started && (
     <div className="text-right">
       <button
         className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300"
         onClick={handleSave}
         aria-label="Save"
       >
-        &#x1F4BE;
+        &#x1F4BE;<br/>
+        
         <div className="text-xl">{t("save")}</div>
       </button>
+      <br/>
+      <label>
+        ({formatTime(timeLeft)})
+
+      </label>
     </div>
   )}
 </div>

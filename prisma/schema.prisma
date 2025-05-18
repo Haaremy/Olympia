@@ -13,7 +13,6 @@ datasource db {
 model Game {
   id        Int        @id @default(autoincrement())
   url       String
-  hidden    Boolean    @default(false) // ob punkte werte versteckt werden müssen
   tagged    String?     
   languages Language[]  // Viele-Sprachen-Beziehung
   points    Points[]    // Umkehrbeziehung zu Points
@@ -64,6 +63,7 @@ model Points {
   gameId      Int
   player      String
   value       Int
+  slot        Int
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
 
@@ -75,6 +75,7 @@ model Entries {
   gameId      Int
   player      String
   value       Int
+  slot        Int
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
 

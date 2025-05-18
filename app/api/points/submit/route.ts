@@ -62,8 +62,9 @@ export async function POST(req: NextRequest) {
 
     for (let i = 1; i <= 4; i++) {
       const userKey = `user${i}` as keyof typeof scores;
-      const playerName = userMap[userKey];
+      const playerName = userMap[userKey] || `Slot${i}`;
       const userPoints = scores[userKey];
+      const field = i;
 
       if (typeof userPoints !== 'number' || !playerName) continue;
 
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
        multiplier = 2;
     }
 
-      let value = calculatePoints({ game, userPoints, multiplier });
+      let value = calculatePoints({ game, userPoints, multiplier, field });
       value = Math.ceil(value);
 
      
@@ -85,6 +86,7 @@ export async function POST(req: NextRequest) {
         gameId: game,
         player: playerName,
         value: value,
+        slot: field,
       });
 
        inputsToInsert.push({
@@ -92,6 +94,7 @@ export async function POST(req: NextRequest) {
         gameId: game,
         player: playerName,
         value: userPoints,
+        slot: field,
       })
 
       pointValues += value;

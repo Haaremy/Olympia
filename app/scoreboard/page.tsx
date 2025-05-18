@@ -29,7 +29,7 @@ interface Record {
   gameId: number,
       language: string,
       hidden: boolean,
-      tagged: string,
+      tagged: string | "",
       topPlayer: string,
       topPoints: number,
       topEntries: number,
@@ -214,7 +214,7 @@ export default function ScoreboardTabs() {
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
-            records.map((record) => record.topPlayer && !record.hidden && (
+            records.map((record) => record.topPlayer && !record.tagged.includes("hidden") && (
               <div
                 key={record.gameId}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
@@ -223,10 +223,11 @@ export default function ScoreboardTabs() {
                   Spiel {record.gameId}
                 </h3>
                 <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-                  👑 {record.team.name} - {record.topPlayer}
+                  👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
                 </p>
                 <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-                  {record.topPoints} Punkte: {record.topEntries}
+                  Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
+                  ({record.topPoints} Punkte)
                 </p>
               </div>
             ))
