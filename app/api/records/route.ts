@@ -37,21 +37,25 @@ export async function GET() {
   }[];
 };
 
+
+
 const result = games.map((game: GameWithPointsAndTeam) => {
   const { order, field } = parseTagged(game.tagged || "");
+
   const getValue = (item: typeof game.points[0]): string | number => {
-  switch (field) {
-    case "field1":
-      return item.player;
-    case "field2":
-      return item.value;
-    case "field3":
-      return item.team.name;
-    default:
-      return ""; // Fallback
-  }
-};
-  const topP = getTopPlayer(game.points, { order, getValue  });
+    switch (field) {
+      case "field1":
+        return item.player;
+      case "field2":
+        return item.value;
+      case "field3":
+        return item.team.name;
+      default:
+        return ""; // Fallback
+    }
+  };
+
+  const topP = getTopPlayer(game.points, { order, getValue });
 
   const matchingEntry = game.entries.find(e => e.team.id === topP?.team.id);
 
@@ -69,6 +73,7 @@ const result = games.map((game: GameWithPointsAndTeam) => {
       : null,
   };
 });
+
 
 
 
