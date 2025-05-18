@@ -2,17 +2,37 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
 export async function GET() {
-  const games = await prisma.game.findMany({
-  include: {
+const games = await prisma.game.findMany({
+  select: {
+    id: true,
+    hidden: true,
+    tagged: true, // ✅ Das Feld, das sonst fehlt
     entries: {
-      include: { team: true },
+      select: {
+        player: true,
+        value: true,
+        team: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     },
     points: {
-      include: { team: true },
+      select: {
+        player: true,
+        value: true,
+        team: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     },
   },
 });
-
 
 
  type GameWithPointsAndTeam = {
