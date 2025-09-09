@@ -13,7 +13,7 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: { // android/app/src/main/res/values/styles.xml // ios/App/App/Assets.xcassets/LaunchImage.imageset/
-      launchShowDuration: 3000, // Millisekunden
+      launchShowDuration: 1500, // Millisekunden
       launchAutoHide: true,      // automatisch nach der Zeit ausblenden
       backgroundColor: "#ffffff",
       androidScaleType: "CENTER_CROP",
