@@ -5,18 +5,43 @@ declare module "next-auth" {
     user: Team & DefaultSession["user"];
   }
 
-  interface User {
+  interface Session {
     id: string;
-    credentials: string;
+    uname: string;
     name: string;
     role: string;
     language: string;
-    user1: string;
-    user2: string;
-    user3: string;
-    user4: string;
+    player1: string;
+    player2: string;
+    player3: string;
+    player4: string;
     pointsTotal: number;
   }
 
-
+interface User {
+    id: string;
+    uname: string;
+    name: string;
+    role: string;
+    player1: string;
+    player2: string;
+    player3: string;
+    player4: string;
+    language: string;
+    pointsTotal: number;
+  }
+}
+  declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    uname: string;
+    name: string;
+    role: string;
+    player1: string;
+    player2: string;
+    player3: string;
+    player4: string;
+    language: string;
+    pointsTotal: number;
+  }
 }

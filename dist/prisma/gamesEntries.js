@@ -1,0 +1,770 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.gameEntries = gameEntries;
+var client_1 = require("@prisma/client");
+var prisma = new client_1.PrismaClient();
+function gameEntries() {
+    return __awaiter(this, void 0, void 0, function () {
+        var game1, game2, game3, game4, game5, game6, game7, game8, game9, game10, game11, game12, game13, game14, game15, game16, game17, game18, game19, game20, game21, game22, game23, game24;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, prisma.game.create({
+                        data: {
+                            url: 'https://www.youtube.com/embed/709ZC7t-8RU',
+                            tagged: "hidden,overridePlayers",
+                            languages: {
+                                create: [
+                                    {
+                                        language: 'de', // Deutsche Version
+                                        title: 'Bäckerei',
+                                        story: 'Es ist der erste Tag im Dezember und das Haus riecht noch nicht nach Keksen, Stollen und Gewürzen? Na wie auch, wenn keiner die Behälter beschriftet und die Gewürze zum Ratespiel werden. Wir wissen zwar noch welche wir irgendwann mal hatten, aber nicht mehr welche noch da sind.',
+                                        station: 'Obergeschoss 1 - Foyer',
+                                        capacity: 'Mehrere Teams',
+                                        descriptionGame: 'Auf dem Tisch stehen 4 Gewürze (#1 - #4). Davor liegen mögliche Beschriftungen (1 - 20) der Behälter. Besprecht euch im Team, welche Beschriftung zu welchem Behälter passt.',
+                                        descriptionPoints: 'Tragt im entsprechenden #Feld die Lösungszahl der Beschriftung ein.'
+                                    },
+                                    {
+                                        language: 'en', // Englische Version
+                                        title: 'Bakery',
+                                        story: 'It\'s the first day of December and the house doesn\'t smell of cookies, fruitcake and spices yet? Well, how could it be? Nobody labelled the spice containers and now it\'s a guessing game! We remember which ones we bought, but not which ones we still have.',
+                                        station: 'First Floor – Foyer',
+                                        capacity: 'Multiple Teams',
+                                        descriptionGame: 'There are 4 spices on the table (#1 - #4), and 20 possible labels for the containers. Discuss as a team which label (1 - 20) goes with which container.',
+                                        descriptionPoints: 'Enter the number of the label in the corresponding #field.'
+                                    }
+                                ]
+                            }
+                        }
+                    })];
+                case 1:
+                    game1 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/t5hXlxVnxfo',
+                                tagged: "hidden,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Passwort vergessen?',
+                                            story: 'Die Wunschliste wurde vor ein paar Jahren digitalisiert. Alle Briefe an den Nordpol werden gescannt und mit der Datenbank von Gut und Böse abgeglichen. Daraufhin wird der Wunsch auf die Liste gepackt. Beim Abrufen der diesjährigen Liste kann sich der Weihnachtsmann nicht mehr an sein Passwort erinnern, aber hat sich eine Erinnerung geschrieben.',
+                                            station: 'Obergeschoss 1 - Foyer',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Vor euch liegen Buchstaben und ihr müsst damit die 4 Wort-Kästchen (gedanklich) ausfüllen. Hierfür habt ihr wie bei einem Kreuzworträtsel Hinweise neben den Kästchen. Besprecht euch im Team.',
+                                            descriptionPoints: 'Die Buchstaben haben Zahlwerte. Tragt den Zahlenwert in das entsprechende #Feld ein, auf dem der Buchstabe liegt.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Forgot your password?',
+                                            story: 'Santa’s wishlist was digitized a few years ago. All letters to the North Pole are scanned and cross-referenced with the Naughty and Nice database. The wish is then added to the list. When retrieving this year´s list, Santa can no longer remember his password! Luckily, he has left himself a clue.',
+                                            station: 'First Floor – Foyer',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'There are letters in front of you and you have to fill in the 4 word-boxes (in your head). There are clues next to the boxes, just like in a crossword puzzle. Discuss as a team.',
+                                            descriptionPoints: 'The letters have numerical values. Enter the numerical value in the corresponding #field of the letter.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 2:
+                    game2 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: "hidden,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Do Re Miiiiii',
+                                            story: 'Die Schallplatten des Elfenchors wurden zerkratzt! Die ganzen Aufnahmen des Hit-Albums \'Elf on its self\' sind ruiniert und keiner weiß mehr welches Lied nun welches ist! Helft den Elfen sich uz erinnern.',
+                                            station: 'Erdgeschoss - Raum 106',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Es gibt einen Stationsleiter! Ihr erhaltet Tipps zum Lied ',
+                                            descriptionPoints: 'Ihr erhaltet 10 Punkte pro #Feld. Jeder Tipp gibt -2 Punkte.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Do Re Miiiiii',
+                                            story: 'The records of the Elf Choir have been scratched! All the recordings of the hit album \'Elf on itself\' are ruined and nobody knows which song is which anymore! Help the elves to remember.',
+                                            station: 'Ground Floor – Room 106',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Listen to the station coordinator! You will receive tips on the song. ',
+                                            descriptionPoints: 'You will receive 10 points per #field. Each tip is worth -2 points.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 3:
+                    game3 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: "overridePlayers,hidden",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Schnitzeljagd',
+                                            story: "'Junior Geschenke Spezialist' benötigt ein Studium und 10 Jahre Berufserfsahrung. Im X-ErasMAS+ Program werden Schüler von den verschiedenen Ausbildungsstätten kulturell geschult. Für einige ist das eine große Umstellung, insbesondere für die Osterhasen. Die Geschenke werden gar nicht versteckt?",
+                                            station: 'Fachbereich INS',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Folge den Hinweisen: <br />Rätsel <br /><br />#1: Sucht den Ort, wo der Duft von Speisen durch die Luft zieht und Gemeinschaft am Tisch entsteht.<br /><br />#2: Geht dorthin, wo jeder seinen Weg durch das Geäude beginnt.<br /><br />#3: Sucht dort, wo flackernde Bilder ein warmes Feuer vorgaukeln  <br /><br />#4: Sucht den Raum, wo die Realität vor einer grünen Wand verschwindet und kreative Welten entstehen.',
+                                            descriptionPoints: 'Tragt im entsprechenden #Feld die Lösungszahl der Beschriftung ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Paper Chase',
+                                            story: "Junior Gift Specialist requires a degree and 10 years of professional experience. In the X-ErasMAS+ Program, students from various educational institutions receive cultural training. For some, this is a big change, especially for the Easter bunnies. What do you mean, the presents are not hidden at all?",
+                                            station: 'INS Department',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'Follow the hints: <br />Riddle <br /><br />#1: Look for the place where the aroma of food fills the air and fellowship is built around the table.<br /><br />#2: Go to where everyone starts their journey through the building.<br /><br />#3: Look for places where flickering images create the illusion of a warm fire.<br /><br />#4: Seek out the space where reality disappears in front of a green screen and creative worlds emerge.',
+                                            descriptionPoints: 'Each item has a #number and an answer number. Enter the numbers in the #field as soon as you have them all.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 4:
+                    game4 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/8Gcw61fFrD4',
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Verpackung',
+                                            story: 'Der Geschenke Bondage-Kurs ist ein Modul an der Santa-Universität. Prüfungsleistung ist es, alle Geschenke in der Zeit mit einer Schleife zu versehen.',
+                                            station: 'Obergeschoss 1 - Raum 110',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Jedes Mitglied sucht sich 1 Gegenstand aus. Ihr stoppt die Zeit für 30 Sekunden. Anschließend wird die Schleife wieder entfernt.',
+                                            descriptionPoints: 'Jeder Spieler mit einer Schleife (die hält), trägt in sein #Feld eine 1 ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Wrapping',
+                                            story: 'The Gift Wrapping Bondage Course is a module at Santa University. The final exam is to tie a bow around each gift within the time limit.',
+                                            station: 'First Floor – Room 110',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Each team member selects one item. Time is stopped for 30 seconds while they tie a bow. Then, the bows are removed again.',
+                                            descriptionPoints: 'Each player with a bow that holds enters a 1 in their #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 5:
+                    game5 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/YyZ09UlBV94',
+                                tagged: ":unit:Treffer:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Mini-Curling',
+                                            story: 'Die Elfen des Weihnachtsmannes haben deinen Wunsch gelesen und der Gewerkschaft gemeldet. 5 Curlingsteine?! Der Sack des Weihnachtsmannes ist zwar magisch, aber die armen Elfen müssen auf ihre Gesundheit achten. Sie schenken dir gütiger Weise eines ihrer Curling-Sets. Das ist zwar nicht ganz so groß, wie ein normales, aber macht dennoch großen Spaß. Einen Besen brauchst du dafür auch nicht.',
+                                            station: 'Erdgeschoss - Flur Westflügel',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'Jeder Spieler hat 5 Schuss und es wird nacheinander gespielt. Der Spieler stellt oder hockt sich vor die Markierung und versucht, den Kreis zu treffen, indem er den Puck über den Boden schiebt.',
+                                            descriptionPoints: 'Jeder Treffer im äußeren Kreis sind 1 Punkt, der innere Kreis gibt 2 Punkte. Rechnet eure Punkte zusammen und tragt Sie in euer #Feld ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Mini Curling',
+                                            story: 'Santa\'s elves have read your wishlist and passed it on to the Union. 5 curling stones?! Santa\'s sack may be magical, but the poor elves have to watch out for their health. They kindly give you one of their curling sets. It\'s not quite as big as a normal one, but it\'s still great fun. You don\'t need a broom for this either.',
+                                            station: 'Ground Floor – West wing corridor',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'Each player has 5 shots and the game is played in succession. The player kneels or crouches in front of the mark and tries to hit the circle by sliding the puck along the floor.',
+                                            descriptionPoints: 'Each hit in the outer circle is worth 1 point, the inner circle is worth 2 points. Add up your points and enter them in your #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 6:
+                    game6 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: ":unit:sec:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Schneeball-Spur',
+                                            story: 'Am Nordpol schon mal Hühner gesehen? Nein? Liegt vielleicht daran, dass es keine gibt. Entsprechend gibt es auch kein Frühstücksei und noch weniger Eier für Spiele. Die Elfen haben beim Austauschprogramm zur Osterhasen-Schule Eierlauf kennengelernt und jetzt für sich entdeckt.',
+                                            station: 'Obergeschoss 1 - Flur Westflügel',
+                                            capacity: '1 bis 2 Teams',
+                                            descriptionGame: 'Jeder Spieler hat einen Versuch. Währenddessen stoppt einer die Zeit. Folgt dem Parkour entlang der Pfeile.',
+                                            descriptionPoints: 'Trag den Zeitwert des Spielers in Sekunden in das entsprechende #Feld.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Snowball Run',
+                                            story: 'Ever seen chickens at the North Pole? No? Maybe it\'s because there aren\'t any. So no eggs for breakfast, and even fewer eggs for games. The elves discovered the egg-and-spoon race during the exchange program at the Easter Bunny School and have now taken a liking to it.',
+                                            station: 'First Floor – West wing corridor',
+                                            capacity: '1 to 2 teams',
+                                            descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time.',
+                                            descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 7:
+                    game7 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/ucl7HeabPO0',
+                                tagged: "hidden,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: '.. 22, 23, 24, ..',
+                                            story: 'Die Gewerkschaft der Elfen hat feste Regelungen, unter anderem zu den Pausenzeiten und den Vergütungen. Jedem Elf stehen bei einem 24 Stunden Arbeitstag 24 Pausen zu. In jeder Pause müssen sie Zugang zu Snacks haben. Da der Weihnachtsmann gar nicht mehr weiß, wie viele über sind, müsst ihr schätzen.',
+                                            station: 'Obergeschoss 1 - Foyer',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Schätzt die Anzahl der Süßigkeiten.',
+                                            descriptionPoints: 'Tragt in das jeweilige #Feld die Schätzung ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: '... 22, 23, 24, ...',
+                                            story: 'The Elf Union has established strict regulations, including rules for break times and compensation. Every elf is entitled to 24 breaks in a 24-hour working day. During every break, they must have access to snacks. Since Santa doesn\'t even know how many are left, you\'ll have to guess.',
+                                            station: 'First Floor – Foyer',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'Estimate the number of sweets.',
+                                            descriptionPoints: 'Enter the estimate in the respective #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 8:
+                    game8 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/sKCM5yMr4Js',
+                                tagged: ":unit:Treffer:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Schneeballschlacht',
+                                            story: 'Kokosmakronen sind die Besten! - Nein, Vanille-Kipferl! : Die Elfen haben sich in 2 Parteien gespalten, was die besten Kekse sind und bekriegen sich nun mit Schneebällen (hoffentlich ohne Steine).',
+                                            station: 'Erdgeschoss - Foyer',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Jeder Spieler hat 5 Würfe. Ihr werft auf die Wichtel/Elfen auf dem Tisch. Nach der Runde wird für den nächsten Spieler aufgebaut.',
+                                            descriptionPoints: 'Tragt die Anzahl der umgeworfenen Wichtel euer entsprechendes #Feld.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Snowballfight',
+                                            story: 'Coconut macaroons are the best! – No, vanilla crescents! The elves have split into two parties over which are the best cookies and are now fighting each other with snowballs (hopefully without stones).',
+                                            station: 'Ground Floor - Foyer',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Each player has 5 throws. You throw at the cans on the table (elves). After the round, the game is set up for the next player.',
+                                            descriptionPoints: 'Enter the number of cans that have fallen off the table in the corresponding #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 9:
+                    game9 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: "hidden,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Wettbacken',
+                                            story: 'Nicht nur am Nordpol ist die Debatte um die beste Kekssorte ein heißes Thema. Auch in unseren Küchen werden sie zum Gespräch (auch wenn Vanille Kipferle objektiv die besten sind).',
+                                            station: 'Erdgeschoss - Raum 110',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Vier Freunde – Elias(#1), Fiona(#2), Greta(#3) und Hannes(#4) – backen Kekse für Weihnachten. Jeder von ihnen hat einen anderen Keksfavoriten: Lebkuchen (1), Zimtsterne (2), Vanillekipferl (3) oder Spekulatius (4). Außerdem backt jeder eine andere Anzahl an Keksen (5, 6, 7 oder 9). Findet heraus, wer welchen Keks mag und wie viele Kekse jede Person gebacken hat, basierend auf den folgenden Hinweise: Findet ihr an der Station.',
+                                            descriptionPoints: "Tragt in jedes #Feld die Anzahl der Kekse mit der Zahl (ID) des Kekses (bspw 2 Zimtstern (9) = 29) ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Baking Competition',
+                                            story: "It is not only at the North Pole that the debate about the best type of cookie is a hot topic. Even in our kitchens, they become a topic of conversation (even though vanilla crescents are objectively the best).",
+                                            station: 'Ground Floor - Room 110',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: "Four friends - Elias(#1), Fiona(#2), Greta(#3) and Hannes(#4) - bake cookies for Christmas. Each of them has a different cookie favorite: gingerbread (1), cinnamon stars (2), vanilla crescents (3) or speculoos (4). In addition, everyone bakes a different number of cookies (5, 6, 7 or 9). Find out who likes which cookie and how many cookies each person has baked based on the following clues: Find them at the station.",
+                                            descriptionPoints: "Enter into every #field the number of cookies with the number (id) of the cookie (e.g. 2 cinnamon stars (9) = 29)."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 10:
+                    game10 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/fZ_udkVJbec',
+                                tagged: ":unit:Punkte:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Zielen und Feuer',
+                                            story: 'Eigentlich wollten sie Boccia spielen, aber die Elfen hatten kein verschiedenfarbigen Schnee und den gelben wollte keiner anfassen. Jetzt haben sie gelbe Markierungen in den Schnee gemalt und versuchen sich an Zielwerfen.',
+                                            station: 'Obergeschoss 1 - Flur Westflügel',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Jeder Spieler hat 3 Versuche. Die höchste geworfene Zahl wird gewertet.',
+                                            descriptionPoints: "Tragt die größte Zahl aus den Versuchen in euer #Feld ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Aim and Fire',
+                                            story: "They actually wanted to play bocce, but the elves didn’t have snow in different colors, and no one wanted to touch the yellow one. Now they have drawn yellow markings in the snow and are trying their hand at target throwing.",
+                                            station: 'First Floor – West wing corridor',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Each player has 3 attempts. The highest number thrown is scored.',
+                                            descriptionPoints: "Enter the largest number from the attempts in your #Feld."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 11:
+                    game11 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/koXin1tVOHs',
+                                tagged: ":unit:Treffer:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'X-Mas Bowling',
+                                            story: 'Hast du dich schon mal klein gefühlt? Dann schätze doch, wie es für einen Elfen sein muss!! Jeden Tag müssen sie Spielzeug herstellen, dass teilweise größer ist, als sie selbst. Zudem müssen auch alle Spielzeuge den Spieletest durchlaufen, wodurch Bowling ganz neue Ausmaße bekommt. Die Kugel ist zudem viel zu schwer, aber dafür haben sie einen Trick.',
+                                            station: 'Erdgeschoss - Raum 107',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'Jeder Spieler hat 2 Würfe. Der Spieler stellt sich vor die Markierung und wirf die Weihnachtsbaum-Kugel. Die Kugel muss dabei so viele Kegel umwerfen wie möglich. Nach den 2 Würfen wird das Feld für den nächsten Spieler wieder aufgestellt.',
+                                            descriptionPoints: "Strike (alle im 1. Wurf): 10 Punkte, Spare (alle im 2. Wurf): 8 Punkte, Ansonsten 1 Punkt pro Kegel. Tragt die Punktzahl in euer #Feld ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'X-Mas Bowling',
+                                            story: 'Have you ever felt small? Then guess what it must be like for an elf! Every day they have to make toys that are sometimes bigger than they are. In addition, all toys have to pass the play test, which takes bowling to a whole new level. The ball is also far too heavy, but they have a trick for that.',
+                                            station: 'First Floor  - Room 107',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'Each player has 2 throws. The player stands in front of the mark and throws the Christmas tree ornament. The ball must knock over as many pins as possible. After the 2 throws, the pins are set up again for the next player.',
+                                            descriptionPoints: "Strike (all in the 1st  throw): 10 points; spare (all in the 2nd  throw): 8 points; otherwise 1 point per pin. Note your points into your #Feld."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 12:
+                    game12 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: "hidden,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Bilderrätsel',
+                                            story: 'Qualität steht am Nordpol im Gesetz. Alle Spielzeuge für Groß und Klein müssen sicher sein. Kleinste Makel können schwere Schäden verursachen. Zur Übung wird schon im Elfen-Kindergarten trainiert.',
+                                            station: 'Erdgeschoss - Raum 107',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Vor euch liegen #4 Bilder. Jedes Bild hat Makel zu seinem Kontrollbild daneben. Tipp: macht euch Fotos der Bilder und besprecht euch im Team.',
+                                            descriptionPoints: "Zählt die Makel und tragt sie im entsprechenden #Feld ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Hawk Eye',
+                                            story: 'Quality is the law at the North Pole. All toys for young and old must be safe. The smallest blemishes can cause serious damage. The elves are already practicing in kindergarten.',
+                                            station: 'First Floor - Room 107',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'In front of you are #4 pictures. Each image has imperfections compared to its reference image next to it. Tip: take photos of the images and discuss them as a team.',
+                                            descriptionPoints: "Count the imperfections and enter them in the corresponding #Feld."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 13:
+                    game13 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/OHYBwpMBtqU',
+                                tagged: ":unit:Flocken:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Frau Holle',
+                                            story: 'Im Buchclub der Weihnachtsfrau ist Frau Holle. Sie erzählt von den unzähligen Azubis und vergleicht sie mit ihren ersten beiden - der Gold und der Pechmarie. Auch Praktika zum Schneien bietet sie an. Ist das nicht cool?',
+                                            station: 'Erdgeschoss - Raum 106',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Es gibt 4 Schneeflocken-Vorlagen. Ihr sucht euch ein Muster aus und stellt einen Timer auf 5 Minuten. Bastelt so viele Schneeflocken, wie ihr in der Zeit schafft.',
+                                            descriptionPoints: "Tragt die Anzahl der gebastelten Schneeflocken in euer #Feld ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Mother Hulda',
+                                            story: 'Mother Hulda is a member of Mrs Santa\'s book club. She talks about the countless apprentices and compares them to her first two – the Golden Girl and the Luckless Girl. She also offers practical training in snowmaking. Isn\'t that cool?',
+                                            station: 'First Floor - Room 106',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'There are 4 snowflake templates. You divide up the patterns and set a timer for 30 seconds. Make as many snowflakes as you can in the time available.',
+                                            descriptionPoints: "Enter the number of snowflakes you have made in your #Feld."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 14:
+                    game14 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: ":unit:Zuckerstangen:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Eisangler',
+                                            story: 'Der Weihnachtsmann mag es entspannt. In seiner begrenzten Freizeit geht er auf den gefrorenen See, schneidet ein Loch hinein und angelt. Eisfischen ist zwar kalt, aber was alles in den verborgenen Seen des Nordpols schwimmt, davon kann man hier nur träumen.',
+                                            station: 'Erdgeschoss - Raum 106',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Startet einen Timer für 30 Sekunden und versucht mit euren Angeln die Zuckerstangen aus dem Pool zu fischen.',
+                                            descriptionPoints: "Jeder trägt sich die gefangenen Zuckerstangen in sein #Feld ein."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Ice Fishing',
+                                            story: 'Santa likes it relaxed. In his limited free time, he goes to the frozen lake, cuts a hole and goes fishing. Ice fishing may be cold, but you can only dream of what swims in the hidden lakes of the North Pole.',
+                                            station: 'Ground Floor - Room 106',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Start a timer for 30 seconds and try to fish the candy canes out of the pool with your fishing rods.',
+                                            descriptionPoints: "Everyone enters the candy canes they have caught in their #field."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 15:
+                    game15 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: ":unit:Marshmallows:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Süße Turm von Pisa',
+                                            story: 'Überall bauen Kinder hübsch verzierte Lebkuchenhäuser, aber die sind hier ja standard. Am Nordpol bauen wir Marshmallow-Türme und versuchen damit so hoch zu kommen wie es geht.',
+                                            station: 'Obergeschoss 1 - Raum 216',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Ihr benötigt einen Timer. Jeder Spieler baut einen Turm aus Marshmallows. Das Spiel ist nach 1 Minute beendet.',
+                                            descriptionPoints: "Tragt die Anzahl der Marshmallow-Etagen in sein jeweiliges #Feld."
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Sweet Tower of Pisa',
+                                            story: 'Children everywhere make beautifully decorated gingerbread houses, but here they are standard. At the North Pole, we build marshmallow towers and try to get as high as we can.',
+                                            station: 'First Floor – Room 216',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'Each player builds a marshmallow tower. You always stack 1 on top of another. The game is over when the tower falls.',
+                                            descriptionPoints: "Enter the number of marshmallow layers in your respective #field."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 16:
+                    game16 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/M6CUG7MWq30',
+                                tagged: ":unit:Punkte:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de', // Deutsche Version
+                                            title: 'Eishockey',
+                                            story: 'Unser lieblings Eishockeyteam die \'INS-ICE-Pythons\' haben uns ihre geheimen Trainingstipps verraten. Wir nutzen die Gelegenheit und teilen unser Wissen mit euch (natürlich mit Erlaubnis). An den Weihnachtsfeiertagen haben wir dann ein wichtiges Spiel gegen die Nordpolar-Bären.',
+                                            station: 'Obergeschoss - Foyer',
+                                            capacity: '2 Teams',
+                                            descriptionGame: 'Vor euch ist ein Tor aufgebaut vor dem Hindernisse stehen. Stellt euch in die Startmarkierung und schießt auf das Tor. Jeder Schießt 5 Mal.',
+                                            descriptionPoints: 'Das vordere Tor gibt 1 Punkt, das hintere 2 Punkte. Tragt eure Punktzahl in euer #Feld ein.'
+                                        },
+                                        {
+                                            language: 'en', // Englische Version
+                                            title: 'Ice hockey',
+                                            story: 'Our favorite ice hockey team, the "INS ICE Pythons", have revealed their hidden training tips. We take the opportunity to share our knowledge with you (with permission, of course). We then have an important game against the North Polar Bears over the Christmas break.',
+                                            station: 'First Floor - Foyer',
+                                            capacity: '2 teams',
+                                            descriptionGame: 'A goal is set up in front of you, with obstacles in the way. Stand at the starting mark and shoot at the goal. Everyone shoots 5 times.',
+                                            descriptionPoints: 'Enter your number of hits in your #field.',
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 17:
+                    game17 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: ":unit:Platz:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Christmas Kart',
+                                            story: 'Digital und Elektronisch - was anderes wollen die Kinder heute gar nicht mehr. Die Elfen sind in jedem Videospiel meister geworden, weil sie auch jedes mehrfach testen müssen, bevor der Weihnachtsmann diese verschenken darf.',
+                                            station: 'Obergeschoss 1 - Raum 216',
+                                            capacity: '1 bis 8 Teams',
+                                            descriptionGame: 'Ihr spielt Mario Kart Grand Prix auf 150ccm gegen andere Teams und COMs. Jeder Spieler spielt eine Strecke. Es gibt einen Stationsleiter!',
+                                            descriptionPoints: 'Eure Platzierung in der Runde wird in euer #Feld eingetragen.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Christmas Kart',
+                                            story: 'Digital and electronic - that\'s all kids want these days. The elves have become champions in every video game because they also have to test each one several times before Santa can give them away.',
+                                            station: 'First Floor – Room 216',
+                                            capacity: '1 to 4 teams',
+                                            descriptionGame: 'You play Mario Kart Grand Prix on 100ccm against other teams and COMs. Each player plays one route. Listen to the station coordinator!',
+                                            descriptionPoints: 'Your ranking in the round will be entered in your #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 18:
+                    game18 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/VvXDp5jZL4A',
+                                tagged: ":unit:Treffer:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Glühwein-Pong',
+                                            story: 'Die Jahreszeit gibt es vor: es wird immer kälter. Am Nordpol ist es immer eisig und klassische Partyspiele wollen dem entgegenwirken. Glühwein-Pong ist ein vollkommen neues, individuell und einzigartiges Spiel, was es nur hier gibt.',
+                                            station: 'Erdgeschoss - Raum 108',
+                                            capacity: '2x 2 Teams',
+                                            descriptionGame: 'Das Spiel benötigt ein Gegenerteam! Die Wasser gefüllten Becher werden auf die Pyramiden Markierung gestellt. Die Teams und Spieler werfen abwechselnd (außer auf den mit den Bällen drin). Gilt ein Becher als getroffen, wird dieser beiseite gestellt. Sind alle Becher eines Teams getroffen, ist das Spiel beendet.',
+                                            descriptionPoints: 'Jeder Spieler trägt die vom ihm getroffenen Becher in sein #Feld ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Mulled Wine Pong',
+                                            story: 'The season dictates: it\'s getting colder and colder. At the North Pole, it’s always freezing, and classic party games are designed to counteract that. Mulled Wine Pong is a completely new, individual and unique game that is only available here.',
+                                            station: 'Ground Floor - Room 108',
+                                            capacity: '2x 2 teams',
+                                            descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. The teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
+                                            descriptionPoints: 'Each player enters the cups they have hit in their #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 19:
+                    game19 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/WXbwk-7uOTg',
+                                tagged: "field1,lowest,:unit:sec:unit:,overridePlayers",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Ladezone',
+                                            story: 'Kurz vor Weihnachten erreichten schlechte Nachrichten den Nordpol. Die Geschenke-Lieferungen sind bedroht, weil sich das Partnerunternehmen DB-Schenker aufgelöst hat. Jetzt müssen in letzter Sekunde alle Lieferungen nach Deutschland auf die traditionelle Art eingepackt und an die Kinder geliefert werden: mit dem Schlitten.',
+                                            station: 'Erdgeschoss - Ostflügel Flur',
+                                            capacity: '1 Team oder 2 Teams',
+                                            descriptionGame: 'Es werden (4 Spieler) 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
+                                            descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden. Die Felder 2 bis 4 werden mit 0 ausgefüllt.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Loading Zone',
+                                            story: 'Bad news reached the North Pole just before Christmas. The gift deliveries are threatened because the partner company DB Schenker has dissolved. Now, at the last minute, all deliveries to Germany must be packed in the traditional way and delivered to the children – by sleigh.',
+                                            station: 'Ground floor – East wing corridor',
+                                            capacity: '1 team or 2 teams',
+                                            descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
+                                            descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1. Fields 2 to 4 are filled in with 0.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 20:
+                    game20 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: '',
+                                tagged: "overridePlayers,hidden",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Bescherung',
+                                            story: 'Im ganzen Trubel mit der Lieferung, wurden die Beschriftungen der Geschenke vergessen - für wen ist denn welches Geschenk? Die #4 #Geschenke haben je einen Inhalt der Wunschliste und ihr müsst raten, welcher es ist.',
+                                            station: 'Obergeschoss - Foyer am Tannenbaum',
+                                            capacity: 'Multiple Teams',
+                                            descriptionGame: 'Ihr dürft die Geschenke hochheben, schütteln, drehen und wenden, aber nicht öffnen.',
+                                            descriptionPoints: 'Tragt in das #Feld mit der Geschenkzahl eure Lösung (Zahl) vom Wunschzettel ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Boxing Day',
+                                            story: 'In all the chaos of the delivery, the gift labels were forgotten – which gift is for whom? The #4 #gifts each have a content from the wish list, and you must guess which one it is.',
+                                            station: 'First Floor – Foyer at the Christmas Tree',
+                                            capacity: 'Multiple teams',
+                                            descriptionGame: 'You can lift, shake, turn and rotate the gifts, but not open them.',
+                                            descriptionPoints: 'Enter your answer (number) from the wish list in the #field with the gift number.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 21:
+                    game21 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/cKgvAcYoHl0',
+                                tagged: ":unit:Treffer:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Rentier-Jagd',
+                                            story: 'Unsere Rentiere wurden für die neue RedBull-Weihnachts-Werbung gecastet. Vollkommen aufgedreht von 6 Dosen Energie, sind sie weggerannt. Ihr müsst sie wieder einfangen.',
+                                            station: 'Erdgeschoss - Raum 108',
+                                            capacity: '2x 1 Team',
+                                            descriptionGame: 'Ungleich der Story, ist es ein Teamspiel. Ihr braucht 2 Rentier und 2 Elfen. Jeder Elf hat 5 Würfe und muss auf das Geweih des Rentiers werfen. Das Rentier versucht durch geschickte Bewegung mitzuhelfen.',
+                                            descriptionPoints: 'Tragt in euer #Feld, wie viele Ringe ihr getroffen/gefangen habt.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: "Rudolph's Antler",
+                                            story: "Our reindeer were cast for the new RedBull Christmas commercial. Completely hyped up from 6 cans of energy drink, they ran away. You need to catch them again.",
+                                            station: 'Ground Floor – Room 108',
+                                            capacity: '2x 1 team',
+                                            descriptionGame: "Unlike the story, it is a team game. You need 2 reindeer and 2 elves. Each elf has 5 throws and must throw at the reindeer's antlers. The reindeer tries to help by moving skillfully.",
+                                            descriptionPoints: "Enter in your #field how many rings you have hit/captured."
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 22:
+                    game22 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/8eaXJIdMzq0',
+                                tagged: ":unit:Zeichnungen:unit:",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Moderne Kunst',
+                                            story: 'Die Weihnachtswerkstatt ist in Aufruhr! Die Elfen haben ein neues Kommunikationsspiel entwickelt, um sicherzustellen, dass alle Geschenke auch wirklich richtig zugeordnet werden. Doch die Zeichnungen von Elf Nr. 21 sorgen immer wieder für Verwirrung – ist das ein Rentier oder ein Kuchen?! Jetzt liegt es an deinem Team, die richtigen Begriffe zu entschlüsseln und die Geschenklisten zu retten!',
+                                            station: 'Erdgeschoss - Raum 109',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
+                                            descriptionPoints: 'Die angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Modern Art',
+                                            story: 'The Christmas workshop is in turmoil! The elves have developed a new communication game to ensure that all the gifts are actually allocated correctly. But the drawings from Elf No. 21 cause constant confusion – is that a reindeer or a cake?! Now it\'s up to your team to decipher the correct terms and save the gift lists!',
+                                            station: 'Ground Floor – Room 109',
+                                            capacity: 'Solo Team',
+                                            descriptionGame: 'One player on your team is given a pen and paper and an envelope with words. They draw the words and the other team members guess what is being drawn. The time limit is 2 minutes per person. So you take turns and play 4 rounds with 4 team members. Words that have already been used are put to one side and put back in the envelope at the end.',
+                                            descriptionPoints: 'Each player enters the number of words explained and guessed by the team in their #field.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 23:
+                    game23 = _a.sent();
+                    return [4 /*yield*/, prisma.game.create({
+                            data: {
+                                url: 'https://www.youtube.com/embed/eypqWQn2hKk',
+                                tagged: "overridePlayer,field1,lowest",
+                                languages: {
+                                    create: [
+                                        {
+                                            language: 'de',
+                                            title: 'Alarmgesichert',
+                                            story: 'Heiligabend ist im vollen Gange. Schon seit Jahrhunderten beliefert Santa die Kinder, aber noch nie war es so schwer wie heutzutage. Alarmanlagen und SmartHome-Überwachung sind überall. Und dann noch dieser Zeitdruck...',
+                                            station: 'Obergeschoss 1 - Raum 210',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'Ihr braucht 1 Zeit-Stopper und 1 bis 3 Elfen/Weihnachtsmänner. Der Stopper gibt das Signal zum Start und das Bescherungsteam muss durch den Parkour. In der Mitte sind 3 Zahlen, welche einem #Feld zugeordnet sind. Wenn alle wieder über der Start/Ziellinie sind, wird die Zeit gestoppt.',
+                                            descriptionPoints: 'In #Feld 1 wird die Zeit in Sekunden eingetragen. In #Feld 2 bis 4 die entsprechende Lösung.'
+                                        },
+                                        {
+                                            language: 'en',
+                                            title: 'Intruder Alert',
+                                            story: 'Christmas Eve is in full swing. For centuries, Santa has been delivering gifts to children, but it has never been as difficult as it is today. Alarm systems and smart home monitoring are everywhere. And then there\'s the time pressure...',
+                                            station: 'First Floor – Room 210',
+                                            capacity: '1 Team',
+                                            descriptionGame: 'You need 1 time stopper and 1 to 3 elves/Santa Clauses. The stopper gives the signal to start, and the gift-giving team must navigate through the parkour. In the center are 3 numbers, which are assigned to a #field. When everyone has crossed the start/finish line again, the time is stopped.',
+                                            descriptionPoints: 'The time in seconds is entered in #field 1. In #field 2 to 4 the corresponding answers.'
+                                        }
+                                    ]
+                                }
+                            }
+                        })];
+                case 24:
+                    game24 = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}

@@ -28,36 +28,34 @@ export const authOptions: NextAuthOptions = {
         try {
           // Search for the team in the database using the username
           const team = await prisma.team.findUnique({
-            where: { credentials: username },
+            where: { uname: username },
           });
 
           // Check if team exists and password matches
           if (!team || team.password !== password) {
+
             console.error("Invalid username or password.");
             return null;
           }
           const user: User = {
-          //id: '2',
-          id: String(team.id),
-          //credentials: "DUMMY",
-          credentials: team.credentials,
-          //role: 'USER',
-          role: team.role,
-          //language: 'de',
-          language: team.language,
-          //name: 'DummyTeam#1',
-          name: team.name,
-          //user1: 'Testi',
-          user1: team.user1,
-          //user2: 'Bruder von Testi',
-          user2: team.user2,
-          //user3: "",
-          user3: team.user3 || "",
-          //user4: "",
-          user4: team.user4 || "",
-          //pointsTotal: 0
-          pointsTotal: team.pointsTotal
-        };
+            //id: '2',
+            id: String(team.id),
+            //credentials: "DUMMY",
+            uname: team.uname,
+            //role: 'USER',
+            role: team.role,
+            //language: 'de',
+            language: team.language,
+            //name: 'Dummyteam#1',
+            name: team.name,
+            //pointsTotal: 0
+            pointsTotal: team.pointsTotal,
+            player1: team.user1,
+            player2: team.user2,
+            player3: team.user3 || "",
+            player4: team.user4 || "",
+
+          };
           return user;
         } catch (error) {
           // Handle errors, e.g., Prisma query errors
@@ -76,14 +74,10 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         // Store user data in the token
         token.id = user.id;
-        token.name = user.name;
-        token.credentials = user.credentials;
+        token.uname = user.uname;
         token.role = user.role;
         token.language = user.language;
-        token.user1 = user.user1;
-        token.user2 = user.user2;
-        token.user3 = user.user3;
-        token.user4 = user.user4;
+        token.name = user.name;
         token.pointsTotal = user.pointsTotal;
       }
 
@@ -94,14 +88,10 @@ export const authOptions: NextAuthOptions = {
         // Attach the token data to the session object
         session.user = {
           id: token.id as string,
-          name: token.name as string,
-          credentials: token.credentials as string,
+          uname: token.uname as string,
           role: token.role as string,
           language: token.language as string,
-          user1: token.user1 as string,
-          user2: token.user2 as string,
-          user3: token.user3 as string,
-          user4: token.user4 as string,
+          name: token.name as string,
           pointsTotal: token.pointsTotal as number,
         };
       }

@@ -2,60 +2,38 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-type TeamCreateInput = Parameters<typeof prisma.team.create>[0]['data']
+// Extract type from the prisma client method itself
 
-type SafeTeamCreateInput = Omit<TeamCreateInput, 'id'>;
 
-function getEmptyTeam(overrides: Partial<SafeTeamCreateInput>): SafeTeamCreateInput {
-  return {
-    credentials: '',
-    password: '',
-    name: '',
-    user1: '',
-    user2: '',
-    user3: '',
-    user4: '',
-    role: 'USER',
-    pointsTotal: 0,
-    language: 'de',
-    ...overrides,
-  };
-}
 
 
 export async function teamEntries() {
-    const fsrTeam = await prisma.team.create({
-        data: getEmptyTeam({
-          credentials: 'FBINS',
-          password: 'FSR5',
-          role: 'ADMIN'
-        })
-      });
+  await prisma.team.create({
+    data: {
+      uname: 'FBINS',
+      name: "FSR Admin",
+      password: 'FSR5',
+      role: 'ADMIN',
+      user1: "Jeremy",
+      user2: "Santa Clause",
+      pointsTotal: 0,
+      
+    },
+  })
 
-      const dummyTeam = await prisma.team.create({
-        data: getEmptyTeam({
-          credentials: 'DUMMY',
-          password: 'TEST',
-          role: 'USER',
-          name: 'DummyTeam#1',
-          user1: 'Testi',
-          user2: 'Bruder von Testi'
-        })
-      });
+  await prisma.team.create({
+    data: {
+      uname: 'DUMMY',
+      password: 'TEST',
+      role: 'USER',
+      name: 'DummyTeam#1',
+      user1: 'Testi',
+      user2: 'Bruder von Testi',
+      pointsTotal: 0,
+    },
+  })
 
-      const dummyTeam2 = await prisma.team.create({
-        data: getEmptyTeam({
-          credentials: 'DUMMY2',
-          password: 'TEST',
-          role: 'USER'
-        })
-      });
 
-      const userTeam1 = await prisma.team.create({
-        data: getEmptyTeam({
-          credentials: 'GSIA7',
-          password: 'X1HJ',
-          role: 'USER'
-        })
-      });
+
+  
 }

@@ -14,12 +14,12 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.credentials) {
+    if (!session || !session.user?.uname) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const team = await prisma.team.findUnique({
-      where: { credentials: session.user.credentials },
+      where: { uname: session.user.uname },
     });
 
     if (!team) {

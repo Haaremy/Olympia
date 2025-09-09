@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Weihnachtsolympiade</string>
+    <string name="title_activity_main">Olympia</string>
+    <string name="package_name">de.haaremy.olympia</string>
+    <string name="custom_url_scheme">de.haaremy.olympia</string>
+</resources>

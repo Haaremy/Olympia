@@ -24,6 +24,7 @@ export async function PUT(req: Request) {
     const { started, ending } = body;
 
     if (typeof started !== 'boolean' || typeof ending !== 'string') {
+      console.log(started, "_", ending);
       return NextResponse.json({ error: 'Ungültige Eingabedaten' }, { status: 400 });
     }
 

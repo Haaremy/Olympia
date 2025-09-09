@@ -197,9 +197,6 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   };
 
 
-const handleFetchPointsForGames = () => {
-  setfetchPointsForGames(true);
-}
 
 useEffect(() => {
     const teamId = Number(team?.id);
@@ -306,7 +303,7 @@ useEffect(() => {
             </div>
           ))}
         </div>
-        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose} onSave={handleFetchPointsForGames} />}
+        {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose}  />}
       </div>
     </main>
   );

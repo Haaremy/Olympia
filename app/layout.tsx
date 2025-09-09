@@ -4,7 +4,6 @@ import Navigation from "./navigation";
 import SessionProvider from "./session-provider";
 import "./globals.css";
 import Footer from "./footer";
-import Head from 'next/head';
 import { UIProvider } from "./context/UIContext";
 
 const geistSans = Geist({
@@ -20,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Olympia",
   description: "Weihnachtsolympiade des Fachschaftsrat INS der Hochschule Anhalt. Website und Implementierung von @Haaremy.",
+   icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -28,11 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de">
-      <Head>
-        {/* Favicon als SVG setzen */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      </Head>
+    <html lang="de" className="dark">
         
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -46,6 +44,6 @@ export default function RootLayout({
             </UIProvider>
         </SessionProvider>
       </body>
-    </html>
+    </html>  
   );
 }

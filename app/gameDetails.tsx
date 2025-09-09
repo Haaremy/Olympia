@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Infobox from './infoBox'; 
 import { gamesEG, gamesOG } from "./common/mapPos";
-import MapSection from './common/map';
+import MapSection from './common/map_old';
 import { useTranslation } from 'next-i18next';
 import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
@@ -28,14 +28,13 @@ interface ModalProps {
         languages: { language: string; title: string; story: string }[];
     };
     onClose: () => void;
-    onSave: () => void;
 }
 
 type PointEntry = {
   id: number;
   gameId: number;
-  teamId: number;
-  player: string;
+  userId: number;
+  name: string;
   value: number;
   slot: number;
   lastUpdated: Date;
@@ -43,7 +42,7 @@ type PointEntry = {
 
 
 
-const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
+const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const { setIsModalOpen } = useUI();
     const [showSaved, setShowSaved] = useState(false); 
     const [showNotSaved, setShowNotSaved] = useState(false); 
@@ -51,6 +50,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     const [showMap, setShowMap] = useState(false);
     const [points, setPoints] = useState<PointEntry[]>([]);
     const globalPointsRef = useRef<PointEntry[]>([]);
+    
 
     const { t } = useTranslation(); 
 
@@ -60,16 +60,14 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     const handleNotSavedClose = () => setShowNotSaved(false);
     const [updateSite, setUpdateSite] = useState(true);
       const [updateData, setUpdateData] = useState(false);
-  const [teamData, setTeamData] = useState<{
-  id?: number;
-  credentials?: string;
-  name?: string;
-  players?: string[];
-}>({
+const [userData, setUserData] = useState({
   id: 0,
-  credentials: "",
+  uname: "Loading...",
   name: "",
-  players: ["","","",""]
+  user1: "",
+  user2: "",
+  user3: "",
+  user4: "",
 });
 
 
@@ -77,10 +75,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     const { data: session } = useSession();
 
     const [playerInputs, setPlayerInputs] = useState({
-        user1: "",
-        user2: "",
-        user3: "",
-        user4: ""
+        user1: ""
     });
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -127,33 +122,12 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
   try {
     const players: { [key: string]: number } = {
       user1: Number(playerInputs.user1) || -1,
-      user2: Number(playerInputs.user2) || -1,
-      user3: Number(playerInputs.user3) || -1,
-      user4: Number(playerInputs.user4) || -1,
     };
 
     // Grundregel: user1 & user2 müssen immer gesetzt sein
-    if (players.user1 === -1 || players.user2 === -1) {
-      setErrorMessage("Felder wurden fehlerhaft ausgefüllt. (1 o 2)");
+    if (players.name === -1) {
+      setErrorMessage("Felder wurden fehlerhaft ausgefüllt. (1)");
       throw new Error("Ungültige Eingaben");
-    }
-
-    if (!message.tagged.includes("overridePlayer") && !!teamData?.players?.[2] && players.user3 === -1) {
-      setErrorMessage("Felder wurden fehlerhaft ausgefüllt.");
-      throw new Error("Ungültige Eingaben");
-    }
-
-    if (!message.tagged.includes("overridePlayer") && !!teamData?.players?.[3] && players.user4 === -1) {
-      setErrorMessage("Felder wurden fehlerhaft ausgefüllt.");
-      throw new Error("Ungültige Eingaben");
-    }
-
-    // Wenn overridePlayer-Tag gesetzt ist, dann auch user3/4 validieren
-    if (message.tagged.includes("overridePlayer")) {
-      if (players.user3 === -1 || players.user4 === -1) {
-        setErrorMessage("Alle vier Spieler müssen ausgefüllt sein.");
-        throw new Error("Ungültige Eingaben");
-      }
     }
 
     // Senden
@@ -173,7 +147,6 @@ const Modal: React.FC<ModalProps> = ({ message, onClose, onSave }) => {
     localStorage.setItem("playedGames", `${playedGames}+${formattedId}+`);
 
     setTimeout(() => setShowSaved(false), 3000);
-    onSave();
 
   } catch (error) {
     console.log("Speichern fehlgeschlagen:", error);
@@ -223,21 +196,28 @@ useEffect(() => {
 }, [updateSite, fetchData]);
 
   useEffect(() => {
-  if (!session?.user?.credentials) return;
+  if (!session?.user?.uname) return;
 
   const fetchTeam = async () => {
     try {
-      const res = await fetch(`/api/team/search?query=${session.user.credentials}`, {
+      const res = await fetch(`/api/team/search?query=${session.user.uname}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) throw new Error("Fehler beim Laden des Teams");
 
-      const data = await res.json();
-      setTeamData(data.team); // Nur das team-Objekt setzen
+      const response = await res.json();
+      setUserData({
+        ...response.team,
+        name: response.team.name,
+        user1: response.team.players[0],
+        user2: response.team.players[1],
+        user3: response.team.players[2],
+        user4: response.team.players[3],
+      }); // Nur das user-Objekt setzen
     } catch (error) {
-      console.error("Team-Fehler:", error);
+      console.error("User-Fehler:", error);
     } finally {
       setUpdateData(false); // Immer nach dem Versuch zurücksetzen
     }
@@ -316,12 +296,13 @@ const formatTime = (ms: number) => {
                     </button>
 
                     {showMap && (
-                        <MapSection
-                            title=""
-                            imageSrc={`/images/map_${(message.station?.startsWith("E") ? "eg" : message.station?.startsWith("G")) ? "gr" : message.station?.startsWith("O") ? "og" : "1st"}.jpg`}
-                            games={message.station?.startsWith("E") || message.station?.startsWith("G") ? gamesEG : gamesOG}
-                            searchQuery={`${message.id < 10 ? "0" : ""}${message.id}`}
-                        />
+                        
+                    <MapSection
+                      title=""
+                      imageSrc={`/images/map_${message.station.includes("Erdgeschoss") || message.station.includes("Ground") || message.station.includes("INS") ? t('mapImageGR') : t('mapImage1st') }.jpg`}
+                      games={message.station.includes("Erdgeschoss") || message.station.includes("Ground") || message.station.includes("INS") ? gamesEG : gamesOG}
+                      searchQuery={`${message.id < 10 ? "0" : ""}${message.id}`} 
+                    />
                     )}
 
                     {/* Capacity */}
@@ -331,26 +312,28 @@ const formatTime = (ms: number) => {
                     <p className="text-sm mb-4">
                         {t("howTo")}
                         <br />
-                        <span  />{ message.content}
+                         <span dangerouslySetInnerHTML={{ __html: message.content }} />
                     </p>
 
                     {/* Points Description */}
+                    
                     <p className="text-sm mb-4">
                     {t("descriptionPoints")} 
-                    {teamData.players?.[0] ? (
+                    {!message.started ? <button className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
+                    userData && !!userData?.user1 && !!userData?.user2 ? (
                     <>
                         <br />
                         <span>{message.points }</span>
                         <br />
                     </>
-                    ) : session ? (
+                    ) : session  ? (
                         <Link
                             href="/teampage"
-                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
                         >
                             {t("Edit Team")}
                         </Link> 
-                    ) : (
+                    ) :(
                         <button className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2" onClick={handleShowLogin}>
                             {t("Login now")}
                         </button>
@@ -362,64 +345,49 @@ const formatTime = (ms: number) => {
                 
 
                     {/* Player Inputs */}
-                   <div className={`space-y-4 ${teamData.players?.[0] ? "" : "hidden"}`}>
-  <div className="grid grid-cols-2 gap-4">
+                   <div className={`space-y-4 ${userData && userData.name ? "" : "hidden"}`}>
+  <div >
     {/* Player 1 */}
-    <input
+    { !message.tagged.includes("noGame") && !message.tagged.includes("noScoreboard") &&
+    <div className="grid grid-cols-2 gap-4">
+    {(!message.tagged.includes("noGame") ) && message.started &&  < input
       type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
-      placeholder={`Player 1`}
-      value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      placeholder={t("f1w")}
+      //value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
       name="user1"
       onChange={handleInputChange}
-      disabled={!!points[0]?.value || points[0]?.value === 0}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />
-
-    {/* Player 2 */}
-    <input
+    />}
+    
+    {(userData?.user2 != "" && !!userData?.user2 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")  && !message.tagged.includes("hideF2") && !message.tagged.includes("noGame")) && message.started && < input
       type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
-      placeholder={`Player 2`}
+      placeholder={t("f2w")}
+      //value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
       name="user2"
       onChange={handleInputChange}
-      value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[1]?.value !== undefined && points[1]?.value !== null ? points[1].value : (playerInputs.user2 ?? "")}
-      disabled={!!points[1]?.value || points[1]?.value === 0}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />
-
-    {/* Player 3 */}
-    {teamData.players?.[2] || message.tagged.includes("overridePlayer") ? (
-      <input
-        type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
-        placeholder={`Player 3`}
-        name="user3"
-        onChange={handleInputChange}
-        value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[2]?.value !== undefined && points[2]?.value !== null ? points[2].value : (playerInputs.user3 ?? "")}
-        disabled={!!points[2]?.value || points[2]?.value === 0}
-        className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-      />
-    ) : (
-      // Wenn Player 3 nicht existiert, leeres div für Layout
-      <div></div>
-    )}
-
-    {/* Player 4 */}
-    {teamData.players?.[3] || message.tagged.includes("overridePlayer") ? (
-      <input
-        type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
-        placeholder={`Player 4`}
-        name="user4"
-        onChange={handleInputChange}
-        value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[3]?.value !== undefined && points[3]?.value !== null ? points[3].value : (playerInputs.user4 ?? "")}
-        disabled={!!points[3]?.value || points[3]?.value === 0}
-        className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-      />
-    ) : (
-      // Leer lassen, damit Player 3 nicht breiter wird
-      <div></div>
-    )}
-  </div>
-
-  {!points[0]?.value && timeLeft>0 && message.started && (
+    />}
+    
+    {(userData?.user3 != "" && !!userData?.user3 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF3") && !message.tagged.includes("hideF3") && !message.tagged.includes("noGame"))  && message.started && < input
+      type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
+      placeholder={t("f3w")}
+      //value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      name="user3"
+      onChange={handleInputChange}
+      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+    />}
+    
+    {(userData?.user4 != "" && !!userData?.user4 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF4") && !message.tagged.includes("noGame") )  && message.started && < input
+      type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
+      placeholder={t("f4w")}
+      //value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      name="user4"
+      onChange={handleInputChange}
+      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
+    />}
+    </div>
+}
+    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && (
     <div className="text-right">
       <button
         className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300"
@@ -437,6 +405,9 @@ const formatTime = (ms: number) => {
       </label>
     </div>
   )}
+  </div>
+
+  
 </div>
 
                     

@@ -15,7 +15,7 @@ export default function Footer() {
           <p className="text-lg font-semibold">
             {t('fsr_long')} -{" "}
             <span className="font-mono font-bold text-pink-500 dark:text-pink-400">
-              Ad-Games-{t("calender")}
+              AdGames{t("calender")}
             </span>
           </p>
         </Link>

@@ -1,7 +1,7 @@
 'use client';  // Ensure this component is client-side
 
 import { useEffect, useState } from 'react';
-import MapSection from '../common/map';
+import MapSection from '../common/map_old';
 import {gamesEG, gamesOG} from "../common/mapPos";
 import { useTranslation } from 'next-i18next';
 import '../../lib/i18n'

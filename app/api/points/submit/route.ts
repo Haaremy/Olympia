@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     const team = await prisma.team.findUnique({
-      where: { credentials: session.user.credentials },
+      where: { uname: session.user.uname },
     });
 
     if (!team) {

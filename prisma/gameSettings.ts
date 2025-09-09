@@ -8,7 +8,7 @@ export async function gameSettings() {
     const gameSettings = await prisma.gameSettings.create({
       data: {
         started: false,    // Initially, the game hasn't started
-        ending: new Date("2025-12-05T21:00:00.000Z"),  // Set an ending time for the game
+        ending: new Date("2025-12-04T21:00:00.000Z"),  // Set an ending time for the game
       },
     });
 

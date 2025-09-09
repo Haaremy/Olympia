@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Language from "./language"; // Import der LanguageLogin Komponente
 import Login from "./login"; // Import der LanguageLogin Komponente
+import PlannedTime from "./timeTable"; // Import der LanguageLogin Komponente
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
 import Link from "next/link";
@@ -14,11 +15,12 @@ import '../lib/i18n'
 export default function Navigation() {
   const [showLanguage, setShowLanguage] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [timePlan, setTimePlan] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { t, i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
   const { data: session, status } = useSession();
-  const team = session?.user as Session["user"];
+  const user = session?.user as Session["user"];
 
   const currentPath = usePathname(); // Hol dir den aktuellen Pfad
 
@@ -39,10 +41,16 @@ export default function Navigation() {
     setShowLanguage(false);
 
     if (localStorage.getItem("language") && !session) {
-      setShowLogin(true); // Login anzeigen, wenn kein Session vorhanden
+      //setShowLogin(true); // Login anzeigen, wenn kein Session vorhanden
     }
   };
 
+  const handleTimePlanOpen = () =>  {
+    setTimePlan(true);
+  }
+  const handleTimePlanClose = () =>  {
+    setTimePlan(false);
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -67,10 +75,32 @@ export default function Navigation() {
         if (!lang) {
             setShowLanguage(true); // Shows language selection if no language set
         } else if (status === "authenticated") {
-            handleLoginOpen(); // Open login modal if authenticated
+           // handleLoginOpen(); // Open login modal if authenticated
+           
         }
     }
-}, [status, team?.credentials, i18n, handleLoginOpen]); // Füge handleLoginOpen hinzu
+
+  const time = new Date().getHours() * 60 + new Date().getMinutes(); // aktuelle Minuten seit Mitternacht
+const lastChecked = sessionStorage.getItem("timePlanChecked");
+
+if (lastChecked) {
+  const diff = time - parseInt(lastChecked, 10);
+
+  if (diff > 15) { // z.B. 15 Minuten Sperre
+    handleTimePlanOpen();
+    sessionStorage.setItem("timePlanChecked", time.toString());
+  } else if (diff<0){
+    sessionStorage.setItem("timePlanChecked", time.toString());
+  }
+} else {
+  handleTimePlanOpen();
+  sessionStorage.setItem("timePlanChecked", time.toString());
+}
+
+    
+    
+    
+}, [status, user?.uname, i18n, handleLoginOpen]); // Füge handleLoginOpen hinzu
 
   
 
@@ -92,9 +122,9 @@ export default function Navigation() {
               className={`px-4 py-2 text-white rounded-lg inline-flex items-center justify-center sm:justify-start`}
             >
               <p className={`text-lg font-semibold text-gray-800 dark:text-gray-200`}>
-                FSR INS&nbsp;
+                FSR INS&nbsp; 
                 <code className="font-mono font-bold text-pink-500 dark:text-pink-400">
-                  Ad-Games-{t('calender')}
+                  AdGames{t('calender')}
                 </code>
               </p>
             </Link>
@@ -104,8 +134,8 @@ export default function Navigation() {
           <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
 
           {currentPath !== "/adminpage" && currentPath !== "/teampage" ? (
-              team ? (
-                team.role === "ADMIN" ? (
+              user ? (
+                user.role === "ADMIN" ? (
                   <Link
                     href="/adminpage"
                     className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
@@ -173,6 +203,7 @@ export default function Navigation() {
             
           </div>
           {/* Modals */}
+          {timePlan && <PlannedTime onClose={handleTimePlanClose} />}
           {showLanguage && <Language onClose={handleLanguageClose} />}
           {showLogin && <Login onClose={handleLoginClose} />}
         </div>

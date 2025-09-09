@@ -20,8 +20,15 @@ DATABASE_URL="file:./dev.db"
 SECURE_COOKIES=true
 COOKIE_DOMAIN=<Domain>
 ´´´
+# Deploy on Linux
 npm run build
 pm2 run "npm run start" --name "Olympia"
+
+# Develop in Android Studio
+npx next build
+npx cap copy
+npx cap sync
+npx cap open android
 
 # Clean DB
 chmod +x node_modules/.bin/prisma
@@ -38,5 +45,8 @@ npx prisma migrate deploy
 |lowest|Weltrekord filter nach niedrigstem Wert.|
 |field1|Weltrekord filter relavantes Feld.|
 |:unit:sec:unit:|Weltrekord Einheit des Rekords: Sekunden|
-|overridePlayers|Spielerfelder Punkte Eintragung unabhängig der Teamgröße|
+|overridePlayers|Zeigt alle Einträge-Felder unabhängig der Spielerzahl.|
+|noGame|Versteckt alle Einträge-Felder unabhängig der Spielerzahl.|
+|showF<3/4>| Zeigt das Einträge-Feld unabhängig der Spielerzahl.|
+|hideF<2-4>| Versteckt das Einträge-Feld unabhängig der Spielerzahl.|
 |hidden|Punkte und Werte sind geheim zu halten.|

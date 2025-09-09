@@ -36,7 +36,7 @@ model Language {
 
 model Team {
   id           Int       @id @default(autoincrement())
-  credentials  String    @unique
+  uname  String    @unique
   password     String
   name         String
   user1        String

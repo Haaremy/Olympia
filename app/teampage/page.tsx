@@ -13,8 +13,6 @@ import Image from "next/image";
 
 export default function Page() {
   const [darkMode, setDarkMode] = useState(true);
-  const [showAdditionalPlayers1, setShowAdditionalPlayers1] = useState(false);
-  const [showAdditionalPlayers2, setShowAdditionalPlayers2] = useState(false);
   const { i18n } = useTranslation();
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -23,16 +21,14 @@ export default function Page() {
   const [infoTitle, setInfoTitle] = useState("!?!?!");
   const [infoColor, setInfoColor] = useState("red");
   const [updateData, setUpdateData] = useState(false);
-  const [teamData, setTeamData] = useState<{
-  id?: number;
-  credentials?: string;
-  name?: string;
-  players?: string[];
-}>({
+  const [userData, setUserData] = useState({
   id: 0,
-  credentials: "",
+  uname: "Loading...",
   name: "",
-  players: ["","","",""]
+  user1: "",
+  user2: "",
+  user3: "",
+  user4: "",
 });
 
 
@@ -42,38 +38,33 @@ export default function Page() {
   const user3Ref = useRef<HTMLInputElement>(null);
   const user4Ref = useRef<HTMLInputElement>(null);
 
+  type playerKey = "user1" | "user2" | "user3" | "user4";
+
   
 
 
   const handleSave = async () => {
     const name = nameTRef.current?.value || null;
-    const user1 = user1Ref.current?.value || null;
-    const user2 = user2Ref.current?.value || null;
-    const user3 = user3Ref.current?.value || null;
-    const user4 = user4Ref.current?.value || null;
-
-    // --- Validierung ---
-  if (!user1 || !user2) {
-    //alert("");
-    handleSavedMessage("Bitte fülle mindestens Spieler 1 und Spieler 2 aus.", "Fehler", "red");
-    return;
-  }
+    const uname = user1Ref.current?.value || null;
 
 
-  if ((!user3 && user4)) {
-    handleSavedMessage("Bitte fülle zuerst den zusätzlichen Spieler 3 aus oder lasse beide leer.", "Fehler", "red");
-    return;
-  }
+ 
+
+
+    if (!user1Ref.current?.value || !user2Ref.current?.value) {
+      handleSavedMessage("Bitte fülle mindestens Player 1 und 2 aus.", "Fehler", "red");
+    } else {
 
     const res = await fetch("/api/team/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
-        user1,
-        user2,
-        user3,
-        user4,
+        uname,
+        user1: user1Ref.current?.value,
+        user2: user2Ref.current?.value,
+        user3: user3Ref.current?.value,
+        user4: user4Ref.current?.value,
         language: i18n.language,
       }),
     });
@@ -86,9 +77,18 @@ export default function Page() {
     } else {
       handleSavedMessage("Fehler beim Speichern. Bitte versuche es erneut.", "Fehler", "red");
     }
+  }
   };
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleDarkMode = () => {
+    
+    if (!darkMode) {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark');
+}
+setDarkMode(!darkMode);
+  }
 
   const handleLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -109,44 +109,52 @@ export default function Page() {
   const handleLogout = async () => {
     await signOut({ redirect: false });
     // Du kannst hier auch eine benutzerdefinierte Weiterleitung hinzufügen:
-    localStorage.setItem("playedGames", "0+")
     router.push('/');
   };
 
- const getTeam = useCallback(async () => {
-      const res = await fetch(`/api/team/search?query=${session?.user.credentials}`, {
+ const getUser = useCallback(async () => {
+      const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     }); 
     const data = await res.json();
     return data;
-    },[session?.user.credentials]);
+    },[session?.user.uname]);
 
   useEffect(() => {
     if (status !== "loading" && !session) {
       router.push("/");
-    } else if (session?.user?.credentials) {
+    } else if (session?.user?.uname) {
      
 
    
-      const fetchTeam = async () => {
-      const response = await getTeam();
-      setTeamData(response.team); // setze nur das team-Objekt
+      const fetchUser = async () => {
+      const response = await getUser();
+      console.log(response);
+      setUserData({
+        ...response.team,
+        name: response.team.name,
+        user1: response.team.players[0],
+        user2: response.team.players[1],
+        user3: response.team.players[2],
+        user4: response.team.players[3],
+      }); // setze nur das team-Objekt
       
       }
-      fetchTeam();
+      fetchUser();
     }
     setUpdateData(false);
-  }, [status, session, router, updateData, getTeam]);
+  }, [status, session, router, updateData, getUser]);
   
   if (status === "loading") {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>; // Oder ein Skeleton Loader
   }
   
 
- const renderPlayerInput = (
+const renderPlayerInput = (
   label: string,
-  ref: React.RefObject<HTMLInputElement | null>,
+  fieldKey: "user1" | "user2" | "user3" | "user4",
+  ref: React.RefObject<HTMLInputElement | null>, // <-- allow null
   index: number
 ) => (
   <div className="flex-1">
@@ -154,13 +162,19 @@ export default function Page() {
     <input
       type="text"
       ref={ref}
-      className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+      className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg 
+             dark:bg-gray-700 dark:text-white dark:border-gray-600"
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
-      defaultValue={teamData?.players?.[index] || ""}
-      disabled={!!teamData?.players?.[index]}
+      value={userData?.[fieldKey] ?? ""}
+      onChange={(e) =>
+        setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
+      }
+      disabled={!!userData?.name || userData?.name != "" ? false : true}
     />
   </div>
 );
+
+
 
 
 
@@ -175,59 +189,31 @@ export default function Page() {
         {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
-            Team
+            Team #{session.user.uname}
             <input
               type="text"
               ref={nameTRef}
               className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
               placeholder={t("enterTeam")}
-              defaultValue={teamData.name || ""}
-              disabled={!!teamData.name}
+              defaultValue={session.user.name || ""}
+              disabled={session.user.name}
             />
           </h1>
 
          {/* Team-Mitglieder: Player 1 & 2 */}
 <div className="grid grid-cols-2 gap-4 mb-6">
-  {/* Player 1 */}
-  <div>
-    {renderPlayerInput("Player 1:", user1Ref, 0)}
-  </div>
-
-  {/* Player 2 */}
-  <div>
-    {renderPlayerInput("Player 2:", user2Ref, 1)}
-  </div>
-
-  {/* Player 3 */}
-  <div>
-    {(!showAdditionalPlayers1 && !teamData?.players?.[2]) ? (
-      <button
-        onClick={() => setShowAdditionalPlayers1(true)}
-        className={`w-full mt-9 p-3 border rounded-lg  dark:text-white border-black-500 dark:border-white-500 ${!teamData?.name ? "bg-white dark:bg-blue-700" : "bg-gray dark:bg-gray-700"}`}
-        disabled={!!teamData?.name}
-      >
-        + Player 3
-      </button>
-    ) : (
-      renderPlayerInput("Player 3:", user3Ref, 2)
-    )}
-  </div>
-
-  {/* Player 4 */}
-  <div>
-    {(!showAdditionalPlayers2 && !teamData?.players?.[3]) ? (
-      <button
-        onClick={() => setShowAdditionalPlayers2(true)}
-        className={`w-full mt-9 p-3 border rounded-lg  dark:text-white border-black-500 dark:border-white-500 ${!teamData?.name ? "bg-white dark:bg-blue-700" : "bg-gray dark:bg-gray-700"}`}
-        disabled={!!teamData?.name}
-      >
-        + Player 4
-      </button>
-    ) : (
-      renderPlayerInput("Player 4:", user4Ref, 3)
-    )}
-  </div>
+  {[
+    { label: "Player 1", key: "user1", ref: user1Ref },
+    { label: "Player 2", key: "user2", ref: user2Ref },
+    { label: "Player 3", key: "user3", ref: user3Ref },
+    { label: "Player 4", key: "user4", ref: user4Ref },
+  ].map((p, idx) => (
+    <div key={p.key}>
+      {renderPlayerInput(p.label, p.key as playerKey, p.ref, idx)}
+    </div>
+  ))}
 </div>
+
 
 
 
@@ -262,6 +248,7 @@ export default function Page() {
               <select
                 value={darkMode ? 'dark' : 'light'}
                 onChange={() => toggleDarkMode()}
+                disabled={true}
                 className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
               >
                 <option value="light">{t("light")}</option>
@@ -275,7 +262,7 @@ export default function Page() {
 
         {/* Speichern-Button */}
         <button
-          className={`${!!session.user.user1 && !!session.user.user2 && !!session.user.name ? "hidden" : "fixed"} bottom-20 right-6 px-6 py-3 bg-pink-500 text-white rounded-lg shadow-lg hover:bg-pink-900 transition duration-300`}
+          className={`fixed bottom-20 right-6 px-6 py-3 bg-pink-500 text-white rounded-lg shadow-lg hover:bg-pink-900 transition duration-300`}
           onClick={handleSave}
         >
           &#x1F4BE;
