@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'de.haaremy.olympia',
-  appName: 'Weihnachtsolympiade',
+  appName: 'Olympia',
   webDir: 'public',
    server: {
     url: "https://olympia.haaremy.de", // Emulator → dein Next.js Server
