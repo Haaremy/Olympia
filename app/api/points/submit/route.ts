@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as Partial<PointsPayload>;
     const { game, user1, user2, user3, user4 } = body;
+    console.log(user1);
 
     if (
       typeof game !== 'number' ||
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.credentials) {
+    if (!session || !session.user?.uname) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
     const scores = { user1, user2, user3, user4 };
     
    let pointValues = (await prisma.team.findUnique({
-  where: { id: team.id },
+  where: { uname: team.uname },
   select: {
     pointsTotal: true,
   },
@@ -68,12 +69,12 @@ export async function POST(req: NextRequest) {
 
       if (typeof userPoints !== 'number' || !playerName) continue;
 
-    let multiplier = 1.15; // 4 Spieler
+    let multiplier = 1; // 4 Spieler
     if (user4 ==-1){ // 3 Spieler
-      multiplier = 1.6;
+      multiplier = 1;
     }
     if(user3==-1){ // 2 Spieler
-       multiplier = 2;
+       multiplier = 1;
     }
 
       let value = calculatePoints({ game, userPoints, multiplier, field });

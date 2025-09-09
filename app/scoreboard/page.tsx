@@ -19,7 +19,6 @@ interface Team {
     game: {
       id: number;
       language: string;
-      hidden: boolean;
       tagged: string;
     };
   }[];
@@ -28,7 +27,6 @@ interface Team {
 interface Record {
   gameId: number,
       language: string,
-      hidden: boolean,
       tagged: string | "",
       topPlayer: string,
       topPoints: number,
@@ -36,13 +34,69 @@ interface Record {
       team: Team
 }
 
+
+type Settings = {
+  started: boolean;
+  ending: Date;
+}
+
 // Main Component
 export default function ScoreboardTabs() {
+  
   const [activeTab, setActiveTab] = useState<"scoreboard" | "records">("scoreboard");
 
   const [teams, setTeams] = useState<Team[]>([]);
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(Date.now());
+  
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => {
+        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
+        return res.json();
+      })
+      .then((data: Settings) => {
+        if (data.ending) setTimeLeft(new Date(data.ending).getTime() - Date.now());
+      })
+      .catch(console.error);
+  }, [loading])
+
+  useEffect(() => {
+    
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1000) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevTime - 1000;
+      });
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  });
+
+  
+  
+  
+  
+  
+  
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+  
+    const hoursStr = hours > 0 ? `${hours}h ` : '';
+    const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : '';
+    const secondsStr = `${seconds}s`;
+  
+  
+    return `${hoursStr}${minutesStr}${secondsStr}`;
+  };
 
   useEffect(() => {
     const fetchScoreboardAndRecords = async () => {
@@ -116,6 +170,12 @@ export default function ScoreboardTabs() {
           </button>
         </div>
       </div>
+      <div className="flex justify-center">
+        <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden text-bold p-8 mb-4">
+          {timeLeft > 0 ? formatTime(timeLeft) : "👑" }
+        </div>
+      </div>
+
 
       {/* Tab Content */}
       {loading ? (
@@ -156,38 +216,65 @@ export default function ScoreboardTabs() {
                             Details anzeigen
                           </summary>
                           <table className="w-full mt-4 text-xs text-center border rounded-md">
-  <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-    <tr>
-      <th className="border px-2 py-1">Spiel</th>
-      <th className="border px-2 py-1">{team.user1}</th>
-      <th className="border px-2 py-1">{team.user2}</th>
-      <th className="border px-2 py-1">{team.user3 || "Spieler 3"}</th>
-      <th className="border px-2 py-1">{team.user4 || "Spieler 4"}</th>
-      <th className="border px-2 py-1">Letztes Update</th>
-    </tr>
-  </thead>
-  <tbody>
-    {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
-      const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
-      const getValue = (player: string | undefined) =>
-        pointsForGame.find((p) => p.player === player)?.value ?? "-";
-      const updated = pointsForGame[0]?.lastUpdated
-        ? formatDate(pointsForGame[0].lastUpdated)
-        : "-";
+                            <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                              <tr>
+                                <th className="border px-2 py-1">Spiel</th>
+                                <th className="border px-2 py-1">{team.user1}</th>
+                                <th className="border px-2 py-1">{team.user2}</th>
+                                <th className="border px-2 py-1">{team.user3 || "Spieler 3"}</th>
+                                <th className="border px-2 py-1">{team.user4 || "Spieler 4"}</th>
+                                <th className="border px-2 py-1">Letztes Update</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                             {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
+                                const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
+                                const game = pointsForGame[0]?.game; // wichtig: aktuelles Spiel
 
-      return (
-        <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
-          <td className="border px-2 py-1">{gameId}</td>
-          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user1)==-1  ? "-" : getValue(team.user1)}</td>
-          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user2)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
-          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user3)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
-          <td className="border px-2 py-1">{team.entries[i].game.hidden ? "????" : getValue(team.user4)==-1 || team.entries[i].game.tagged.includes("field1")? "-" : getValue(team.user1)}</td>
-          <td className="border px-2 py-1">{updated}</td>
-        </tr>
-      );
-    })}
-  </tbody>
-</table>
+                                const getValue = (player: string | undefined) =>
+                                  pointsForGame.find((p) => p.player === player)?.value ?? "-";
+
+                                const updated = pointsForGame[0]?.lastUpdated
+                                  ? formatDate(pointsForGame[0].lastUpdated)
+                                  : "-";
+
+                                return (
+                                  <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
+                                    <td className="border px-2 py-1">{gameId}</td>
+                                    <td className="border px-2 py-1">
+                                      {game?.tagged.includes("hidden")
+                                        ? "????"
+                                        : getValue(team.user1) === -1
+                                        ? "-"
+                                        : getValue(team.user1)}
+                                    </td>
+                                    <td className="border px-2 py-1">
+                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+                                        ? "????"
+                                        : getValue(team.user2) === -1
+                                        ? "-"
+                                        : getValue(team.user2)}
+                                    </td>
+                                    <td className="border px-2 py-1">
+                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+                                        ? "????"
+                                        : getValue(team.user3) === -1
+                                        ? "-"
+                                        : getValue(team.user3)}
+                                    </td>
+                                    <td className="border px-2 py-1">
+                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+                                        ? "????"
+                                        : getValue(team.user4) === -1
+                                        ? "-"
+                                        : getValue(team.user4)}
+                                    </td>
+                                    <td className="border px-2 py-1">{updated}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
 
                         </details>
                       </td>

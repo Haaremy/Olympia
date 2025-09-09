@@ -107,6 +107,7 @@ setDarkMode(!darkMode);
   }
 
   const handleLogout = async () => {
+    localStorage.setItem("playedGames", "");
     await signOut({ redirect: false });
     // Du kannst hier auch eine benutzerdefinierte Weiterleitung hinzufügen:
     router.push('/');

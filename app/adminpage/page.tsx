@@ -59,7 +59,10 @@ const getOffsetISO = (dtLocal: string): string => {
 
   const handleClose = () => setShowSaved(false);
 
-  const handleLogout = () => signOut();
+  const handleLogout = () => {
+    localStorage.setItem("playedGames", "");
+    signOut();
+  }
 
   useEffect(() => {
     if (status === "loading") return;

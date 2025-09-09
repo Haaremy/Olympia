@@ -64,9 +64,10 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   const [fetchPointsForGames, setfetchPointsForGames] = useState(false);
 
 
-  // Setze die Sprache basierend auf i18n
+  // Setze die Sprache basierend auf i18n und bereits gespielte Spiele
   useEffect(() => {
     setLanguage(i18n.language);
+    setfetchPointsForGames(true);
   }, [i18n.language]);
 
 
@@ -131,6 +132,7 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   
     // 6. Setze die Spiele in den Zustand
     setRandomizedGames(sorted);
+    
   }, [filteredGames, gamePointsMap]); // Add dependencies to prevent infinite loop
   
   
@@ -146,6 +148,13 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   useEffect(() => {
     setHydrated(true);
   }, []);
+
+  useEffect(() => {
+  if (!fetchPointsForGames) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}, [fetchPointsForGames]);
+
 
   useEffect(() => {
     if (hydrated && typeof window !== "undefined") {
@@ -192,6 +201,7 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   };
 
   const handleInfoClose = () => {
+    setfetchPointsForGames(true);
     setShowInfo(false);
     setSelectedGame(null);
   };
@@ -199,57 +209,41 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
 
 
 useEffect(() => {
-    const teamId = Number(team?.id);
-    const isValidTeamId = !isNaN(teamId) && teamId > 0;
-    console.log("team?.id:", team?.id);
-    console.log("isValidTeamId:", isValidTeamId);
+  const teamId = Number(team?.id);
+  if (!teamId || isNaN(teamId)) return;
 
-    if (!isValidTeamId) return;
+  const loadGamePoints = async () => {
+    const temp = localStorage.getItem("playedGames") || "";
+    const playedGamesSet = new Set(temp.split("+").filter(Boolean));
 
-    const loadGamePoints = async () => {
-      const temp = localStorage.getItem("playedGames") || "";
-      let playedGames = temp || "0+";
+    const map: Record<number, boolean> = {};
 
-      const map: Record<number, boolean> = {};
+    await Promise.all(
+      games.map(async (game) => {
+        try {
+          if (!playedGamesSet.has(String(game.id))) {
+            const res = await fetch(`/api/hasPoints?teamId=${teamId}&gameId=${game.id}`);
+            if (!res.ok) return;
 
-      await Promise.all(
-        games.map(async (game) => {
-          try {
-            if (temp.includes("0+") && !temp.includes(team.id)) {
-              const res = await fetch(`/api/hasPoints?teamId=${teamId}&gameId=${game.id}`);
-              if (!res.ok) return;
-
-              const text = await res.text();
-              const data = text ? JSON.parse(text) : { hasPoints: false };
-
-              if (data.hasPoints || temp.includes("+"+team.id+"+")) {
-                playedGames += `+${game.id}+`;
-              }
-            }
-
-            if (
-              playedGames.includes(
-                game.id < 10 ? `0${game.id}` : game.id.toString()
-              )
-            ) {
-              map[game.id] = true;
-            }
-          } catch (err) {
-            console.error(`Fehler bei Spiel ${game.id}:`, err);
-            map[game.id] = false;
+            const data = await res.json();
+            if (data.hasPoints) playedGamesSet.add(String(game.id));
           }
-        })
-      );
 
-      localStorage.setItem("playedGames", playedGames);
-      setGamePointsMap(map);
+          map[game.id] = playedGamesSet.has(String(game.id));
+        } catch (err) {
+          console.error(`Fehler bei Spiel ${game.id}:`, err);
+          map[game.id] = false;
+        }
+      })
+    );
 
-
-    };
-
-    loadGamePoints();
+    localStorage.setItem("playedGames", Array.from(playedGamesSet).join("+"));
+    setGamePointsMap(map);
     setfetchPointsForGames(false);
-  }, [team?.id, games, fetchPointsForGames]);
+  };
+
+  if (fetchPointsForGames) loadGamePoints();
+}, [team?.id, games, fetchPointsForGames]);
 
 
 
@@ -284,13 +278,13 @@ useEffect(() => {
             
             <div
               key={game.id}
-              className="relative flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+              className="relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105"
               onClick={() => handleInfoOpen(game, settings)}
             >
               <Image
                 src={`/images/christmas_calender${game.id % 5}.jpg`}
                 alt="Türchen Cover"
-                className={`w-full h-64 object-cover bg-gray-300 ${gamePointsMap[game.id] === true ? "grayscale" : "" }`}
+                className={`w-full h-64 object-cover object-right bg-gray-300 ${gamePointsMap[game.id] === true ? "grayscale" : "" }`}
                 width={500}
                 height={500}
               />

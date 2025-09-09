@@ -23,10 +23,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("my-release-key.jks")
-            storePassword "DEIN_STORE_PASSWORT"
-            keyAlias "my-key-alias"
-            keyPassword "DEIN_KEY_PASSWORT"
+            storeFile file("haaremyProduction.jks")
+            storePassword "hmyProduction"
+            keyAlias "hmyOlympia"
+            keyPassword "hmyProduction"
         }
     }
     buildTypes {

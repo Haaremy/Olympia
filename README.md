@@ -21,6 +21,8 @@ SECURE_COOKIES=true
 COOKIE_DOMAIN=<Domain>
 ´´´
 # Deploy on Linux
+npm i
+-> clean DB
 npm run build
 pm2 run "npm run start" --name "Olympia"
 
