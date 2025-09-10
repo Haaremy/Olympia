@@ -1,7 +1,7 @@
 'use client';  // Ensure this component is client-side
 
 import { useEffect, useState } from 'react';
-import MapSection from '../common/map_old';
+import MapSection from '../common/map';
 import {gamesEG, gamesOG} from "../common/mapPos";
 import { useTranslation } from 'next-i18next';
 import '../../lib/i18n'
@@ -26,6 +26,8 @@ export default function Home() {
     setHydrated(true);
   }, []);
 
+
+
   useEffect(() => {
     if (hydrated && typeof window !== "undefined") {
       const handleScroll = () => {
@@ -38,7 +40,7 @@ export default function Home() {
 
       window.addEventListener("scroll", handleScroll);
       handleScroll(); // Initial call
-
+      
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };

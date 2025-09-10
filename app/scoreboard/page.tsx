@@ -1,5 +1,6 @@
 'use client';
 
+import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
 
 // Deine bestehenden Interfaces
@@ -146,7 +147,7 @@ export default function ScoreboardTabs() {
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
       {/* Tabs */}
-      <div className="flex justify-center mb-8  mt-4">
+      <div className={`flex justify-center mb-8  ${!Capacitor.getPlatform().includes('web') ? "mt-8" : "mt-4"}`}>
         <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <button
             onClick={() => setActiveTab("scoreboard")}
@@ -301,7 +302,7 @@ export default function ScoreboardTabs() {
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
-            records.map((record) => record.topPlayer && !record.tagged.includes("hidden") && (
+            records.map((record) => record.topPlayer && !record.tagged.includes("hidden") && !record.tagged.includes("noWorldRecord")  && (
               <div
                 key={record.gameId}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"

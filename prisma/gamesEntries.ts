@@ -403,7 +403,7 @@ const game14 = await prisma.game.create({
           language: 'de',
           title: 'Frau Holle',
           story: 'Im Buchclub der Weihnachtsfrau ist Frau Holle. Sie erzählt von den unzähligen Azubis und vergleicht sie mit ihren ersten beiden - der Gold und der Pechmarie. Auch Praktika zum Schneien bietet sie an. Ist das nicht cool?',
-          station: 'Erdgeschoss - Raum 106',
+          station: 'Erdgeschoss - Raum 109',
           capacity: 'Multiple Teams',
           descriptionGame: 'Es gibt 4 Schneeflocken-Vorlagen. Ihr sucht euch ein Muster aus und stellt einen Timer auf 5 Minuten. Bastelt so viele Schneeflocken, wie ihr in der Zeit schafft.',
           descriptionPoints: "Tragt die Anzahl der gebastelten Schneeflocken in euer #Feld ein."
@@ -412,7 +412,7 @@ const game14 = await prisma.game.create({
           language: 'en',
           title: 'Mother Hulda',
           story: 'Mother Hulda is a member of Mrs Santa\'s book club. She talks about the countless apprentices and compares them to her first two – the Golden Girl and the Luckless Girl. She also offers practical training in snowmaking. Isn\'t that cool?',
-          station: 'First Floor - Room 106',
+          station: 'First Floor - Room 109',
           capacity: 'Multiple teams',
           descriptionGame: 'There are 4 snowflake templates. You divide up the patterns and set a timer for 30 seconds. Make as many snowflakes as you can in the time available.',
           descriptionPoints: "Enter the number of snowflakes you have made in your #Feld."
@@ -433,7 +433,7 @@ const game15 = await prisma.game.create({
           language: 'de',
           title: 'Eisangler',
           story: 'Der Weihnachtsmann mag es entspannt. In seiner begrenzten Freizeit geht er auf den gefrorenen See, schneidet ein Loch hinein und angelt. Eisfischen ist zwar kalt, aber was alles in den verborgenen Seen des Nordpols schwimmt, davon kann man hier nur träumen.',
-          station: 'Erdgeschoss - Raum 106',
+          station: 'Erdgeschoss - Raum 109',
           capacity: '1 Team',
           descriptionGame: 'Startet einen Timer für 30 Sekunden und versucht mit euren Angeln die Zuckerstangen aus dem Pool zu fischen.',
           descriptionPoints: "Jeder trägt sich die gefangenen Zuckerstangen in sein #Feld ein."
@@ -442,7 +442,7 @@ const game15 = await prisma.game.create({
           language: 'en',
           title: 'Ice Fishing',
           story: 'Santa likes it relaxed. In his limited free time, he goes to the frozen lake, cuts a hole and goes fishing. Ice fishing may be cold, but you can only dream of what swims in the hidden lakes of the North Pole.',
-          station: 'Ground Floor - Room 106',
+          station: 'Ground Floor - Room 109',
           capacity: '1 Team',
           descriptionGame: 'Start a timer for 30 seconds and try to fish the candy canes out of the pool with your fishing rods.',
           descriptionPoints: "Everyone enters the candy canes they have caught in their #field."
@@ -515,7 +515,7 @@ const game17 = await prisma.game.create({
 const game18 = await prisma.game.create({
     data: {
         url: '',
-        tagged:":unit:Platz:unit:",
+        tagged:":unit:Platz:unit:,noWorldRecord",
         languages: {
             create: [
                 {

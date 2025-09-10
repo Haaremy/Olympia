@@ -31,6 +31,7 @@ npx next build
 npx cap copy
 npx cap sync
 npx cap open android
+build.gradle (Module App) -> Versions Code ++
 
 # Clean DB
 chmod +x node_modules/.bin/prisma
@@ -49,6 +50,7 @@ npx prisma migrate deploy
 |:unit:sec:unit:|Weltrekord Einheit des Rekords: Sekunden|
 |overridePlayers|Zeigt alle Einträge-Felder unabhängig der Spielerzahl.|
 |noGame|Versteckt alle Einträge-Felder unabhängig der Spielerzahl.|
+|noWorldRecord|versteckt das Spiel auf der Weltrekord-Seite|
 |showF<3/4>| Zeigt das Einträge-Feld unabhängig der Spielerzahl.|
 |hideF<2-4>| Versteckt das Einträge-Feld unabhängig der Spielerzahl.|
-|hidden|Punkte und Werte sind geheim zu halten.|
+|hidden|Punkte und Werte sind geheim zu halten. Schließt Wertung in Weltrekorde aus.|

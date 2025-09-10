@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Infobox from './infoBox'; 
 import { gamesEG, gamesOG } from "./common/mapPos";
-import MapSection from './common/map_old';
+import MapSection from './common/map';
 import { useTranslation } from 'next-i18next';
 import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
@@ -393,7 +393,7 @@ const formatTime = (ms: number) => {
     />}
     </div>
 }
-    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && (
+    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !points[0]?.value &&(
     <div className="text-right mt-2">
       <button
         className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300 mt-3"

@@ -24,3 +24,37 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Marker-Text ohne Hintergrund */
+.id-marker {
+  background: #db2777 !important;   /* kein Hintergrund */
+  border: none !important;       /* kein Rahmen */
+  box-shadow: none !important;   /* kein Schatten */
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;                /* Textfarbe */
+  font-weight: bold;
+  font-size: 20px;
+  pointer-events: none;           /* Klick geht durch den Text auf Marker */
+}
+.id-marker span {
+  background: none !important;   /* span ebenfalls transparent */
+}
+
+.leaflet-touch .leaflet-bar a:first-child{
+  background-color: #db2777;
+  color:#ededed;
+  border-color:#ededed;
+}
+
+.leaflet-touch .leaflet-bar a:last-child{
+  background-color: blue;
+  color:#ededed;
+  border-color:#ededed;
+}
+
+.leaflet-bottom{
+  visibility: hidden;
+}

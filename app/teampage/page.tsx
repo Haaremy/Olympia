@@ -8,6 +8,7 @@ import { t } from "i18next";
 import { useRef } from "react";
 import InfoBox from "../infoBox";
 import Image from "next/image";
+import { Capacitor } from "@capacitor/core";
 
 
 
@@ -21,6 +22,7 @@ export default function Page() {
   const [infoTitle, setInfoTitle] = useState("!?!?!");
   const [infoColor, setInfoColor] = useState("red");
   const [updateData, setUpdateData] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [userData, setUserData] = useState({
   id: 0,
   uname: "Loading...",
@@ -113,6 +115,21 @@ setDarkMode(!darkMode);
     router.push('/');
   };
 
+  const handleDelete = async () => {
+    setDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
+     localStorage.setItem("playedGames", "");
+     await fetch(`/api/team/delete?query=${session?.user.uname}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+    }); 
+    await signOut({ redirect: false });
+    // Du kannst hier auch eine benutzerdefinierte Weiterleitung hinzufügen:
+    router.push('/');
+  }
+
  const getUser = useCallback(async () => {
       const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
         method: "GET",
@@ -163,8 +180,9 @@ const renderPlayerInput = (
     <input
       type="text"
       ref={ref}
-      className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg 
-             dark:bg-gray-700 dark:text-white dark:border-gray-600"
+      className="w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500"
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
       value={userData?.[fieldKey] ?? ""}
       onChange={(e) =>
@@ -181,12 +199,12 @@ const renderPlayerInput = (
 
 
   if (!session) {
-    return ( <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 ${darkMode ? 'bg-gray-900' : 'bg-pink-50'} transition-all duration-300`}></main>)
+    return ( <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}></main>)
   } else {
     return (
-      <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 ${darkMode ? 'bg-gray-900' : 'bg-pink-50'} transition-all duration-300`}>
+      <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}>
         {/* Hauptbereich */}
-        <div className="flex-1 w-full max-w-3xl transition-all duration-300">
+        <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${!Capacitor.getPlatform().includes('web') ? "mt-8" : "mt-4"}`}>
         {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
@@ -194,7 +212,9 @@ const renderPlayerInput = (
             <input
               type="text"
               ref={nameTRef}
-              className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder={t("enterTeam")}
               defaultValue={session.user.name || ""}
               disabled={session.user.name}
@@ -276,6 +296,26 @@ const renderPlayerInput = (
         >
           Logout
         </button>
+
+        <button
+          className="fixed bottom-4 left-6 px-6 py-3 bg-red-600 text-white rounded-lg shadow-lg hover:bg-pink-500 transition duration-300"
+          onClick={handleDelete}
+        >
+          Team löschen
+        </button>
+
+        {deleteConfirm && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+              <p className="mb-4">Enter &ldquo;LÖSCHEN&rdquo; to confirm:</p>
+              <input
+                type="text"
+                className="border border-gray-300 rounded px-3 py-2 w-64"
+              />
+            </div>
+            <button className="bg-red-600" onClick={handleDeleteConfirmed}>Bestätigen</button>
+          </div>
+        )}
         
       </main>
     );

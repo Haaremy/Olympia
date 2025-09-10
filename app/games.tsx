@@ -260,7 +260,7 @@ useEffect(() => {
           className={`${isModalOpen ? "hidden" : "block"} 
             fixed z-50 
             left-1/2 transform -translate-x-1/2 
-            sm:top-20 sm:bottom-auto 
+            sm:top-15 sm:bottom-auto lg:top-4 lg:w-[25%] sm:w-[50%]
             p-3 pl-6 pr-6 w-full max-w-md 
             text-gray-800 dark:text-white 
             bg-white dark:bg-gray-700 

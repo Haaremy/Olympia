@@ -165,7 +165,9 @@ const getOffsetISO = (dtLocal: string): string => {
           <h2 className="text-xl font-bold mb-4">{`Team <${searchedTeam.uname}>`}</h2>
           <div className="mb-4">
             <label className="block font-semibold mb-1">Team Name:</label>
-            <input type="text" ref={nameTRef} defaultValue={searchedTeam.name} className="w-full p-2 rounded-lg text-white" />
+            <input type="text" ref={nameTRef} defaultValue={searchedTeam.name} className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500" />
           </div>
           <div className="mb-4">
             <label className="block font-semibold mb-2">Players:</label>
@@ -173,7 +175,9 @@ const getOffsetISO = (dtLocal: string): string => {
               {searchedTeam.players.map((p, i) => (
                 <div key={i}>
                   <label className="block text-sm mb-1 text-white">{`Player ${i + 1}`}</label>
-                  <input type="text" defaultValue={p} ref={userRefs[i]} className="w-full p-2 rounded-lg text-white" />
+                  <input type="text" defaultValue={p} ref={userRefs[i]} className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500" />
                 </div>
               ))}
             </div>
