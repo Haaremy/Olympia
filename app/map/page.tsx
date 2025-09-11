@@ -5,14 +5,11 @@ import MapSection from '../common/map';
 import {gamesEG, gamesOG} from "../common/mapPos";
 import { useTranslation } from 'next-i18next';
 import '../../lib/i18n'
-import { useUI } from '../context/UIContext';
 
 // Main Component
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-    const { isModalOpen } = useUI();
-    const [isScrolled, setIsScrolled] = useState(false); // Default: false
-  const [hydrated, setHydrated] = useState(false); // Flag für Hydration
+
   
   
   useEffect(() => {
@@ -22,30 +19,11 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
 
 
-  useEffect(() => {
-    if (hydrated && typeof window !== "undefined") {
-      const handleScroll = () => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const docHeight = document.body.scrollHeight;
-        const remaining = docHeight - (scrollY + windowHeight);
-        setIsScrolled(remaining < 50);
-      };
 
-      window.addEventListener("scroll", handleScroll);
-      handleScroll(); // Initial call
-      
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [hydrated]);
+
 
   const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
@@ -56,7 +34,7 @@ export default function Home() {
 
       {/* Search Input */}
       <div className="flex flex-col items-center justify-between">
-      <input
+      {/*<input
           type="text"
           placeholder="Suche nach Spielnummer..."
           value={searchQuery}
@@ -72,6 +50,7 @@ export default function Home() {
             rounded-xl shadow-lg 
             focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "bottom-40" : "bottom-5"}`}
         />
+        */}
 
         {/* Map Sections */}
         <MapSection

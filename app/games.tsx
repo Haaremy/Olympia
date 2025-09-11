@@ -51,7 +51,7 @@ type GameData = {
 
 
 
-export default function GamesPage({ games, settings }: { games: Game[], settings: Settings }) {
+export default function GamesPage({ games, settings, searchQueryRef }: { games: Game[], settings: Settings, searchQueryRef: string }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showInfo, setShowInfo] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameData | null>(null);
@@ -68,6 +68,7 @@ export default function GamesPage({ games, settings }: { games: Game[], settings
   useEffect(() => {
     setLanguage(i18n.language);
     setfetchPointsForGames(true);
+    setSearchQuery(searchQueryRef);
   }, [i18n.language]);
 
 
@@ -260,8 +261,9 @@ useEffect(() => {
           className={`${isModalOpen ? "hidden" : "block"} 
             fixed z-50 
             left-1/2 transform -translate-x-1/2 
-            sm:top-15 sm:bottom-auto lg:top-4 lg:w-[25%] sm:w-[50%]
-            p-3 pl-6 pr-6 w-full max-w-md 
+            sm:top-15 sm:bottom-auto lg:top-4 
+            w-[95%] sm:w-full lg:w-[25%] sm:w-[50%]
+            p-3 pl-6 pr-6  max-w-md 
             text-gray-800 dark:text-white 
             bg-white dark:bg-gray-700 
             border border-gray-300 dark:border-gray-600 

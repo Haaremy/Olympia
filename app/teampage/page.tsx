@@ -204,7 +204,7 @@ const renderPlayerInput = (
     return (
       <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}>
         {/* Hauptbereich */}
-        <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${!Capacitor.getPlatform().includes('web') ? "mt-8" : "mt-4"}`}>
+        <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${Capacitor.getPlatform().includes('android') ? "mt-8" : "mt-4"}`}>
         {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">

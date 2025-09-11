@@ -45,7 +45,7 @@ export default async function Page() {
 
   return (
     <div>
-      <Games games={transformedGames} settings={settings || defaultSettings} /> {/* Pass transformed data to the client component */}
+      <Games games={transformedGames} settings={settings || defaultSettings} searchQueryRef='' /> {/* Pass transformed data to the client component */}
     </div>
   );
 }

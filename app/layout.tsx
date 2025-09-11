@@ -5,7 +5,7 @@ import SessionProvider from "./session-provider";
 import "./globals.css";
 import Footer from "./footer";
 import { UIProvider } from "./context/UIContext";
-
+import OngoingNotificationClient from "../app/common/useOngoingNotifications";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,10 +25,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="de" className="dark">
         
@@ -39,7 +41,8 @@ export default function RootLayout({
           <SessionProvider>
             <UIProvider>
               <Navigation/>
-              {children}
+                <OngoingNotificationClient />
+                {children}
               <Footer/>
             </UIProvider>
         </SessionProvider>

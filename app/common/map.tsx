@@ -26,8 +26,54 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position  | null>(null);
 
+  // GPS-Referenzpunkte für dein Bild
+const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
+const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
+
+
+
+function latLngToPixel(
+  lat: number,
+  lng: number,
+  imgWidth: number,
+  imgHeight: number,
+  lat1: number, lng1: number, // unten links
+  lat2: number, lng2: number  // oben rechts
+): [number, number] {
+  // normiere lng zwischen 0..1
+  const nx = (lng - lng1) / (lng2 - lng1);
+
+  // normiere lat (Achtung: y ist invertiert)
+  const ny = 1 - (lat - lat1) / (lat2 - lat1);
+
+  const x = nx * imgWidth;
+  const y = ny * imgHeight;
+
+  return [x, y];
+}
+
+async function loadGames() {
+  try {
+    const res = await fetch("/api/game"); // Pfad als String
+    if (!res.ok) throw new Error("Fehler beim Laden der Spiele");
+    const data = await res.json(); // JSON parsen
+    //console.log("Games:", data);
+    return data; // z. B. ein Array von Games
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 
    useEffect(() => {
+    
+    (async () => {
+    await loadGames();
+    
+  })();
+
+
   const fetchPosition = async () => {
     const perm = await Geolocation.requestPermissions();
     console.log("Geo Permissions:", perm);
@@ -44,11 +90,22 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   fetchPosition();
 }, []);
 
-  useEffect(() => {
+  const filteredGames = games.filter((game) =>
+    game.id.toLowerCase().includes(searchQuery.toLowerCase())
+    
+  );
+
+  const mapInstance = useRef<L.Map | null>(null);
+
+useEffect(() => {
   if (!mapRef.current) return;
 
   (async () => {
     const L = await import("leaflet");
+
+    if (mapInstance.current) {
+      return;
+    }
 
     const width = 1600;
     const height = 1131;
@@ -63,13 +120,12 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
       shadowSize: [41, 41],
     });
 
-  
-
     L.Marker.prototype.options.icon = DefaultIcon;
-    if (!mapRef.current) return;
-    const map = L.map(mapRef.current, {
+
+    if(!mapRef.current) return
+    mapInstance.current = L.map(mapRef.current, {
       crs: L.CRS.Simple,
-      minZoom: Capacitor.getPlatform().includes("web") ? -2 : -2,
+      minZoom: Capacitor.getPlatform().includes('android') ? -2 : -2,
       maxZoom: 1,
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
@@ -78,36 +134,42 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
     const idIcon = (id: string) =>
       L.divIcon({
         className: "id-marker",
-        html: `<span>${id}</span>`,
+        html: `<span>${id}</span>`, 
         iconSize: [30, 30],
         iconAnchor: [15, 15],
         popupAnchor: [0, -15],
       });
 
-    L.imageOverlay(imageSrc, bounds).addTo(map);
-    map.fitBounds(bounds);
+    L.imageOverlay(imageSrc, bounds).addTo(mapInstance.current!);
+    mapInstance.current.fitBounds(bounds);
 
-    games.forEach((game) => {
+    const titles =  await loadGames();
+
+    await filteredGames.forEach((game) => {
+      const currTitle =titles[parseInt(game.id)-1].languages[0].title ?? "test";
       L.marker([game.y, game.x], { icon: idIcon(game.id) })
-        .addTo(map)
-        .bindPopup(`${game.id}`);
+        .addTo(mapInstance.current!)
+        .bindPopup(currTitle);
     });
 
-      if (position) {
-    L.marker([position.coords.latitude, position.coords.longitude])
-    .addTo(map)
-    .bindPopup("Du bist hier");
-}
-
-    return () => {
-      map.remove();
-    };
+    if (position) {
+      const [x, y] = latLngToPixel(
+        position.coords.latitude,
+        position.coords.longitude,
+        width,
+        height,
+        bottomLeft[0], bottomLeft[1],
+        topRight[0], topRight[1]
+      );
+      L.marker([y, x])
+        .addTo(mapInstance.current!)
+        .bindPopup("Du bist hier");
+    }
   })();
-}, [games, imageSrc, position]);
+}, [imageSrc]); // Nur ausführen, wenn sich das Bild ändert
 
-  const filteredGames = games.filter((game) =>
-    game.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+
+
 
   return (
     <section
