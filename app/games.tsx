@@ -69,7 +69,7 @@ export default function GamesPage({ games, settings, searchQueryRef }: { games: 
     setLanguage(i18n.language);
     setfetchPointsForGames(true);
     setSearchQuery(searchQueryRef);
-  }, [i18n.language]);
+  }, [i18n.language, searchQueryRef]);
 
 
   // Filtere Spiele basierend auf der Suche
@@ -257,7 +257,12 @@ useEffect(() => {
           type="text"
           placeholder="Suche nach Spielnummer..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => { 
+            setSearchQuery(e.target.value); 
+           setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }, 10);
+          }}
           className={`${isModalOpen ? "hidden" : "block"} 
             fixed z-50 
             left-1/2 transform -translate-x-1/2 
@@ -268,7 +273,7 @@ useEffect(() => {
             bg-white dark:bg-gray-700 
             border border-gray-300 dark:border-gray-600 
             rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "bottom-40" : "bottom-5"}
+            focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "bottom-50" : "bottom-5"}
             `}
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10">
@@ -277,10 +282,11 @@ useEffect(() => {
           )}
 
           {randomizedGames.map((game) => (
-            
+            <div 
+            key={game.id} 
+            className={` ${randomizedGames[randomizedGames.length - 1].id == game.id ? "mb-16 sm:mb-0" : ""}`}>
             <div
-              key={game.id}
-              className="relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105"
+              className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
               onClick={() => handleInfoOpen(game, settings)}
             >
               <Image
@@ -296,6 +302,7 @@ useEffect(() => {
               <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
                 <h2 className="text-xl font-semibold">{game.languages[language]?.title}</h2>
               </div>
+            </div>
             </div>
           ))}
         </div>

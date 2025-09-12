@@ -12,16 +12,14 @@ const config: CapacitorConfig = {
     allowMixedContent: true          // erlaubt HTTP Inhalte (nicht HTTPS)
   },
   plugins: {
-    SplashScreen: { // android/app/src/main/res/values/styles.xml // ios/App/App/Assets.xcassets/LaunchImage.imageset/
-      launchShowDuration: 1500, // Millisekunden
-      launchAutoHide: true,      // automatisch nach der Zeit ausblenden
-      backgroundColor: "#ffffff",
-      androidScaleType: "CENTER_CROP",
-      showSpinner: false,
-      androidSpinnerStyle: "large",
-      spinnerColor: "#999999",
-      splashFullScreen: true,
-      splashImmersive: true
+    SplashScreen: {
+      launchShowDuration: 1500, // Dauer in ms
+      launchAutoHide: true,      // automatisch ausblenden
+      backgroundColor: '#ffffff', // Hintergrundfarbe während Splash
+      androidSplashResourceName: 'splash', // drawable Ressource
+      showSpinner: true,
+      androidSpinnerStyle: 'large',
+      spinnerColor: '#999999',
     }
   }
 };

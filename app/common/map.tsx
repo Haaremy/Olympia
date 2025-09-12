@@ -27,8 +27,7 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   const [position, setPosition] = useState<Position  | null>(null);
 
   // GPS-Referenzpunkte für dein Bild
-const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
-const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
+
 
 
 
@@ -107,6 +106,8 @@ useEffect(() => {
       return;
     }
 
+    const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
+    const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
     const width = 1600;
     const height = 1131;
     const bounds: L.LatLngBoundsExpression = [[0, 0], [height, width]];
@@ -166,8 +167,7 @@ useEffect(() => {
         .bindPopup("Du bist hier");
     }
   })();
-}, [imageSrc]); // Nur ausführen, wenn sich das Bild ändert
-
+}, [imageSrc, filteredGames, position]);
 
 
 
@@ -183,6 +183,7 @@ useEffect(() => {
 
       {/* Container für Leaflet Map */}
       <div ref={mapRef} style={{ height: "32vh", width: "100%", zIndex: "0", background: "linear-gradient(to bottom, #E3001B, #140079"} } />
+      <div>{!!position ? `${position.coords.latitude} ":"${position.coords.longitude} `: ""}</div>
     </section>
   );
 }

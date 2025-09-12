@@ -1,19 +1,18 @@
 'use client'
 import { signOut, useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import '../../lib/i18n';
 import { t } from "i18next";
-import { useRef } from "react";
 import InfoBox from "../infoBox";
 import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
+import DeleteConfirmModal from "../confirmDelete";
 
 
 
 export default function Page() {
-  const [darkMode, setDarkMode] = useState(true);
   const { i18n } = useTranslation();
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -82,15 +81,31 @@ export default function Page() {
   }
   };
 
-  const toggleDarkMode = () => {
-    
-    if (!darkMode) {
-  document.documentElement.classList.add('dark');
-} else {
-  document.documentElement.classList.remove('dark');
-}
-setDarkMode(!darkMode);
-  }
+
+  const [theme, setTheme] = useState("dark");
+
+  // Beim ersten Render den gespeicherten Wert aus localStorage holen
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    document.documentElement.classList.remove("dark");
+    if(theme.includes("")) return;
+    document.documentElement.classList.add("dark");
+  }, [theme]);
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    document.documentElement.classList.remove("dark"); // lightMode = ""
+    if(selectedValue.includes("light")) {
+      localStorage.setItem("theme", "");
+       setTheme("");
+      return;
+    }
+    document.documentElement.classList.add(selectedValue);
+    setTheme(selectedValue);
+  };
+
 
   const handleLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -106,6 +121,7 @@ setDarkMode(!darkMode);
 
   const handleClose = () => {
     handleShowSaved(false);
+    setDeleteConfirm(false);
   }
 
   const handleLogout = async () => {
@@ -119,16 +135,7 @@ setDarkMode(!darkMode);
     setDeleteConfirm(true);
   };
 
-  const handleDeleteConfirmed = async () => {
-     localStorage.setItem("playedGames", "");
-     await fetch(`/api/team/delete?query=${session?.user.uname}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-    }); 
-    await signOut({ redirect: false });
-    // Du kannst hier auch eine benutzerdefinierte Weiterleitung hinzufügen:
-    router.push('/');
-  }
+
 
  const getUser = useCallback(async () => {
       const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
@@ -264,16 +271,15 @@ const renderPlayerInput = (
               </select>
             </div>
 
-            <div className="mt-4">
+             <div className="mt-4">
               <label className="block text-gray-800 dark:text-white">Design:</label>
               <select
-                value={darkMode ? 'dark' : 'light'}
-                onChange={() => toggleDarkMode()}
-                disabled={true}
+                value={theme}
+                onChange={handleChange}
                 className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
               >
-                <option value="light">{t("light")}</option>
-                <option value="dark">{t("dark")}</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
               </select>
             </div>
             
@@ -305,16 +311,7 @@ const renderPlayerInput = (
         </button>
 
         {deleteConfirm && (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-              <p className="mb-4">Enter &ldquo;LÖSCHEN&rdquo; to confirm:</p>
-              <input
-                type="text"
-                className="border border-gray-300 rounded px-3 py-2 w-64"
-              />
-            </div>
-            <button className="bg-red-600" onClick={handleDeleteConfirmed}>Bestätigen</button>
-          </div>
+          <DeleteConfirmModal onClose={handleClose}/>
         )}
         
       </main>

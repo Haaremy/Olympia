@@ -22,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [showRegister, setShowRegister] = useState(false);
   
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     await performLogin();
   };
@@ -154,7 +154,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form  className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-sm font-medium mb-1">Team Login ID</label>
             <input
@@ -217,7 +217,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           </div>
         }
           <button
-            type="submit"
+            type="button"
+            onClick={handleLogin}
             className="w-full py-2 rounded-lg bg-pink-500 text-white font-medium hover:bg-pink-600 transition"
           >
             Login

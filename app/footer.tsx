@@ -26,8 +26,16 @@ export default function Footer() {
         {/* Link 2 */}
         <Link href="https://instagram.com/haaremy" className="flex items-center text-gray-800 dark:text-gray-200">
           <p className="font-mono font-bold">
-            <span className="text-lg font-semibold text-white-500 dark:text-white-400">{t("author")} </span>
-            <span className="text-lg font-semibold text-pink-500 dark:text-pink-400">@Haaremy</span>
+            <span className="text-md font-semibold text-white-500 dark:text-white-400">{t("author")} </span>
+            <span className="text-lg font-semibold text-pink-500 dark:text-pink-400">@Haaremy  </span>
+          </p>
+        </Link>
+
+        {/* Link 2 */}
+        <Link href="/credits" className="flex items-center text-gray-800 dark:text-gray-200">
+          <p className="font-mono font-bold">
+            <span className="text-md font-semibold text-white-500 dark:text-white-400 hidden sm:visible">Credits +</span>
+            <span className="text-md font-semibold text-white-500 dark:text-white-400">⚙️</span>
           </p>
         </Link>
       </div>
