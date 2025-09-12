@@ -25,6 +25,11 @@ export default function Navigation() {
 
   const currentPath = usePathname(); // Hol dir den aktuellen Pfad
 
+   const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(Capacitor.getPlatform() === 'android');
+  }, []);
 
   // Schließen des Login-Modals
   const handleLoginClose = () => setShowLogin(false);
@@ -111,7 +116,7 @@ if (lastChecked) {
       <header
         className={`fixed top-0 left-0 w-full bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 shadow-md z-50 transition-transform duration-300`}
       >
-        <div className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${Capacitor.getPlatform().includes('android') ? "mt-6" : ""} gap-4`}>
+        <div className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${isAndroid ? "mt-6" : ""} gap-4`}>
           {/* Headline */}
           <div
             className={`${
