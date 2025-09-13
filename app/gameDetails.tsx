@@ -333,12 +333,12 @@ const formatTime = (ms: number) => {
                     ) : session  ? (
                         <Link
                             href="/teampage"
-                            className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
+                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 mt-2"
                         >
                             {t("Edit Team")}
                         </Link> 
                     ) :(
-                        <button className="px-4bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2" onClick={handleShowLogin}>
+                        <button className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 mt-2" onClick={handleShowLogin}>
                             {t("Login")}
                         </button>
                         
