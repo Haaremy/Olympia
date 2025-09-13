@@ -17,6 +17,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const min = new Date().getMinutes();
     const curTime = hour*60+min;
 
+
     useEffect(() => {
         const modal = modalRef.current;
         setIsModalOpen(true);
@@ -67,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             aria-labelledby="modal-title"
             aria-hidden="false"
             onClick={handleOverlayClick} // Close modal on overlay click
-        >
+          >
             <div
                 ref={modalRef}
                 className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
@@ -91,61 +92,31 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
  
                 {/* Ist event Zeit : vor nächstem event Zeit : nach Event Zeit*/ }
                 <div className="overflow-y-auto max-h-[40vh] pr-2">
-<table className="mt-4 table-auto w-full max-w-md text-left border-collapse">
-  <thead>
-    <tr>
-      <th className="text-white font-semibold pb-2 pr-8">Zeit</th>
-      <th className="text-white font-semibold pb-2">Event</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">16:00</td>
-      <td className={`${curTime < (17*60) ? "text-white-500 text-lg py-4" : curTime >= (17*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal `}>
-        {t("tt-0")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">17:00</td>
-      <td className={`${curTime < (19*60+30) && curTime >= (17*60) ? "text-white-500 text-lg py-4" : curTime >= (19*60+30)? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-1")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">19:30</td>
-      <td className={`${curTime < (22*60) && curTime >= (19*60+30) ? "text-white-500 text-lg py-4"  : curTime >= (22*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-2")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">20:30</td>
-      <td className={`${curTime < (22*60) && curTime >= (20*60+30) ? "text-white-500 text-lg py-4" : curTime >= (22*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-3")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">22:00</td>
-      <td className={`${curTime < (23*60+30) && curTime >= (22*60) ? "text-white-500 text-lg py-4" : curTime >= (23*60+30) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-4")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">23:30</td>
-      <td className={`${curTime < (1*60)? "text-white-500 text-lg py-4" : curTime >= (1*60) && curTime < (2*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-5")}
-      </td>
-    </tr>
-    <tr className="border-b border-white/10">
-      <td className="text-white pr-8">01:00</td>
-      <td className={`${curTime < (3*60) ? "text-white-500 text-lg py-4" : curTime >= (3*60) && curTime < (3*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-        {t("tt-6")}
-      </td>
-    </tr>
-  </tbody>
-</table>
-</div>
+                <table className="mt-4 table-auto w-full max-w-md text-left border-collapse">
+                  <thead>
+                    <tr>
+                      <th className="text-white font-semibold pb-2 pr-8">Zeit</th>
+                      <th className="text-white font-semibold pb-2">Event</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-white/10">
+                      <td className="text-white pr-8">16:00</td>
+                      <td className={`${curTime < (17*60) ? "text-white-500 text-lg py-4" : curTime >= (17*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal `}>
+                        {t("tt-0")}
+                      </td>
+                    </tr>
+                    <tr className="border-b border-white/10">
+                      <td className="text-white pr-8">17:00</td>
+                      <td className={`${curTime < (19*60+30) && curTime >= (17*60) ? "text-white-500 text-lg py-4" : curTime >= (19*60+30)? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
+                        {t("tt-1")}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
 
-
+                
             </div>
         </div>
     );

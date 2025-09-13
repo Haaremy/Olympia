@@ -288,15 +288,15 @@ const formatTime = (ms: number) => {
                 {/* Modal Content */}
                 <div className="overflow-y-auto max-h-[70vh]">
                     <p className="text-sm mb-4">{message.story}</p>
-                    
+                    <hr className="my-6 border-gray-300 dark:border-gray-600" />
                     {/* Map Toggle Button */}
                     <button
                         onClick={handleShowMap}
-                        className="w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 dark:text-pink-400"
+                        className="w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 dark:text-pink-400 "
                         >
                         &#x1F449; {message.station}
                     </button>
-
+                      
                     {showMap && (
                         
                     <MapSection
@@ -308,20 +308,22 @@ const formatTime = (ms: number) => {
                     )}
 
                     {/* Capacity */}
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 mt-4">{t("capacity")}<br />{message.capacity}</p>
+                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
+                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">{t("capacity")}</h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">{message.capacity}</p>
 
                     {/* Instructions */}
-                    <p className="text-sm mb-4">
-                        {t("howTo")}
-                        <br />
-                         <span dangerouslySetInnerHTML={{ __html: message.content }} />
-                    </p>
+                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
+                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">{t("howTo")}</h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: message.content }} />
+                        
 
                     {/* Points Description */}
-                    
-                    <p className="text-sm mb-4">
-                    {t("descriptionPoints")} 
-                    {!message.started ? <button className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
+                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
+                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4">{t("descriptionPoints")}</h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  
+                    {!message.started ? <button className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
                     userData && !!userData?.user1 && !!userData?.user2 ? (
                     <>
                         <br />
@@ -331,12 +333,12 @@ const formatTime = (ms: number) => {
                     ) : session  ? (
                         <Link
                             href="/teampage"
-                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
+                            className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"
                         >
                             {t("Edit Team")}
                         </Link> 
                     ) :(
-                        <button className="px-4 py-1 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2" onClick={handleShowLogin}>
+                        <button className="px-4bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2" onClick={handleShowLogin}>
                             {t("Login")}
                         </button>
                         

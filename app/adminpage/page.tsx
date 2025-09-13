@@ -62,6 +62,7 @@ const getOffsetISO = (dtLocal: string): string => {
   const handleLogout = () => {
     localStorage.setItem("playedGames", "");
     signOut();
+    router.push("/");
   }
 
   useEffect(() => {

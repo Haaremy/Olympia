@@ -92,7 +92,7 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
         <div className="flex justify-end gap-3 mt-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition"
+            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
           >
             Abbrechen
           </button>

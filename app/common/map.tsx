@@ -70,6 +70,13 @@ async function loadGames() {
     (async () => {
     await loadGames();
     
+     const interval = setInterval(() => {
+      fetchPosition();
+    }, 2000);
+
+    // Cleanup beim Unmount
+    return () => clearInterval(interval);
+
   })();
 
 
@@ -88,6 +95,7 @@ async function loadGames() {
 
   fetchPosition();
 }, []);
+
 
   const filteredGames = games.filter((game) =>
     game.id.toLowerCase().includes(searchQuery.toLowerCase())

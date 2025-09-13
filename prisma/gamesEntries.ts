@@ -6,7 +6,7 @@ export async function gameEntries() {
   const game1 = await prisma.game.create({
     data: {
       url: 'https://www.youtube.com/embed/709ZC7t-8RU',
-      tagged: "hidden,overridePlayers",
+      tagged: "hidden,overridePlayers,mapPosx860mapPosx,mapPosy250mapPosy",
       languages: {
         create: [
           {
@@ -66,26 +66,26 @@ const game2 = await prisma.game.create({
 const game3 = await prisma.game.create({
   data: {
     url: '',
-    tagged: "hidden,overridePlayers",
+    tagged: "",
     languages: {
       create: [
         {
           language: 'de',
-          title: 'Do Re Miiiiii',
-          story: 'Die Schallplatten des Elfenchors wurden zerkratzt! Die ganzen Aufnahmen des Hit-Albums \'Elf on its self\' sind ruiniert und keiner weiß mehr welches Lied nun welches ist! Helft den Elfen sich uz erinnern.',
-          station: 'Erdgeschoss - Raum 106',
-          capacity: '1 Team',
-          descriptionGame: 'Es gibt einen Stationsleiter! Ihr erhaltet Tipps zum Lied ',
-          descriptionPoints: 'Ihr erhaltet 10 Punkte pro #Feld. Jeder Tipp gibt -2 Punkte.'
+          title: 'tobedone',
+          story: 'tobedone',
+          station: 'tobedone',
+          capacity: 'tobedone',
+          descriptionGame: 'tobedone',
+          descriptionPoints: 'tobedone'
         },
         {
           language: 'en',
-          title: 'Do Re Miiiiii',
-          story: 'The records of the Elf Choir have been scratched! All the recordings of the hit album \'Elf on itself\' are ruined and nobody knows which song is which anymore! Help the elves to remember.',
-          station: 'Ground Floor – Room 106',
-          capacity: '1 Team',
-          descriptionGame: 'Listen to the station coordinator! You will receive tips on the song. ',
-          descriptionPoints: 'You will receive 10 points per #field. Each tip is worth -2 points.'
+          title: 'tobedone',
+          story: 'tobedone',
+          station: 'tobedone',
+          capacity: 'tobedone',
+          descriptionGame: 'tobedone',
+          descriptionPoints: 'tobedone'
         }
       ]
     }
@@ -395,27 +395,27 @@ const game13 = await prisma.game.create({
 
 const game14 = await prisma.game.create({
   data: {
-    url: 'https://www.youtube.com/embed/OHYBwpMBtqU',
-    tagged:":unit:Flocken:unit:",
+    url: '',
+    tagged:"",
     languages: {
       create: [
         {
           language: 'de',
-          title: 'Frau Holle',
-          story: 'Im Buchclub der Weihnachtsfrau ist Frau Holle. Sie erzählt von den unzähligen Azubis und vergleicht sie mit ihren ersten beiden - der Gold und der Pechmarie. Auch Praktika zum Schneien bietet sie an. Ist das nicht cool?',
-          station: 'Erdgeschoss - Raum 109',
-          capacity: 'Multiple Teams',
-          descriptionGame: 'Es gibt 4 Schneeflocken-Vorlagen. Ihr sucht euch ein Muster aus und stellt einen Timer auf 5 Minuten. Bastelt so viele Schneeflocken, wie ihr in der Zeit schafft.',
-          descriptionPoints: "Tragt die Anzahl der gebastelten Schneeflocken in euer #Feld ein."
+          title: 'tobedone',
+          story: 'tobedone',
+          station: 'tobedone',
+          capacity: 'tobedone',
+          descriptionGame: 'tobedone',
+          descriptionPoints: "tobedone"
         },
         {
           language: 'en',
-          title: 'Mother Hulda',
-          story: 'Mother Hulda is a member of Mrs Santa\'s book club. She talks about the countless apprentices and compares them to her first two – the Golden Girl and the Luckless Girl. She also offers practical training in snowmaking. Isn\'t that cool?',
-          station: 'First Floor - Room 109',
-          capacity: 'Multiple teams',
-          descriptionGame: 'There are 4 snowflake templates. You divide up the patterns and set a timer for 30 seconds. Make as many snowflakes as you can in the time available.',
-          descriptionPoints: "Enter the number of snowflakes you have made in your #Feld."
+          title: 'tobedone',
+          story: 'tobedone',
+          station: 'tobedone',
+          capacity: 'tobedone',
+          descriptionGame: 'tobedone',
+          descriptionPoints: "tobedone"
         }
       ]
     }
@@ -460,21 +460,21 @@ const game16 = await prisma.game.create({
       create: [
         {
           language: 'de',
-          title: 'Süße Turm von Pisa',
-          story: 'Überall bauen Kinder hübsch verzierte Lebkuchenhäuser, aber die sind hier ja standard. Am Nordpol bauen wir Marshmallow-Türme und versuchen damit so hoch zu kommen wie es geht.',
+          title: 'Kalter Turm von Pisa',
+          story: 'Überall bauen Kinder hübsch verzierte Lebkuchenhäuser, aber die sind hier ja standard. Am Nordpol bauen wir Schneeball-Türme und versuchen damit so hoch zu kommen wie es geht.',
           station: 'Obergeschoss 1 - Raum 216',
           capacity: 'Multiple Teams',
-          descriptionGame: 'Ihr benötigt einen Timer. Jeder Spieler baut einen Turm aus Marshmallows. Das Spiel ist nach 1 Minute beendet.',
-          descriptionPoints: "Tragt die Anzahl der Marshmallow-Etagen in sein jeweiliges #Feld."
+          descriptionGame: 'Ihr benötigt einen Timer. Jeder Spieler baut einen Turm aus Stoff-Schneebällen. Das Spiel ist nach 1 Minute beendet.',
+          descriptionPoints: "Tragt die Anzahl der Ball-Etagen in euer jeweiliges #Feld."
         },
         {
           language: 'en',
           title: 'Sweet Tower of Pisa',
-          story: 'Children everywhere make beautifully decorated gingerbread houses, but here they are standard. At the North Pole, we build marshmallow towers and try to get as high as we can.',
+          story: 'Children everywhere make beautifully decorated gingerbread houses, but here they are standard. At the North Pole, we build snowball towers and try to get as high as we can.',
           station: 'First Floor – Room 216',
           capacity: 'Multiple teams',
-          descriptionGame: 'Each player builds a marshmallow tower. You always stack 1 on top of another. The game is over when the tower falls.',
-          descriptionPoints: "Enter the number of marshmallow layers in your respective #field."
+          descriptionGame: 'Each player builds a snowball tower. You always stack 1 on top of another. Start a 1 minute Timer. The game is over when the timer runs out.',
+          descriptionPoints: "Enter the number of ball layers in your respective #field."
         }
       ]
     }
@@ -515,26 +515,26 @@ const game17 = await prisma.game.create({
 const game18 = await prisma.game.create({
     data: {
         url: '',
-        tagged:":unit:Platz:unit:,noWorldRecord",
+        tagged:"",
         languages: {
             create: [
                 {
                     language: 'de',
-                    title: 'Christmas Kart',
-                    story: 'Digital und Elektronisch - was anderes wollen die Kinder heute gar nicht mehr. Die Elfen sind in jedem Videospiel meister geworden, weil sie auch jedes mehrfach testen müssen, bevor der Weihnachtsmann diese verschenken darf.',
-                    station: 'Obergeschoss 1 - Raum 216',
-                    capacity: '1 bis 8 Teams',
-                    descriptionGame: 'Ihr spielt Mario Kart Grand Prix auf 150ccm gegen andere Teams und COMs. Jeder Spieler spielt eine Strecke. Es gibt einen Stationsleiter!',
-                    descriptionPoints: 'Eure Platzierung in der Runde wird in euer #Feld eingetragen.'
+                    title: 'tobedone',
+                    story: 'tobedone',
+                    station: 'tobedone',
+                    capacity: 'tobedone',
+                    descriptionGame: 'tobedone',
+                    descriptionPoints: 'tobedone'
                 },
                 {
                     language: 'en',
-                    title: 'Christmas Kart',
-                    story: 'Digital and electronic - that\'s all kids want these days. The elves have become champions in every video game because they also have to test each one several times before Santa can give them away.',
-                    station: 'First Floor – Room 216',
-                    capacity: '1 to 4 teams',
-                    descriptionGame: 'You play Mario Kart Grand Prix on 100ccm against other teams and COMs. Each player plays one route. Listen to the station coordinator!',
-                    descriptionPoints: 'Your ranking in the round will be entered in your #field.'
+                    title: 'tobedone',
+                    story: 'tobedone',
+                    station: 'tobedone',
+                    capacity: 'tobedone',
+                    descriptionGame: 'tobedone',
+                    descriptionPoints: 'tobedone'
                 }
             ]
         }

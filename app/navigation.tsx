@@ -137,77 +137,85 @@ if (lastChecked) {
           </div>
 
           {/* Button-Gruppe */}
-          <div className="flex flex-wrap gap-2 justify-center sm:justify-end">
+          <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath !== "/credits" ? "visible" : "hidden"}`}>
 
-          {currentPath !== "/adminpage" && currentPath !== "/teampage" ? (
-              user ? (
-                user.role === "ADMIN" ? (
-                  <Link
-                    href="/adminpage"
-                    className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-                  >
-                    <p className="text-lg font-semibold">Admin</p>
-                  </Link>
+            {currentPath !== "/adminpage" && currentPath !== "/teampage" ? (
+                user ? (
+                  user.role === "ADMIN" ? (
+                    <Link
+                      href="/adminpage"
+                      className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                    >
+                      <p className="text-lg font-semibold">Admin</p>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/teampage"
+                      className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                    >
+                      <p className="text-lg font-semibold">Team</p>
+                    </Link>
+                  )
                 ) : (
-                  <Link
-                    href="/teampage"
+                  <button
+                    onClick={handleLoginOpen}
                     className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
                   >
-                    <p className="text-lg font-semibold">Team</p>
-                  </Link>
+                    <p className="text-lg font-semibold">Login</p>
+                  </button>
                 )
               ) : (
-                <button
-                  onClick={handleLoginOpen}
+                <Link
+                  href={"/"}
                   className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
                 >
-                  <p className="text-lg font-semibold">Login</p>
-                </button>
-              )
-            ) : (
+                  <p className="text-lg font-semibold"> {t('games')}</p>
+                </Link>
+              )}
+              {currentPath !== "/scoreboard" ?
+              <Link
+                href={"/scoreboard"}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+              >
+                <p className="text-lg font-semibold">Scoreboard</p>
+              </Link>
+              :
               <Link
                 href={"/"}
                 className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
               >
-                <p className="text-lg font-semibold"> {t('games')}</p>
+                <p className="text-lg font-semibold">{t('games')}</p>
               </Link>
-            )}
-            {currentPath !== "/scoreboard" ?
-            <Link
-              href={"/scoreboard"}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-            >
-              <p className="text-lg font-semibold">Scoreboard</p>
-            </Link>
-            :
-            <Link
-              href={"/"}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-            >
-              <p className="text-lg font-semibold">{t('games')}</p>
-            </Link>
-            }
+              }
 
-          {currentPath !== "/map" ?
-            <Link
-              href={"/map"}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-            >
-              <p className="text-lg font-semibold">{t('map')}</p>
-            </Link>
-            :
-            <Link
-              href={"/"}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-            >
-              <p className="text-lg font-semibold">{t('games')}</p>
-            </Link>
-            }
-
-            
-
+            {currentPath !== "/map" ?
+              <Link
+                href={"/map"}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+              >
+                <p className="text-lg font-semibold">{t('map')}</p>
+              </Link>
+              :
+              <Link
+                href={"/"}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+              >
+                <p className="text-lg font-semibold">{t('games')}</p>
+              </Link>
+              }
             
           </div>
+
+
+          <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
+              <Link
+                href={"/"}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                    >
+                        X
+              </Link>
+          </div>
+
           {/* Modals */}
           {timePlan && <PlannedTime onClose={handleTimePlanClose} />}
           {showLanguage && <Language onClose={handleLanguageClose} />}

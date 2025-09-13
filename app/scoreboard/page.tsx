@@ -50,6 +50,11 @@ export default function ScoreboardTabs() {
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(Date.now());
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(Capacitor.getPlatform() === 'android');
+  }, []);
   
 
   useEffect(() => {
@@ -147,7 +152,7 @@ export default function ScoreboardTabs() {
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
       {/* Tabs */}
-      <div className={`flex justify-center mb-8  ${Capacitor.getPlatform().includes('android') ? "mt-8" : "mt-4"}`}>
+      <div className={`flex justify-center mb-8  ${isAndroid ? "mt-8" : "mt-4"}`}>
         <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           <button
             onClick={() => setActiveTab("scoreboard")}
@@ -222,8 +227,8 @@ export default function ScoreboardTabs() {
                                 <th className="border px-2 py-1">Spiel</th>
                                 <th className="border px-2 py-1">{team.user1}</th>
                                 <th className="border px-2 py-1">{team.user2}</th>
-                                <th className="border px-2 py-1">{team.user3 || "Spieler 3"}</th>
-                                <th className="border px-2 py-1">{team.user4 || "Spieler 4"}</th>
+                                <th className="border px-2 py-1">{team.user3 || "-"}</th>
+                                <th className="border px-2 py-1">{team.user4 || "-"}</th>
                                 <th className="border px-2 py-1">Letztes Update</th>
                               </tr>
                             </thead>

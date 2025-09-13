@@ -32,6 +32,12 @@ export default function Page() {
   user4: "",
 });
 
+const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    setIsAndroid(Capacitor.getPlatform() === 'android');
+  }, []);
+
 
   const nameTRef = useRef<HTMLInputElement>(null);
   const user1Ref = useRef<HTMLInputElement>(null);
@@ -82,29 +88,8 @@ export default function Page() {
   };
 
 
-  const [theme, setTheme] = useState("dark");
 
-  // Beim ersten Render den gespeicherten Wert aus localStorage holen
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.classList.remove("dark");
-    if(theme.includes("")) return;
-    document.documentElement.classList.add("dark");
-  }, [theme]);
-
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    document.documentElement.classList.remove("dark"); // lightMode = ""
-    if(selectedValue.includes("light")) {
-      localStorage.setItem("theme", "");
-       setTheme("");
-      return;
-    }
-    document.documentElement.classList.add(selectedValue);
-    setTheme(selectedValue);
-  };
+  
 
 
   const handleLanguage = (lang: string) => {
@@ -211,7 +196,7 @@ const renderPlayerInput = (
     return (
       <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}>
         {/* Hauptbereich */}
-        <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${Capacitor.getPlatform().includes('android') ? "mt-8" : "mt-4"}`}>
+        <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${isAndroid ? "mt-8" : "mt-4"}`}>
         {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
@@ -271,17 +256,7 @@ const renderPlayerInput = (
               </select>
             </div>
 
-             <div className="mt-4">
-              <label className="block text-gray-800 dark:text-white">Design:</label>
-              <select
-                value={theme}
-                onChange={handleChange}
-                className="w-full mt-2 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              >
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
-            </div>
+      
             
           </div>
           

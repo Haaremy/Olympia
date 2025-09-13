@@ -5,39 +5,25 @@ import { useTranslation } from "react-i18next";
 import '../../lib/i18n';
 import { t } from "i18next";
 import Image from "next/image";
+import { detectPlatform } from "../common/detectPlatform";
+
+
 
 
 export default function Page() {
   const { i18n } = useTranslation();
-
-  const [theme, setTheme] = useState("dark");
+  const [platform, setPlatform] = useState("");
 
   // Beim ersten Render den gespeicherten Wert aus localStorage holen
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
+    
     // Sprache laden
     const savedLang = localStorage.getItem("language") || "en";
     i18n.changeLanguage(savedLang);
+    detectPlatform().then(setPlatform);
   }, [i18n]);
 
-  const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedTheme = event.target.value;
-    setTheme(selectedTheme);
-    localStorage.setItem("theme", selectedTheme);
-
-    if (selectedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+  
 
   const handleLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -72,20 +58,46 @@ export default function Page() {
             </select>
           </div>
         </div>
+    </div>
+        <h3 className={` mt-8 ${
+    platform === "Android" ? "block" : "hidden"
+  }`}>Playstore Olympia App</h3>
+      <div
+  className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${
+    platform === "Android" ? "block" : "hidden"
+  }`}
+>
+  
+  {/* Linker Bereich mit Titel + Badge */}
+  <div className="flex flex-col">
 
-        {/* Design / Theme */}
-        <div className="mt-4">
-          <label className="block text-gray-800 dark:text-white mb-1">Design:</label>
-          <select
-            value={theme}
-            onChange={handleThemeChange}
-            className="w-full p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-          >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-      </div>
+    <a
+      href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-3 inline-flex items-center"
+    >
+      <Image
+        src={`/images/googleBadge.png`}
+        alt="Google Play Store Badge"
+        width={150}
+        height={60}
+        className="hover:scale-105 transition-transform"
+      />
+    </a>
+  </div>
+
+  {/* Rechter Bereich mit App-Icon */}
+  <div className="flex-shrink-0 ml-4">
+    <Image
+      src={`/images/appLogo.png`}
+      alt="Olympia App Icon"
+      width={80}
+      height={80}
+      className="rounded-lg shadow-md"
+    />
+  </div>
+</div>
 
       {/* Credits */}
       <div className="w-full max-w-3xl mt-8">
