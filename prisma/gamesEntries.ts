@@ -71,11 +71,11 @@ const game3 = await prisma.game.create({
       create: [
         {
           language: 'de',
-          title: 'tobedone',
+          title: 'Traumblasen',
           story: 'tobedone',
           station: 'tobedone',
           capacity: 'tobedone',
-          descriptionGame: 'tobedone',
+          descriptionGame: 'In einem Behälter sind 100 Bällebad Bälle und an 4 sind Träume bzw Wünsche von Kindern (zahlen für Felder)',
           descriptionPoints: 'tobedone'
         },
         {
@@ -401,11 +401,11 @@ const game14 = await prisma.game.create({
       create: [
         {
           language: 'de',
-          title: 'tobedone',
+          title: 'Gutes Kind, böses Kind',
           story: 'tobedone',
           station: 'tobedone',
           capacity: 'tobedone',
-          descriptionGame: 'tobedone',
+          descriptionGame: 'zwei Fakten eine Lüge',
           descriptionPoints: "tobedone"
         },
         {
@@ -520,11 +520,11 @@ const game18 = await prisma.game.create({
             create: [
                 {
                     language: 'de',
-                    title: 'tobedone',
+                    title: 'Wunschlos?',
                     story: 'tobedone',
                     station: 'tobedone',
                     capacity: 'tobedone',
-                    descriptionGame: 'tobedone',
+                    descriptionGame: 'Zettel mit malen nach zahlen Rechen Aufgaben. Es kommt ein Bild raus und das was raus kommt wird über Zahlen-Tabelle in Feld eingetragen.',
                     descriptionPoints: 'tobedone'
                 },
                 {

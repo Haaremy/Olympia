@@ -125,7 +125,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 </table>
                 <div>
                 <h3 className={` mt-8 ${
-                    platform === "Android" ? "block" : "hidden"
+                    platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                   }`}>Playstore Olympia App</h3>
                       <div
                   className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${

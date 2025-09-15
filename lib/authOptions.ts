@@ -1,6 +1,7 @@
 import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./db";  // Prisma Client
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -32,7 +33,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           // Check if team exists and password matches
-          if (!team || team.password !== password) {
+          if (!team || !await bcrypt.compare(credentials!.password, team.password)) {
 
             console.error("Invalid username or password.");
             return null;

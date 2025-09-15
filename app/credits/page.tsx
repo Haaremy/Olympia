@@ -6,6 +6,8 @@ import '../../lib/i18n';
 import { t } from "i18next";
 import Image from "next/image";
 import { detectPlatform } from "../common/detectPlatform";
+import { Capacitor } from '@capacitor/core';
+
 
 
 
@@ -13,6 +15,7 @@ import { detectPlatform } from "../common/detectPlatform";
 export default function Page() {
   const { i18n } = useTranslation();
   const [platform, setPlatform] = useState("");
+    const [isApp, setIsApp] = useState(false);
 
   // Beim ersten Render den gespeicherten Wert aus localStorage holen
   useEffect(() => {
@@ -21,6 +24,8 @@ export default function Page() {
     const savedLang = localStorage.getItem("language") || "en";
     i18n.changeLanguage(savedLang);
     detectPlatform().then(setPlatform);
+    setIsApp(Capacitor.getPlatform() === 'android');
+    
   }, [i18n]);
 
   
@@ -59,45 +64,47 @@ export default function Page() {
           </div>
         </div>
     </div>
-    <h3 className={` mt-8 ${
-    platform === "Android" ? "block" : "hidden"
-  }`}>Playstore Olympia App</h3>
-      <div
-  className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${
-    platform === "Android" ? "block" : "hidden"
-  }`}
->
-  
-  {/* Linker Bereich mit Titel + Badge */}
-  <div className="flex flex-col">
-
-    <a
-      href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-3 inline-flex items-center"
-    >
-      <Image
-        src={`/images/googlebadge.png`}
-        alt="Google Play Store Badge"
-        width={150}
-        height={60}
-        className="hover:scale-105 transition-transform"
-      />
-    </a>
-  </div>
-
-  {/* Rechter Bereich mit App-Icon */}
-  <div className="flex-shrink-0 ml-4">
-    <Image
-      src={`/images/applogo.png`}
-      alt="Olympia App Icon"
-      width={80}
-      height={80}
-      className="rounded-lg shadow-md"
-    />
-  </div>
-</div>
+ <div>
+                 <h3 className={` mt-8 ${
+                     platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
+                   }`}>Playstore Olympia App</h3>
+                       <div
+                   className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${
+                     platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
+                   }`}
+                 >
+                   
+                   {/* Linker Bereich mit Titel + Badge */}
+                   <div className="flex flex-col">
+                 
+                     <a
+                       href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="mt-3 inline-flex items-center"
+                     >
+                       <Image
+                         src={`/images/googlebadge.png`}
+                         alt="Google Play Store Badge"
+                         width={150}
+                         height={60}
+                         className="hover:scale-105 transition-transform"
+                       />
+                     </a>
+                   </div>
+                 
+                   {/* Rechter Bereich mit App-Icon */}
+                   <div className="flex-shrink-0 ml-4">
+                     <Image
+                       src={`/images/applogo.png`}
+                       alt="Olympia App Icon"
+                       width={80}
+                       height={80}
+                       className="rounded-lg shadow-md"
+                     />
+                   </div>
+                 </div>
+               </div>
 
       {/* Credits */}
       <div className="w-full max-w-3xl mt-8">

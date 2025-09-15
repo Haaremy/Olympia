@@ -299,8 +299,8 @@ useEffect(() => {
           }, 10);
           }}
           className={`${isModalOpen ? "hidden" : "block"} 
-            ${isScrolled ? "mx-auto flex items-center justify-center relative" : "fixed left-1/2 -translate-x-1/2 transform bottom-5"} z-50 
-               
+            ${isScrolled ? "mx-auto flex items-center justify-center relative sm:-translate-x-1/2 sm:left-1/2 sm:fixed" : "fixed left-1/2 -translate-x-1/2  bottom-5"} z-50 
+               transform
             sm:top-15 sm:bottom-auto lg:top-4 
             w-[95%] sm:w-full lg:w-[25%] sm:w-[50%]
             p-3 pl-6 pr-6  max-w-md 
@@ -308,7 +308,7 @@ useEffect(() => {
             bg-white dark:bg-gray-700 
             border border-gray-300 dark:border-gray-600 
             rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "" : ""}
+            focus:outline-none focus:ring-2 focus:ring-pink-500 transition 
             `}
         />
     </main>

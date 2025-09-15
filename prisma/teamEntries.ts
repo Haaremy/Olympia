@@ -12,7 +12,7 @@ export async function teamEntries() {
     data: {
       uname: 'FBINS',
       name: "FSR Admin",
-      password: 'FSR5',
+      password: '$2b$10$bfhJDdwhYWtrNOR0tC6PyeNCT3Mh1D6y6ZR60LZtI9LB6veozeJpi', // FSR5
       role: 'ADMIN',
       user1: "Jeremy",
       user2: "Santa Clause",
@@ -24,7 +24,7 @@ export async function teamEntries() {
   await prisma.team.create({
     data: {
       uname: 'DUMMY',
-      password: 'TEST',
+      password: '$2b$10$9VGBYkvRY8TZwfCTVu6VSuAKlF3niGaY4fqYGVB0169k6Riiu7ZCW', // TEST
       role: 'USER',
       name: 'DummyTeam#1',
       user1: 'Testi',

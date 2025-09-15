@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Olympia",
   description: "Weihnachtsolympiade des Fachschaftsrat INS der Hochschule Anhalt. Website und Implementierung von @Haaremy.",
    icons: {
-    icon: "/favicon.svg",
+    icon: "/images/android-chrome-512x512.png",
   },
 };
 

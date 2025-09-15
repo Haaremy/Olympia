@@ -1,11 +1,12 @@
 // /api/user/register.ts
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 export async function POST(req: Request) {
-  const { uname, name, password} = await req.json();
+  const { uname, name, clearPw} = await req.json();
 
-  if (!uname || !name || !password) {
+  if (!uname || !name || !clearPw) {
     return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
   }
 
@@ -14,6 +15,9 @@ export async function POST(req: Request) {
   if (exists) {
     return NextResponse.json({ error: "Benutzername bereits vergeben" }, { status: 409 });
   }
+
+  const password = await bcrypt.hash(clearPw, 10);
+
 
   const newUser = await prisma.team.create({
     data: {

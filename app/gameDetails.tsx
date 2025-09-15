@@ -10,6 +10,10 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Capacitor } from '@capacitor/core';
+import confetti from 'canvas-confetti';
+
 
 
 interface ModalProps {
@@ -50,6 +54,8 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const [showMap, setShowMap] = useState(false);
     const [points, setPoints] = useState<PointEntry[]>([]);
     const globalPointsRef = useRef<PointEntry[]>([]);
+    const [isApp, setIsApp] = useState(false);
+    
     
 
     const { t } = useTranslation(); 
@@ -86,7 +92,8 @@ const [userData, setUserData] = useState({
     useEffect(() => {
         const modal = modalRef.current;
         setIsModalOpen(true);
-
+        setIsApp(Capacitor.getPlatform() === 'android');
+        
         // Fokus auf das Modal setzen
         if (modal) {
             modal.focus();
@@ -138,8 +145,14 @@ const [userData, setUserData] = useState({
     });
 
     if (!response.ok) throw new Error("Fehler beim Speichern");
+    if(isApp) await Haptics.impact({ style: ImpactStyle.Medium });
 
-
+    confetti({
+      particleCount: 150,
+      spread: 360,
+      origin: { y: 0.5, x:0.5 },
+      colors: ["#ec4899", "#3b82f6", "#ffffff"],
+    });
     setShowSaved(true);
     setUpdateSite(true);
 
@@ -311,19 +324,26 @@ const formatTime = (ms: number) => {
                      <hr className="my-6 border-gray-300 dark:border-gray-600" />
                     <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">{t("capacity")}</h3>
                     <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">{message.capacity}</p>
+                    { !points[0]?.value && (
+                      <>
+                        {/* Instructions */}
+                        <hr className="my-6 border-gray-300 dark:border-gray-600" />
+                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                          {t("howTo")}
+                        </h3>
+                        <p
+                          className="text-sm text-gray-700 dark:text-gray-300 mb-4"
+                          dangerouslySetInnerHTML={{ __html: message.content }}
+                        />
 
-                    {/* Instructions */}
-                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">{t("howTo")}</h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: message.content }} />
-                        
-
-                    {/* Points Description */}
-                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4">{t("descriptionPoints")}</h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-                  
-                    {!message.started ? <button className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
+                        {/* Points Description */}
+                        <hr className="my-6 border-gray-300 dark:border-gray-600" />
+                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4">
+                          {t("descriptionPoints")}
+                        </h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                                      
+                   {!message.started ? <button className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
                     userData && !!userData?.user1 && !!userData?.user2 ? (
                     <>
                         <br />
@@ -344,52 +364,56 @@ const formatTime = (ms: number) => {
                         
                     )}
                     
-                    </p>
-
+                         {/* Hier ggf. Text oder weitere Inhalte */}
+                        </p>
+                      </>
+                    )}
+        { !!points[0]?.value && (
+          <h3>Punkte Auswertung</h3>
+        )}
                 
 
                     {/* Player Inputs */}
-                   <div className={`space-y-4 ${userData && userData.name ? "" : "hidden"}`}>
+<div className={`space-y-4 ${userData && userData.name ? "" : "hidden"}`}>
   <div >
-    {/* Player 1 */}
     { !message.tagged.includes("noGame") && !message.tagged.includes("noScoreboard") &&
     <div className="grid grid-cols-2 gap-4">
     {(!message.tagged.includes("noGame") ) && message.started &&  < input
-      type={`${message.tagged.includes("hidden")? !!points[0]?.value? "password" : "number" : "number"}`}
+      type={`${!!points[0]?.value || points[0]?.value == 0 ? message.tagged.includes("hidden")?  "password" : "text" : "number"}`}
       placeholder={t("f1w")}
-      value={points[0]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user1 ?? "")}
+      value={points[0]?.value  || points[0]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[0].value : (playerInputs.user1 ?? "")}
       name="user1"
-      disabled={points[0]?.value ? true : false}
+      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
       onChange={handleInputChange}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
     />}
     
     {(userData?.user2 != "" && !!userData?.user2 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")  && !message.tagged.includes("hideF2") && !message.tagged.includes("noGame")) && message.started && < input
-      type={`${message.tagged.includes("hidden")? !!points[1]?.value? "password" : "number" : "number"}`}
+      type={`${!!points[1]?.value || points[1]?.value == 0 ? message.tagged.includes("hidden")?  "password" : "text" : "number"}`}
       placeholder={t("f2w")}
-      value={points[1]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user2 ?? "")}
+      value={points[1]?.value   || points[1]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[1].value : (playerInputs.user2 ?? "")}
       name="user2"
-      disabled={points[0]?.value ? true : false}
+      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
       onChange={handleInputChange}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
     />}
     
     {(userData?.user3 != "" && !!userData?.user3 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF3") && !message.tagged.includes("hideF3") && !message.tagged.includes("noGame"))  && message.started && < input
-      type={`${message.tagged.includes("hidden")? !!points[2]?.value? "password" : "number" : "number"}`}
+      type={`${!!points[2]?.value || points[2]?.value == 0 ? message.tagged.includes("hidden") ?  "password" : "text" : "number"}`}
       placeholder={t("f3w")}
-      value={points[2]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user3 ?? "")}
+      value={points[2]?.value || points[2]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[2].value: (playerInputs.user3 ?? "")}
       name="user3"
-      disabled={points[0]?.value ? true : false}
+      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
       onChange={handleInputChange}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
     />}
     
     {(userData?.user4 != "" && !!userData?.user4 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF4") && !message.tagged.includes("noGame") )  && message.started && < input
-      type={`${message.tagged.includes("hidden")? !!points[3]?.value? "password" : "number" : "number"}`}
+      type={`${!!points[3]?.value || points[3]?.value == 0 ? (message.tagged.includes("hidden") ?  "password" : "text") : "number"}`}
       placeholder={t("f4w")}
-      value={points[3]?.value && message.tagged.includes("hidden") ? "00000" : points[0]?.value !== undefined && points[0]?.value !== null ? points[0].value : (playerInputs.user4 ?? "")}
+      value={points[3]?.value || points[3]?.value == 0 ? message.tagged.includes("hidden") ? "Secret" : points[3].value : (playerInputs.user4 ?? "")}
       name="user4"
-      disabled={points[0]?.value ? true : false}
+      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
       onChange={handleInputChange}
       className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
     />}

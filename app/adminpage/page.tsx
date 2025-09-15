@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import InfoBox from "../infoBox";
 import Link from "next/link";
+import { Capacitor } from "@capacitor/core";
 
 type SearchedTeam = {
   id: number;
@@ -34,6 +35,8 @@ export default function AdminDashboard() {
   const [infoMessage, setInfoMessage] = useState("");
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
+    const [isAndroid, setIsAndroid] = useState(false);
+  
 
   const nameTRef = useRef<HTMLInputElement>(null);
   const userRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -71,7 +74,8 @@ const getOffsetISO = (dtLocal: string): string => {
     else if (session.user?.role !== "ADMIN") {
       router.push(session.user.role === "USER" ? "/teampage" : "/");
     }
-
+      setIsAndroid(Capacitor.getPlatform() === 'android');
+    
     fetch("/api/settings")
       .then((res) => {
         if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
@@ -140,7 +144,7 @@ const getOffsetISO = (dtLocal: string): string => {
   return (
     <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white">
       {showSaved && <InfoBox message={infoMessage} title="Info" color="red" onClose={handleClose} />}
-      <h1 className="text-3xl font-bold mb-6 text-center">Admin Dashboard</h1>
+      <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-8" : "mt-4"}`}>Admin Dashboard</h1>
 
       {/* SEARCH */}
       <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 w-full max-w-lg">
@@ -183,8 +187,14 @@ const getOffsetISO = (dtLocal: string): string => {
               ))}
             </div>
           </div>
-          <button onClick={handleSaveTeam} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white mt-2">
+          <button onClick={handleSaveTeam} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white mt-2 mr-2">
             Team speichern
+          </button>
+          <button onClick={handleSaveTeam} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
+            Team disqualifizieren
+          </button>
+          <button onClick={handleSaveTeam} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
+            Team löschen
           </button>
         </div>
       )}

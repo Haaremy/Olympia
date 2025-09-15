@@ -58,3 +58,13 @@ body {
 .leaflet-bottom{
   visibility: hidden;
 }
+
+canvas.confetti {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  z-index: 9999 !important;
+}
