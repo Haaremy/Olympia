@@ -59,7 +59,7 @@ export default function Page() {
           </div>
         </div>
     </div>
-        <h3 className={` mt-8 ${
+    <h3 className={` mt-8 ${
     platform === "Android" ? "block" : "hidden"
   }`}>Playstore Olympia App</h3>
       <div
@@ -78,7 +78,7 @@ export default function Page() {
       className="mt-3 inline-flex items-center"
     >
       <Image
-        src={`/images/googleBadge.png`}
+        src={`/images/googlebadge.png`}
         alt="Google Play Store Badge"
         width={150}
         height={60}
@@ -90,7 +90,7 @@ export default function Page() {
   {/* Rechter Bereich mit App-Icon */}
   <div className="flex-shrink-0 ml-4">
     <Image
-      src={`/images/appLogo.png`}
+      src={`/images/applogo.png`}
       alt="Olympia App Icon"
       width={80}
       height={80}

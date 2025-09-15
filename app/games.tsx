@@ -253,29 +253,7 @@ useEffect(() => {
   return (
     <main className="flex min-h-screen flex-col p-1 sm:p-8 pt-20 bg-pink-50 dark:bg-gray-900">
       <div className="flex-1 w-full transition-all duration-300">
-        <input
-          type="text"
-          placeholder="Suche nach Spielnummer..."
-          value={searchQuery}
-          onChange={(e) => { 
-            setSearchQuery(e.target.value); 
-           setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }, 10);
-          }}
-          className={`${isModalOpen ? "hidden" : "block"} 
-            fixed z-50 
-            left-1/2 transform -translate-x-1/2 
-            sm:top-15 sm:bottom-auto lg:top-4 
-            w-[95%] sm:w-full lg:w-[25%] sm:w-[50%]
-            p-3 pl-6 pr-6  max-w-md 
-            text-gray-800 dark:text-white 
-            bg-white dark:bg-gray-700 
-            border border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "bottom-50" : "bottom-5"}
-            `}
-        />
+        
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10">
           {randomizedGames.length === 0 && !searchQuery && (
             <p className="col-span-full text-center text-gray-500">Keine Spiele gefunden.</p>
@@ -284,7 +262,7 @@ useEffect(() => {
           {randomizedGames.map((game) => (
             <div 
             key={game.id} 
-            className={` ${randomizedGames[randomizedGames.length - 1].id == game.id ? "mb-16 sm:mb-0" : ""}`}>
+            className={` ${randomizedGames[randomizedGames.length - 1].id == game.id ? "mb-4 sm:mb-0" : ""}`}>
             <div
               className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
               onClick={() => handleInfoOpen(game, settings)}
@@ -292,7 +270,7 @@ useEffect(() => {
               <Image
                 src={`/images/christmas_calender${game.id % 5}.jpg`}
                 alt="Türchen Cover"
-                className={`w-full h-64 object-cover object-right bg-gray-300 ${gamePointsMap[game.id] === true ? "grayscale" : "" }`}
+                className={`w-full h-64 object-cover object-right bg-gray-300 dark:brightness-100 brightness-120 ${gamePointsMap[game.id] === true ? "grayscale" : "" }`}
                 width={500}
                 height={500}
               />
@@ -305,9 +283,34 @@ useEffect(() => {
             </div>
             </div>
           ))}
+          
         </div>
         {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose}  />}
+        
       </div>
+      <input
+          type="text"
+          placeholder="Suche nach Spielnummer..."
+          value={searchQuery}
+          onChange={(e) => { 
+            setSearchQuery(e.target.value); 
+           setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }, 10);
+          }}
+          className={`${isModalOpen ? "hidden" : "block"} 
+            ${isScrolled ? "mx-auto flex items-center justify-center relative" : "fixed left-1/2 -translate-x-1/2 transform bottom-5"} z-50 
+               
+            sm:top-15 sm:bottom-auto lg:top-4 
+            w-[95%] sm:w-full lg:w-[25%] sm:w-[50%]
+            p-3 pl-6 pr-6  max-w-md 
+            text-gray-800 dark:text-white 
+            bg-white dark:bg-gray-700 
+            border border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500 transition ${isScrolled ? "" : ""}
+            `}
+        />
     </main>
   );
 }

@@ -129,7 +129,7 @@ if (lastChecked) {
             >
               <p className={`text-lg font-semibold text-gray-800 dark:text-gray-200`}>
                 FSR INS&nbsp;
-                <code className="font-mono font-bold text-pink-500 dark:text-pink-400">
+                <code className="font-mono font-bold text-blue-400  dark:text-pink-500">
                   AdGames{t('calender')} 
                 </code>
               </p>
@@ -144,14 +144,14 @@ if (lastChecked) {
                   user.role === "ADMIN" ? (
                     <Link
                       href="/adminpage"
-                      className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <p className="text-lg font-semibold">Admin</p>
                     </Link>
                   ) : (
                     <Link
                       href="/teampage"
-                      className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <p className="text-lg font-semibold">Team</p>
                     </Link>
@@ -159,7 +159,7 @@ if (lastChecked) {
                 ) : (
                   <button
                     onClick={handleLoginOpen}
-                    className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
                     <p className="text-lg font-semibold">Login</p>
                   </button>
@@ -167,7 +167,7 @@ if (lastChecked) {
               ) : (
                 <Link
                   href={"/"}
-                  className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                  className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                 >
                   <p className="text-lg font-semibold"> {t('games')}</p>
                 </Link>
@@ -175,14 +175,14 @@ if (lastChecked) {
               {currentPath !== "/scoreboard" ?
               <Link
                 href={"/scoreboard"}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
               >
                 <p className="text-lg font-semibold">Scoreboard</p>
               </Link>
               :
               <Link
                 href={"/"}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
               >
                 <p className="text-lg font-semibold">{t('games')}</p>
               </Link>
@@ -191,14 +191,14 @@ if (lastChecked) {
             {currentPath !== "/map" ?
               <Link
                 href={"/map"}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
               >
                 <p className="text-lg font-semibold">{t('map')}</p>
               </Link>
               :
               <Link
                 href={"/"}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
               >
                 <p className="text-lg font-semibold">{t('games')}</p>
               </Link>
@@ -210,9 +210,38 @@ if (lastChecked) {
           <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
               <Link
                 href={"/"}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                        X
+                         <p className="text-lg font-semibold">{t("games")}</p>
+              </Link>
+              { 
+                 user && user.role === "ADMIN" ? (
+                    <Link
+                      href="/adminpage"
+                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <p className="text-lg font-semibold">Admin</p>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/teampage"
+                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <p className="text-lg font-semibold">Team</p>
+                    </Link>
+                  )
+                }
+              <Link
+                href={"/scoreboard"}
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+              >
+                <p className="text-lg font-semibold">Scoreboard</p>
+              </Link>
+              <Link
+                href={"/map"}
+                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+              >
+                <p className="text-lg font-semibold">{t("map")}</p>
               </Link>
           </div>
 
