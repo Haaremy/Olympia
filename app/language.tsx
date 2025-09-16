@@ -21,8 +21,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         const modal = modalRef.current;
         setIsModalOpen(true);
         const tempLang = navigator.language;
-        setDetLang(tempLang.split("-")[0]);
-
+        const finLang = tempLang.split("-")[0]
+        setDetLang(finLang);
+        setLanguage(finLang);
         // Fokus auf das Modal setzen
         if (modal) {
             modal.focus();
@@ -99,7 +100,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                         X
                     </button>
                 </div>
-                <div>
+                <div className={`${!!detLang ? "visible" : "hidden"`}>
                 Sprache erkannt: {detLang}
                 </div>
                 {/* Zwei untereinander platzierte Buttons */}
