@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
             name: team.name,
             //pointsTotal: 0
             pointsTotal: team.pointsTotal,
+            cheatPoints: team.cheatPoints,
             player1: team.user1,
             player2: team.user2,
             player3: team.user3 || "",
