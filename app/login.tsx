@@ -76,7 +76,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       body: JSON.stringify({
         uname: username,
         name: realname,
-        password,
+        clearpw: password,
       }),
     });
 
