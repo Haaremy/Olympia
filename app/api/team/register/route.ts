@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 export async function POST(req: Request) {
-  const { uname, name, clearPw} = await req.json();
+  const { uname, name, clearpw} = await req.json();
 
   if (!uname || !name || !clearPw) {
     return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
