@@ -16,14 +16,6 @@ export default async function Page() {
     },
   });
 
-  const defaultSettings = {
-  id: 0,
-  started: false,
-  ending: new Date(Date.now() + 100 * 60 * 60), // z. B. "1970-01-01"
-};
-
-  const settings = await prisma.gameSettings.findFirst(
-  );
 
   // Transform the language versions from an array to a record
   const transformedGames = games.map(game => {
@@ -39,13 +31,12 @@ export default async function Page() {
     return {
       ...game,
       languages, // Replace the 'languages' array with the transformed record
-      settings,
     };
   });
 
   return (
     <div>
-      <Games games={transformedGames} settings={settings || defaultSettings} searchQueryRef='' /> {/* Pass transformed data to the client component */}
+      <Games games={transformedGames} searchQueryRef='' /> {/* Pass transformed data to the client component */}
     </div>
   );
 }
