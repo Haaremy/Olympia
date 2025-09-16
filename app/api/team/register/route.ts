@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Benutzername bereits vergeben" }, { status: 409 });
   }
 
-  const password = await bcrypt.hash(clearPw, 10);
+  const password = await bcrypt.hash(clearpw, 10);
 
 
   const newUser = await prisma.team.create({
