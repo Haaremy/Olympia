@@ -14,7 +14,7 @@ export interface PointsResult {
 /**
  * Beispiel: Summiert alle Punkte und gibt die Differenz zwischen User1 und User2 zurück.
  */
-export function calculatePoints({ game, userPoints, multiplier, field }: PointsInput): number {
+export function calculatePoints({ game, userPoints, multiplier, field }: PointsInput): number { // spiel, punkte im feld, spielerzahl ausgleich (2 vs 4 spieler team), feld zur Auswertung
   let result = 0;
 
   ////////////////////////////
@@ -50,8 +50,19 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   }
   ////////////////////////////
   ////////////////////////////
-  if (game==3){
-    result=userPoints;
+   if (game==3){
+    if(field==1 && userPoints==5){
+      result=10;
+    }
+    if(field==2 && userPoints==6){
+      result=10;
+    }
+    if(field==3 && userPoints==20){
+      result=10;
+    }
+    if(field==4 && userPoints==8){
+      result=10;
+    }
   }
   ////////////////////////////
   ////////////////////////////[70, 216, 201, 110]
@@ -88,40 +99,46 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   ////////////////////////////
   ////////////////////////////
   if (game==6){
-    result=userPoints*2*multiplier;
+    result=userPoints*multiplier;
+    if(userPoints>10){
+      result=0;
+    }
   }
   //////////////////////////// Spiel auf Zeit in Sekunden
   //////////////////////////// [9, 9.5, 10, 10.5, 11, 12, 13, 15, 17, 20]
   if (game==7){
     if(userPoints<20){
-      result=1;
+      result=1*multiplier;
     }
     if(userPoints<17){
-      result=2;
+      result=2*multiplier;
     }
     if(userPoints<15){
-      result=3;
+      result=3*multiplier;
     }
     if(userPoints<13){
-      result=4;
+      result=4*multiplier;
     }
     if(userPoints<12){
-      result=5;
+      result=5*multiplier;
     }
     if(userPoints<11){
-      result=6;
+      result=6*multiplier;
     }
     if(userPoints<10){
-      result=7;
+      result=7*multiplier;
     }
     if(userPoints<9){
-      result=8;
+      result=8*multiplier;
     }
     if(userPoints<8){
-      result=9;
+      result=9*multiplier;
     }
     if(userPoints<7){
-      result=10;
+      result=10*multiplier;
+    }
+    if(userPoints<6){
+      result=0;
     }
   }
 //////////////////////////// Schätzen mit Abweichung
@@ -166,7 +183,10 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
 ////////////////////////////
 ////////////////////////////
     if (game==9){
-    result=userPoints*2*multiplier;
+    result=userPoints*2*multiplier; // treffer * wertung pro treffer (2P pro Treffer) * Ausgleich
+      if(userPoints>5){
+      result=0;
+    }
   }
   ////////////////////////////
   ////////////////////////////[15, 26, 37, 49]
@@ -183,19 +203,26 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     if(field==4 && userPoints==49){
       result=10;
     }
+      
   }
   ////////////////////////////
   ////////////////////////////
     if (game==11){
     result=userPoints*multiplier;
+      if(userPoints>10){
+      result=0;
+    }
   }
   ////////////////////////////
   ////////////////////////////
     if (game==12){
     result=userPoints*multiplier;
+      if(userPoints>10){
+      result=0;
+    }
   }
   ////////////////////////////
-  ////////////////////////////
+  //////////////////////////// schätzen mit abweihung
     if (game==13){
      let check = 0;
     if(field=1){check = 8;}
@@ -236,37 +263,72 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   ////////////////////////////
   ////////////////////////////
     if (game==14){
-        result=userPoints*5*multiplier;
+        if(field==1 && userPoints==15){
+      result=10;
+    }
+    if(field==2 && userPoints==26){
+      result=10;
+    }
+    if(field==3 && userPoints==37){
+      result=10;
+    }
+    if(field==4 && userPoints==49){
+      result=10;
+    }
 
   }
   ////////////////////////////
   ////////////////////////////
     if (game==15){
         result=userPoints*multiplier;
+      if(userPoints>10){
+      result = 10;
+    }
+      if(userPoints>15){
+      result = 0;
+    }
   }
   ////////////////////////////
   ////////////////////////////
     if (game==16){
         result=userPoints*multiplier;
+      if(userPoints>10){
+      result = 10;
+    }
 
   }
   ////////////////////////////
   ////////////////////////////
     if (game==17){
         result=userPoints*2*multiplier;
+      if(userPoints>10){
+      result = 0;
+    }
 
   }
   ////////////////////////////
   ////////////////////////////
     if (game==18){
-    if (userPoints!=0){
-        result = 18;
+       if(field==1 && userPoints==15){
+      result=10;
+    }
+    if(field==2 && userPoints==26){
+      result=10;
+    }
+    if(field==3 && userPoints==37){
+      result=10;
+    }
+    if(field==4 && userPoints==49){
+      result=10;
     }
   }
   ////////////////////////////
   ////////////////////////////
     if (game==19){
         result=userPoints*multiplier;
+      if(userPoints>10){
+      result = 0;
+    }
 
   }
   ////////////////////////////
@@ -303,6 +365,9 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     if(userPoints<7){
       result=10;
     }
+      if(userPoints<6){
+      result = 0;
+    }
     }
   }
   ////////////////////////////
@@ -325,14 +390,19 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   ////////////////////////////
     if (game==22){
       result=userPoints*2*multiplier;
+      if(userPoints>5){
+      result = 0;
+    }
 
   }
   ////////////////////////////
   ////////////////////////////
     if (game==23){
-            result=userPoints*3*multiplier;
-
-  }
+      result=userPoints*2*multiplier;
+      if(userPoints>5){
+          result = 0;
+        }
+    }
   ////////////////////////////
   ////////////////////////////[30, 35, 40, 45, 50, 55, 60, 65, 70, 75], [198, 7, 499]
     if (game==24){
@@ -366,6 +436,9 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
     if(userPoints<30){
       result=10;
+    }
+      if(userPoints<15){
+      result = 0;
     }
     } 
     if(field==2 && userPoints==198){
