@@ -100,9 +100,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                         X
                     </button>
                 </div>
-                <div className={`${!!detLang ? "visible" : "hidden"`}>
-                Sprache erkannt: {detLang}
-                </div>
+
                 {/* Zwei untereinander platzierte Buttons */}
                 <div className="flex flex-col space-y-4 mt-4">
                     <button
