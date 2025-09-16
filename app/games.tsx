@@ -184,7 +184,7 @@ export default function GamesPage({ games, settings, searchQueryRef }: { games: 
   }, [hydrated]);
 
   // Öffnet die InfoBox mit den Daten des Spiels
-  const handleInfoOpen = (game: Game, settings:Settings) => {
+  const handleInfoOpen = (game: Game) => {
     const selectedLanguage = game.languages[language];
     const gameData: GameData = {
       id: game.id,
@@ -272,7 +272,7 @@ useEffect(() => {
             className={` ${randomizedGames[randomizedGames.length - 1].id == game.id ? "mb-4 sm:mb-0" : ""}`}>
             <div
               className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
-              onClick={() => handleInfoOpen(game, settings)}
+              onClick={() => handleInfoOpen(game)}
             >
               <Image
                 src={`/images/christmas_calender${game.id % 5}.jpg`}
