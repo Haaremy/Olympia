@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export async function POST(req: Request) {
   const { uname, name, clearpw} = await req.json();
 
-  if (!uname || !name || !clearPw) {
+  if (!uname || !name || !clearpw) {
     return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
   }
 
