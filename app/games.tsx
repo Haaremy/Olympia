@@ -47,7 +47,7 @@ type GameData = {
 
 
 
-export default function GamesPage({ games, settings, searchQueryRef }: { games: Game[], searchQueryRef: string }) {
+export default function GamesPage({ games, searchQueryRef }: { games: Game[], searchQueryRef: string }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showInfo, setShowInfo] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameData | null>(null);
