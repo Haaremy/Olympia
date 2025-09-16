@@ -199,7 +199,7 @@ export default function GamesPage({ games, searchQueryRef }: { games: Game[], se
       content: selectedLanguage?.content || "Keine Anleitung verfügbar",
       points: selectedLanguage?.points || "Keine Punkte verfügbar",
       station: selectedLanguage?.station || "Keine Station verfügbar",
-      timeLeft: (ending.getTime() - Date.now()),
+      timeLeft: (new Date(ending).getTime() - Date.now()),
       started: started,
       tagged: game.tagged || "",
       url: game.url,
