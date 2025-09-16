@@ -16,10 +16,6 @@ type Game = {
   tagged: string | null;
 };
 
-type Settings = {
-  started: boolean;
-  ending: Date;
-}
 
 // Typ für die transformierte Sprache
 type TransformedLanguage = {
@@ -51,7 +47,7 @@ type GameData = {
 
 
 
-export default function GamesPage({ games, settings, searchQueryRef }: { games: Game[], settings: Settings, searchQueryRef: string }) {
+export default function GamesPage({ games, settings, searchQueryRef }: { games: Game[], searchQueryRef: string }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showInfo, setShowInfo] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameData | null>(null);
@@ -62,6 +58,8 @@ export default function GamesPage({ games, settings, searchQueryRef }: { games: 
   const { i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
   const [gamePointsMap, setGamePointsMap] = useState<Record<number, boolean>>({});
   const [fetchPointsForGames, setfetchPointsForGames] = useState(false);
+  const [ending, setEnding] = useState("");
+  const [started, setStarted] = useState(false);
 
 
   // Setze die Sprache basierend auf i18n und bereits gespielte Spiele
@@ -69,6 +67,15 @@ export default function GamesPage({ games, settings, searchQueryRef }: { games: 
     setLanguage(i18n.language);
     setfetchPointsForGames(true);
     setSearchQuery(searchQueryRef);
+     fetch("/api/settings")
+      .then((res) => {
+        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
+        return res.json();
+      })
+      .then((data: Settings) => {
+        if (data.ending) setEnding(toDateTimeLocalString(data.ending));
+        if (typeof data.started === "boolean") setStarted(data.started);
+      })
   }, [i18n.language, searchQueryRef]);
 
 
@@ -187,8 +194,8 @@ export default function GamesPage({ games, settings, searchQueryRef }: { games: 
       content: selectedLanguage?.content || "Keine Anleitung verfügbar",
       points: selectedLanguage?.points || "Keine Punkte verfügbar",
       station: selectedLanguage?.station || "Keine Station verfügbar",
-      timeLeft: (settings.ending.getTime() - Date.now()),
-      started: !!settings.started,
+      timeLeft: (ending.getTime() - Date.now()),
+      started: started,
       tagged: game.tagged || "",
       url: game.url,
       languages: Object.keys(game.languages).map((key) => ({
