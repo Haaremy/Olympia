@@ -64,12 +64,6 @@ export default function GamesPage({ games, searchQueryRef }: { games: Game[], se
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
 
- // Anzeige für datetime-local (nur lokale Zeit)
-const toDateTimeLocalString = (dateString: string | Date): string => {
-    const date = new Date(dateString);
-    const pad = (num: number) => num.toString().padStart(2, "0");
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
 
 
 
@@ -84,7 +78,7 @@ const toDateTimeLocalString = (dateString: string | Date): string => {
         return res.json();
       })
       .then((data: Settings) => {
-        if (data.ending) setEnding(toDateTimeLocalString(data.ending));
+        if (data.ending) setEnding(data.ending);
         if (typeof data.started === "boolean") setStarted(data.started);
       })
   }, [i18n.language, searchQueryRef]);
