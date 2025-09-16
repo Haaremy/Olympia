@@ -43,7 +43,10 @@ type GameData = {
   languages: { language: string; title: string; story: string }[];
 };
 
-
+type Settings = {
+  started: boolean;
+  ending: string;
+};
 
 
 
