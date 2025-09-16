@@ -71,11 +71,7 @@ const toDateTimeLocalString = (dateString: string | Date): string => {
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
-// Speichern: datetime-local -> UTC ISO
-const getOffsetISO = (dtLocal: string): string => {
-    const date = new Date(dtLocal);
-    return date.toISOString();
-};
+
 
   // Setze die Sprache basierend auf i18n und bereits gespielte Spiele
   useEffect(() => {
