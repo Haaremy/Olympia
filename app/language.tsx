@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         const modal = modalRef.current;
         setIsModalOpen(true);
         const tempLang = navigator.language;
-        const finLang = tempLang.split("-")[0]
+        const finLang = tempLang.split("-")[0];
         setDetLang(finLang);
         setLanguage(finLang);
         // Fokus auf das Modal setzen
