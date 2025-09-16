@@ -64,6 +64,18 @@ export default function GamesPage({ games, searchQueryRef }: { games: Game[], se
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
 
+ // Anzeige für datetime-local (nur lokale Zeit)
+const toDateTimeLocalString = (dateString: string | Date): string => {
+    const date = new Date(dateString);
+    const pad = (num: number) => num.toString().padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
+// Speichern: datetime-local -> UTC ISO
+const getOffsetISO = (dtLocal: string): string => {
+    const date = new Date(dtLocal);
+    return date.toISOString();
+};
 
   // Setze die Sprache basierend auf i18n und bereits gespielte Spiele
   useEffect(() => {
