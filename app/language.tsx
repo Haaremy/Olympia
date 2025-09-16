@@ -100,7 +100,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     </button>
                 </div>
                 <div>
-                Sprache erkannt: {detlang}
+                Sprache erkannt: {detLang}
                 </div>
                 {/* Zwei untereinander platzierte Buttons */}
                 <div className="flex flex-col space-y-4 mt-4">
