@@ -14,11 +14,14 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const { i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
+    const [detLang, setDetLang] = useState("");
 
 
     useEffect(() => {
         const modal = modalRef.current;
         setIsModalOpen(true);
+        const tempLang = navigator.language;
+        setDetLang(tempLang.split("-")[0]);
 
         // Fokus auf das Modal setzen
         if (modal) {
@@ -96,7 +99,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                         X
                     </button>
                 </div>
-
+                <div>
+                Sprache erkannt: {detlang}
+                </div>
                 {/* Zwei untereinander platzierte Buttons */}
                 <div className="flex flex-col space-y-4 mt-4">
                     <button
