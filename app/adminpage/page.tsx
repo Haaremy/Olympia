@@ -12,12 +12,14 @@ type SearchedTeam = {
   uname: string;
   name: string;
   players: string[];
+  cheatPoints: number;
   games: {
-    gameId: number;
+    id: number;
     title: string;
     points: { player: string; value: number }[];
   }[];
 };
+
 
 type Settings = {
   started: boolean;
@@ -36,7 +38,9 @@ export default function AdminDashboard() {
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
     const [isAndroid, setIsAndroid] = useState(false);
-  
+  const gamesMap = new Map(searchedTeam?.games?.map(g => [g.id, g]));
+
+const allGameIds = Array.from({ length: 24 }, (_, i) => i + 1); // 1..24
 
   const nameTRef = useRef<HTMLInputElement>(null);
   const userRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -139,6 +143,26 @@ const getOffsetISO = (dtLocal: string): string => {
     }
   };
 
+  const handleCheater = async () => {
+     if (!searchedTeam) return;
+     let cheatNum = 50;
+     if(searchedTeam.cheatPoints>=50){
+      cheatNum = 0;
+     }
+    try {
+      const res = await fetch(`/api/team/cheat?id=${searchedTeam.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cheatNum }),
+      });
+      if (!res.ok) throw new Error("Fehler beim Speichern");
+      handleSavedMessage("Team Cheating gespeichert ✅");
+    } catch (err) {
+      console.error(err);
+      handleSavedMessage("Fehler beim Speichern ❌");
+    }
+  }
+
   if (!session) return <div>Loading...</div>;
 
   return (
@@ -190,7 +214,7 @@ const getOffsetISO = (dtLocal: string): string => {
           <button onClick={handleSaveTeam} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white mt-2 mr-2">
             Team speichern
           </button>
-          <button onClick={handleSaveTeam} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
+          <button onClick={handleCheater} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
             Team disqualifizieren
           </button>
           <button onClick={handleSaveTeam} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
@@ -198,6 +222,27 @@ const getOffsetISO = (dtLocal: string): string => {
           </button>
         </div>
       )}
+
+       {searchedTeam && allGameIds.map((id) => {
+  // Prüfe, ob wir für dieses Spiel Punkte haben
+  const game = gamesMap.get(id);
+
+  // Wenn nicht, erstelle leeren Spielblock mit Inputfeldern
+  const points = game?.points ?? searchedTeam?.players.map((name) => ({ player: name, value: 0 }));
+
+  return (
+    <div key={`game-${id}`} className="game-block">
+      <h3>Spiel {id}</h3>
+      <ul>
+        {points && points.map((p, idx) => (
+          <li key={`point-${id}-${idx}`}>
+            Spieler {p.player}: <input type="number" defaultValue={p.value} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+})}
 
       {/* GAME SETTINGS CARD */}
        <div className="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-3xl mb-6">

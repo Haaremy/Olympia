@@ -22,6 +22,8 @@ export default function Page() {
   const [infoColor, setInfoColor] = useState("red");
   const [updateData, setUpdateData] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [player3, setPlayer3] = useState(false);
+  const [player4, setPlayer4] = useState(false);
   const [userData, setUserData] = useState({
   id: 0,
   uname: "Loading...",
@@ -160,6 +162,19 @@ const [isAndroid, setIsAndroid] = useState(false);
     return <div className="text-center text-gray-500 mt-10">Loading...</div>; // Oder ein Skeleton Loader
   }
   
+  const handlePlayer = (key: string) => {
+     if (key === "user3") {
+    setPlayer3(true);
+  } else if (key === "user4") {
+    if (player3) {
+      setPlayer4(true);
+    } else {
+      setPlayer3(true);
+    }
+  } else {
+    setPlayer3(true);
+  }
+  }
 
 const renderPlayerInput = (
   label: string,
@@ -169,19 +184,24 @@ const renderPlayerInput = (
 ) => (
   <div className="flex-1">
     <label className="block text-gray-800 dark:text-white text-lg">{label}</label>
-    <input
+    {(fieldKey=="user3" && (player3 || userData?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2") ? <input
       type="text"
       ref={ref}
-      className="w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
+      className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
             rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500"
+            focus:outline-none focus:ring-2 focus:ring-pink-500 `}
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
       value={userData?.[fieldKey] ?? ""}
-      onChange={(e) =>
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
       }
       disabled={!!userData?.name || userData?.name != "" ? false : true}
-    />
+    /> : <button  onClick={(e) => {
+    e.preventDefault();
+    handlePlayer(fieldKey);
+  }} className=" w-full px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500">
+      +
+      </button>}
   </div>
 );
 

@@ -17,7 +17,8 @@ export async function teamEntries() {
       user1: "Jeremy",
       user2: "Santa Clause",
       pointsTotal: 0,
-      
+      cheatPoints: 0,
+
     },
   })
 
@@ -30,10 +31,22 @@ export async function teamEntries() {
       user1: 'Testi',
       user2: 'Bruder von Testi',
       pointsTotal: 0,
+      cheatPoints: 0,
     },
   })
 
-
+await prisma.team.create({
+    data: {
+      uname: 'CHEAT',
+      password: '$2b$10$9VGBYkvRY8TZwfCTVu6VSuAKlF3niGaY4fqYGVB0169k6Riiu7ZCW', // TEST
+      role: 'USER',
+      name: 'Cheater',
+      user1: 'Cheating',
+      user2: 'Cheating even more',
+      pointsTotal: 0,
+      cheatPoints: 50,
+    },
+  })
 
   
 }

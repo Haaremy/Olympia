@@ -34,19 +34,14 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
 function latLngToPixel(
   lat: number,
   lng: number,
-  imgWidth: number,
-  imgHeight: number,
-  lat1: number, lng1: number, // unten links
-  lat2: number, lng2: number  // oben rechts
 ): [number, number] {
-  // normiere lng zwischen 0..1
-  const nx = (lng - lng1) / (lng2 - lng1);
-
-  // normiere lat (Achtung: y ist invertiert)
-  const ny = 1 - (lat - lat1) / (lat2 - lat1);
-
-  const x = nx * imgWidth;
-  const y = ny * imgHeight;
+  const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
+  const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
+  const difLat =  topRight[1] - bottomLeft[1]; // x Koordinate Differenz
+  const difWidth = 1315-311;
+  const correlation = difLat/difWidth;
+  const x = correlation * lat;
+  const y = correlation * lng;
 
   return [x, y];
 }
@@ -114,8 +109,7 @@ useEffect(() => {
       return;
     }
 
-    const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
-    const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
+    
     const width = 1600;
     const height = 1131;
     const bounds: L.LatLngBoundsExpression = [[0, 0], [height, width]];
@@ -165,10 +159,6 @@ useEffect(() => {
       const [x, y] = latLngToPixel(
         position.coords.latitude,
         position.coords.longitude,
-        width,
-        height,
-        bottomLeft[0], bottomLeft[1],
-        topRight[0], topRight[1]
       );
       L.marker([y, x])
         .addTo(mapInstance.current!)

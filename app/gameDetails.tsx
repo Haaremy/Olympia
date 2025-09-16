@@ -338,12 +338,12 @@ const formatTime = (ms: number) => {
 
                         {/* Points Description */}
                         <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4">
+                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4 mb-4">
                           {t("descriptionPoints")}
                         </h3>
                         <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
                                       
-                   {!message.started ? <button className="px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2"> {t("notStarted")}</button> : 
+                   {!message.started ? <button className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2 "> {t("notStarted")}</button> : 
                     userData && !!userData?.user1 && !!userData?.user2 ? (
                     <>
                         <br />
@@ -378,7 +378,7 @@ const formatTime = (ms: number) => {
   <div >
     { !message.tagged.includes("noGame") && !message.tagged.includes("noScoreboard") &&
     <div className="grid grid-cols-2 gap-4">
-    {(!message.tagged.includes("noGame") ) && message.started &&  < input
+    {(!message.tagged.includes("noGame") ) && message.started && userData?.user1 != "" && < input
       type={`${!!points[0]?.value || points[0]?.value == 0 ? message.tagged.includes("hidden")?  "password" : "text" : "number"}`}
       placeholder={t("f1w")}
       value={points[0]?.value  || points[0]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[0].value : (playerInputs.user1 ?? "")}

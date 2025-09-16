@@ -17,8 +17,6 @@ model Game {
   languages Language[]  // Viele-Sprachen-Beziehung
   points    Points[]    // Umkehrbeziehung zu Points
   entries   Entries[]
-  
-
 }
 
 model Language {
@@ -48,6 +46,16 @@ model Team {
   points       Points[]  // Beziehung zu Points (umkehrbare Beziehung)
   entries   Entries[]
   language     String @default("de")
+  cheatPoints Int
+  reports Reports[]
+}
+
+model Reports {
+  id Int @id @default(autoincrement())
+  gameId  Int
+  message String
+  teamId Int
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 enum Role{
@@ -55,7 +63,7 @@ enum Role{
   ADMIN
 }
 
-model Points {
+model Points { // Auswertung der Einträge der Spieler
   id          Int       @id @default(autoincrement())
   team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int
@@ -67,7 +75,7 @@ model Points {
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
 
-model Entries {
+model Entries { // einträge der Spieler
   id          Int       @id @default(autoincrement())
   team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int

@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as Partial<PointsPayload>;
     const { game, user1, user2, user3, user4 } = body;
-    console.log(user1);
 
     if (
       typeof game !== 'number' ||
@@ -56,6 +55,12 @@ export async function POST(req: NextRequest) {
   },
 }))?.pointsTotal ?? 0;
 
+let cheatValues = (await prisma.team.findUnique({
+  where: { uname: team.uname },
+  select: {
+    cheatPoints: true,
+  },
+}))?.cheatPoints ?? 0;
 
     
     const pointsToInsert = [];
@@ -67,18 +72,21 @@ export async function POST(req: NextRequest) {
       const userPoints = scores[userKey];
       const field = i;
 
-      if (typeof userPoints !== 'number' || !playerName) continue;
+      if (typeof userPoints !== 'number') return;
 
-    let multiplier = 1; // 4 Spieler
-    if (user4 ==-1){ // 3 Spieler
-      multiplier = 1;
-    }
-    if(user3==-1){ // 2 Spieler
-       multiplier = 1;
-    }
 
-      let value = calculatePoints({ game, userPoints, multiplier, field });
-      value = Math.ceil(value);
+      let multiplier = 1.1; // 4 Spieler
+
+      if (team.user4=="" || !team.user4){ // 3 Spieler
+        multiplier = 1.5; 
+      }
+      if(team.user3=="" || !team.user3){ // 2 Spieler
+        multiplier = 2;
+      }
+
+      let {result, cheats} = calculatePoints({ game, userPoints, multiplier, field });
+      result = Math.ceil(result);
+      cheats = cheats;
 
      
 
@@ -86,7 +94,7 @@ export async function POST(req: NextRequest) {
         teamId: team.id,
         gameId: game,
         player: playerName,
-        value: value,
+        value: result,
         slot: field,
       });
 
@@ -98,21 +106,23 @@ export async function POST(req: NextRequest) {
         slot: field,
       })
 
-      pointValues += value;
+      pointValues += result;
+      cheatValues += cheats;
 }
 
     await prisma.points.createMany({
-  data: pointsToInsert, // <-- enthält teamId pro Eintrag!
+  data: pointsToInsert, // <-- Punkte für Team
 });
 
 await prisma.entries.createMany({
-  data: inputsToInsert, // <-- enthält teamId pro Eintrag!
+  data: inputsToInsert, // <-- Einträge vom Team
 });
 
 await prisma.team.update({
   where: { id: team.id },
   data: {
     pointsTotal: pointValues,
+    cheatPoints: cheatValues,
   },
 });
 

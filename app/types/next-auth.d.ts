@@ -16,6 +16,7 @@ declare module "next-auth" {
     player3: string;
     player4: string;
     pointsTotal: number;
+    cheatPoints: number;
   }
 
 interface User {
@@ -29,6 +30,7 @@ interface User {
     player4: string;
     language: string;
     pointsTotal: number;
+    cheatPoints: number;
   }
 }
   declare module "next-auth/jwt" {
@@ -43,5 +45,6 @@ interface User {
     player4: string;
     language: string;
     pointsTotal: number;
+    cheatPoints: number;
   }
 }

@@ -9,13 +9,15 @@ export interface PointsInput {
 
 export interface PointsResult {
   result: number;
+  cheats: number;
 }
 
 /**
  * Beispiel: Summiert alle Punkte und gibt die Differenz zwischen User1 und User2 zurück.
  */
-export function calculatePoints({ game, userPoints, multiplier, field }: PointsInput): number { // spiel, punkte im feld, spielerzahl ausgleich (2 vs 4 spieler team), feld zur Auswertung
+export function calculatePoints({ game, userPoints, multiplier, field }: PointsInput): {result: number; cheats: number} { // spiel, punkte im feld, spielerzahl ausgleich (2 vs 4 spieler team), feld zur Auswertung
   let result = 0;
+  let cheats = 0;
 
   ////////////////////////////
   if (game==1){
@@ -282,7 +284,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     if (game==15){
         result=userPoints*multiplier;
       if(userPoints>10){
-      result = 10;
+      result = 10*multiplier;
     }
       if(userPoints>15){
       result = 0;
@@ -300,7 +302,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   ////////////////////////////
   ////////////////////////////
     if (game==17){
-        result=userPoints*2*multiplier;
+        result=userPoints*multiplier;
       if(userPoints>10){
       result = 0;
     }
@@ -453,6 +455,8 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   }
   ////////////////////////////
   
-
-  return result;
+  if(userPoints==-1){
+    cheats = 0;result = 0;
+  }
+  return {result, cheats};
 }

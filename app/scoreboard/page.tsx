@@ -12,6 +12,7 @@ interface Team {
   user3: string;
   user4: string;
   pointsTotal: number;
+  cheatPoints: number;
   entries: {
     id: number;
     value: number;
@@ -205,7 +206,7 @@ export default function ScoreboardTabs() {
                   </td>
                 </tr>
               ) : (
-                teams.map((team, i) => (
+                teams.filter(team => team.cheatPoints < 20).map((team, i) => (
                   <React.Fragment key={team.id}>
                     <tr className="border-t border-gray-200 dark:border-gray-600">
                       <td className="px-6 py-4 font-medium">#{i + 1}</td>

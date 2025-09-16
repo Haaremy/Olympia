@@ -15,6 +15,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const overlayRef = useRef<HTMLDivElement>(null);
     const { i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
+const setLanguage = (lang: string) => {
+        localStorage.setItem('language', lang);
+        i18n.changeLanguage(lang || "de");
+        console.log(`Sprache auf ${lang} gesetzt.`);
+        onClose();
+    };
 
     useEffect(() => {
         const modal = modalRef.current;
@@ -48,12 +54,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             document.body.style.overflow = 'auto';
         };
     }, [onClose, setIsModalOpen]);
-    const setLanguage = (lang: string) => {
-        localStorage.setItem('language', lang);
-        i18n.changeLanguage(lang || "de");
-        console.log(`Sprache auf ${lang} gesetzt.`);
-        onClose();
-    };
+
+    
 
     // Close modal if clicked outside of modal content
     const handleOverlayClick = (e: React.MouseEvent) => {

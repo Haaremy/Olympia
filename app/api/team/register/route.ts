@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       user1: "",
       user2: "",
       pointsTotal: 0,
+      cheatPoints: 0,
     },
   });
 
