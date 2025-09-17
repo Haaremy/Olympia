@@ -33,6 +33,11 @@ export default function Page() {
   user3: "",
   user4: "",
 });
+const [wasInput, setWasInput] = useState({
+  id: 0,
+  user3: "",
+  user4: "",
+});
 
 const [isAndroid, setIsAndroid] = useState(false);
 
@@ -151,6 +156,11 @@ const [isAndroid, setIsAndroid] = useState(false);
         user3: response.team.players[2],
         user4: response.team.players[3],
       }); // setze nur das team-Objekt
+      setWasInput({
+        ...response.team,
+        user3: response.team.players[2],
+        user4: response.team.players[3],
+      })
       
       }
       fetchUser();
@@ -184,7 +194,7 @@ const renderPlayerInput = (
 ) => (
   <div className="flex-1">
     <label className="block text-gray-800 dark:text-white text-lg">{label}</label>
-    {(fieldKey=="user3" && (player3 || userData?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2") ? <input
+    {(fieldKey=="user3" && (player3 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2")  ? <input
       type="text"
       ref={ref}
       className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 

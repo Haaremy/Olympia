@@ -7,18 +7,18 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (!session || !session.user.role.includes("ADMIN")) {
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 401 });
   }
 
   const data = await req.json();
+  //console.log(data.searchedTeam.uname+" set Data: "+data.cheatNum);
   
-
   try {
     const updatedTeam = await prisma.team.update({
-      where: { uname: session.user.uname },
+      where: { uname: data.searchedTeam.uname },
       data: {
-        cheatPoints: data.cheatPoints,
+        cheatPoints: data.cheatNum,
       },
     });
 

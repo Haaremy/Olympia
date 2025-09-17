@@ -67,8 +67,8 @@ const foundTeam = teams[0];
   const playerNames = [
     foundTeam.user1,
     foundTeam.user2,
-    foundTeam.user3 ?? "Slot3",
-    foundTeam.user4 ?? "Slot4",
+    foundTeam.user3 ?? "",
+    foundTeam.user4 ?? "",
   ];
 
   const games = Array.from(gameMap.values()).map(({ game, points }) => {

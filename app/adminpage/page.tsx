@@ -130,8 +130,8 @@ const getOffsetISO = (dtLocal: string): string => {
     const name = nameTRef.current?.value || "";
     const players = userRefs.map(ref => ref.current?.value || "");
     try {
-      const res = await fetch(`/api/team/update?id=${searchedTeam.id}`, {
-        method: "PUT",
+      const res = await fetch(`/api/team/update`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, players }),
       });
@@ -148,12 +148,12 @@ const getOffsetISO = (dtLocal: string): string => {
      let cheatNum = 50;
      if(searchedTeam.cheatPoints>=50){
       cheatNum = 0;
-     }
+     } 
     try {
-      const res = await fetch(`/api/team/cheat?id=${searchedTeam.id}`, {
-        method: "PUT",
+      const res = await fetch(`/api/team/cheat`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cheatNum }),
+        body: JSON.stringify({ cheatNum, searchedTeam }),
       });
       if (!res.ok) throw new Error("Fehler beim Speichern");
       handleSavedMessage("Team Cheating gespeichert ✅");
@@ -215,7 +215,7 @@ const getOffsetISO = (dtLocal: string): string => {
             Team speichern
           </button>
           <button onClick={handleCheater} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
-            Team disqualifizieren
+            {searchedTeam.cheatPoints>=50 ? "Team re-qualifizieren" : "Team disqualifizieren"}
           </button>
           <button onClick={handleSaveTeam} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
             Team löschen
@@ -223,26 +223,55 @@ const getOffsetISO = (dtLocal: string): string => {
         </div>
       )}
 
-       {searchedTeam && allGameIds.map((id) => {
-  // Prüfe, ob wir für dieses Spiel Punkte haben
+{searchedTeam && allGameIds.map((id: number) => {
   const game = gamesMap.get(id);
 
-  // Wenn nicht, erstelle leeren Spielblock mit Inputfeldern
-  const points = game?.points ?? searchedTeam?.players.map((name) => ({ player: name, value: 0 }));
+  // Punkte vorbereiten (falls leer → 0)
+  const points: { player: string; value: number }[] =
+    game?.points ?? searchedTeam?.players.map((name: string) => ({ player: name, value: -1 })) ?? [];
+
+  // Spieler in Paare gruppieren
+  const pairs: { player: string; value: number }[][] = points.reduce(
+    (rows: { player: string; value: number }[][], p, i) => {
+      if (i % 2 === 0) {
+        rows.push([p]);
+      } else {
+        rows[rows.length - 1].push(p);
+      }
+      return rows;
+    },
+    [] // Initialwert setzen, damit TS weiß: rows = Array von Arrays
+  );
 
   return (
-    <div key={`game-${id}`} className="game-block">
-      <h3>Spiel {id}</h3>
-      <ul>
-        {points && points.map((p, idx) => (
-          <li key={`point-${id}-${idx}`}>
-            Spieler {p.player}: <input type="number" defaultValue={p.value} />
-          </li>
-        ))}
-      </ul>
+    <div
+      key={`game-${id}`}
+      className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 "
+    >
+      {/* Game ID */}
+      <div className="font-bold text-lg mb-4">Spiel {id}</div>
+
+      {/* Spieler + Inputs paarweise */}
+      {pairs.map((pair, rowIndex) => (
+        <div key={rowIndex} className="grid grid-cols-2 gap-4 mb-3">
+          {pair.map((p, idx) => (
+            <div key={`${id}-${rowIndex}-${idx}`}>
+              <label className="block text-sm mb-1 text-white">{p.player}</label>
+              <input
+                type="number"
+                defaultValue={p.value}
+                className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 
+                  shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              />
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 })}
+
+
 
       {/* GAME SETTINGS CARD */}
        <div className="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-3xl mb-6">

@@ -12,13 +12,17 @@ export async function POST(req: Request) {
   }
 
   const data = await req.json();
+  if(!data.user3 && data.user4){
+    data.user3 = data.user4;
+    data.user4 = null;
+  }
 
   try {
     const updatedTeam = await prisma.team.update({
       where: { uname: session.user.uname },
       data: {
         user1: data.user1,
-        user2: data.user2,
+        user2: data.user2, 
         user3: data.user3,
         user4: data.user4,
       },
