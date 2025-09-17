@@ -144,7 +144,7 @@ export default function Page() {
         <h3 className="font-semibold">2. Erhebung und Speicherung personenbezogener Daten</h3>
         <ul className="list-disc ml-5 space-y-1">
           <li>IP-Adresse: Herkunft der Anfrage</li>
-          <li>Datum und Uhrzeit des Zugriffs: Angriffsschutz</l>
+          <li>Datum und Uhrzeit des Zugriffs: Angriffsschutz</li>
           <li>Verwendetes Betriebssystem: Anpassungen App</li>
           <li>Referrer-URL</li>
           <li>Standort: Karte in App</li>
