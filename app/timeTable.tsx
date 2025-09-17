@@ -128,7 +128,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                   }`}>Playstore Olympia App</h3>
                       <div
-                  className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${
+                  className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition bg-black ${
                     platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                   }`}
                 >
