@@ -144,7 +144,7 @@ const [userData, setUserData] = useState({
     });
 
     if (!response.ok) throw new Error("Fehler beim Speichern");
-    if(isApp) await Haptics.impact({ style: ImpactStyle.Medium });
+    await Haptics.impact({ style: ImpactStyle.Medium });
 
     confetti({
       particleCount: 150,
