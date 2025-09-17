@@ -75,7 +75,7 @@ export default function Page() {
                  >
                    
                    {/* Linker Bereich mit Titel + Badge */}
-                   <div className="flex flex-col">
+                   <div className="flex flex-col bg-black ">
                  
                      <a
                        href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
@@ -143,11 +143,14 @@ export default function Page() {
 
         <h3 className="font-semibold">2. Erhebung und Speicherung personenbezogener Daten</h3>
         <ul className="list-disc ml-5 space-y-1">
-          <li>IP-Adresse</li>
-          <li>Datum und Uhrzeit des Zugriffs</li>
-          <li>Browsertyp und Version</li>
-          <li>Verwendetes Betriebssystem</li>
+          <li>IP-Adresse: Herkunft der Anfrage</li>
+          <li>Datum und Uhrzeit des Zugriffs: Angriffsschutz</l>
+          <li>Verwendetes Betriebssystem: Anpassungen App</li>
           <li>Referrer-URL</li>
+          <li>Standort: Karte in App</li>
+          <li>NutzerID & Namen: Login und Funktionalität</li>
+          <li>Passwort: verschlüsselt im Login</li>
+          <li>Systemsprache und Design: Feature</li>
         </ul>
         <p>Diese Daten werden ausschließlich zur technischen Bereitstellung und Verbesserung der Website verarbeitet und nicht ohne Ihre Zustimmung mit Dritten geteilt.</p>
 
