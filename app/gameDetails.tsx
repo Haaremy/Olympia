@@ -92,7 +92,6 @@ const [userData, setUserData] = useState({
     useEffect(() => {
         const modal = modalRef.current;
         setIsModalOpen(true);
-        setIsApp(Capacitor.getPlatform() === 'android');
         
         // Fokus auf das Modal setzen
         if (modal) {
@@ -250,7 +249,6 @@ const offsetMinutes = new Date().getTimezoneOffset()* 60 * 1000;
 const [timeLeft, setTimeLeft] = useState(message.timeLeft + offsetMinutes);
 
 useEffect(() => {
-  
   const interval = setInterval(() => {
     setTimeLeft((prevTime) => {
       if (prevTime <= 1000) {
@@ -265,6 +263,10 @@ useEffect(() => {
 });
 
 
+
+useEffect(() => {
+  setIsApp(Capacitor.isNativePlatform());
+}, []);
 
 
 
