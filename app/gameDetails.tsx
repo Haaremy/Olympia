@@ -266,6 +266,7 @@ useEffect(() => {
 
 useEffect(() => {
   setIsApp(Capacitor.isNativePlatform());
+    console.log(isApp);
 }, []);
 
 
