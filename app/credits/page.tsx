@@ -69,13 +69,13 @@ export default function Page() {
                      platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                    }`}>Playstore Olympia App</h3>
                        <div
-                   className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition ${
+                   className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition bg-black ${
                      platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                    }`}
                  >
                    
                    {/* Linker Bereich mit Titel + Badge */}
-                   <div className="flex flex-col bg-black ">
+                   <div className="flex flex-col  ">
                  
                      <a
                        href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
