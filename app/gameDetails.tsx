@@ -144,7 +144,7 @@ const [userData, setUserData] = useState({
     });
 
     if (!response.ok) throw new Error("Fehler beim Speichern");
-    await Haptics.impact({ style: ImpactStyle.Medium });
+    if(isApp) await Haptics.impact({ style: ImpactStyle.Medium });
 
     confetti({
       particleCount: 150,
@@ -266,7 +266,6 @@ useEffect(() => {
 
 useEffect(() => {
   setIsApp(Capacitor.isNativePlatform());
-    console.log(isApp);
 }, []);
 
 
