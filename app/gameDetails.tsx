@@ -421,7 +421,7 @@ const formatTime = (ms: number) => {
     />}
     </div>
 }
-    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && (!points[0]?.value  || points[0]?.value == 0)  &&(
+    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !(Points[0]?.value >= 0)  &&(
     <div className="text-right mt-2">
       <button
         className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300 mt-3"
