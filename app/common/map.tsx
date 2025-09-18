@@ -74,6 +74,23 @@ async function loadGames() {
   }
 }
 
+ const fetchPosition = async () => {
+    const perm = await Geolocation.requestPermissions();
+    console.log("Geo Permissions:", perm);
+
+    if (perm.location === "granted") {  // nur "granted" verwenden
+      const pos = await Geolocation.getCurrentPosition(); // Capacitor
+      setPosition(pos); // Typ passt zu GeolocationPosition
+      //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
+      latLngToPixel(
+        pos.coords.latitude,
+        pos.coords.longitude,
+      );
+    } else {
+      console.warn("Geolocation permission not granted");
+    }
+  };
+
 
    useEffect(() => {
     
@@ -90,22 +107,7 @@ async function loadGames() {
   })();
 
 
-  const fetchPosition = async () => {
-    const perm = await Geolocation.requestPermissions();
-    console.log("Geo Permissions:", perm);
-
-    if (perm.location === "granted") {  // nur "granted" verwenden
-      const pos = await Geolocation.getCurrentPosition(); // Capacitor
-      setPosition(pos); // Typ passt zu GeolocationPosition
-      //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
-      latLngToPixel(
-        pos.coords.latitude,
-        pos.coords.longitude,
-      );
-    } else {
-      console.warn("Geolocation permission not granted");
-    }
-  };
+  
 
  
 }, []);
