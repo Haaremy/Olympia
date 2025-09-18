@@ -35,13 +35,25 @@ function latLngToPixel(
   lat: number,
   lng: number,
 ): [number, number] {
-  const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
-  const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
-  const difLat =  topRight[1] - bottomLeft[1]; // x Koordinate Differenz
-  const difWidth = 1315-311;
-  const correlation = difLat/difWidth;
-  const x = correlation * lat;
-  const y = correlation * lng;
+  // Referenzpunkte in Lat/Lng
+  const northEast: [number, number] = [51.746222, 11.983056]; // Nord/Ost (links unten im Bild)
+  const southWest: [number, number] = [51.745722, 11.984167]; // Süd/West (rechts oben im Bild)
+
+  // Referenzpunkte in Pixeln
+  const pixelNorthEast: [number, number] = [311, 1315]; // links unten
+  const pixelSouthWest: [number, number] = [1315, 311]; // rechts oben
+
+  // Geo-Differenzen
+  const difLat = northEast[0] - southWest[0]; // Nord → Süd
+  const difLng = southWest[1] - northEast[1]; // Ost → West
+
+  // Pixel-Differenzen
+  const difX = pixelSouthWest[0] - pixelNorthEast[0];
+  const difY = pixelNorthEast[1] - pixelSouthWest[1];
+
+  // Umrechnung: beide Achsen sind "invertiert"
+  const x = ((southWest[1] - lng) / difLng) * difX + pixelNorthEast[0];
+  const y = ((lat - southWest[0]) / difLat) * difY + pixelSouthWest[1];
 
   return [x, y];
 }
