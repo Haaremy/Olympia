@@ -197,8 +197,8 @@ useEffect(() => {
 
       {/* Container für Leaflet Map */}
       <div ref={mapRef} style={{ height: "32vh", width: "100%", zIndex: "0", background: "linear-gradient(to bottom, #E3001B, #140079"} } />
-      <div>{!!position ? `${position.coords.latitude} ":"${position.coords.longitude} `: ""}</div>
-       <div>{!!position ? `${mappedX} ":"${mappedY} `: ""}</div>
+      <div>{!!position ? `${position.coords.latitude},${position.coords.longitude} `: ""}</div>
+       <div>{`${mappedX}:${mappedY} `}</div>
     </section>
   );
 }
