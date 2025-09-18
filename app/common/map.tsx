@@ -107,7 +107,7 @@ async function loadGames() {
     }
   };
 
-  fetchPosition();
+ 
 }, []);
 
 
@@ -186,7 +186,7 @@ useEffect(() => {
       L.marker([mappedY, mappedX])
         .addTo(mapInstance.current!)
         .bindPopup("Du bist hier");
-   }
+   });
     
   })();
 }, [imageSrc, filteredGames, position, mappedX, mappedY]);
