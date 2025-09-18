@@ -181,12 +181,14 @@ useEffect(() => {
      // );
     // setX(x);
     // setY(y);
-   (async () => {
-    await fetchPosition();
-      L.marker([mappedY, mappedX])
-        .addTo(mapInstance.current!)
-        .bindPopup("Du bist hier");
-   });
+  async function initMarker() {
+  await fetchPosition();
+  L.marker([mappedY, mappedX])
+    .addTo(mapInstance.current!)
+    .bindPopup("Du bist hier");
+}
+
+initMarker();
     
   })();
 }, [imageSrc, filteredGames, position, mappedX, mappedY]);
