@@ -33,34 +33,36 @@ function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
 
 
 
-function latLngToPixel(
-  lat: number,
-  lng: number,
-): [number, number] {
-  // Referenzpunkte in Lat/Lng
-  const northEast: [number, number] = [51.746222, 11.983056]; // Nord/Ost (links unten im Bild)
-  const southWest: [number, number] = [51.745722, 11.984167]; // Süd/West (rechts oben im Bild)
+// Annahmen: src-Geo-Punkte (lat,lng) als in deinem Projekt
+const northEastGeo: [number, number] = [51.746222, 11.983056]; // NE (lat, lng)
+const southWestGeo: [number, number] = [51.745722, 11.984167]; // SW (lat, lng)
 
-  // Referenzpunkte in Pixeln
-  const pixelNorthEast: [number, number] = [311, 1315]; // links unten
-  const pixelSouthWest: [number, number] = [1315, 311]; // rechts oben
+// Deine Schätzungen in Pixeln (x, y)
+const pixelNE: [number, number] = [310, 160];   // NE -> x=310, y=160
+const pixelSW: [number, number] = [1330, 770];  // SW -> x=1330, y=770
 
-  // Geo-Differenzen
-  const difLat = northEast[0] - southWest[0]; // Nord → Süd
-  const difLng = southWest[1] - northEast[1]; // Ost → West
+function latLngToPixel(lat: number, lng: number): [number, number] {
+  const [latNE, lngNE] = northEastGeo;
+  const [latSW, lngSW] = southWestGeo;
+  const [xNE, yNE] = pixelNE;
+  const [xSW, ySW] = pixelSW;
 
-  // Pixel-Differenzen
-  const difX = pixelSouthWest[0] - pixelNorthEast[0];
-  const difY = pixelNorthEast[1] - pixelSouthWest[1];
+  // Verhältnisse (0..1)
+  // Längengrad -> X interpolation (lng increases -> east)
+  const tX = (lng - lngNE) / (lngSW - lngNE);
 
-  // Umrechnung: beide Achsen sind "invertiert"
-  const x = ((southWest[1] - lng) / difLng) * difX + pixelNorthEast[0]+20;
-  const y = ((northEast[0] - lat) / difLat) * difY; //-190 zu Oberkante 
-  setX(Math.floor(x));
- setY(Math.floor(y));
-  return [x, y];
+  // Breitengrad -> Y interpolation
+  // latNE > latSW (nördlicher Punkt hat größere lat)
+  const tY = (latNE - lat) / (latNE - latSW);
+
+  // Interpolierte Pixelwerte
+  const x = xNE + tX * (xSW - xNE);
+  const y = yNE + tY * (ySW - yNE);
+
+  return [Math.round(x), Math.round(y)];
 }
 
+ 
 async function loadGames() {
   try {
     const res = await fetch("/api/game"); // Pfad als String
