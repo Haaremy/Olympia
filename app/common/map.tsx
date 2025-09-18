@@ -97,7 +97,11 @@ async function loadGames() {
     if (perm.location === "granted") {  // nur "granted" verwenden
       const pos = await Geolocation.getCurrentPosition(); // Capacitor
       setPosition(pos); // Typ passt zu GeolocationPosition
-      console.log("Position:", pos.coords.latitude, pos.coords.longitude);
+      //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
+      latLngToPixel(
+        pos.coords.latitude,
+        pos.coords.longitude,
+      );
     } else {
       console.warn("Geolocation permission not granted");
     }
@@ -177,7 +181,7 @@ useEffect(() => {
       );
     // setX(x);
     // setY(y);
-      L.marker([y, x])
+      L.marker([mappedY, mappedX])
         .addTo(mapInstance.current!)
         .bindPopup("Du bist hier");
     }
