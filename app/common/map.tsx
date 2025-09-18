@@ -177,20 +177,14 @@ useEffect(() => {
     });
 
     
-     // const [x, y] = latLngToPixel(
-      //  position.coords.latitude,
-      //  position.coords.longitude,
-     // );
-    // setX(x);
-    // setY(y);
-  async function initMarker() {
-  await fetchPosition();
-  L.marker([mappedY, mappedX], { icon: idIcon("YOU") })
-    .addTo(mapInstance.current!)
-    .bindPopup(mappedY+","+mappedX);
-}
+     const coords = await fetchPosition();
+    if (coords) {
+      const [cX, cY] = coords;
 
-initMarker();
+      L.marker([cY, cX], { icon: idIcon("X") })
+        .addTo(mapInstance.current!)
+        .bindPopup(`${cY}, ${cX}`);
+    }
     
   })();
 }, [imageSrc, filteredGames, position, mappedX, mappedY]);
