@@ -56,7 +56,8 @@ function latLngToPixel(
   // Umrechnung: beide Achsen sind "invertiert"
   const x = ((southWest[1] - lng) / difLng) * difX + pixelNorthEast[0];
   const y = ((lat - southWest[0]) / difLat) * difY + pixelSouthWest[1];
-
+  setX(x);
+ setY(y);
   return [x, y];
 }
 
@@ -174,8 +175,8 @@ useEffect(() => {
         position.coords.latitude,
         position.coords.longitude,
       );
-     setX(x);
-     setY(y);
+    // setX(x);
+    // setY(y);
       L.marker([y, x])
         .addTo(mapInstance.current!)
         .bindPopup("Du bist hier");
