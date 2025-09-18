@@ -42,16 +42,16 @@ const pixelSW: [number, number] = [1330, 770];  // SW -> x=1330, y=770
 
  
 function latLngToPixel(lat: number, lng: number): [number, number] {
-  const [latNE, lngNE] = northEastGeo;
-  const [latSW, lngSW] = southWestGeo;
-  const [xNE, yNE] = pixelNE;
-  const [xSW, ySW] = pixelSW;
+  const [latNE, lngNE] = northEastGeo; // nördlich, östlich
+  const [latSW, lngSW] = southWestGeo; // südlich, westlich
+  const [xNE, yNE] = pixelNE;           // Pixel NE
+  const [xSW, ySW] = pixelSW;           // Pixel SW
 
-  // X: proportional zwischen NE und SW
-  const tX = (lng - lngNE) / (lngSW - lngNE);
-  const x = xNE + tX * (xSW - xNE);
+  // X: Ost/West korrekt, links = West, rechts = Ost
+  const tX = (lng - lngSW) / (lngNE - lngSW); // 0..1
+  const x = xSW + tX * (xNE - xSW);
 
-  // Y: proportional zwischen NE und SW
+  // Y: Nord/Süd linear (oben = Norden)
   const tY = (latNE - lat) / (latNE - latSW);
   const y = yNE + tY * (ySW - yNE);
 
