@@ -55,7 +55,7 @@ function latLngToPixel(
 
   // Umrechnung: beide Achsen sind "invertiert"
   const x = ((southWest[1] - lng) / difLng) * difX + pixelNorthEast[0]+20;
-  const y = ((northEast[0] - lat) / difLat) * difY - 190;
+  const y = ((northEast[0] - lat) / difLat) * difY; //-190 zu Oberkante 
   setX(Math.floor(x));
  setY(Math.floor(y));
   return [x, y];
