@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Haptics, ImpactStyle, NotificationType} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
 
@@ -75,7 +75,35 @@ const [userData, setUserData] = useState({
   user4: "",
 });
 
+const testHaptics = () => {
+  console.log('--- Haptics Test Start ---');
 
+  // Impact
+  console.log('Impact: Light');
+  await Haptics.impact({ style: ImpactStyle.Light });
+
+  console.log('Impact: Medium');
+  await Haptics.impact({ style: ImpactStyle.Medium });
+
+  console.log('Impact: Heavy');
+  await Haptics.impact({ style: ImpactStyle.Heavy });
+
+  // Selection
+  console.log('Selection vibration');
+  await Haptics.selection();
+
+  // Notification
+  console.log('Notification: Success');
+  await Haptics.notification({ type: NotificationType.Success });
+
+  console.log('Notification: Warning');
+  await Haptics.notification({ type: NotificationType.Warning });
+
+  console.log('Notification: Error');
+  await Haptics.notification({ type: NotificationType.Error });
+
+  console.log('--- Haptics Test End ---');
+}
 
     const { data: session } = useSession();
 
@@ -154,6 +182,7 @@ const [userData, setUserData] = useState({
     });
     setShowSaved(true);
     setUpdateSite(true);
+    testHaptics();
 
     const playedGames = localStorage.getItem("playedGames") || "";
     //const formattedId = message.id < 10 ? `0${message.id}` : message.id;
