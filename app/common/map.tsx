@@ -47,11 +47,11 @@ function latLngToPixel(lat: number, lng: number): [number, number] {
   const [xNE, yNE] = pixelNE;
   const [xSW, ySW] = pixelSW;
 
-  // Ost/West Achse korrigiert
-  const tX = (lng - lngSW) / (lngNE - lngSW);
-  const x = xSW + tX * (xNE - xSW);
+  // X: proportional zwischen NE und SW
+  const tX = (lng - lngNE) / (lngSW - lngNE);
+  const x = xNE + tX * (xSW - xNE);
 
-  // Nord/Süd Achse linear
+  // Y: proportional zwischen NE und SW
   const tY = (latNE - lat) / (latNE - latSW);
   const y = yNE + tY * (ySW - yNE);
 
