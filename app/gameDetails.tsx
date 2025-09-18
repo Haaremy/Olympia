@@ -154,7 +154,7 @@ const [userData, setUserData] = useState({
     });
     setShowSaved(true);
     setUpdateSite(true);
-    testHaptics();
+    
 
     const playedGames = localStorage.getItem("playedGames") || "";
     //const formattedId = message.id < 10 ? `0${message.id}` : message.id;
