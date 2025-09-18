@@ -25,6 +25,8 @@ interface MapSectionProps {
 function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position  | null>(null);
+ const [mappedX, setX] = useState(0);
+ const [mappedY, setY] = useState(0);
 
   // GPS-Referenzpunkte für dein Bild
 
@@ -172,6 +174,8 @@ useEffect(() => {
         position.coords.latitude,
         position.coords.longitude,
       );
+     setX(x);
+     setY(y);
       L.marker([y, x])
         .addTo(mapInstance.current!)
         .bindPopup("Du bist hier");
@@ -194,6 +198,7 @@ useEffect(() => {
       {/* Container für Leaflet Map */}
       <div ref={mapRef} style={{ height: "32vh", width: "100%", zIndex: "0", background: "linear-gradient(to bottom, #E3001B, #140079"} } />
       <div>{!!position ? `${position.coords.latitude} ":"${position.coords.longitude} `: ""}</div>
+       <div>{!!position ? `${mappedX} ":"${mappedY} `: ""}</div>
     </section>
   );
 }
