@@ -75,35 +75,7 @@ const [userData, setUserData] = useState({
   user4: "",
 });
 
-const testHaptics = () => {
-  console.log('--- Haptics Test Start ---');
 
-  // Impact
-  console.log('Impact: Light');
-  await Haptics.impact({ style: ImpactStyle.Light });
-
-  console.log('Impact: Medium');
-  await Haptics.impact({ style: ImpactStyle.Medium });
-
-  console.log('Impact: Heavy');
-  await Haptics.impact({ style: ImpactStyle.Heavy });
-
-  // Selection
-  console.log('Selection vibration');
-  await Haptics.selection();
-
-  // Notification
-  console.log('Notification: Success');
-  await Haptics.notification({ type: NotificationType.Success });
-
-  console.log('Notification: Warning');
-  await Haptics.notification({ type: NotificationType.Warning });
-
-  console.log('Notification: Error');
-  await Haptics.notification({ type: NotificationType.Error });
-
-  console.log('--- Haptics Test End ---');
-}
 
     const { data: session } = useSession();
 
