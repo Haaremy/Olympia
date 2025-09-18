@@ -82,7 +82,7 @@ async function loadGames() {
       const pos = await Geolocation.getCurrentPosition(); // Capacitor
       setPosition(pos); // Typ passt zu GeolocationPosition
       //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
-      latLngToPixel(
+      return latLngToPixel(
         pos.coords.latitude,
         pos.coords.longitude,
       );
