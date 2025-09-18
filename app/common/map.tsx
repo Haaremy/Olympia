@@ -175,10 +175,10 @@ useEffect(() => {
     });
 
     if (position) {
-      const [x, y] = latLngToPixel(
-        position.coords.latitude,
-        position.coords.longitude,
-      );
+     // const [x, y] = latLngToPixel(
+      //  position.coords.latitude,
+      //  position.coords.longitude,
+     // );
     // setX(x);
     // setY(y);
       L.marker([mappedY, mappedX])
