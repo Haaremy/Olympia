@@ -37,8 +37,8 @@ const northEastGeo: [number, number] = [51.746222, 11.983056]; // NE (lat, lng)
 const southWestGeo: [number, number] = [51.745722, 11.984167]; // SW (lat, lng)
 
 // Deine Schätzungen in Pixeln (x, y)
-const pixelNE: [number, number] = [310, 160];   // NE -> x=310, y=160
-const pixelSW: [number, number] = [1330, 770];  // SW -> x=1330, y=770
+const pixelNE: [number, number] = [-310, 160];   // NE -> x=310, y=160
+const pixelSW: [number, number] = [-1330, 770];  // SW -> x=1330, y=770
 
  
 function latLngToPixel(lat: number, lng: number): [number, number] {
