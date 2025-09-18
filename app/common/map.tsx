@@ -174,17 +174,20 @@ useEffect(() => {
         .bindPopup(currTitle);
     });
 
-    if (position) {
+    
      // const [x, y] = latLngToPixel(
       //  position.coords.latitude,
       //  position.coords.longitude,
      // );
     // setX(x);
     // setY(y);
+   (async () => {
+    await fetchPosition();
       L.marker([mappedY, mappedX])
         .addTo(mapInstance.current!)
         .bindPopup("Du bist hier");
-    }
+   }
+    
   })();
 }, [imageSrc, filteredGames, position, mappedX, mappedY]);
 
