@@ -46,16 +46,12 @@ function latLngToPixel(lat: number, lng: number): [number, number] {
   const [xNE, yNE] = pixelNE;
   const [xSW, ySW] = pixelSW;
 
-  // Verhältnisse (0..1)
-  // Längengrad -> X interpolation (lng increases -> east)
-  const tX = (lng - lngNE) / (lngSW - lngNE);
+  // X: links → rechts (West → Ost)
+  const tX = (lng - lngSW) / (lngNE - lngSW);
+  const x = xSW + tX * (xNE - xSW);
 
-  // Breitengrad -> Y interpolation
-  // latNE > latSW (nördlicher Punkt hat größere lat)
+  // Y: oben → unten (Norden → Süden)
   const tY = (latNE - lat) / (latNE - latSW);
-
-  // Interpolierte Pixelwerte
-  const x = xNE + tX * (xSW - xNE);
   const y = yNE + tY * (ySW - yNE);
 
   return [Math.round(x), Math.round(y)];
