@@ -186,7 +186,7 @@ useEffect(() => {
         .bindPopup("Du bist hier");
     }
   })();
-}, [imageSrc, filteredGames, position]);
+}, [imageSrc, filteredGames, position, mappedX, mappedY]);
 
 
 
