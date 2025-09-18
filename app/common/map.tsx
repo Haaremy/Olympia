@@ -40,17 +40,18 @@ const southWestGeo: [number, number] = [51.745722, 11.984167]; // SW (lat, lng)
 const pixelNE: [number, number] = [310, 160];   // NE -> x=310, y=160
 const pixelSW: [number, number] = [1330, 770];  // SW -> x=1330, y=770
 
+ 
 function latLngToPixel(lat: number, lng: number): [number, number] {
   const [latNE, lngNE] = northEastGeo;
   const [latSW, lngSW] = southWestGeo;
   const [xNE, yNE] = pixelNE;
   const [xSW, ySW] = pixelSW;
 
-  // X: links → rechts (West → Ost)
+  // Ost/West Achse korrigiert
   const tX = (lng - lngSW) / (lngNE - lngSW);
   const x = xSW + tX * (xNE - xSW);
 
-  // Y: oben → unten (Norden → Süden)
+  // Nord/Süd Achse linear
   const tY = (latNE - lat) / (latNE - latSW);
   const y = yNE + tY * (ySW - yNE);
 
