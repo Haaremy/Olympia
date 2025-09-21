@@ -14,6 +14,7 @@ export const gamesEG = [
     { id: "06", x: 1020, y: 280 },
     
     
+    
   ];
 
 export const gamesOG = [

@@ -25,27 +25,40 @@ interface MapSectionProps {
 function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position  | null>(null);
+ 
 
   // GPS-Referenzpunkte für dein Bild
 
 
 
 
-function latLngToPixel(
-  lat: number,
-  lng: number,
-): [number, number] {
-  const bottomLeft: [number, number] = [51.746222, 11.983056]; // Gebäude Ecke links unten
-  const topRight: [number, number] = [51.745722, 11.984167];   // Gebäude Ecke rechts oben
-  const difLat =  topRight[1] - bottomLeft[1]; // x Koordinate Differenz
-  const difWidth = 1315-311;
-  const correlation = difLat/difWidth;
-  const x = correlation * lat;
-  const y = correlation * lng;
+// Annahmen: src-Geo-Punkte (lat,lng) als in deinem Projekt
+const northEastGeo: [number, number] = [51.746222, 11.983056]; // NE (lat, lng)
+const southWestGeo: [number, number] = [51.745722, 11.984167]; // SW (lat, lng)
 
-  return [x, y];
+// Deine Schätzungen in Pixeln (x, y)
+const pixelNE: [number, number] = [1330, 160];   // NE -> x=310, y=160
+const pixelSW: [number, number] = [330, 760];  // SW -> x=1330, y=770
+
+ 
+function latLngToPixel(lat: number, lng: number): [number, number] {
+  const [latNE, lngNE] = northEastGeo; // nördlich, östlich
+  const [latSW, lngSW] = southWestGeo; // südlich, westlich
+  const [xNE, yNE] = pixelNE;           // Pixel NE
+  const [xSW, ySW] = pixelSW;           // Pixel SW
+
+  // X: Ost/West korrekt, links = West, rechts = Ost
+  const tX = (lng - lngSW) / (lngNE - lngSW); // 0..1
+  const x = xSW + tX * (xNE - xSW);
+
+  // Y: Nord/Süd linear (oben = Norden)
+  const tY = (latNE - lat) / (latNE - latSW);
+  const y = yNE + tY * (ySW - yNE);
+
+  return [Math.round(x), Math.round(y)];
 }
 
+ 
 async function loadGames() {
   try {
     const res = await fetch("/api/game"); // Pfad als String
@@ -58,6 +71,23 @@ async function loadGames() {
     return [];
   }
 }
+
+ const fetchPosition = async () => {
+    const perm = await Geolocation.requestPermissions();
+    console.log("Geo Permissions:", perm);
+
+    if (perm.location === "granted") {  // nur "granted" verwenden
+      const pos = await Geolocation.getCurrentPosition(); // Capacitor
+      setPosition(pos); // Typ passt zu GeolocationPosition
+      //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
+      return latLngToPixel(
+        pos.coords.latitude,
+        pos.coords.longitude,
+      );
+    } else {
+      console.warn("Geolocation permission not granted");
+    }
+  };
 
 
    useEffect(() => {
@@ -75,20 +105,9 @@ async function loadGames() {
   })();
 
 
-  const fetchPosition = async () => {
-    const perm = await Geolocation.requestPermissions();
-    console.log("Geo Permissions:", perm);
+  
 
-    if (perm.location === "granted") {  // nur "granted" verwenden
-      const pos = await Geolocation.getCurrentPosition(); // Capacitor
-      setPosition(pos); // Typ passt zu GeolocationPosition
-      console.log("Position:", pos.coords.latitude, pos.coords.longitude);
-    } else {
-      console.warn("Geolocation permission not granted");
-    }
-  };
-
-  fetchPosition();
+ 
 }, []);
 
 
@@ -155,15 +174,16 @@ useEffect(() => {
         .bindPopup(currTitle);
     });
 
-    if (position) {
-      const [x, y] = latLngToPixel(
-        position.coords.latitude,
-        position.coords.longitude,
-      );
-      L.marker([y, x])
+    
+     const coords = await fetchPosition();
+    if (coords) {
+      const [cX, cY] = coords;
+
+      L.marker([cY, cX], { icon: idIcon("X") })
         .addTo(mapInstance.current!)
-        .bindPopup("Du bist hier");
+        .bindPopup(`${cY}, ${cX}`);
     }
+    
   })();
 }, [imageSrc, filteredGames, position]);
 
@@ -181,7 +201,7 @@ useEffect(() => {
 
       {/* Container für Leaflet Map */}
       <div ref={mapRef} style={{ height: "32vh", width: "100%", zIndex: "0", background: "linear-gradient(to bottom, #E3001B, #140079"} } />
-      <div>{!!position ? `${position.coords.latitude} ":"${position.coords.longitude} `: ""}</div>
+      <div>{!!position ? `${position.coords.latitude},${position.coords.longitude} `: ""}</div>
     </section>
   );
 }

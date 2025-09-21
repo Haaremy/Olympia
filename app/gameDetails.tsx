@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
 
@@ -156,6 +156,7 @@ const [userData, setUserData] = useState({
     });
     setShowSaved(true);
     setUpdateSite(true);
+    
 
     const playedGames = localStorage.getItem("playedGames") || "";
     //const formattedId = message.id < 10 ? `0${message.id}` : message.id;
