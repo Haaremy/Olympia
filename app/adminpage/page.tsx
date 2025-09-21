@@ -304,6 +304,12 @@ const getOffsetISO = (dtLocal: string): string => {
         >
         <p className="text">Olympia-Feuer</p>
       </Link>
+      <Link
+        href="/debug"
+        className="px-4 py-2 mt-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+        >
+        <p className="text">Debug Testseite</p>
+      </Link>
     </main>
   );
 }

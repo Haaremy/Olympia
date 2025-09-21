@@ -3,23 +3,27 @@ apply plugin: 'com.android.application'
 android {
     namespace "de.haaremy.olympia"
     compileSdkVersion 36
+
     defaultConfig {
         applicationId "de.haaremy.olympia"
         minSdk 23
         targetSdk 36
-        versionCode 6
+        versionCode 9
         versionName "2025"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    // Wichtig: Nicht JavaVersion, sondern String
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17  // bleibt meist 17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
+
+
 
 
     signingConfigs {

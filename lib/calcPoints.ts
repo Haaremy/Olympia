@@ -455,7 +455,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   }
   ////////////////////////////
   
-  if(userPoints==-1){
+  if(userPoints<=-1){
     cheats = 0;result = 0;
   }
   return {result, cheats};

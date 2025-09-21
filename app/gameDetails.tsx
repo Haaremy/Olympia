@@ -55,6 +55,8 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const [points, setPoints] = useState<PointEntry[]>([]);
     const globalPointsRef = useRef<PointEntry[]>([]);
     const [isApp, setIsApp] = useState(false);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
     
     
 
@@ -305,13 +307,15 @@ const formatTime = (ms: number) => {
                     <p className="text-sm mb-4">{message.story}</p>
                     <hr className="my-6 border-gray-300 dark:border-gray-600" />
                     {/* Map Toggle Button */}
-                    <button
-                        onClick={handleShowMap}
-                        className="w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 dark:text-pink-400 "
-                        >
-                        &#x1F449; {message.station}
-                    </button>
-                      
+                    <details   onToggle={e => setIsDetailsOpen((e.target as HTMLDetailsElement).open)}
+>
+                    <summary
+                      onClick={handleShowMap}
+                      className="flex items-center gap-2 w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 dark:text-pink-400 justify-center text-center"
+                  >
+                      {isDetailsOpen ? '👇' : '👉'}
+                      <span className="flex-1 text-center">{message.station}</span>
+                  </summary>
                     {showMap && (
                         
                     <MapSection
@@ -321,6 +325,7 @@ const formatTime = (ms: number) => {
                       searchQuery={`${message.id < 10 ? "0" : ""}${message.id}`} 
                     />
                     )}
+                    </details>
 
                     {/* Capacity */}
                      <hr className="my-6 border-gray-300 dark:border-gray-600" />
@@ -421,7 +426,7 @@ const formatTime = (ms: number) => {
     />}
     </div>
 }
-    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !(points[0]?.value >= 0)  &&(
+    {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !(points[0]?.value >= 0) && userData?.user1!="" && userData?.user1!=""  &&(
     <div className="text-right mt-2">
       <button
         className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300 mt-3"
