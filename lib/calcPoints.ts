@@ -104,6 +104,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     result=userPoints*multiplier;
     if(userPoints>10){
       result=0;
+      cheats=1*multiplier;
     }
   }
   //////////////////////////// Spiel auf Zeit in Sekunden
@@ -141,6 +142,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
     if(userPoints<6){
       result=0;
+      cheats=1*multiplier;
     }
   }
 //////////////////////////// Schätzen mit Abweichung
@@ -213,6 +215,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     result=userPoints*multiplier;
       if(userPoints>10){
       result=0;
+        cheats=1*multiplier;
     }
   }
   ////////////////////////////
@@ -288,6 +291,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
       if(userPoints>15){
       result = 0;
+        cheats=1*multiplier;
     }
   }
   ////////////////////////////
@@ -295,7 +299,8 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     if (game==16){
         result=userPoints*multiplier;
       if(userPoints>10){
-      result = 10;
+      result = 0;
+        cheats=1*multiplier;
     }
 
   }
@@ -305,6 +310,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
         result=userPoints*multiplier;
       if(userPoints>10){
       result = 0;
+        cheats=1*multiplier;
     }
 
   }
@@ -330,6 +336,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
         result=userPoints*multiplier;
       if(userPoints>10){
       result = 0;
+        cheats=1*multiplier;
     }
 
   }
@@ -369,6 +376,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
       if(userPoints<6){
       result = 0;
+        cheats=1*multiplier;
     }
     }
   }
@@ -394,6 +402,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
       result=userPoints*2*multiplier;
       if(userPoints>5){
       result = 0;
+        cheats=1*multiplier;
     }
 
   }
@@ -403,6 +412,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
       result=userPoints*2*multiplier;
       if(userPoints>5){
           result = 0;
+        cheats=1*multiplier;
         }
     }
   ////////////////////////////
@@ -441,6 +451,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
       if(userPoints<15){
       result = 0;
+        cheats=1*multiplier;
     }
     } 
     if(field==2 && userPoints==198){
