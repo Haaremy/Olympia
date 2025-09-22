@@ -20,6 +20,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   // Modal öffnen + Escape-Handler
   useEffect(() => {
     setIsModalOpen(true);
+  document.body.style.overflow = 'hidden'; // Hintergrund scrollen sperren
+  
+  return () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'auto'; // Sperre aufheben beim Schließen
+  };
   }, [onClose, setIsModalOpen]);
 
   
