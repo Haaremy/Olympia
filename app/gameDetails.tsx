@@ -57,14 +57,14 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const globalPointsRef = useRef<PointEntry[]>([]);
     const [isApp, setIsApp] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [showreport, setShowReport] = useStae(false);
+    const [showReport, setShowReport] = useStae(false);
     
     
 
     const { t } = useTranslation(); 
 
     const handleShowMap = () => setShowMap(prev => !prev); 
-    const handleShowReport = () => setShowReport(true);
+    const handleReportOpen = () => setShowReport(true);
     const handleReportClose = () => setShowReport(false);
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
@@ -480,7 +480,7 @@ const formatTime = (ms: number) => {
                         </div>
                     )}
                     <div>
-                        <button className="text-sm text-blue-500 hover:underline mt-4">
+                        <button className="text-sm text-blue-500 hover:underline mt-4" onClick={handleReportOpen}>
                             Report Problem
                         </button>
                     </div>
