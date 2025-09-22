@@ -23,7 +23,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
 
   // Modal öffnen + Escape-Handler
   useEffect(() => {
-    const modal = modalRef.current;
     setIsModalOpen(true);
 
   }, [onClose, setIsModalOpen]);
