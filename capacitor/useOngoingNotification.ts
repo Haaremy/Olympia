@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { App } from "@capacitor/app";
-import { startOngoingNotification, stopOngoingNotification, updateOngoingNotification } from "@/capacitor/notificationService";
+import { startOngoingNotification, stopOngoingNotification, updateOngoingNotification, showPopupNotification } from "@/capacitor/notificationService";
 
 const liveUpdate = () => {
  updateOngoingNotification(new Date.now());
@@ -14,11 +14,9 @@ export function useOngoingNotification() {
       try {
         await startOngoingNotification("Die App ist aktiv");
         listener = await App.addListener("appStateChange", async (state) => {
-          if (!state.isActive) {
-            await stopOngoingNotification();
-          } else {
+           await showPopupNotification("","","");
             await startOngoingNotification("Die App ist aktiv");
-          }
+          
         });
       } catch (e) {
         console.error("Fehler bei der Benachrichtigung:", e);
