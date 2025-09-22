@@ -66,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
   };
 
   return (
-    <div className="inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
       <div
         ref={modalRef}
         tabIndex={-1}
@@ -98,6 +98,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
         />
 
             <button
+              onMouseDown={(e) => e.preventDefault()}
               onClick={handleSave}
               className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition mt-4"
             >
