@@ -20,6 +20,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   // 👉 useState für isApp
   const [isApp, setIsApp] = useState(false);
+  const [reportData, setReportData] = useState("");
 
   // Modal öffnen + Escape-Handler
   useEffect(() => {
@@ -89,9 +90,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             focus:outline-none focus:ring-2 focus:ring-pink-500 `}
       placeholder={t("Beschreibe...")}
       value={reportData}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        setReportData(e.target.value)
-      }
+      onChange={(e) => { 
+            setReportData(e.target.value); 
+          }}
       disabled={false}
     /> 
             <button
