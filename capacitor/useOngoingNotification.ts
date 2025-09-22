@@ -38,7 +38,7 @@ export function useOngoingNotification() {
             // Popup nur anzeigen, wenn App wieder aktiv wird
             await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
             // Optional: Ongoing-Notification aktualisieren
-            await updateOngoingNotification(`Deine Punkte: ${} und noch ${new Date().toLocaleTimeString()}`);
+            await updateOngoingNotification(`Deine Punkte: ${points} und noch ${new Date().toLocaleTimeString()}`);
           } else {
             // Optional: Ongoing-Notification aktualisieren
             await updateOngoingNotification("App im Hintergrund");
