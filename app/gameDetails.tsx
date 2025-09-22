@@ -495,7 +495,7 @@ const formatTime = (ms: number) => {
             )}
 
             {showReport && (
-                <Report onClose={handleReportClose} />
+                <Report onClose={handleReportClose} game={message.id} />
             )}
             
             {showSaved && (
