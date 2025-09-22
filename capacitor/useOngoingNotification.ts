@@ -12,6 +12,9 @@ import {
 const [started, setStarted] = useState(false);
 const [ending, setEnding] = useState<Date>(new Date());
 const [points, setPoints] = useState(0);
+ const [userData, setUserData] = useState({
+  pointsTotal: 0,
+});
 
 const formatTime = (ms: number) => {
   const totalSeconds = Math.floor(ms / 1000);
