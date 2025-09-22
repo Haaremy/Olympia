@@ -48,6 +48,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     setIsApp(Capacitor.isNativePlatform());
   }, []);
 
+  const handleSave = () => {
+    console.log("save todo");
+  }
+
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
       <div
@@ -71,16 +75,21 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         {/* Modal Content */}
         <div className="overflow-y-auto max-h-[70vh] space-y-4">
           {session ? (
+            <h1>
+              {t("report")}, <strong>{session.user?.uname}</strong> 🎉
+            </h1>
             <p>
-              {t("Reports")}, <strong>{session.user?.uname}</strong> 🎉
+              Beschreibe das Probem.
             </p>
-          ) : (
-            <p>{t("Keine Session gefunden")}</p>
-          )}
-
-          <p className="text-sm text-gray-500">
-            {isApp ? t("Du nutzt die App 📱") : t("Du nutzt die Web-Version 💻")}
-          </p>
+            <input>
+            </input>
+            <button
+              onClick={handleSave}
+              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
+            >
+              {t('save')}
+            </button>
+          ) : onClose();}
         </div>
       </div>
     </div>
