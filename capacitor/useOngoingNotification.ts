@@ -1,7 +1,11 @@
 "use client";
 import { useEffect } from "react";
 import { App } from "@capacitor/app";
-import { startOngoingNotification, stopOngoingNotification } from "@/capacitor/notificationService";
+import { startOngoingNotification, stopOngoingNotification, updateOngoingNotification } from "@/capacitor/notificationService";
+
+const liveUpdate = () => {
+ updateOngoingNotification(new Date.now());
+}
 
 export function useOngoingNotification() {
   useEffect(() => {
