@@ -5,7 +5,6 @@ import { useTranslation } from 'next-i18next';
 import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
-import { Capacitor } from '@capacitor/core';
 
 interface ModalProps {
   onClose: () => void;
