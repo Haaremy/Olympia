@@ -75,17 +75,31 @@ useEffect(() => {
   fetchSettings();
 }, []);
 
-// Berechnet die Team-Bilder-Pfade
-const getImages = () => {
-  return teams.map(team => `/uploads/${team.uname.toLowerCase()}.jpg`);
-};
+async function loadFiles() {
+  try {
+    const res = await fetch('/uploads/files.php'); // Pfad zu deiner index.php
+    if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
+
+    const files = await res.json(); // JSON-Array parsen
+    console.log('Dateien:', files);
+    return files;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 
 // Lade die Bilder beim Mount
 useEffect(() => {
-  setTeamImages(getImages());
+  const fetchFiles = async () => {
+    const files = await loadFiles();
+    setTeamImages(files);
+  };
+  fetchFiles();
 }, [teams]);
 
-// Countdown und ggf. Bild-Update jede Sekunde
+// Countdown & optionales Bild-Update jede Sekunde
 useEffect(() => {
   const interval = setInterval(() => {
     setTimeLeft(prevTime => {
@@ -95,7 +109,9 @@ useEffect(() => {
       }
       return prevTime - 1000;
     });
-    setTeamImages(getImages()); // optional, falls Teams sich ändern
+
+    // Dateien asynchron laden
+    loadFiles().then(files => setTeamImages(files));
   }, 1000);
 
   return () => clearInterval(interval);
@@ -165,6 +181,8 @@ useEffect(() => {
     };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+
+  
 
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
