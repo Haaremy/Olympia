@@ -257,7 +257,7 @@ if (lastChecked) {
           {timePlan && <PlannedTime onClose={handleTimePlanClose} />}
           {showLanguage && <Language onClose={handleLanguageClose} />}
           {showLogin && <Login onClose={handleLoginClose} />}
-          {showChat && <Chat onClose=handleChatClose} />}
+          {showChat && <Chat onClose={handleChatClose} />}
         </div>
       </header>
     </main>
