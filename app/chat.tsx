@@ -74,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
            <textarea
           className="w-full bottom-2 m-2 p-3 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
           placeholder="..."
-          value={reportData}
+          value={message}
           onChange={(e) => {
             if (e.target.value.length <= 100) {
               setMessage(e.target.value);
