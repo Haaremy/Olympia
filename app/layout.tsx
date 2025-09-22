@@ -30,7 +30,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const messages = useChatMessages();
+  useChatMessages();
   return (
     <html lang="de" className="">
         
