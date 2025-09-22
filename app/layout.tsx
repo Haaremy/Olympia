@@ -6,7 +6,7 @@ import "./globals.css";
 import Footer from "./footer";
 import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
-import { useChatMessages } from "./chatCheck";
+import { useChatMessages } from "../app/common/chatCheck";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
