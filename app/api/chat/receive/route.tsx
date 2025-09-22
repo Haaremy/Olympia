@@ -6,7 +6,7 @@ export async function GET() {
 try{
     const chat = await prisma.chatMessage.findMany({
       orderBy: {
-        lastUpdated: 'desc',
+        createdAt: 'desc',
       },
     });
 
@@ -21,6 +21,7 @@ try{
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
 
 
