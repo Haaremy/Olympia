@@ -8,6 +8,12 @@ interface ModalProps {
   onClose: () => void;
 }
 
+interface Chat {
+  message: string;
+  createdAt: string; // oder Date, je nachdem was dein Backend liefert
+  team: string;
+}
+
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { data: session } = useSession();
@@ -15,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   // 👉 useState für isApp
 const [message, setMessage] = useState("");
-const [history, setHistory] = useState<string[]>([]);
+const [history, setHistory] = useState<Chat[]>([]);
 
   // Modal öffnen + Escape-Handler
   useEffect(() => {
