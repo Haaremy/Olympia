@@ -37,6 +37,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     if (res.ok) {
       
       console.log("Chat send");
+      setMessage("");
      } else {
       console.log("Error on Chat");
     }
