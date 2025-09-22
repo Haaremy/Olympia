@@ -42,6 +42,7 @@ export function useOngoingNotification() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
         const settingsRes = await fetch("/api/settings");
         if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
         const settings: Settings = await settingsRes.json();
@@ -76,7 +77,7 @@ export function useOngoingNotification() {
             new Date(ending).getTime() - Date.now()
           )}`
         );
-        await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
+        
       } catch (e) {
         console.error("Fehler bei der Benachrichtigung:", e);
       }

@@ -41,7 +41,7 @@ export async function showPopupNotification(title: string, body: string) {
   await LocalNotifications.schedule({
     notifications: [
       {
-        id: NOTIFICATION_ID, // Eindeutige ID
+        id: 1225, // Eindeutige ID
         title,
         body,
         sound: 'default', // Standard-Benachrichtigungston
