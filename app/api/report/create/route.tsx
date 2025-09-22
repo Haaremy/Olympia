@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    await prisma.report.create({
+    await prisma.reports.create({
       data: {
         teamId: team.id, // Nur die ID des Teams
         gameId: body.gameid,
@@ -47,3 +47,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
