@@ -91,7 +91,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
               ➡️
             </button>
       </div>
-            <div className={`${reportData.length === 200 ? 'text-red-600' : ''}`}>
+            <div className={`${message.length === 200 ? 'text-red-600' : ''}`}>
               {message.length} / 100
             </div>
       
