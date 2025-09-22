@@ -28,6 +28,14 @@ export async function updateOngoingNotification(body: string) {
   });
 }
 
+export async function requestNotificationPermission() {
+  const { permission } = await LocalNotifications.checkPermissions();
+  if (permission !== 'granted') {
+    await LocalNotifications.requestPermissions();
+  }
+}
+
+
 export async function showPopupNotification(title: string, body: string) {
   await LocalNotifications.schedule({
     notifications: [
