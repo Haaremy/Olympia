@@ -48,6 +48,7 @@ model Team {
   language     String @default("de")
   cheatPoints Int
   reports Reports[]
+  chatMessages ChatMessage[]
 }
 
 model Reports {
@@ -63,7 +64,7 @@ model ChatMessage {
   teamId    Int
   message   String
   createdAt DateTime @default(now())
-
+  
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
