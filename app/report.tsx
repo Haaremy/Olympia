@@ -66,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+    <div className="inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
       <div
         ref={modalRef}
         tabIndex={-1}
