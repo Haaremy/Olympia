@@ -24,6 +24,8 @@
     "dark":"Dunkel",
     "light":"Hell",
     "enterPlayer":"<Name Spieler",
-    "enterTeam": "<Name des Teams>"
+    "enterTeam": "<Name des Teams>",
+    "probDes": "Beschreibe das Problem...",
+    "report": "Meldung"
   }
   
