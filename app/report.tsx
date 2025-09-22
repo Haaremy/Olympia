@@ -81,8 +81,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             <p>
               Beschreibe das Probem.
             </p>
-            <input>
-            </input>
+           <input
+      type="text"
+      ref={ref}
+      className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
+            rounded-xl shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-pink-500 `}
+      placeholder={t("Beschreibe...")}
+      value={reportData}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setReportData((prev) => ({ e.target.value }))
+      }
+      disabled={false}
+    /> 
             <button
               onClick={handleSave}
               className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
