@@ -97,7 +97,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           {session ? (
         <div>
             <h1>
-              {t("report")}, <strong>{session.user?.uname}</strong> 🎉
+              {t("report")}
             </h1>
             <p>
               Beschreibe das Probem.
@@ -122,7 +122,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
               {t('save')}
             </button>
         </div>
-          ) : onClose();}
+          ) : null}
         </div>
         
       </div>
