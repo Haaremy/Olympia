@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
         gameId: gameId,
       },
       orderBy: {
-        lastUpdated: 'desc',
+        createdAt: 'desc',
       },
     });
 
@@ -47,5 +47,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
 
