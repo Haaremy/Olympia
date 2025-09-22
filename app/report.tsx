@@ -97,7 +97,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
             </p>
            <input
       type="text"
-      ref={ref}
       className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
             rounded-xl shadow-lg 
             focus:outline-none focus:ring-2 focus:ring-pink-500 `}
