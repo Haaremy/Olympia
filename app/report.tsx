@@ -78,7 +78,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           placeholder={t("probDes")}
           value={reportData}
           onChange={(e) => {
-            if (e.target.value.length <= 200) {
+            if (e.target.value.length <= 100) {
               setReportData(e.target.value);
             }
           }}
@@ -93,7 +93,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
               {t('save')}
             </button>
             <div className={`${reportData.length === 200 ? 'text-red-600' : ''}`}>
-              {reportData.length} / 200
+              {reportData.length} / 100
             </div>
       </div>
         </div>
