@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useUI } from './context/UIContext';
 import Login from "./login";
 import Link from 'next/link';
+import Report from "./report";
 import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
@@ -56,14 +57,15 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const globalPointsRef = useRef<PointEntry[]>([]);
     const [isApp, setIsApp] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
+    const [showreport, setShowReport] = useStae(false);
     
     
 
     const { t } = useTranslation(); 
 
     const handleShowMap = () => setShowMap(prev => !prev); 
-
+    const handleShowReport () => setShowReport(true);
+    const handleReportClose() => setShowReport(false);
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
     const [updateSite, setUpdateSite] = useState(true);
@@ -476,6 +478,11 @@ const formatTime = (ms: number) => {
                             />
                         </div>
                     )}
+                    <div>
+                        <button className="text-sm text-blue-500 hover:underline mt-4">
+                            Report Problem
+                        </button>
+                    </div>
                 </div>
             </div>
                     
@@ -485,6 +492,11 @@ const formatTime = (ms: number) => {
             {showLogin && (
                 <Login onClose={handleLoginClose} />
             )}
+
+            {showReport && (
+                <Report onClose={handleReportClose} />
+            )}
+            
             {showSaved && (
                 <Infobox onClose={handleSavedClose} message="Speichern erfolgreich!" title='Gespeichert' color="pink" />
             )}
