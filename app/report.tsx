@@ -74,13 +74,17 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           {session ? (
         <div>
            <textarea
-          className="w-full mt-2 p-3 min-h-24 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
+          className="w-full m-2 p-3 min-h-24 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
           placeholder={t("probDes")}
           value={reportData}
-          onChange={(e) => setReportData(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.length <= 200) {
+              setReportData(e.target.value);
+            }
+          }}
           disabled={false}
         />
-
+      <div>
             <button
               onMouseDown={(e) => e.preventDefault()}
               onClick={handleSave}
@@ -88,6 +92,10 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
             >
               {t('save')}
             </button>
+            <div className={`${reportData.length === 200 ? 'text-red-600' : ''}`}>
+              {reportData.length} / 200
+            </div>
+      </div>
         </div>
           ) : null}
         </div>
