@@ -55,6 +55,7 @@ model Reports {
   id Int @id @default(autoincrement())
   gameId  Int
   message String
+  createdAt DateTime @default(now())
   teamId Int
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
