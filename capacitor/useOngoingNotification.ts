@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { App } from "@capacitor/app";
 import {
   startOngoingNotification,
@@ -8,8 +8,20 @@ import {
   showPopupNotification
 } from "@/capacitor/notificationService";
 
+const [started, setStarted] = useState(false);
+const [ending, setEnding] = useState<Date>(new Date());
+const [points, setPoints] = useState(0);
+
 useEffect(() => {
-  
+  fetch("/api/settings")
+      .then((res) => {
+        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
+        return res.json();
+      })
+      .then((data: Settings) => {
+        if (data.ending) setEnding(data.ending);
+        if (typeof data.started === "boolean") setStarted(data.started);
+      })
 }
 
 export function useOngoingNotification() {
@@ -26,7 +38,7 @@ export function useOngoingNotification() {
             // Popup nur anzeigen, wenn App wieder aktiv wird
             await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
             // Optional: Ongoing-Notification aktualisieren
-            await updateOngoingNotification(`Aktiv seit ${new Date().toLocaleTimeString()}`);
+            await updateOngoingNotification(`Deine Punkte: ${} und noch ${new Date().toLocaleTimeString()}`);
           } else {
             // Optional: Ongoing-Notification aktualisieren
             await updateOngoingNotification("App im Hintergrund");
