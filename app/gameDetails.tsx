@@ -57,7 +57,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const globalPointsRef = useRef<PointEntry[]>([]);
     const [isApp, setIsApp] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [showReport, setShowReport] = useStae(false);
+    const [showReport, setShowReport] = useState(false);
     
     
 
