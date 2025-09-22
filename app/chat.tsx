@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
+import { useChatMessages } from "./chatCheck";
 
 interface ModalProps {
   onClose: () => void;
@@ -11,7 +12,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { data: session } = useSession();
-
+  const messages = useChatMessagges();
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 👉 useState für isApp
@@ -74,7 +75,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
     {/* Chat Viewport - wo Nachrichten angezeigt werden */}
     <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-b-lg min-h-[40vh]">
-      {/* Hier kommen später die Chatnachrichten hin */}
+      {messages.map((msg, i) => (
+        <p key={i}>{msg}</p>
+      ))}
     </div>
 
     {/* Eingabe Bereich */}
