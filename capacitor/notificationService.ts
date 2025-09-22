@@ -1,6 +1,6 @@
 import { LocalNotifications } from "@capacitor/local-notifications";
 
-const NOTIFICATION_ID = 99; // feste ID, damit sie nicht dupliziert wird
+const NOTIFICATION_ID = 2412; // feste ID, damit sie nicht dupliziert wird
 
 export async function startOngoingNotification(body: string) {
   await LocalNotifications.schedule({
@@ -20,7 +20,7 @@ export async function updateOngoingNotification(body: string) {
     notifications: [
       {
         id: NOTIFICATION_ID,
-        title: "Olympia läuft 🏃",
+        title: "Olympia läuft weiter 🏃",
         body,
         ongoing: true,
       },
