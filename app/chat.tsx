@@ -93,7 +93,7 @@ const [history, setHistory] = useState<string[]>([]);
     {/* Chat Viewport - wo Nachrichten angezeigt werden */}
     <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-b-lg min-h-[40vh]">
       {history.map((msg, i) => (
-        <p key={i}>{msg}</p>
+        <p key={i}>{msg.message}</p>
       ))}
     </div>
 
