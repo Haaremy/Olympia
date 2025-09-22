@@ -71,7 +71,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     </div>
 
     {/* Eingabe Bereich */}
-    {!!session && (<div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-b-lg space-x-2">
+    {!!session && (
+    <>   
+    <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-b-lg space-x-2">
       <textarea
         className="flex-grow resize-none rounded-md border border-gray-300 dark:border-gray-600 p-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100"
         placeholder="Schreibe deine Nachricht..."
@@ -96,7 +98,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       <span className={message.length === 100 ? "text-red-600" : ""}>
         {message.length} / 100
       </span>
-    </div>)}
+    </div>
+    </> )}
   </div>
 </div>
 
