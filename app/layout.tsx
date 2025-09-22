@@ -4,7 +4,6 @@ import Navigation from "./navigation";
 import SessionProvider from "./session-provider";
 import "./globals.css";
 import Footer from "./footer";
-import Chat from "./chat";
 import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
 const geistSans = Geist({
