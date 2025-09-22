@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/authOptions';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface ReportRequestBody {
-  gameid: string;
+  gameid: number;
   message: string;
 }
 
@@ -47,4 +47,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 
