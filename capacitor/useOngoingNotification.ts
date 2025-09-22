@@ -12,6 +12,10 @@ import {
 const [started, setStarted] = useState(false);
 const [ending, setEnding] = useState<Date>(new Date());
 const [points, setPoints] = useState(0);
+interface UserData {
+  pointsTotal: number;
+  // weitere Felder, falls nötig
+}
  const [userData, setUserData] = useState({
   pointsTotal: 0,
 });
@@ -36,6 +40,10 @@ useEffect(() => {
         headers: { "Content-Type": "application/json" },
     }); 
     const data = await res.json();
+   setUserData({
+        ...response.team,
+        pointsTotal: data.team.pointsTotal,
+      }); // setze nur das team-Objekt
      
   fetch("/api/settings")
       .then((res) => {
