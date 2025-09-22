@@ -75,7 +75,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold text-pink-600 dark:text-pink-400">
-            {t("Chat")}
+            {t("report")}
           </h2>
           <button
             onClick={onClose}
@@ -89,18 +89,12 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
         <div className="overflow-y-auto max-h-[70vh] space-y-4">
           {session ? (
         <div>
-            <h1>
-              {t("report")}
-            </h1>
-            <p>
-              Beschreibe das Probem.
-            </p>
            <input
       type="text"
       className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
             rounded-xl shadow-lg 
             focus:outline-none focus:ring-2 focus:ring-pink-500 `}
-      placeholder={t("Beschreibe...")}
+      placeholder={t("probDes")}
       value={reportData}
       onChange={(e) => { 
             setReportData(e.target.value); 
