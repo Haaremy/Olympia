@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSession} from "next-auth/react";
 import { App } from "@capacitor/app";
 import {
   startOngoingNotification,
@@ -27,8 +28,12 @@ const formatTime = (ms: number) => {
 };
 
 useEffect(() => {
-  
-  
+   const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    }); 
+    const data = await res.json();
+     
   fetch("/api/settings")
       .then((res) => {
         if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
