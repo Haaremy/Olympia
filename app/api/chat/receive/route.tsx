@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
 
@@ -15,6 +13,7 @@ try{
 
     return NextResponse.json({
       success: true,
+        chat,
     }, { status: 200 });
 
   } catch (error) {
@@ -22,4 +21,5 @@ try{
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
