@@ -39,7 +39,7 @@ const [history, setHistory] = useState<Chat[]>([]);
       try {
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
-          const data: string[] = await res.json();
+          const data: Chat[] = await res.json();
          // setMessage(prevMessages => [...prevMessages, "Neue Nachricht"]);
           setHistory(data);
         }
@@ -98,8 +98,8 @@ const [history, setHistory] = useState<Chat[]>([]);
 
     {/* Chat Viewport - wo Nachrichten angezeigt werden */}
     <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-b-lg min-h-[40vh]">
-      {history.map((msg, i) => (
-        <p key={i}>{msg.message}</p>
+      {history.map((chat, i) => (
+        <p key={i}>{chat.message}</p>
       ))}
     </div>
 
