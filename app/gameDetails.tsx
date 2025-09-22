@@ -479,7 +479,7 @@ const formatTime = (ms: number) => {
                             />
                         </div>
                     )}
-                    <div className="items-center justify-center">
+                    <div className="items-center justify-center w-full">
                         <button className="text-sm text-blue-500 hover:underline mt-4" onClick={handleReportOpen}>
                             Report Problem
                         </button>
