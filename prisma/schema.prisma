@@ -58,6 +58,15 @@ model Reports {
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  teamId    Int
+  message   String
+  createdAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
 enum Role{
   USER
   ADMIN
@@ -86,7 +95,6 @@ model Entries { // einträge der Spieler
   slot        Int
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
-
 
 model GameSettings {
   id      Int       @id @default(autoincrement())
