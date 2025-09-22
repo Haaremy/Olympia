@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { App } from "@capacitor/app";
 import {
   startOngoingNotification,
   stopOngoingNotification,
@@ -39,21 +38,10 @@ export function useOngoingNotification() {
   const [points, setPoints] = useState(0);
   const [userData, setUserData] = useState<UserData>({ pointsTotal: 0 });
 
-  // Load user data + settings
+  // Load user settings
   useEffect(() => {
     const loadData = async () => {
       try {
-        if (session?.user?.uname) {
-          const res = await fetch(`/api/team/search?query=${session.user.uname}`);
-          if (!res.ok) throw new Error("Fehler beim Laden des Teams");
-          const data = await res.json();
-          setUserData({
-            ...data.team,
-            pointsTotal: data.team.pointsTotal,
-          });
-          setPoints(data.team.pointsTotal);
-        }
-
         const settingsRes = await fetch("/api/settings");
         if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
         const settings: Settings = await settingsRes.json();
@@ -64,41 +52,45 @@ export function useOngoingNotification() {
       }
     };
 
-    loadData(); // ✅ async Funktion aufrufen
+    loadData();
   }, [session?.user?.uname]);
 
-  // Manage ongoing notification
+  // Update notification every second
   useEffect(() => {
-    let listener: { remove: () => void } | null = null;
+    let interval: ReturnType<typeof setInterval>;
 
-    const init = async () => {
+    const updateData = async () => {
       try {
-        await startOngoingNotification("Die App ist aktiv");
+        let lpoints = 0;
+        if (session?.user?.uname) {
+          const res = await fetch(`/api/team/search?query=${session.user.uname}`);
+          if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+          const data = await res.json();
+          lpoints = data.team.pointsTotal || 0;
+          setPoints(lpoints);
+          setUserData({ ...data.team, pointsTotal: lpoints });
+        }
 
-        listener = await App.addListener("appStateChange", async (state) => {
-          if (state.isActive) {
-            await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
-            await updateOngoingNotification(
-              `Deine Punkte: ${points} und noch ${formatTime(
-                new Date(ending).getTime() - Date.now()
-              )}`
-            );
-          } else {
-            await updateOngoingNotification("App im Hintergrund");
-          }
-        });
+        await updateOngoingNotification(
+          `Deine Punkte: ${lpoints} \n Verbleibend: ${formatTime(
+            new Date(ending).getTime() - Date.now()
+          )}`
+        );
+        await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
       } catch (e) {
         console.error("Fehler bei der Benachrichtigung:", e);
       }
     };
 
-    init();
+    // Start interval
+    interval = setInterval(updateData, 1000); // jede Sekunde
 
+    // Cleanup
     return () => {
-      if (listener) listener.remove();
+      clearInterval(interval);
       void stopOngoingNotification();
     };
-  }, [points, ending]);
+  }, [session?.user?.uname, ending]);
 
   return { started, ending, points, userData };
 }
