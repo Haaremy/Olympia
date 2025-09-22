@@ -92,7 +92,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
            <input
       type="text"
       className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg 
+            rounded-xl shadow-lg min-h-[64vh]
             focus:outline-none focus:ring-2 focus:ring-pink-500 `}
       placeholder={t("probDes")}
       value={reportData}
@@ -103,7 +103,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
     /> 
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
+              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition mt-4"
             >
               {t('save')}
             </button>
