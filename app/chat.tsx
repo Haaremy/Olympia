@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
-import { useChatMessages } from "./chatCheck";
+import { useChatMessages } from "./common/chatCheck";
 
 interface ModalProps {
   onClose: () => void;
