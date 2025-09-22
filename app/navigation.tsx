@@ -215,7 +215,7 @@ if (lastChecked) {
                     onClick={handleChatOpen}
                     className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
-                    <p className="text-lg font-semibold">Login</p>
+                    <p className="text-lg font-semibold">Chat</p>
                   </button>
             
           </div>
@@ -251,6 +251,12 @@ if (lastChecked) {
               >
                 <p className="text-lg font-semibold">{t('rank')}</p>
               </Link>
+              <button
+                    onClick={handleChatOpen}
+                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                  >
+                    <p className="text-lg font-semibold">Chat</p>
+                  </button>
 
           </div>
 
