@@ -1,79 +1,88 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { App } from "@capacitor/app";
 import {
   startOngoingNotification,
   stopOngoingNotification,
   updateOngoingNotification,
-  showPopupNotification
+  showPopupNotification,
 } from "@/capacitor/notificationService";
 
-const [started, setStarted] = useState(false);
-const [ending, setEnding] = useState<Date>(new Date());
-const [points, setPoints] = useState(0);
 interface UserData {
   pointsTotal: number;
-  // weitere Felder, falls nötig
+  // weitere Felder falls nötig
 }
- const [userData, setUserData] = useState({
-  pointsTotal: 0,
-});
 
-const formatTime = (ms: number) => {
+interface Settings {
+  started?: boolean;
+  ending?: string | Date;
+}
+
+function formatTime(ms: number) {
   const totalSeconds = Math.floor(ms / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
-  const hoursStr = hours > 0 ? `${hours}h ` : '';
-  const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : '';
+  const hoursStr = hours > 0 ? `${hours}h ` : "";
+  const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : "";
   const secondsStr = `${seconds}s`;
 
-
   return `${hoursStr}${minutesStr}${secondsStr}`;
-};
-
-useEffect(() => {
-   const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-    }); 
-    const data = await res.json();
-   setUserData({
-        ...response.team,
-        pointsTotal: data.team.pointsTotal,
-      }); // setze nur das team-Objekt
-     
-  fetch("/api/settings")
-      .then((res) => {
-        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
-        return res.json();
-      })
-      .then((data: Settings) => {
-        if (data.ending) setEnding(data.ending);
-        if (typeof data.started === "boolean") setStarted(data.started);
-      })
-  
 }
 
 export function useOngoingNotification() {
+  const { data: session } = useSession();
+  const [started, setStarted] = useState(false);
+  const [ending, setEnding] = useState<Date>(new Date());
+  const [points, setPoints] = useState(0);
+  const [userData, setUserData] = useState<UserData>({ pointsTotal: 0 });
+
+  // Load user data + settings
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        if (session?.user?.uname) {
+          const res = await fetch(`/api/team/search?query=${session.user.uname}`);
+          if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+          const data = await res.json();
+          setUserData({
+            ...data.team,
+            pointsTotal: data.team.pointsTotal,
+          });
+          setPoints(data.team.pointsTotal);
+        }
+
+        const settingsRes = await fetch("/api/settings");
+        if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
+        const settings: Settings = await settingsRes.json();
+        if (settings.ending) setEnding(new Date(settings.ending));
+        if (typeof settings.started === "boolean") setStarted(settings.started);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadData();
+  }, [session?.user?.uname]);
+
+  // Manage ongoing notification
   useEffect(() => {
     let listener: { remove: () => void } | null = null;
     const init = async () => {
       try {
-        // Ongoing-Notification beim Start anzeigen
         await startOngoingNotification("Die App ist aktiv");
 
-        // Listener für App-State-Änderungen
         listener = await App.addListener("appStateChange", async (state) => {
           if (state.isActive) {
-            // Popup nur anzeigen, wenn App wieder aktiv wird
             await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
-            // Optional: Ongoing-Notification aktualisieren
-            await updateOngoingNotification(`Deine Punkte: ${points} und noch ${formatTime(new Date(ending).getTime() - Date.now())}`);
+            await updateOngoingNotification(
+              `Deine Punkte: ${points} und noch ${formatTime(
+                new Date(ending).getTime() - Date.now()
+              )}`
+            );
           } else {
-            // Optional: Ongoing-Notification aktualisieren
             await updateOngoingNotification("App im Hintergrund");
           }
         });
@@ -82,9 +91,12 @@ export function useOngoingNotification() {
       }
     };
     init();
+
     return () => {
       if (listener) listener.remove();
       void stopOngoingNotification();
     };
-  }, []);
+  }, [points, ending]);
+
+  return { started, ending, points, userData };
 }

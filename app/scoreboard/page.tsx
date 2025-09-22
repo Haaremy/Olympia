@@ -2,11 +2,13 @@
 
 import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
+import Carousel from "../common/carousel";
 
 // Deine bestehenden Interfaces
 interface Team {
   id: number;
   name: string;
+  uname: string;
   user1: string;
   user2: string;
   user3: string;
@@ -49,41 +51,55 @@ export default function ScoreboardTabs() {
 
   const [teams, setTeams] = useState<Team[]>([]);
   const [records, setRecords] = useState<Record[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(Date.now());
-  const [isAndroid, setIsAndroid] = useState(false);
+const [loading, setLoading] = useState(true);
+const [ending, setEnding] = useState<Date>(new Date());
+const [started, setStarted] = useState<boolean>(false);
+const [timeLeft, setTimeLeft] = useState(new Date(ending).getTime() - Date.now());
+const [isAndroid, setIsAndroid] = useState(false);
+const [teamImages, setTeamImages] = useState<string[]>([]);
 
-  useEffect(() => {
-    setIsAndroid(Capacitor.getPlatform() === 'android');
-  }, []);
-  
+useEffect(() => {
+  const fetchSettings = async () => {
+    try {
+      setIsAndroid(Capacitor.getPlatform() === 'android');
+      const settingsRes = await fetch("/api/settings");
+      if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
+      const settings: Settings = await settingsRes.json();
+      if (settings.ending) setEnding(new Date(settings.ending));
+      if (typeof settings.started === "boolean") setStarted(settings.started);
+      console.log(started);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchSettings();
+}, []);
 
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((res) => {
-        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
-        return res.json();
-      })
-      .then((data: Settings) => {
-        if (data.ending) setTimeLeft(new Date(data.ending).getTime() - Date.now());
-      })
-      .catch(console.error);
-  }, [loading])
+// Berechnet die Team-Bilder-Pfade
+const getImages = () => {
+  return teams.map(team => `/uploads/${team.uname.toLowerCase()}.jpg`);
+};
 
-  useEffect(() => {
-    
-    const interval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1000) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prevTime - 1000;
-      });
-    }, 1000);
-  
-    return () => clearInterval(interval);
-  });
+// Lade die Bilder beim Mount
+useEffect(() => {
+  setTeamImages(getImages());
+}, [teams]);
+
+// Countdown und ggf. Bild-Update jede Sekunde
+useEffect(() => {
+  const interval = setInterval(() => {
+    setTimeLeft(prevTime => {
+      if (prevTime <= 1000) {
+        clearInterval(interval);
+        return 0;
+      }
+      return prevTime - 1000;
+    });
+    setTeamImages(getImages()); // optional, falls Teams sich ändern
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [teams]);
 
   
   
@@ -178,10 +194,16 @@ export default function ScoreboardTabs() {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden text-bold p-8 mb-4">
+        <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden text-bold pr-8 pl-8 mb-4">
           {timeLeft > 0 ? formatTime(timeLeft) : "👑" }
         </div>
       </div>
+      
+      <Carousel
+        images={teamImages}
+        width="w-full"
+        height="h-64"
+      />
 
 
       {/* Tab Content */}
