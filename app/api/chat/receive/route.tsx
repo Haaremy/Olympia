@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
 
 try{
-    const chat = await prisma.chat.findMany({
+    const chat = await prisma.chatmessage.findMany({
       orderBy: {
         lastUpdated: 'desc',
       },
@@ -21,5 +21,6 @@ try{
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
 
