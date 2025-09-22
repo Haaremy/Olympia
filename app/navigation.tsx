@@ -17,6 +17,7 @@ export default function Navigation() {
   const [showLanguage, setShowLanguage] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [timePlan, setTimePlan] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { t, i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
@@ -34,6 +35,8 @@ export default function Navigation() {
   // Schließen des Login-Modals
   const handleLoginClose = () => setShowLogin(false);
 
+  const handleChatClose = () => setShowChat(false);
+
   // Öffnen des Login-Modals
   const handleLoginOpen = useCallback(() => {
     if (!session) {
@@ -41,7 +44,10 @@ export default function Navigation() {
     }
   }, [session]); // Nur wenn `session` sich ändert, wird die Funktion neu erstellt
   
-
+const handleChatOpen = () => {
+ setShowChat(true);
+}
+  
   // Schließen des Sprachwahl-Modals
   const handleLanguageClose = () => {
     setShowLanguage(false);
@@ -203,6 +209,13 @@ if (lastChecked) {
                 <p className="text-lg font-semibold">{t('games')}</p>
               </Link>
               }
+
+                 <button
+                    onClick={handleChatOpen}
+                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                  >
+                    <p className="text-lg font-semibold">Login</p>
+                  </button>
             
           </div>
 
@@ -244,6 +257,7 @@ if (lastChecked) {
           {timePlan && <PlannedTime onClose={handleTimePlanClose} />}
           {showLanguage && <Language onClose={handleLanguageClose} />}
           {showLogin && <Login onClose={handleLoginClose} />}
+          {showChat && <Chat onClose=handleChatClose} />
         </div>
       </header>
     </main>
