@@ -16,7 +16,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 👉 useState für isApp
-const [message, setMessage] = useState<string[]>([]);
+const [message, setMessage] = useState("");
+const [history, setHistory] = useState<string[]>([]);
 
   // Modal öffnen + Escape-Handler
   useEffect(() => {
@@ -36,7 +37,7 @@ const [message, setMessage] = useState<string[]>([]);
         if (res.ok) {
           const data: string[] = await res.json();
          // setMessage(prevMessages => [...prevMessages, "Neue Nachricht"]);
-          setMessage(data);
+          setHistory(data);
         }
       } catch (e) {
         console.error("Error fetching chat messages:", e);
@@ -47,7 +48,7 @@ const [message, setMessage] = useState<string[]>([]);
     const interval = setInterval(fetchMessages, 1000); // Jede Sekunde neu laden
 
     return () => clearInterval(interval);
-  }, [messages]);
+  }, [history]);
 
   const handleSend = async () => {
     
@@ -93,7 +94,7 @@ const [message, setMessage] = useState<string[]>([]);
 
     {/* Chat Viewport - wo Nachrichten angezeigt werden */}
     <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-b-lg min-h-[40vh]">
-      {messages.map((msg, i) => (
+      {history.map((msg, i) => (
         <p key={i}>{msg}</p>
       ))}
     </div>
