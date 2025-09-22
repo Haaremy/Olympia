@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const interval = setInterval(fetchMessages, 1000); // Jede Sekunde neu laden
 
     return () => clearInterval(interval);
-  }
+  }, [messages]);
 
   const handleSend = async () => {
     
