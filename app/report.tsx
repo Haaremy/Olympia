@@ -89,18 +89,14 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
         <div className="overflow-y-auto max-h-[70vh] space-y-4">
           {session ? (
         <div>
-           <input
-      type="text"
-      className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg min-h-[64vh]
-            focus:outline-none focus:ring-2 focus:ring-pink-500 `}
-      placeholder={t("probDes")}
-      value={reportData}
-      onChange={(e) => { 
-            setReportData(e.target.value); 
-          }}
-      disabled={false}
-    /> 
+           <textarea
+          className="w-full mt-2 p-3 min-h-24 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
+          placeholder={t("probDes")}
+          value={reportData}
+          onChange={(e) => setReportData(e.target.value)}
+          disabled={false}
+        />
+
             <button
               onClick={handleSave}
               className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition mt-4"
