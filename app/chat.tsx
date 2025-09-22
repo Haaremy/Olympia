@@ -35,8 +35,8 @@ const [message, setMessage] = useState<string[]>([]);
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
           const data: string[] = await res.json();
-          setMessage(prevMessages => [...prevMessages, "Neue Nachricht"]);
-
+         // setMessage(prevMessages => [...prevMessages, "Neue Nachricht"]);
+          setMessage(data);
         }
       } catch (e) {
         console.error("Error fetching chat messages:", e);
