@@ -7,7 +7,7 @@ export async function startOngoingNotification(body: string) {
     notifications: [
       {
         id: NOTIFICATION_ID,
-        title: "Olympia läuft 🏃",
+        title: "Olympia Live Ticker 🎄",
         body,
         ongoing: true, // 👈 macht die Notification permanent
       },
@@ -20,7 +20,7 @@ export async function updateOngoingNotification(body: string) {
     notifications: [
       {
         id: NOTIFICATION_ID,
-        title: "Olympia läuft weiter 🏃",
+        title: "Olympia Live Ticker 🎄",
         body,
         ongoing: true,
       },
