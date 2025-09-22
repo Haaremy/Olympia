@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    await prisma.chatmessage.create({
+    await prisma.chatMessage.create({
       data: {
         teamId: team.id, // Nur die ID des Teams
         message: body.message,
@@ -46,4 +46,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 
