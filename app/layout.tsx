@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "./footer";
 import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
+import { useChatMessages } from "./chatCheck";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,12 +26,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+  const messages = useChatMessages();
   return (
     <html lang="de" className="">
         
