@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'next-i18next';
-import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
 
@@ -12,7 +10,6 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
-  const { t } = useTranslation();
   const { data: session } = useSession();
 
   const modalRef = useRef<HTMLDivElement>(null);
