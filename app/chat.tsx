@@ -8,10 +8,9 @@ import { useUI } from './context/UIContext';
 
 interface ModalProps {
   onClose: () => void;
-  game: number;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
+const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -77,11 +76,11 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           <div className="inline-flex">
            <textarea
           className="w-full bottom-2 m-2 p-3 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-500"
-          placeholder={t("probDes")}
+          placeholder="..."
           value={reportData}
           onChange={(e) => {
             if (e.target.value.length <= 100) {
-              setReportData(e.target.value);
+              setMessage(e.target.value);
             }
           }}
           disabled={false}
