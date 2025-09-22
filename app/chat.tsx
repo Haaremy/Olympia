@@ -12,7 +12,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { data: session } = useSession();
-  const messages = useChatMessagges();
+  const messages = useChatMessages();
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 👉 useState für isApp
