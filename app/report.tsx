@@ -90,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       placeholder={t("Beschreibe...")}
       value={reportData}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        setReportData((prev) => ({ e.target.value }))
+        setReportData(e.target.value)
       }
       disabled={false}
     /> 
