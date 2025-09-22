@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 👉 useState für isApp
-  const [isApp, setIsApp] = useState(false);
   const [reportData, setReportData] = useState("");
 
   // Modal öffnen + Escape-Handler
@@ -44,11 +43,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
       document.body.style.overflow = 'auto';
     };
   }, [onClose, setIsModalOpen]);
-
-  // Check ob native App
-  useEffect(() => {
-    setIsApp(Capacitor.isNativePlatform());
-  }, []);
 
   const handleSave = async () => {
 
