@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     }
 
 
-    const reports = await prisma.report.findMany({
+    const reports = await prisma.reports.findMany({
       where: {
         gameId: gameId,
       },
@@ -47,4 +47,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
