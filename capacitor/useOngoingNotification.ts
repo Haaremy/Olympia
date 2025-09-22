@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect } from "react";
 import { App } from "@capacitor/app";
 import { startOngoingNotification, stopOngoingNotification } from "@/capacitor/notificationService";
@@ -7,26 +6,24 @@ import { startOngoingNotification, stopOngoingNotification } from "@/capacitor/n
 export function useOngoingNotification() {
   useEffect(() => {
     let listener: { remove: () => void } | null = null;
-
     const init = async () => {
-      // Notification starten
-      await startOngoingNotification("Die App ist aktiv");
-
-      // Listener registrieren und awaiten
-      listener = await App.addListener("appStateChange", (state) => {
-        if (!state.isActive) {
-          stopOngoingNotification();
-        }
-      });
-    };
-
-    init();
-
-    return () => {
-      if (listener) {
-        listener.remove(); // Listener sauber entfernen
+      try {
+        await startOngoingNotification("Die App ist aktiv");
+        listener = await App.addListener("appStateChange", async (state) => {
+          if (!state.isActive) {
+            await stopOngoingNotification();
+          } else {
+            await startOngoingNotification("Die App ist aktiv");
+          }
+        });
+      } catch (e) {
+        console.error("Fehler bei der Benachrichtigung:", e);
       }
-      stopOngoingNotification(); // Notification stoppen
+    };
+    init();
+    return () => {
+      if (listener) listener.remove();
+      void stopOngoingNotification();
     };
   }, []);
 }
