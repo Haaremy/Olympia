@@ -9,9 +9,10 @@ import { Capacitor } from '@capacitor/core';
 
 interface ModalProps {
   onClose: () => void;
+  game: number;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose }) => {
+const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
   const { setIsModalOpen } = useUI();
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -49,9 +50,27 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     setIsApp(Capacitor.isNativePlatform());
   }, []);
 
-  const handleSave = () => {
-    console.log("save todo");
-  }
+  const handleSave = async () => {
+
+
+    const res = await fetch("/api/report/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        gameid: game,
+        message: reportData,
+      }),
+    });
+
+    if (res.ok) {
+      
+      console.log("Report send");
+      onClose();
+    } else {
+      console.log("Error on Report");
+    }
+  
+  };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
