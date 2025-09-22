@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import Language from "./language"; // Import der LanguageLogin Komponente
 import Login from "./login"; // Import der LanguageLogin Komponente
 import PlannedTime from "./timeTable"; // Import der LanguageLogin Komponente
+import Chat from "./chat";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
 import Link from "next/link";
