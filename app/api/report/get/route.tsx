@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      points,
+      reports,
     }, { status: 200 });
 
   } catch (error) {
@@ -47,3 +47,4 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
