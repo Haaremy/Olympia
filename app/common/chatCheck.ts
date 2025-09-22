@@ -1,5 +1,5 @@
 // chatCheck.ts
-'use Client'
+'use client'
 import { useEffect, useState } from "react";
 
 export function useChatMessages() {
