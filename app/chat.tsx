@@ -29,7 +29,24 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
   }, [onClose, setIsModalOpen]);
 
-  
+  useEffect(() => {
+  const fetchMessages = async () => {
+      try {
+        const res = await fetch("/api/chat/receive");
+        if (res.ok) {
+          const data: string[] = await res.json();
+          setMessages(data);
+        }
+      } catch (e) {
+        console.error("Error fetching chat messages:", e);
+      }
+    };
+
+    fetchMessages(); // Sofort beim Mount laden
+    const interval = setInterval(fetchMessages, 1000); // Jede Sekunde neu laden
+
+    return () => clearInterval(interval);
+  }
 
   const handleSend = async () => {
     
