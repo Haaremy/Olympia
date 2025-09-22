@@ -8,6 +8,10 @@ import {
   showPopupNotification
 } from "@/capacitor/notificationService";
 
+useEffect(() => {
+  
+}
+
 export function useOngoingNotification() {
   useEffect(() => {
     let listener: { remove: () => void } | null = null;
