@@ -64,10 +64,11 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     const { t } = useTranslation(); 
 
     const handleShowMap = () => setShowMap(prev => !prev); 
-    const handleShowReport () => setShowReport(true);
-    const handleReportClose() => setShowReport(false);
+    const handleShowReport = () => setShowReport(true);
+    const handleReportClose = () => setShowReport(false);
     const handleSavedClose = () => setShowSaved(false);
     const handleNotSavedClose = () => setShowNotSaved(false);
+    
     const [updateSite, setUpdateSite] = useState(true);
 const [userData, setUserData] = useState({
   id: 0,
