@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // 👉 useState für isApp
-  const [message, setMessage] = useState("");
+const [message, setMessage] = useState<string[]>([]);
 
   // Modal öffnen + Escape-Handler
   useEffect(() => {
@@ -35,7 +35,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
           const data: string[] = await res.json();
-          setMessage(data.chat);
+          setMessage(prevMessages => [...prevMessages, "Neue Nachricht"]);
+
         }
       } catch (e) {
         console.error("Error fetching chat messages:", e);
