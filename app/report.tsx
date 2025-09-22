@@ -95,6 +95,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
         {/* Modal Content */}
         <div className="overflow-y-auto max-h-[70vh] space-y-4">
           {session ? (
+        <div>
             <h1>
               {t("report")}, <strong>{session.user?.uname}</strong> 🎉
             </h1>
@@ -120,8 +121,10 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
             >
               {t('save')}
             </button>
+        </div>
           ) : onClose();}
         </div>
+        
       </div>
     </div>
   );
