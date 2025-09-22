@@ -12,7 +12,23 @@ const [started, setStarted] = useState(false);
 const [ending, setEnding] = useState<Date>(new Date());
 const [points, setPoints] = useState(0);
 
+const formatTime = (ms: number) => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const hoursStr = hours > 0 ? `${hours}h ` : '';
+  const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : '';
+  const secondsStr = `${seconds}s`;
+
+
+  return `${hoursStr}${minutesStr}${secondsStr}`;
+};
+
 useEffect(() => {
+  
+  
   fetch("/api/settings")
       .then((res) => {
         if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
@@ -22,6 +38,7 @@ useEffect(() => {
         if (data.ending) setEnding(data.ending);
         if (typeof data.started === "boolean") setStarted(data.started);
       })
+  
 }
 
 export function useOngoingNotification() {
@@ -38,7 +55,7 @@ export function useOngoingNotification() {
             // Popup nur anzeigen, wenn App wieder aktiv wird
             await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
             // Optional: Ongoing-Notification aktualisieren
-            await updateOngoingNotification(`Deine Punkte: ${points} und noch ${new Date().toLocaleTimeString()}`);
+            await updateOngoingNotification(`Deine Punkte: ${points} und noch ${formatTime(new Date(ending).getTime() - Date.now())}`);
           } else {
             // Optional: Ongoing-Notification aktualisieren
             await updateOngoingNotification("App im Hintergrund");
