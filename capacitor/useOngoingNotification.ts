@@ -57,12 +57,24 @@ export function useOngoingNotification() {
   }, [session?.user?.uname]);
 
   // Update notification every second
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
+useEffect(() => {
+  let interval: ReturnType<typeof setInterval>;
 
-    const updateData = async () => {
-      try {
-        let lpoints = 0;
+  const initNotification = async () => {
+    try {
+      // Starte die laufende Notification nur einmal
+      await startOngoingNotification(
+        `Deine Punkte: ${points} \n Verbleibend: ${formatTime(
+          new Date(ending).getTime() - Date.now()
+        )}`
+      );
+
+      // Zeige Popup einmalig beim Start
+      await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
+
+      // Intervall, um die laufende Notification zu aktualisieren
+      interval = setInterval(async () => {
+        let lpoints = points;
         if (session?.user?.uname) {
           const res = await fetch(`/api/team/search?query=${session.user.uname}`);
           if (!res.ok) throw new Error("Fehler beim Laden des Teams");
@@ -72,26 +84,26 @@ export function useOngoingNotification() {
           setUserData({ ...data.team, pointsTotal: lpoints });
         }
 
+        // Update laufende Notification – NICHT neu starten
         await updateOngoingNotification(
           `Deine Punkte: ${lpoints} \n Verbleibend: ${formatTime(
             new Date(ending).getTime() - Date.now()
           )}`
         );
-        
-      } catch (e) {
-        console.error("Fehler bei der Benachrichtigung:", e);
-      }
-    };
+      }, 1000);
+    } catch (e) {
+      console.error("Fehler bei der Benachrichtigung:", e);
+    }
+  };
 
-    // Start interval
-    interval = setInterval(updateData, 1000); // jede Sekunde
+  initNotification();
 
-    // Cleanup
-    return () => {
-      clearInterval(interval);
-      void stopOngoingNotification();
-    };
-  }, [session?.user?.uname, ending]);
+  return () => {
+    clearInterval(interval);
+    void stopOngoingNotification(); // stoppt die Notification beim Unmount
+  };
+}, [session?.user?.uname, ending]);
+
 
   return { started, ending, points, userData };
 }
