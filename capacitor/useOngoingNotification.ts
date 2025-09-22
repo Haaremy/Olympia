@@ -12,7 +12,6 @@ import {
 
 interface UserData {
   pointsTotal: number;
-  // weitere Felder falls nötig
 }
 
 interface Settings {
@@ -64,12 +63,14 @@ export function useOngoingNotification() {
         console.error(err);
       }
     };
-    loadData();
+
+    loadData(); // ✅ async Funktion aufrufen
   }, [session?.user?.uname]);
 
   // Manage ongoing notification
   useEffect(() => {
     let listener: { remove: () => void } | null = null;
+
     const init = async () => {
       try {
         await startOngoingNotification("Die App ist aktiv");
@@ -90,6 +91,7 @@ export function useOngoingNotification() {
         console.error("Fehler bei der Benachrichtigung:", e);
       }
     };
+
     init();
 
     return () => {
