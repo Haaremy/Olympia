@@ -28,6 +28,20 @@ export async function updateOngoingNotification(body: string) {
   });
 }
 
+export async function showPopupNotification(title: string, body: string) {
+  await LocalNotifications.schedule({
+    notifications: [
+      {
+        id: 2412, // Eindeutige ID
+        title,
+        body,
+        sound: 'default', // Standard-Benachrichtigungston
+        extra: null,
+      },
+    ],
+  });
+}
+
 export async function stopOngoingNotification() {
   await LocalNotifications.cancel({
     notifications: [{ id: NOTIFICATION_ID }],
