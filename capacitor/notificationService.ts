@@ -28,6 +28,7 @@ export async function updateOngoingNotification(body: string) {
   });
 }
 
+
 export async function requestNotificationPermission() {
   const { display } = await LocalNotifications.checkPermissions();
 if (display !== 'granted') {

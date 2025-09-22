@@ -69,7 +69,7 @@ export function useOngoingNotification() {
               endingRef.current.getTime() - Date.now()
             )}`
           );
-        }, 1000);
+        }, 60000);
       } catch (err) {
         console.error(err);
       }
@@ -94,7 +94,6 @@ function formatTime(ms: number) {
 
   const hoursStr = hours > 0 ? `${hours}h ` : "";
   const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : "";
-  const secondsStr = `${seconds}s`;
 
-  return `${hoursStr}${minutesStr}${secondsStr}`;
+  return `${hoursStr}${minutesStr}`;
 }
