@@ -29,10 +29,11 @@ export async function updateOngoingNotification(body: string) {
 }
 
 export async function requestNotificationPermission() {
-  const { permission } = await LocalNotifications.checkPermissions();
-  if (permission !== 'granted') {
-    await LocalNotifications.requestPermissions();
-  }
+  const { display } = await LocalNotifications.checkPermissions();
+if (display !== 'granted') {
+  await LocalNotifications.requestPermissions();
+}
+
 }
 
 
