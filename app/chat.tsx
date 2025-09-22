@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
           const data: string[] = await res.json();
-          setMessage(data);
+          setMessage(data.chat);
         }
       } catch (e) {
         console.error("Error fetching chat messages:", e);
