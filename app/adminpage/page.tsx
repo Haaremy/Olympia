@@ -268,8 +268,9 @@ const getOffsetISO = (dtLocal: string): string => {
                 className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 
                   shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
+                 </details>
             </div>
-            </details>
+            
           ))}
         </div>
       ))}
