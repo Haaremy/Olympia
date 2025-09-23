@@ -44,15 +44,14 @@ const Carousel: React.FC<CarouselProps> = ({
       >
         {images.map((src, idx) => (
           <div key={idx} style={{ position: 'relative' }}>
-            <img
-              src={src}
-              alt={`Team Image ${idx + 1}`}
-              className="m-2"
-              style={{
-                width: `${itemWidth}%`,
-                height: idx === 2 ? "32vh" : "64vh",
-              }}
-            />
+            <Image
+                src={src}     // relativer Pfad im 'public'-Ordner oder remote URL
+                alt="Team Image"    // Alternativtext
+                width={300}           // erforderliche Breite in Pixeln (Number)
+                height={200}          // erforderliche Höhe in Pixeln (Number)
+                className="m-2"
+                style={{ width: "30%", height: "16vh" }}
+              />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
               <h2 className="text-xl font-semibold">{titles[idx]}</h2>
             </div>
