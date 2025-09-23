@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { usePathname } from 'next/navigation';
 import '../lib/i18n'
 import { Capacitor } from '@capacitor/core';
+import Image from "next/image";
 
 
 
@@ -149,27 +150,52 @@ if (lastChecked) {
             {currentPath !== "/adminpage" && currentPath !== "/teampage" ? (
                 user ? (
                   user.role === "ADMIN" ? (
-                    <Link
+                   <Link
                       href="/adminpage"
-                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                      <p className="text-lg font-semibold">Admin</p>
+                      <Image
+                        src="/images/navbuttongroup.svg"
+                        alt="Admin"
+                        width={24}
+                        height={24}
+                      />
+                      <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                        Admin
+                      </p>
                     </Link>
                   ) : (
                     <Link
                       href="/teampage"
-                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                      <p className="text-lg font-semibold">Team</p>
+                      <Image
+                        src="/images/navbuttongroup.svg"
+                        alt="Team"
+                        width={24}
+                        height={24}
+                      />
+                      <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                        Team
+                      </p>
                     </Link>
                   )
                 ) : (
                   <button
                     onClick={handleLoginOpen}
-                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
-                    <p className="text-lg font-semibold">Login</p>
+                    <Image
+                      src="/images/navbuttongroup.svg"
+                      alt="Login"
+                      width={24}
+                      height={24}
+                    />
+                    <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                      Login
+                    </p>
                   </button>
+
                 )
               ) : (
                 <Link
