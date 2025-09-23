@@ -248,10 +248,10 @@ const getOffsetISO = (dtLocal: string): string => {
       key={`game-${id}`}
       className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 "
     >
-      <details >
+      <details>
       {/* Game ID */}
-      <summary>
-        <div className="font-bold text-lg mb-4">Spiel {id}</div>
+      <summary className="w-full font-bold text-lg mb-4">
+         Spiel {id}
       </summary>
       {/* Spieler + Inputs paarweise */}
       {pairs.map((pair, rowIndex) => (
