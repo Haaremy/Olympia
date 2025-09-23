@@ -42,18 +42,19 @@ const Carousel: React.FC<CarouselProps> = ({
         style={{ transform: `translateX(-${currentIndex * itemWidth}%)` }}
       >
         {images.map((src, idx) => (
-          <img
-            key={idx}
-            src={src}
-            alt={`Team Image ${idx + 1}`}
-            className={`  m-2`}
-            style={{
+          <div key={idx} style={{ position: 'relative' }}>
+            <img
+              src={src}
+              alt={`Team Image ${idx + 1}`}
+              className="m-2"
+              style={{
                 width: `${itemWidth}%`,
-                height: idx === 2 ? "h-[32v]" : "h-[64v]",
-            }}
-          />
-         <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-            <h2 className="text-xl font-semibold">{titles[idx]}</h2>
+                height: idx === 2 ? "32vh" : "64vh",
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+              <h2 className="text-xl font-semibold">{titles[idx]}</h2>
+            </div>
           </div>
         ))}
       </div>
