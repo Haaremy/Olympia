@@ -15,11 +15,11 @@ interface Entry {
   game: {
     id: number;
     tagged: string | null;
-    points: Record<string, number>; // Record für die Punkte, z.B. { slot1: 50, slot2: 30 }
+    points: Record<string, number>; // Record für die Punkte: Schlüssel = "slot1", "slot2", etc. | Wert = number
   };
 }
 
-interface Record {
+interface RecordResult {
   gameId: number;
   topPlayer: string | null;
   topPoints: number | null;
@@ -55,7 +55,7 @@ export async function GET() {
   }
 
   // Berechnung der besten Spieler und Teams
-  const result: Record[] = [];
+  const result: RecordResult[] = [];
 
   // Gruppierung der entries nach gameId
   const groupedByGame = entries.reduce((acc, entry) => {
