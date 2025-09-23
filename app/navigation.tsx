@@ -159,8 +159,9 @@ if (lastChecked) {
                         alt="Admin"
                         width={24}
                         height={24}
+                        className="dark:invert invert-0"
                       />
-                      <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                      <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
                         Admin
                       </p>
                     </Link>
@@ -174,8 +175,9 @@ if (lastChecked) {
                         alt="Team"
                         width={24}
                         height={24}
+                        className="dark:invert invert-0"
                       />
-                      <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                      <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
                         Team
                       </p>
                     </Link>
@@ -190,8 +192,9 @@ if (lastChecked) {
                       alt="Login"
                       width={24}
                       height={24}
+                      className="dark:invert invert-0"
                     />
-                    <p className="hidden sm:block text-sm md:text-lg font-semibold">
+                    <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
                       Login
                     </p>
                   </button>
