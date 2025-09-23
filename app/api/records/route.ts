@@ -1,31 +1,3 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
-
-// Typen für die Rückgabe
-interface Team {
-  id: number;
-  name: string;
-  cheatPoints: number;
-}
-
-interface Entry {
-  player: string;
-  value: number;
-  team: Team;
-}
-
-interface Record {
-  gameId: number;
-  language: string;
-  tagged: string | null;
-  topPlayer: string | null;
-  topPoints: number | null;
-  topEntries: number | null;
-  team: Team | null;
-  entries: Entry[]; // Beispiel für entries
-  points: Entry[];  // Beispiel für points
-}
-
 export async function GET() {
   // Alle Spiele aus der Datenbank abrufen
   const games = await prisma.game.findMany({
@@ -150,11 +122,11 @@ export async function GET() {
 
   // Filter nach den Ausschlusskriterien (nur Einträge/Punkte ohne "slot")
   const filteredResult = result.filter((item) => {
-    // Alle Einträge und Punkte, die "slot" enthalten oder cheatPoints > 20 oder einen Wert <= 0 haben, werden ausgeschlossen.
-    const validEntries = item.entries.every(isValidEntryOrPoint);
-    const validPoints = item.points.every(isValidEntryOrPoint);
+    // Nur Spiele mit gültigen Einträgen oder Punkten und ohne "slot" berücksichtigen
+    const hasValidEntries = item.entries.some((entry) => isValidEntryOrPoint(entry));
+    const hasValidPoints = item.points.some((point) => isValidEntryOrPoint(point));
 
-    return validEntries && validPoints;
+    return hasValidEntries || hasValidPoints;
   });
 
   // Rückgabe der gefilterten Resultate
