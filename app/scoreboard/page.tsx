@@ -57,6 +57,7 @@ const [started, setStarted] = useState<boolean>(false);
 const [timeLeft, setTimeLeft] = useState(new Date(ending).getTime() - Date.now());
 const [isAndroid, setIsAndroid] = useState(false);
 const [teamImages, setTeamImages] = useState<string[]>([]);
+  const [teamNames, setTeamNames] = useState<string[]>([]);
 
 useEffect(() => {
   const fetchSettings = async () => {
@@ -89,12 +90,39 @@ async function loadFiles() {
   }
 }
 
+  async function loadNames(files: string[]) {
+  const names: string[] = [];
+
+  for (const file of files) {
+    try {
+      // Extrahiere den Namen aus dem Pfad (z. B. "/uploads/Max_Mustermann.pdf" → "Max_Mustermann")
+      const name = file.split('/').pop()?.split('.').shift() || '';
+      names.push(name);
+
+      // Optional: API-Aufruf, falls nötig (hier nur als Beispiel)
+      const res = await fetch(`/api/team/search?uname=${encodeURIComponent(name)}`);
+      if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
+      const data = await res.json();
+      console.log('API-Ergebnis für', name, ':', data);
+    } catch (err) {
+      console.error('Fehler bei Datei', file, ':', err);
+      // Optional: Weiter mit nächsten Dateien, auch wenn eine fehlschlägt
+    }
+  }
+
+  console.log('Extrahierte Namen:', names);
+  return names;
+}
+
+
 
 // Lade die Bilder beim Mount
 useEffect(() => {
   const fetchFiles = async () => {
     const files = await loadFiles();
+    const titles = await loadNames(files);
     setTeamImages(files);
+    setTeamNames(titles);
   };
   fetchFiles();
 }, [teams]);
@@ -219,6 +247,7 @@ useEffect(() => {
       
       <Carousel
         images={teamImages}
+        titles={teamNames}
         width="w-full"
         height="h-64"
       />
