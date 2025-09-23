@@ -10,13 +10,14 @@ interface Team {
 
 interface Record {
   gameId: number;
-  language: string | null;
-  tagged: string | '';
+  language: string;
+  tagged: string | null; 
   topPlayer: string | null;
   topPoints: number | null;
   topEntries: number | null;
   team: Team | null;
 }
+
 
 
 export async function GET() {
@@ -122,7 +123,7 @@ export async function GET() {
   return {
     gameId: game.id,
     language: game.tagged || "", // Falls tagged null ist, setze es auf ""
-    tagged: game.tagged,
+    tagged: game.tagged,         // tagged kann null sein, daher kein Problem
     topPlayer: topP?.player || null,
     topPoints: topP?.value || null,
     topEntries: matchingEntry?.value || null,
