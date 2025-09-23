@@ -31,7 +31,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     return () => {
       setIsModalOpen(false);
       document.body.style.overflow = "auto";
@@ -48,10 +47,7 @@ useEffect(() => { historyRef.current = history; }, [history]);
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
           const data: Chat[] = await res.json();         
-          if (historyRef.current[historyRef.current.length-1]?.createdAt > data[data.length-1]?.createdAt) {
-                chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-          }
-
+        
           setHistory(data);
         }
       } catch (e) {
@@ -65,7 +61,9 @@ useEffect(() => { historyRef.current = history; }, [history]);
     return () => clearInterval(interval);
   }, []); // ❌ don't depend on history
 
-
+const scrollEnd = () => {
+  chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+}
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -145,6 +143,9 @@ useEffect(() => { historyRef.current = history; }, [history]);
   );
 })}
   <div ref={chatEndRef} />
+  <button className="rounded-full bg-pink-500 fixed bottom-60" onClick((e) => {scrollEnd();})>
+    👇🏼
+  </button>
 </div>
 
 
