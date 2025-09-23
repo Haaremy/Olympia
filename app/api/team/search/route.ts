@@ -8,6 +8,7 @@ type SearchedTeam = {
   name: string;
   players: string[];
   cheatPoints: number;
+  pointsTotal: number;
   games: {
     id: number;
     points: { player: string; value: number }[];
