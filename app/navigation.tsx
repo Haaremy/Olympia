@@ -304,10 +304,10 @@ if (lastChecked) {
           </div>
 
 
-          <div className={`flex flex-1 flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
+          <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
               <Link
                       href="/"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex  flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongames.svg"
@@ -368,6 +368,21 @@ if (lastChecked) {
                       />
                       <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                         {t("rank")}
+                      </p>
+                    </Link>
+            <Link
+                      href="/map"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttonmap.svg"
+                        alt="Map"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("map")}
                       </p>
                     </Link>
               <button
