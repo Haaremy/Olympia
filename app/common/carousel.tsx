@@ -15,7 +15,7 @@ const Carousel: React.FC<CarouselProps> = ({
   images,
   width = "w-full",
   titles,
-  visible = 3,
+  visible = 1,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -50,7 +50,6 @@ const Carousel: React.FC<CarouselProps> = ({
                 width={300}           // erforderliche Breite in Pixeln (Number)
                 height={200}          // erforderliche Höhe in Pixeln (Number)
                 className="m-2"
-                style={{ width: "30%", height: "16vh" }}
               />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
               <h2 className="text-xl font-semibold">{titles[idx]}</h2>
