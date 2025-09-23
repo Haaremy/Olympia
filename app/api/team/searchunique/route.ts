@@ -25,6 +25,7 @@ export async function GET(req: Request) {
     found: true,
     user: {
       uname: foundUser.uname,
+      name: foundUser.name,
     },
   });
 }
