@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 interface CarouselProps {
   images: string[];
+  titles: string[];
   width?: string; // z.B. "w-full"
   height?: string; // z.B. "h-64"
   visible?: number; // Anzahl sichtbarer Bilder
@@ -51,6 +52,9 @@ const Carousel: React.FC<CarouselProps> = ({
                 height: idx === 2 ? "h-[32v]" : "h-[64v]",
             }}
           />
+         <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+            <h2 className="text-xl font-semibold">{titles[idx]}</h2>
+          </div>
         ))}
       </div>
 
