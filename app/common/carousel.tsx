@@ -13,7 +13,7 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({
   images,
   width = "w-full",
-
+  titles,
   visible = 3,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
