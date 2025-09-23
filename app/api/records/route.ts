@@ -55,30 +55,45 @@ export async function GET() {
   // Berechnung der besten Spieler und Teams
   const result: Record[] = [];
 
-  for (const entry of entries) {
-    const sortOrder = getSortOrder(entry.game.tagged || '');
-    
-    // Überprüfen, ob der Spieler "slot" enthält und das Team gültig ist
-    if (entry.player.includes('slot') || entry.team.cheatPoints > 20 || entry.value <= 0) {
-      continue; // Spieler überspringen, wenn "slot" oder ungültige Punkte
+  // Durchlaufen der entries für jedes Spiel
+  const groupedByGame = entries.reduce((acc, entry) => {
+    const gameId = entry.game.id;
+    if (!acc[gameId]) {
+      acc[gameId] = [];
     }
+    acc[gameId].push(entry);
+    return acc;
+  }, {} as Record<string, Entry[]>);
+
+  // Über alle Spiele iterieren
+  for (const gameId in groupedByGame) {
+    const gameEntries = groupedByGame[gameId];
+    const firstEntry = gameEntries[0];
+    const sortOrder = getSortOrder(firstEntry.game.tagged || '');
+
+    // Überprüfen, ob der Spieler "slot" enthält und das Team gültig ist
+    const validEntries = gameEntries.filter(
+      (entry) =>
+        !entry.player.includes('slot') && entry.team.cheatPoints <= 20 && entry.value > 0
+    );
+
+    // Wenn es keine gültigen Einträge gibt, überspringen
+    if (validEntries.length === 0) continue;
 
     // Berechnen des besten Spielers basierend auf den `value` und `tagged`
-    const sortedEntries = entries
-      .filter((e) => e.game.id === entry.game.id)  // Filtere nach dem gleichen Spiel
-      .sort((a, b) => {
-        return sortOrder === 'asc' ? a.value - b.value : b.value - a.value;
-      });
+    const sortedEntries = validEntries.sort((a, b) => {
+      return sortOrder === 'asc' ? a.value - b.value : b.value - a.value;
+    });
 
     // Bestimme den besten Spieler
     const topPlayer = sortedEntries[0];
 
     // Berechne die "gamePoints" basierend auf dem Slot
-    const gamePoints = entry.game.points[`slot${entry.team.id}`] || null;
+    const gamePoints = firstEntry.game.points[`slot${topPlayer.team.id}`] || null;
 
     // Speichern der berechneten Ergebnisse
     result.push({
-      gameId: entry.game.id,
+      gameId: Number(gameId),
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
