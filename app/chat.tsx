@@ -105,7 +105,7 @@ useEffect(() => { historyRef.current = history; }, [history]);
 <div className="flex-grow h-[60vh] p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-md">
   {history.map((chat, i) => {
   const isOwnMessage = chat?.team?.uname === session?.user?.uname;
-  const cheaterP = chat?.team?.cheatPoints;
+  
 
   return (
     <div
@@ -148,7 +148,7 @@ useEffect(() => { historyRef.current = history; }, [history]);
 
 
         {/* Input */}
-        {!!session && cheaterP<20 && (
+        {!!session && history?.team?.cheatPoints<20 && (
           <>
             <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
               <textarea
