@@ -65,7 +65,7 @@ export function useOngoingNotification() {
     const initNotification = async () => {
       try {
         await startOngoingNotification(
-          `Hallo Team ${session.user.uname} \nVerbleibend: ${formatTime(
+          `Hallo Team ${!!session ? session.user.uname : ""} \nVerbleibend: ${formatTime(
             endingRef.current.getTime() - Date.now()
           )}`
         );
