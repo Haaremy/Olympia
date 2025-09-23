@@ -254,9 +254,13 @@ const getOffsetISO = (dtLocal: string): string => {
       {/* Spieler + Inputs paarweise */}
       {pairs.map((pair, rowIndex) => (
         <div key={rowIndex} className="grid grid-cols-2 gap-4 mb-3">
+          
           {pair.map((p, idx) => (
+          <detail>
             <div key={`${id}-${rowIndex}-${idx}`}>
+              <summary>
               <label className="block text-sm mb-1 text-white">{p.player}</label>
+              </summary>
               <input
                 type="number"
                 defaultValue={p.value}
@@ -264,6 +268,7 @@ const getOffsetISO = (dtLocal: string): string => {
                   shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
             </div>
+            </detail>
           ))}
         </div>
       ))}
