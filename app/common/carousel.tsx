@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
+import Image from "next/image";
 
 interface CarouselProps {
   images: string[];
@@ -13,7 +14,6 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({
   images,
   width = "w-full",
-  height = "h-64",
   titles,
   visible = 3,
 }) => {
