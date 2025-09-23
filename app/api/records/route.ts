@@ -8,6 +8,12 @@ interface Team {
   cheatPoints: number;
 }
 
+interface Entry {
+  player: string;
+  value: number;
+  team: Team;
+}
+
 interface Record {
   gameId: number;
   language: string;
@@ -16,12 +22,9 @@ interface Record {
   topPoints: number | null;
   topEntries: number | null;
   team: Team | null;
-  entries: { player: string; value: number; team: Team }[]; // Beispiel für entries
-  points: { player: string; value: number; team: Team }[];  // Beispiel für points
+  entries: Entry[]; // Beispiel für entries
+  points: Entry[];  // Beispiel für points
 }
-
-
-
 
 export async function GET() {
   // Alle Spiele aus der Datenbank abrufen
@@ -96,59 +99,8 @@ export async function GET() {
     return sorted[0];
   }
 
-  // Hauptlogik für das Filtern und Berechnen der Ergebnisse
-const result: Record[] = games.map((game) => {
-  const { order, field } = parseTagged(game.tagged || '');
-
-  // Funktion zum Bestimmen des Werts
-  const getValue = (item: typeof game.points[0]): string | number => {
-    switch (field) {
-      case 'field1':
-        return item.player;
-      case 'field2':
-        return item.value;
-      case 'field3':
-        return item.team.name;
-      default:
-        return ''; // Fallback
-    }
-  };
-
-  // Top-Spieler bestimmen
-  const topP = getTopPlayer(game.points, { order, getValue });
-
-  // Passende Entry finden, das zur besten Team passt
-  const matchingEntry = game.entries.find(
-    (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
-  );
-
-  // Die Resultate für das aktuelle Spiel zusammenstellen
-  return {
-    gameId: game.id,
-    language: game.tagged || "", // Falls tagged null ist, setze es auf ""
-    tagged: game.tagged,
-    topPlayer: topP?.player || null,
-    topPoints: topP?.value || null,
-    topEntries: matchingEntry?.value || null,
-    team: topP?.team
-      ? {
-          id: topP.team.id,
-          name: topP.team.name,
-          cheatPoints: topP.team.cheatPoints,
-        }
-      : null,
-    entries: game.entries, // Füge die entries hinzu
-    points: game.points,   // Füge die points hinzu
-  };
-});
-
-
-
-  // Filter nach den Ausschlusskriterien
-  const filteredResult = result.filter((item) => {
-    // Spielername darf nicht "slot" enthalten
-    // Team darf keine cheatPoints > 20 haben
-    // Points/Entries müssen einen Wert > 0 haben
+  // Funktion zum Überprüfen von Ausschlusskriterien für Spieler und Teams
+  function filterByExclusion(item: Record): boolean {
     return !item.entries.some((entry) => {
       return (
         entry.player.includes('slot') || // Spielername enthält "slot"
@@ -162,7 +114,56 @@ const result: Record[] = games.map((game) => {
         point.value <= 0                  // point value <= 0
       );
     });
+  }
+
+  // Hauptlogik für das Filtern und Berechnen der Ergebnisse
+  const result: Record[] = games.map((game) => {
+    const { order, field } = parseTagged(game.tagged || '');
+
+    // Funktion zum Bestimmen des Werts
+    const getValue = (item: typeof game.points[0]): string | number => {
+      switch (field) {
+        case 'field1':
+          return item.player;
+        case 'field2':
+          return item.value;
+        case 'field3':
+          return item.team.name;
+        default:
+          return ''; // Fallback
+      }
+    };
+
+    // Top-Spieler bestimmen
+    const topP = getTopPlayer(game.points, { order, getValue });
+
+    // Passende Entry finden, das zur besten Team passt
+    const matchingEntry = game.entries.find(
+      (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
+    );
+
+    // Die Resultate für das aktuelle Spiel zusammenstellen
+    return {
+      gameId: game.id,
+      language: game.tagged || "", // Falls tagged null ist, setze es auf ""
+      tagged: game.tagged,
+      topPlayer: topP?.player || null,
+      topPoints: topP?.value || null,
+      topEntries: matchingEntry?.value || null,
+      team: topP?.team
+        ? {
+            id: topP.team.id,
+            name: topP.team.name,
+            cheatPoints: topP.team.cheatPoints,
+          }
+        : null,
+      entries: game.entries, // Füge die entries hinzu
+      points: game.points,   // Füge die points hinzu
+    };
   });
+
+  // Filter nach den Ausschlusskriterien
+  const filteredResult = result.filter(filterByExclusion);
 
   // Rückgabe der gefilterten Resultate
   return NextResponse.json(filteredResult);
