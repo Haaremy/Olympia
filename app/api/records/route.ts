@@ -2,11 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
 export async function GET() {
-  // Holen der Spiele mit den relevanten Daten
   const games = await prisma.game.findMany({
     select: {
       id: true,
-      tagged: true, // ✅ Das Feld, das sonst fehlt
+      tagged: true,
       entries: {
         select: {
           player: true,
@@ -15,7 +14,7 @@ export async function GET() {
             select: {
               id: true,
               name: true,
-              cheatPoints: true, // Hinzufügen von cheatPoints zu den Teams
+              cheatPoints: true,
             },
           },
         },
@@ -28,7 +27,7 @@ export async function GET() {
             select: {
               id: true,
               name: true,
-              cheatPoints: true, // Hier auch cheatPoints für Punkte
+              cheatPoints: true,
             },
           },
         },
@@ -36,7 +35,7 @@ export async function GET() {
     },
   });
 
-  // Typdefinition
+  // Typdefinition für die Spiele mit den relevanten Daten
   type GameWithPointsAndTeam = {
     id: number;
     tagged: string | null;
@@ -60,7 +59,6 @@ export async function GET() {
     }[];
   };
 
-  // Spielverarbeitung
   const result = games.map((game: GameWithPointsAndTeam) => {
     const { order, field } = parseTagged(game.tagged || "");
 
@@ -95,29 +93,35 @@ export async function GET() {
           }
         : null,
       entries: game.entries, // Alle Entries für den Spieler-Filter
+      points: game.points,   // Alle Points für den Spieler-Filter
     };
   });
 
-  // Filtere die Ergebnisse nach den angegebenen Kriterien
+  // Filtere nach den Bedingungen
   const filteredResult = result.filter((item) => {
-    // Überprüfe alle Entries und Punkte auf die Filterbedingungen
+    // Überprüfe alle Entries und Points, ob sie die Bedingungen erfüllen:
+    // - Spielername enthält "slot"
+    // - cheatPoints des Teams sind > 20
+    // - Der Wert (value) in entries oder points ist <= 0
     return !item.entries.some((entry) => {
-      // Prüfe, ob der Spielername "slot" enthält, cheatPoints > 20 und Punkte <= 0
-      if (
-        entry.player.includes('slot') && // Prüft, ob der Spielername "slot" enthält
-        entry.team.cheatPoints > 20 && // Prüft, ob das Team cheatPoints > 20 hat
-        entry.value <= 0 // Prüft, ob der Spielerwert <= 0 ist
-      ) {
-        return true; // Das Spiel wird gefiltert, wenn eine Bedingung zutrifft
-      }
-      return false;
+      return (
+        entry.player.includes('slot') && // Spielername enthält "slot"
+        entry.team.cheatPoints > 20 &&    // cheatPoints des Teams > 20
+        entry.value <= 0                  // entry value <= 0
+      );
+    }) && !item.points.some((point) => {
+      return (
+        point.player.includes('slot') && // Spielername enthält "slot"
+        point.team.cheatPoints > 20 &&    // cheatPoints des Teams > 20
+        point.value <= 0                  // point value <= 0
+      );
     });
   });
 
   return NextResponse.json(filteredResult);
 }
 
-// Hilfsfunktionen
+// Hilfsfunktionen für tagged
 function parseTagged(tagged: string): { order: 'asc' | 'desc'; field: 'field1' | 'field2' | 'field3' } {
   const order: 'asc' | 'desc' = tagged.includes("lowest") ? "asc" : "desc";
 
@@ -130,6 +134,7 @@ function parseTagged(tagged: string): { order: 'asc' | 'desc'; field: 'field1' |
   return { order, field };
 }
 
+// Top-Player-Berechnung
 function getTopPlayer<T>(
   items: T[],
   options: { order: 'asc' | 'desc'; getValue: (item: T) => string | number }
