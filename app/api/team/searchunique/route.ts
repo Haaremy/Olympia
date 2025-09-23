@@ -11,21 +11,27 @@ export async function GET(req: Request) {
 
   console.log('Query:', query);
 
-  // Run raw SQL search by credentials or name
- const nutzer = await prisma.team.findMany({
-  where: {
-    OR: [
-      { uname: { equals: query } }
-        ]
-  }
-});
-  const foundUser = nutzer[0];
+  try {
+    // Run the query using findFirst for efficiency, since you only need one result
+    const nutzer = await prisma.team.findFirst({
+      where: {
+        uname: query,
+      }
+    });
 
-  return NextResponse.json({
-    found: true,
-    user: {
-      uname: foundUser.uname,
-      name: foundUser.name,
-    },
-  });
+    if (!nutzer) {
+      return NextResponse.json({ found: false, error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      found: true,
+      user: {
+        uname: nutzer.uname,
+        name: nutzer.name,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
