@@ -161,7 +161,7 @@ if (lastChecked) {
                         height={24}
                         className="dark:invert invert-0"
                       />
-                      <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                         Admin
                       </p>
                     </Link>
@@ -177,7 +177,7 @@ if (lastChecked) {
                         height={24}
                         className="dark:invert invert-0"
                       />
-                      <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                         Team
                       </p>
                     </Link>
@@ -194,7 +194,7 @@ if (lastChecked) {
                       height={24}
                       className="dark:invert invert-0"
                     />
-                    <p className="hidden block text-xs sm:text-sm md:text-lg font-semibold">
+                    <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                       Login
                     </p>
                   </button>
