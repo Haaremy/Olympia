@@ -149,7 +149,7 @@ useEffect(() => { historyRef.current = history; }, [history]);
 
 
         {/* Input */}
-        {!!session && session.user.cheatPoints>20 && (
+        {!!session && (
           <>
             <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
               <textarea
