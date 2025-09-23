@@ -10,13 +10,14 @@ interface Team {
 
 interface Record {
   gameId: number;
-  language: string;  // Hier nehme ich "language" an, dass es im tagged-String enthalten ist. Falls das anders ist, bitte anpassen
+  language: string | null;
   tagged: string | '';
   topPlayer: string | null;
   topPoints: number | null;
   topEntries: number | null;
   team: Team | null;
 }
+
 
 export async function GET() {
   // Alle Spiele aus der Datenbank abrufen
@@ -92,48 +93,49 @@ export async function GET() {
   }
 
   // Hauptlogik für das Filtern und Berechnen der Ergebnisse
-  const result: Record[] = games.map((game) => {
-    const { order, field } = parseTagged(game.tagged || '');
+ const result: Record[] = games.map((game) => {
+  const { order, field } = parseTagged(game.tagged || '');
 
-    // Funktion zum Bestimmen des Werts
-    const getValue = (item: typeof game.points[0]): string | number => {
-      switch (field) {
-        case 'field1':
-          return item.player;
-        case 'field2':
-          return item.value;
-        case 'field3':
-          return item.team.name;
-        default:
-          return ''; // Fallback
-      }
-    };
+  // Funktion zum Bestimmen des Werts
+  const getValue = (item: typeof game.points[0]): string | number => {
+    switch (field) {
+      case 'field1':
+        return item.player;
+      case 'field2':
+        return item.value;
+      case 'field3':
+        return item.team.name;
+      default:
+        return ''; // Fallback
+    }
+  };
 
-    // Top-Spieler bestimmen
-    const topP = getTopPlayer(game.points, { order, getValue });
+  // Top-Spieler bestimmen
+  const topP = getTopPlayer(game.points, { order, getValue });
 
-    // Passende Entry finden, das zur besten Team passt
-    const matchingEntry = game.entries.find(
-      (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
-    );
+  // Passende Entry finden, das zur besten Team passt
+  const matchingEntry = game.entries.find(
+    (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
+  );
 
-    // Die Resultate für das aktuelle Spiel zusammenstellen
-    return {
-      gameId: game.id,
-      language: game.tagged, // Wir gehen davon aus, dass der tagged-String die Sprache enthält
-      tagged: game.tagged,
-      topPlayer: topP?.player || null,
-      topPoints: topP?.value || null,
-      topEntries: matchingEntry?.value || null,
-      team: topP?.team
-        ? {
-            id: topP.team.id,
-            name: topP.team.name,
-            cheatPoints: topP.team.cheatPoints,
-          }
-        : null,
-    };
-  });
+  // Die Resultate für das aktuelle Spiel zusammenstellen
+  return {
+    gameId: game.id,
+    language: game.tagged || "", // Falls tagged null ist, setze es auf ""
+    tagged: game.tagged,
+    topPlayer: topP?.player || null,
+    topPoints: topP?.value || null,
+    topEntries: matchingEntry?.value || null,
+    team: topP?.team
+      ? {
+          id: topP.team.id,
+          name: topP.team.name,
+          cheatPoints: topP.team.cheatPoints,
+        }
+      : null,
+  };
+});
+
 
   // Filter nach den Ausschlusskriterien
   const filteredResult = result.filter((item) => {
