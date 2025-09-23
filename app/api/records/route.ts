@@ -1,3 +1,7 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';  // Prisma Client import
+
+
 export async function GET() {
   // Alle Spiele aus der Datenbank abrufen
   const games = await prisma.game.findMany({
