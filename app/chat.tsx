@@ -15,6 +15,7 @@ interface Chat {
   team: {
     uname: string;
     name: string;
+    cheatPoints: number;
   };
 }
 
@@ -36,13 +37,20 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
+  const historyRef = useRef(history);
+useEffect(() => { historyRef.current = history; }, [history]);
+
   // Fetch messages periodically
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const res = await fetch("/api/chat/receive");
         if (res.ok) {
-          const data: Chat[] = await res.json();
+          const data: Chat[] = await res.json();         
+          if (historyRef.current[historyRef.current.length-1]?.createdAt > data[data.length-1]?.createdAt) {
+                chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+          }
+
           setHistory(data);
         }
       } catch (e) {
@@ -56,11 +64,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     return () => clearInterval(interval);
   }, []); // ❌ don't depend on history
 
-  // Auto-scroll to bottom when new messages arrive
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  
-  }, [history]);
+
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -143,7 +147,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
 
         {/* Input */}
-        {!!session && (
+        {!!session && cheatPoints<20 && (
           <>
             <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
               <textarea
