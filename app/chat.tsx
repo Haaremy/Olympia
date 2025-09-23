@@ -31,6 +31,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     return () => {
       setIsModalOpen(false);
       document.body.style.overflow = "auto";
