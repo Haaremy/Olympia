@@ -13,6 +13,7 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({
   images,
   width = "w-full",
+  height = "h-64",
   titles,
   visible = 3,
 }) => {
