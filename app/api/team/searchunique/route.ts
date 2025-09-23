@@ -19,7 +19,7 @@ export async function GET(req: Request) {
     const nutzer = await prisma.team.findFirst({
       where: {
         uname: {
-          conatins: query,
+          contains: query,
         },
       },
     });
