@@ -256,7 +256,7 @@ const getOffsetISO = (dtLocal: string): string => {
         <div key={rowIndex} className="grid grid-cols-2 gap-4 mb-3">
           
           {pair.map((p, idx) => (
-          <detail>
+          <details>
             <div key={`${id}-${rowIndex}-${idx}`}>
               <summary>
               <label className="block text-sm mb-1 text-white">{p.player}</label>
@@ -268,7 +268,7 @@ const getOffsetISO = (dtLocal: string): string => {
                   shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
             </div>
-            </detail>
+            </details>
           ))}
         </div>
       ))}
