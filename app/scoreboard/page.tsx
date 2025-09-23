@@ -30,174 +30,132 @@ interface Team {
 
 interface Record {
   gameId: number,
-      language: string,
-      tagged: string | "",
-      topPlayer: string,
-      topPoints: number,
-      topEntries: number,
-      team: Team
+  language: string,
+  tagged: string | "",
+  topPlayer: string,
+  topPoints: number,
+  topEntries: number,
+  team: Team
 }
-
 
 type Settings = {
   started: boolean;
   ending: Date;
 }
 
-// Main Component
 export default function ScoreboardTabs() {
-  
   const [activeTab, setActiveTab] = useState<"scoreboard" | "records">("scoreboard");
-
   const [teams, setTeams] = useState<Team[]>([]);
   const [records, setRecords] = useState<Record[]>([]);
-const [loading, setLoading] = useState(true);
-const [ending, setEnding] = useState<Date>(new Date());
-const [started, setStarted] = useState<boolean>(false);
-const [timeLeft, setTimeLeft] = useState(new Date(ending).getTime() - Date.now());
-const [isAndroid, setIsAndroid] = useState(false);
-const [teamImages, setTeamImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [ending, setEnding] = useState<Date>(new Date());
+  const [started, setStarted] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState(new Date(ending).getTime() - Date.now());
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
 
-useEffect(() => {
-  const fetchSettings = async () => {
+  // Fetch Settings
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        setIsAndroid(Capacitor.getPlatform() === 'android');
+        const settingsRes = await fetch("/api/settings");
+        if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
+        const settings: Settings = await settingsRes.json();
+        if (settings.ending) setEnding(new Date(settings.ending));
+        if (typeof settings.started === "boolean") setStarted(settings.started);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  // Laden der Dateien und Namen
+  const loadFiles = async () => {
     try {
-      setIsAndroid(Capacitor.getPlatform() === 'android');
-      const settingsRes = await fetch("/api/settings");
-      if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
-      const settings: Settings = await settingsRes.json();
-      if (settings.ending) setEnding(new Date(settings.ending));
-      if (typeof settings.started === "boolean") setStarted(settings.started);
-      console.log(started);
+      const res = await fetch('/uploads/files.php');
+      if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
+      const files = await res.json();
+      return files;
     } catch (err) {
       console.error(err);
+      return [];
     }
   };
-  fetchSettings();
-}, []);
 
-async function loadFiles() {
-  try {
-    const res = await fetch('/uploads/files.php'); // Pfad zu deiner index.php
-    if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
-
-    const files = await res.json(); // JSON-Array parsen
-    console.log('Dateien:', files);
-    return files;
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
-  async function loadNames(files: string[]) {
-  const names: string[] = [];
-
-  for (const file of files) {
-    try {
-      // Extrahiere den Namen aus dem Pfad (z. B. "/uploads/Max_Mustermann.pdf" → "Max_Mustermann")
-      const name = file.split('/').pop()?.split('.').shift() || '';
-      
-
-      // Optional: API-Aufruf, falls nötig (hier nur als Beispiel)
-      const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
-      if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
-      const data = await res.json();
-      names.push(data.name);
-      console.log('API-Ergebnis für', name, ':', data);
-    } catch (err) {
-      console.error('Fehler bei Datei', file, ':', err);
-      // Optional: Weiter mit nächsten Dateien, auch wenn eine fehlschlägt
-    }
-  }
-
-  console.log('Extrahierte Namen:', names);
-  return names;
-}
-
-
-
-// Lade die Bilder beim Mount
-useEffect(() => {
-  const fetchFiles = async () => {
-    const files = await loadFiles();
-    const titles = await loadNames(files);
-    setTeamImages(files);
-    setTeamNames(titles);
-  };
-  fetchFiles();
-}, [teams]);
-
-// Countdown & optionales Bild-Update jede Sekunde
-useEffect(() => {
-  const interval = setInterval(() => {
-    setTimeLeft(prevTime => {
-      if (prevTime <= 1000) {
-        clearInterval(interval);
-        return 0;
+  const loadNames = async (files: string[]) => {
+    const names: string[] = [];
+    for (const file of files) {
+      try {
+        const name = file.split('/').pop()?.split('.').shift() || '';
+        const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
+        if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
+        const data = await res.json();
+        names.push(data.name);
+      } catch (err) {
+        console.error('Fehler bei Datei', file, ':', err);
       }
-      return prevTime - 1000;
-    });
+    }
+    return names;
+  };
 
-    // Dateien asynchron laden
-    loadFiles().then(files => setTeamImages(files));
-  }, 1000);
+  // Lade Dateien und Namen beim Mount
+  useEffect(() => {
+    const fetchFilesAndNames = async () => {
+      const files = await loadFiles();
+      const names = await loadNames(files);
+      setTeamImages(files);
+      setTeamNames(names);
+    };
+    fetchFilesAndNames();
+  }, [teams]);
 
-  return () => clearInterval(interval);
-}, [teams]);
+  // Countdown und Asynchrones Bild-Update jede Sekunde
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(prevTime => {
+        if (prevTime <= 1000) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevTime - 1000;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [teams]);
 
-  
-  
-  
-  
-  
-  
+  // Formatierung der Zeit
   const formatTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-  
-    const hoursStr = hours > 0 ? `${hours}h ` : '';
-    const minutesStr = minutes > 0 || hours > 0 ? `${minutes}m ` : '';
-    const secondsStr = `${seconds}s`;
-  
-  
-    return `${hoursStr}${minutesStr}${secondsStr}`;
+    return `${hours > 0 ? `${hours}h ` : ''}${minutes > 0 || hours > 0 ? `${minutes}m ` : ''}${seconds}s`;
   };
 
+  // Fetch Scoreboard und Records
   useEffect(() => {
     const fetchScoreboardAndRecords = async () => {
       try {
-        // Hole sowohl die Scoreboard- als auch die Records-Daten in parallelen API-Aufrufen
         const [scoreboardRes, recordsRes] = await Promise.all([
           fetch("/api/scoreboard"),
           fetch("/api/records"),
         ]);
-  
-        // Verarbeite die JSON-Antworten, wenn sie erfolgreich sind
         const scoreboardData = await scoreboardRes.json();
         const recordsData = await recordsRes.json();
-  
-        setTeams([...scoreboardData]); // neuer Array → re-render
-
-        setRecords([...recordsData]); // neuer Array → re-render
-
+        setTeams(scoreboardData);
+        setRecords(recordsData);
       } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
-        // Hier könntest du auch Fehlerbehandlung einfügen, falls API-Aufrufe fehlschlagen
       } finally {
-        setLoading(false); // Ladezustand zurücksetzen
+        setLoading(false);
       }
     };
-    
-    
-    const interval = setInterval(() => {
-    fetchScoreboardAndRecords();
-  }, 3000);
 
-  // Intervall beim Unmount aufräumen
-  return () => clearInterval(interval);
+    const interval = setInterval(fetchScoreboardAndRecords, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const formatDate = (date: Date) => {
@@ -210,8 +168,6 @@ useEffect(() => {
     };
     return new Date(date).toLocaleDateString(undefined, options);
   };
-
-  
 
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
@@ -245,14 +201,12 @@ useEffect(() => {
           {timeLeft > 0 ? formatTime(timeLeft) : "👑" }
         </div>
       </div>
-      
       <Carousel
         images={teamImages}
         titles={teamNames}
         width="w-full"
         height="h-64"
       />
-
 
       {/* Tab Content */}
       {loading ? (
@@ -304,7 +258,7 @@ useEffect(() => {
                               </tr>
                             </thead>
                             <tbody>
-                             {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
+                              {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
                                 const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
                                 const game = pointsForGame[0]?.game; // wichtig: aktuelles Spiel
 
@@ -352,7 +306,6 @@ useEffect(() => {
                               })}
                             </tbody>
                           </table>
-
                         </details>
                       </td>
                     </tr>
@@ -363,22 +316,11 @@ useEffect(() => {
           </table>
         </div>
       ) : (
-
-
-
-
-
-
-
-
-
-
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
-            records.map((record) => record.topPlayer && !record.tagged.includes("hidden") && !record.tagged.includes("noWorldRecord")  && (
+            records.map((record) => record.topPlayer && !record.tagged.includes("hidden") && !record.tagged.includes("noWorldRecord") && (
               <div
                 key={record.gameId}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
