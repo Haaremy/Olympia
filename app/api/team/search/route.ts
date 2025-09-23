@@ -93,6 +93,7 @@ const foundTeam = teams[0];
     name: foundTeam.name,
     players: playerNames,
     cheatPoints: foundTeam.cheatPoints ?? 0,
+    pointsTotal: foundTeam.pointsTotal ?? 0,
     games,
   };
 
