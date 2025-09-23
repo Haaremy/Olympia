@@ -83,10 +83,8 @@ useEffect(() => {
 
           // Notification aktualisieren
           await updateOngoingNotification(
-           `Hallo Team ${!!session ? session.user.name+",\nIhr habt "+ pointsRef +" Punkte." : ""} \nVerbleibende: ${formatTime(
-            endingRef.current.getTime() - Date.now()
-          )}`
-            )}`
+           `Hallo Team ${!!session ? session.user.name+",\nIhr habt "+ pointsRef.current +" Punkte." : ""} \nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}`
+
           );
         }, 60000);
       } catch (err) {
