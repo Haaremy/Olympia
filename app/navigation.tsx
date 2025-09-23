@@ -201,43 +201,88 @@ if (lastChecked) {
 
                 )
               ) : (
-                <Link
-                  href={"/"}
-                  className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-                >
-                  <p className="text-lg font-semibold">{t('games')}</p>
-                </Link>
+               <Link
+                      href="/"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttongames.svg"
+                        alt="Games"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("games")}
+                      </p>
+                    </Link>
               )}
               {currentPath !== "/scoreboard" ?
               <Link
-                href={"/scoreboard"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-              >
-                <p className="text-lg font-semibold">{t('rank')}</p>
-              </Link>
+                      href="/scoreboard"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttonrank.svg"
+                        alt="Rank"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("rank")}
+                      </p>
+                    </Link>
               :
               <Link
-                href={"/"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-              >
-                <p className="text-lg font-semibold">{t('games')}</p>
-              </Link>
+                      href="/"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttongames.svg"
+                        alt="Games"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("games")}
+                      </p>
+                    </Link>
               }
 
             {currentPath !== "/map" ?
-              <Link
-                href={"/map"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-              >
-                <p className="text-lg font-semibold">{t('map')}</p>
-              </Link>
+             <Link
+                      href="/map"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttonmap.svg"
+                        alt="Map"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("map")}
+                      </p>
+                    </Link>
               :
               <Link
-                href={"/"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-              >
-                <p className="text-lg font-semibold">{t('games')}</p>
-              </Link>
+                      href="/"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttongames.svg"
+                        alt="Games"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("games")}
+                      </p>
+                    </Link>
               }
 
                  <button
@@ -252,39 +297,84 @@ if (lastChecked) {
 
           <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
               <Link
-                href={"/"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      href="/"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                         <p className="text-lg font-semibold">{t("games")}</p>
-              </Link>
+                      <Image
+                        src="/images/navbuttongames.svg"
+                        alt="Games"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("games")}
+                      </p>
+                    </Link>
               { 
                  user && user.role === "ADMIN" ? (
-                    <Link
+                   <Link
                       href="/adminpage"
-                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                      <p className="text-lg font-semibold">Admin</p>
+                      <Image
+                        src="/images/navbuttongroup.svg"
+                        alt="Admin"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        Admin
+                      </p>
                     </Link>
                   ) : (
                     <Link
                       href="/teampage"
-                      className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
-                      <p className="text-lg font-semibold">Team</p>
+                      <Image
+                        src="/images/navbuttongroup.svg"
+                        alt="Team"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        Team
+                      </p>
                     </Link>
                   )
                 }
               <Link
-                href={"/scoreboard"}
-                className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
-              >
-                <p className="text-lg font-semibold">{t('rank')}</p>
-              </Link>
+                      href="/scoreboard"
+                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    >
+                      <Image
+                        src="/images/navbuttonrank.svg"
+                        alt="Rank"
+                        width={24}
+                        height={24}
+                        className="dark:invert invert-0"
+                      />
+                      <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                        {t("rank")}
+                      </p>
+                    </Link>
               <button
                     onClick={handleChatOpen}
-                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
-                    <p className="text-lg font-semibold">Chat</p>
+                    <Image
+                      src="/images/navbuttonchat.svg"
+                      alt="Chat"
+                      width={24}
+                      height={24}
+                      className="dark:invert invert-0"
+                    />
+                    <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                      Chat
+                    </p>
                   </button>
 
           </div>
