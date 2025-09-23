@@ -11,11 +11,16 @@ interface Team {
 interface Record {
   gameId: number;
   language: string;
-  tagged: string | null; 
+  tagged: string | null;
   topPlayer: string | null;
   topPoints: number | null;
   topEntries: number | null;
   team: Team | null;
+  entries: {  // Füge 'entries' hinzu, falls es benötigt wird
+    player: string;
+    value: number;
+    team: Team;
+  }[];  // Ein Array von Einträgen
 }
 
 
@@ -94,7 +99,7 @@ export async function GET() {
   }
 
   // Hauptlogik für das Filtern und Berechnen der Ergebnisse
- const result: Record[] = games.map((game) => {
+const result: Record[] = games.map((game) => {
   const { order, field } = parseTagged(game.tagged || '');
 
   // Funktion zum Bestimmen des Werts
@@ -123,7 +128,7 @@ export async function GET() {
   return {
     gameId: game.id,
     language: game.tagged || "", // Falls tagged null ist, setze es auf ""
-    tagged: game.tagged,         // tagged kann null sein, daher kein Problem
+    tagged: game.tagged,
     topPlayer: topP?.player || null,
     topPoints: topP?.value || null,
     topEntries: matchingEntry?.value || null,
@@ -134,6 +139,7 @@ export async function GET() {
           cheatPoints: topP.team.cheatPoints,
         }
       : null,
+    entries: game.entries, // Füge die entries hinzu
   };
 });
 
