@@ -19,8 +19,7 @@ export async function GET(req: Request) {
     const nutzer = await prisma.team.findFirst({
       where: {
         uname: {
-          equals: query,
-          mode: 'insensitive', // Ignoriert Groß-/Kleinschreibung
+          conatins: query,
         },
       },
     });
