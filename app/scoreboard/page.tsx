@@ -318,39 +318,40 @@ export default function ScoreboardTabs() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-  {records.length === 0 ? (
-    <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
-  ) : (
-    records
-      .filter((record) => {
-        // Bedingung: Der topPlayer darf "slot" nicht enthalten und topEntries <= 0
-        return (
-          record.topPlayer &&
-          !record.tagged.includes("hidden") &&
-          !record.tagged.includes("noWorldRecord") &&
-          !record.topPlayer.includes("slot") &&    // topPlayer darf "slot" nicht enthalten
-          record.topEntries > 0                      // topEntries sollte größer als 0 sein
-        );
-      })
-      .map((record) => (
-        <div
-          key={record.gameId}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
-        >
-          <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
-            Spiel {record.gameId}
-          </h3>
-          <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-            👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
-          </p>
-          <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-            Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
-            ({record.topPoints} Punkte)
-          </p>
+          {records.length === 0 ? (
+            <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
+          ) : (
+            records
+              .filter((record) => {
+                // Bedingung: Der topPlayer darf "Slot" nicht im Namen enthalten und topEntries > 0
+                return (
+                  record.topPlayer &&
+                  !record.tagged.includes("hidden") &&
+                  !record.tagged.includes("noWorldRecord") &&
+                  !record.topPlayer.toLowerCase().includes("slot") && // Hier wird der Text "slot" ausgeschlossen (case-insensitive)
+                  record.topEntries > 0  // topEntries sollte größer als 0 sein
+                );
+              })
+              .map((record) => (
+                <div
+                  key={record.gameId}
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
+                >
+                  <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
+                    Spiel {record.gameId}
+                  </h3>
+                  <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+                    👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
+                  </p>
+                  <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+                    Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
+                    ({record.topPoints} Punkte)
+                  </p>
+                </div>
+              ))
+          )}
         </div>
-      ))
-  )}
-</div>
+
 
       )}
     </main>
