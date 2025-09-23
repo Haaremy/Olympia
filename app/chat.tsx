@@ -143,7 +143,7 @@ const scrollEnd = () => {
   );
 })}
   <div ref={chatEndRef} />
-  <button className="rounded-full bg-pink-500 fixed bottom-60" onClick((e) => {scrollEnd();})>
+  <button className="rounded-full bg-pink-500 fixed bottom-60" onClick={() => scrollEnd()}>
     👇🏼
   </button>
 </div>
