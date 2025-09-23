@@ -16,12 +16,10 @@ interface Record {
   topPoints: number | null;
   topEntries: number | null;
   team: Team | null;
-  entries: {  // Füge 'entries' hinzu, falls es benötigt wird
-    player: string;
-    value: number;
-    team: Team;
-  }[];  // Ein Array von Einträgen
+  entries: { player: string; value: number; team: Team }[]; // Beispiel für entries
+  points: { player: string; value: number; team: Team }[];  // Beispiel für points
 }
+
 
 
 
@@ -140,8 +138,10 @@ const result: Record[] = games.map((game) => {
         }
       : null,
     entries: game.entries, // Füge die entries hinzu
+    points: game.points,   // Füge die points hinzu
   };
 });
+
 
 
   // Filter nach den Ausschlusskriterien
