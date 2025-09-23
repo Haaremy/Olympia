@@ -19,7 +19,14 @@ export function useOngoingNotification() {
 
   useEffect(() => { endingRef.current = ending }, [ending]);
 
- useEffect(() => {
+  
+const pointsRef = useRef(points);
+useEffect(() => {
+  pointsRef.current = points;
+}, [points]);
+
+
+  useEffect(() => {
   const fetchTeamPoints = async () => {
     if (!session?.user?.uname) return;
 
@@ -34,12 +41,13 @@ export function useOngoingNotification() {
     }
   };
 
-  fetchTeamPoints(); // initial fetch
+  fetchTeamPoints(); // Initial fetch
 
-  const interval = setInterval(fetchTeamPoints, 60000); // every 60 seconds
+  const intervalId = setInterval(fetchTeamPoints, 60000); // Every 60 seconds
 
-  return () => clearInterval(interval); // cleanup
+  return () => clearInterval(intervalId); // Cleanup on unmount
 }, [session?.user?.uname]);
+
 
   // Load settings once
   useEffect(() => {
@@ -65,7 +73,7 @@ export function useOngoingNotification() {
     const initNotification = async () => {
       try {
         await startOngoingNotification(
-          `Hallo Team ${!!session ? session.user.uname : ""} \nVerbleibend: ${formatTime(
+          `Hallo Team ${!!session ? session.user.name+",\nWir laden eure Punkte..." : ""} \nVerbleibende: ${formatTime(
             endingRef.current.getTime() - Date.now()
           )}`
         );
@@ -75,8 +83,9 @@ export function useOngoingNotification() {
 
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Deine Punkte: ${points} \nVerbleibend: ${formatTime(
-              endingRef.current.getTime() - Date.now()
+           `Hallo Team ${!!session ? session.user.name+",\nIhr habt "+ pointsRef +" Punkte." : ""} \nVerbleibende: ${formatTime(
+            endingRef.current.getTime() - Date.now()
+          )}`
             )}`
           );
         }, 60000);
