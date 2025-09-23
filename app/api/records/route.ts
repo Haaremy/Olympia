@@ -1,7 +1,25 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+// Typen für die Rückgabe
+interface Team {
+  id: number;
+  name: string;
+  cheatPoints: number;
+}
+
+interface Record {
+  gameId: number;
+  language: string;  // Hier nehme ich "language" an, dass es im tagged-String enthalten ist. Falls das anders ist, bitte anpassen
+  tagged: string | '';
+  topPlayer: string | null;
+  topPoints: number | null;
+  topEntries: number | null;
+  team: Team | null;
+}
+
 export async function GET() {
+  // Alle Spiele aus der Datenbank abrufen
   const games = await prisma.game.findMany({
     select: {
       id: true,
@@ -35,56 +53,78 @@ export async function GET() {
     },
   });
 
-  // Typdefinition für die Spiele mit den relevanten Daten
-  type GameWithPointsAndTeam = {
-    id: number;
-    tagged: string | null;
-    entries: {
-      player: string;
-      value: number;
-      team: {
-        id: number;
-        name: string;
-        cheatPoints: number;
-      };
-    }[];
-    points: {
-      player: string;
-      value: number;
-      team: {
-        id: number;
-        name: string;
-        cheatPoints: number;
-      };
-    }[];
-  };
+  // Hilfsfunktionen für tagged und Top-Player
+  function parseTagged(tagged: string): { order: 'asc' | 'desc'; field: 'field1' | 'field2' | 'field3' } {
+    const order: 'asc' | 'desc' = tagged.includes('lowest') ? 'asc' : 'desc';
+    let field: 'field1' | 'field2' | 'field3' = 'field1'; // Default
 
-  const result = games.map((game: GameWithPointsAndTeam) => {
-    const { order, field } = parseTagged(game.tagged || "");
+    if (tagged.includes('field1')) field = 'field1';
+    else if (tagged.includes('field2')) field = 'field2';
+    else if (tagged.includes('field3')) field = 'field3';
 
+    return { order, field };
+  }
+
+  function getTopPlayer<T>(
+    items: T[],
+    options: { order: 'asc' | 'desc'; getValue: (item: T) => string | number }
+  ): T | null {
+    const { order, getValue } = options;
+
+    if (!items.length) return null;
+
+    const sorted = items.slice().sort((a, b) => {
+      const aValue = getValue(a);
+      const bValue = getValue(b);
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return order === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+      }
+
+      return 0;
+    });
+
+    return sorted[0];
+  }
+
+  // Hauptlogik für das Filtern und Berechnen der Ergebnisse
+  const result: Record[] = games.map((game) => {
+    const { order, field } = parseTagged(game.tagged || '');
+
+    // Funktion zum Bestimmen des Werts
     const getValue = (item: typeof game.points[0]): string | number => {
       switch (field) {
-        case "field1":
+        case 'field1':
           return item.player;
-        case "field2":
+        case 'field2':
           return item.value;
-        case "field3":
+        case 'field3':
           return item.team.name;
         default:
-          return ""; // Fallback
+          return ''; // Fallback
       }
     };
 
+    // Top-Spieler bestimmen
     const topP = getTopPlayer(game.points, { order, getValue });
 
-    const matchingEntry = game.entries.find((e) => e.team.id === topP?.team.id);
+    // Passende Entry finden, das zur besten Team passt
+    const matchingEntry = game.entries.find(
+      (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
+    );
 
+    // Die Resultate für das aktuelle Spiel zusammenstellen
     return {
       gameId: game.id,
+      language: game.tagged, // Wir gehen davon aus, dass der tagged-String die Sprache enthält
+      tagged: game.tagged,
       topPlayer: topP?.player || null,
       topPoints: topP?.value || null,
       topEntries: matchingEntry?.value || null,
-      tagged: game.tagged,
       team: topP?.team
         ? {
             id: topP.team.id,
@@ -92,71 +132,29 @@ export async function GET() {
             cheatPoints: topP.team.cheatPoints,
           }
         : null,
-      entries: game.entries, // Alle Entries für den Spieler-Filter
-      points: game.points,   // Alle Points für den Spieler-Filter
     };
   });
 
-  // Filtere nach den Bedingungen
+  // Filter nach den Ausschlusskriterien
   const filteredResult = result.filter((item) => {
-    // Überprüfe alle Entries und Points, ob sie die Bedingungen erfüllen:
-    // - Spielername enthält "slot"
-    // - cheatPoints des Teams sind > 20
-    // - Der Wert (value) in entries oder points ist <= 0
+    // Spielername darf nicht "slot" enthalten
+    // Team darf keine cheatPoints > 20 haben
+    // Points/Entries müssen einen Wert > 0 haben
     return !item.entries.some((entry) => {
       return (
-        entry.player.includes('slot') && // Spielername enthält "slot"
-        entry.team.cheatPoints > 20 &&    // cheatPoints des Teams > 20
+        entry.player.includes('slot') || // Spielername enthält "slot"
+        entry.team.cheatPoints > 20 ||    // cheatPoints des Teams > 20
         entry.value <= 0                  // entry value <= 0
       );
     }) && !item.points.some((point) => {
       return (
-        point.player.includes('slot') && // Spielername enthält "slot"
-        point.team.cheatPoints > 20 &&    // cheatPoints des Teams > 20
+        point.player.includes('slot') || // Spielername enthält "slot"
+        point.team.cheatPoints > 20 ||    // cheatPoints des Teams > 20
         point.value <= 0                  // point value <= 0
       );
     });
   });
 
+  // Rückgabe der gefilterten Resultate
   return NextResponse.json(filteredResult);
-}
-
-// Hilfsfunktionen für tagged
-function parseTagged(tagged: string): { order: 'asc' | 'desc'; field: 'field1' | 'field2' | 'field3' } {
-  const order: 'asc' | 'desc' = tagged.includes("lowest") ? "asc" : "desc";
-
-  let field: 'field1' | 'field2' | 'field3' = 'field1'; // Default
-
-  if (tagged.includes("field1")) field = 'field1';
-  else if (tagged.includes("field2")) field = 'field2';
-  else if (tagged.includes("field3")) field = 'field3';
-
-  return { order, field };
-}
-
-// Top-Player-Berechnung
-function getTopPlayer<T>(
-  items: T[],
-  options: { order: 'asc' | 'desc'; getValue: (item: T) => string | number }
-): T | null {
-  const { order, getValue } = options;
-
-  if (!items.length) return null;
-
-  const sorted = items.slice().sort((a, b) => {
-    const aValue = getValue(a);
-    const bValue = getValue(b);
-
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return order === 'asc' ? aValue - bValue : bValue - aValue;
-    }
-
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    }
-
-    return 0;
-  });
-
-  return sorted[0];
 }
