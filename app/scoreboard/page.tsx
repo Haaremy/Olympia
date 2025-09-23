@@ -65,6 +65,7 @@ export default function ScoreboardTabs() {
         const settings: Settings = await settingsRes.json();
         if (settings.ending) setEnding(new Date(settings.ending));
         if (typeof settings.started === "boolean") setStarted(settings.started);
+        console.log(started);
       } catch (err) {
         console.error(err);
       }
