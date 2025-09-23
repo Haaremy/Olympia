@@ -152,7 +152,7 @@ if (lastChecked) {
                   user.role === "ADMIN" ? (
                    <Link
                       href="/adminpage"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongroup.svg"
@@ -168,7 +168,7 @@ if (lastChecked) {
                   ) : (
                     <Link
                       href="/teampage"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongroup.svg"
@@ -185,7 +185,7 @@ if (lastChecked) {
                 ) : (
                   <button
                     onClick={handleLoginOpen}
-                    className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
                     <Image
                       src="/images/navbuttongroup.svg"
@@ -203,7 +203,7 @@ if (lastChecked) {
               ) : (
                <Link
                       href="/"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongames.svg"
@@ -220,7 +220,7 @@ if (lastChecked) {
               {currentPath !== "/scoreboard" ?
               <Link
                       href="/scoreboard"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttonrank.svg"
@@ -236,7 +236,7 @@ if (lastChecked) {
               :
               <Link
                       href="/"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongames.svg"
@@ -254,7 +254,7 @@ if (lastChecked) {
             {currentPath !== "/map" ?
              <Link
                       href="/map"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttonmap.svg"
@@ -270,7 +270,7 @@ if (lastChecked) {
               :
               <Link
                       href="/"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongames.svg"
@@ -285,17 +285,26 @@ if (lastChecked) {
                     </Link>
               }
 
-                 <button
+                <button
                     onClick={handleChatOpen}
-                    className="px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
-                    <p className="text-lg font-semibold">Chat</p>
+                    <Image
+                      src="/images/navbuttonchat.svg"
+                      alt="Chat"
+                      width={24}
+                      height={24}
+                      className="dark:invert invert-0"
+                    />
+                    <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                      Chat
+                    </p>
                   </button>
             
           </div>
 
 
-          <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
+          <div className={`flex flex-1 flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
               <Link
                       href="/"
                       className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
@@ -315,7 +324,7 @@ if (lastChecked) {
                  user && user.role === "ADMIN" ? (
                    <Link
                       href="/adminpage"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongroup.svg"
@@ -331,7 +340,7 @@ if (lastChecked) {
                   ) : (
                     <Link
                       href="/teampage"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttongroup.svg"
@@ -348,7 +357,7 @@ if (lastChecked) {
                 }
               <Link
                       href="/scoreboard"
-                      className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                      className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                     >
                       <Image
                         src="/images/navbuttonrank.svg"
@@ -363,7 +372,7 @@ if (lastChecked) {
                     </Link>
               <button
                     onClick={handleChatOpen}
-                    className="flex flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                    className="flex flex-1 flex-col items-center px-2 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
                   >
                     <Image
                       src="/images/navbuttonchat.svg"
