@@ -96,24 +96,12 @@ export async function GET() {
       return 0;
     });
 
-    return sorted[0];
+    return sorted[0]; // Den besten Spieler zurückgeben
   }
 
   // Funktion zum Überprüfen von Ausschlusskriterien für Spieler und Teams
-  function filterByExclusion(item: Record): boolean {
-    return !item.entries.some((entry) => {
-      return (
-        entry.player.includes('slot') || // Spielername enthält "slot"
-        entry.team.cheatPoints > 20 ||    // cheatPoints des Teams > 20
-        entry.value <= 0                  // entry value <= 0
-      );
-    }) && !item.points.some((point) => {
-      return (
-        point.player.includes('slot') || // Spielername enthält "slot"
-        point.team.cheatPoints > 20 ||    // cheatPoints des Teams > 20
-        point.value <= 0                  // point value <= 0
-      );
-    });
+  function isValidEntryOrPoint(entryOrPoint: Entry): boolean {
+    return !entryOrPoint.player.includes('slot') && entryOrPoint.value > 0 && entryOrPoint.team.cheatPoints <= 20;
   }
 
   // Hauptlogik für das Filtern und Berechnen der Ergebnisse
@@ -134,13 +122,11 @@ export async function GET() {
       }
     };
 
-    // Top-Spieler bestimmen
+    // Bestimme den besten Spieler
     const topP = getTopPlayer(game.points, { order, getValue });
 
     // Passende Entry finden, das zur besten Team passt
-    const matchingEntry = game.entries.find(
-      (e) => e.team.id === topP?.team.id && e.value > 0 // value muss > 0 sein
-    );
+    const matchingEntry = game.entries.find((e) => e.team.id === topP?.team.id && e.value > 0); // value muss > 0 sein
 
     // Die Resultate für das aktuelle Spiel zusammenstellen
     return {
@@ -162,8 +148,14 @@ export async function GET() {
     };
   });
 
-  // Filter nach den Ausschlusskriterien
-  const filteredResult = result.filter(filterByExclusion);
+  // Filter nach den Ausschlusskriterien (nur Einträge/Punkte ohne "slot")
+  const filteredResult = result.filter((item) => {
+    // Alle Einträge und Punkte, die "slot" enthalten oder cheatPoints > 20 oder einen Wert <= 0 haben, werden ausgeschlossen.
+    const validEntries = item.entries.every(isValidEntryOrPoint);
+    const validPoints = item.points.every(isValidEntryOrPoint);
+
+    return validEntries && validPoints;
+  });
 
   // Rückgabe der gefilterten Resultate
   return NextResponse.json(filteredResult);
