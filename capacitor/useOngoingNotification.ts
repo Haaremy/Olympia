@@ -11,14 +11,11 @@ export function useOngoingNotification() {
   const { data: session } = useSession();
   const [started, setStarted] = useState(false);
   const [ending, setEnding] = useState<Date>(new Date());
-  const [points, setPoints] = useState(0);
-  const [userData, setUserData] = useState({ pointsTotal: 0 });
 
-  // Refs, damit Intervall immer aktuelle Werte hat
-  const pointsRef = useRef(points);
+
+
   const endingRef = useRef(ending);
 
-  useEffect(() => { pointsRef.current = points }, [points]);
   useEffect(() => { endingRef.current = ending }, [ending]);
 
   // Load settings once
@@ -46,7 +43,7 @@ export function useOngoingNotification() {
     const initNotification = async () => {
       try {
         await startOngoingNotification(
-          `Deine Punkte: ${pointsRef.current} \n Verbleibend: ${formatTime(
+          `Deine Punkte: 0 \n Verbleibend: ${formatTime(
             endingRef.current.getTime() - Date.now()
           )}`
         );
@@ -59,9 +56,6 @@ export function useOngoingNotification() {
           if (!res.ok) throw new Error("Fehler beim Laden des Teams");
           const data = await res.json();
           const lpoints = data.team.pointsTotal || 0;
-
-          setPoints(lpoints);
-          setUserData({ ...data.team, pointsTotal: lpoints });
 
           // Notification aktualisieren
           await updateOngoingNotification(
