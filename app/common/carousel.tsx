@@ -49,7 +49,7 @@ const Carousel: React.FC<CarouselProps> = ({
                 alt="Team Image"    // Alternativtext
                 width={300}           // erforderliche Breite in Pixeln (Number)
                 height={200}          // erforderliche Höhe in Pixeln (Number)
-                className="m-2"
+                className="m-2 object-cover object"
               />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
               <h2 className="text-xl font-semibold">{titles[idx]}</h2>
