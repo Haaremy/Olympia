@@ -43,7 +43,7 @@ export function useOngoingNotification() {
     const initNotification = async () => {
       try {
         await startOngoingNotification(
-          `Deine Punkte: 0 \n Verbleibend: ${formatTime(
+          `Deine Punkte: ? \nVerbleibend: ${formatTime(
             endingRef.current.getTime() - Date.now()
           )}`
         );
@@ -59,7 +59,7 @@ export function useOngoingNotification() {
 
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Deine Punkte: ${lpoints} \n Verbleibend: ${formatTime(
+            `Deine Punkte: ${lpoints} \nVerbleibend: ${formatTime(
               endingRef.current.getTime() - Date.now()
             )}`
           );
@@ -77,7 +77,7 @@ export function useOngoingNotification() {
     };
   }, [session?.user?.uname]);
 
-  return { started, ending, points, userData };
+  return { started, ending };
 }
 
 function formatTime(ms: number) {
