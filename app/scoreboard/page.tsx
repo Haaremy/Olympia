@@ -97,12 +97,13 @@ async function loadFiles() {
     try {
       // Extrahiere den Namen aus dem Pfad (z. B. "/uploads/Max_Mustermann.pdf" → "Max_Mustermann")
       const name = file.split('/').pop()?.split('.').shift() || '';
-      names.push(name);
+      
 
       // Optional: API-Aufruf, falls nötig (hier nur als Beispiel)
       const res = await fetch(`/api/team/search?uname=${encodeURIComponent(name)}`);
       if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
       const data = await res.json();
+      names.push(data.name);
       console.log('API-Ergebnis für', name, ':', data);
     } catch (err) {
       console.error('Fehler bei Datei', file, ':', err);
