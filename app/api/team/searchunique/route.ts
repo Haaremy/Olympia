@@ -18,7 +18,10 @@ export async function GET(req: Request) {
     // Search for the user by the query (uname)
     const nutzer = await prisma.team.findFirst({
       where: {
-        uname: query,
+        uname: {
+          equals: query,
+          mode: 'insensitive', // Ignoriert Groß-/Kleinschreibung
+        },
       },
     });
 
