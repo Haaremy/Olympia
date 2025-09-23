@@ -11,12 +11,35 @@ export function useOngoingNotification() {
   const { data: session } = useSession();
   const [started, setStarted] = useState(false);
   const [ending, setEnding] = useState<Date>(new Date());
+  const [points, setPoints] = useState(0);
 
 
 
   const endingRef = useRef(ending);
 
   useEffect(() => { endingRef.current = ending }, [ending]);
+
+ useEffect(() => {
+  const fetchTeamPoints = async () => {
+    if (!session?.user?.uname) return;
+
+    try {
+      const res = await fetch(`/api/team/search?query=${session.user.uname}`);
+      if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+
+      const data = await res.json();
+      setPoints(data.team.pointsTotal || 0);
+    } catch (error) {
+      console.error("Fehler beim Abrufen der Punkte:", error);
+    }
+  };
+
+  fetchTeamPoints(); // initial fetch
+
+  const interval = setInterval(fetchTeamPoints, 60000); // every 60 seconds
+
+  return () => clearInterval(interval); // cleanup
+}, [session?.user?.uname]);
 
   // Load settings once
   useEffect(() => {
@@ -28,7 +51,6 @@ export function useOngoingNotification() {
         if (settings.ending) setEnding(new Date(settings.ending));
         if (typeof settings.started === "boolean") setStarted(settings.started);
 
-        await showPopupNotification("HoHoHo 🎅🏼", "Live Ticker 👆🏼");
       } catch (err) {
         console.error(err);
       }
@@ -49,17 +71,11 @@ export function useOngoingNotification() {
         );
 
         interval = setInterval(async () => {
-          if (!session?.user?.uname) return;
-
-          // Daten abrufen
-          const res = await fetch(`/api/team/search?query=${session.user.uname}`);
-          if (!res.ok) throw new Error("Fehler beim Laden des Teams");
-          const data = await res.json();
-          const lpoints = data.team.pointsTotal || 0;
+          
 
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Deine Punkte: ${lpoints} \nVerbleibend: ${formatTime(
+            `Deine Punkte: ${points} \nVerbleibend: ${formatTime(
               endingRef.current.getTime() - Date.now()
             )}`
           );
@@ -77,7 +93,7 @@ export function useOngoingNotification() {
     };
   }, [session?.user?.uname]);
 
-  return { started, ending };
+  return { started, ending, points };
 }
 
 function formatTime(ms: number) {
