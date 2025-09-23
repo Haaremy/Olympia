@@ -1,6 +1,9 @@
+// /app/api/team/searchunique/route.ts
+
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+// Define a GET handler
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get("query");
@@ -12,17 +15,18 @@ export async function GET(req: Request) {
   console.log('Query:', query);
 
   try {
-    // Run the query using findFirst for efficiency, since you only need one result
+    // Search for the user by the query (uname)
     const nutzer = await prisma.team.findFirst({
       where: {
         uname: query,
-      }
+      },
     });
 
     if (!nutzer) {
       return NextResponse.json({ found: false, error: "User not found" }, { status: 404 });
     }
 
+    // Return user details if found
     return NextResponse.json({
       found: true,
       user: {
