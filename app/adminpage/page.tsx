@@ -31,7 +31,7 @@ interface Report {
   gameId: number;
   message: string;
   createdAt: Date;
-  teamId: Team;
+  teamId: number;
 }
 
 export default function AdminDashboard() {
