@@ -28,7 +28,10 @@ type Settings = {
 
 interface Report {
   id: number;
+  gameId: number;
   message: string;
+  createdAt: Date;
+  teamId: Team;
 }
 
 export default function AdminDashboard() {
@@ -86,10 +89,10 @@ const getOffsetISO = (dtLocal: string): string => {
 
       for (let index = 1; index <= 24; index++) {
         try {
-          const res = await fetch(`https://olympia.haaremy.de/api/report/get?query=${index}`);
+          const res = await fetch(`/api/report/get?query=${index}`);
           const data = await res.json();
-          if (data.Success && data.Reports) {
-            temp[index - 1] = data.Reports; // Array von Arrays, index-1 für 0-basiert
+          if (data.success && data.reports) {
+            temp[index - 1] = data.reports; // Array von Arrays, index-1 für 0-basiert
           } else {
             temp[index - 1] = [];
           }
