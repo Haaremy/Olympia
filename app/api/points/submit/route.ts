@@ -78,14 +78,14 @@ let cheatValues = (await prisma.team.findUnique({
       let multiplier = 1.1; // 4 Spieler
 
       if (team.user4=="" || !team.user4){ // 3 Spieler
-        multiplier = 1.5; 
+        multiplier = 1.4; 
       }
       if(team.user3=="" || !team.user3){ // 2 Spieler
         multiplier = 2;
       }
 
       let {result, cheats} = calculatePoints({ game, userPoints, multiplier, field });
-      result = Math.floor(result);
+      result = Math.round(result);
       cheats = cheats;
 
      
