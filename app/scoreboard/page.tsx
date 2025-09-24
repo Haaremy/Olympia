@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Carousel from "../common/carousel";
 import { useTranslation } from 'next-i18next';
 import '../../lib/i18n';
+import i18n from 'i18next';
 
 
 // Deine bestehenden Interfaces
@@ -57,7 +58,19 @@ export default function ScoreboardTabs() {
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
-  const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
+  const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
+  
+  const getLangID = (i18n) => {
+  switch (i18n.language) {
+    case "de":
+      return 0;
+    case "en":
+      return 1;
+    default:
+      return 0; // Default ID if language is not "de" or "en"
+  }
+};
+
 
 
   // Fetch Settings
@@ -350,12 +363,12 @@ export default function ScoreboardTabs() {
           ) : (
             records.map((record) => (
              <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  {record.gameId} - {record.gameName.split(", ")[0]}
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-pink-500">
+                  {record.gameId} - {record.gameName.split(", ")[getLangID(i18n)]}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {/* Show team if "field1" is in gameName, otherwise show team + player */}
-                  {record.tagged.includes("field1") ? record.topTeam : `${record.topTeam} - ${record.topPlayer}`}
+                  {record.tagged.includes("field1") ? `👑 ${record.topTeam}` : `👑 ${record.topTeam} - ${record.topPlayer}`}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {record.topPoints} {t(record.tagged.split(":unit:")[1])}
