@@ -57,5 +57,5 @@ npx prisma migrate deploy
 
 ## CheatPoints
 +1 für zu extreme Einträge 
-+1 für zu schnelle Einträge zwischen Spielen
-Genutzt in Scoreboard api und records api  
++3 für zu schnelle Einträge zwischen Spielen
+berechnet in punkte submit api & genutzt in Scoreboard api und records api  
