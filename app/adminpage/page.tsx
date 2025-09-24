@@ -78,6 +78,38 @@ const getOffsetISO = (dtLocal: string): string => {
     router.push("/");
   }
 
+    useEffect(() => {
+    let isMounted = true; // verhindert setState nach Unmount
+    const fetchReports = async () => {
+      const temp: Report[][] = [];
+
+      for (let index = 1; index <= 24; index++) {
+        try {
+          const res = await fetch(`https://olympia.haaremy.de/api/report/get?query=${index}`);
+          const data = await res.json();
+          if (data.Success && data.Reports) {
+            temp[index - 1] = data.Reports; // Array von Arrays, index-1 für 0-basiert
+          } else {
+            temp[index - 1] = [];
+          }
+        } catch (err) {
+          console.error(`Error fetching reports for index ${index}:`, err);
+          temp[index - 1] = [];
+        }
+      }
+
+      if (isMounted) setReports(temp);
+    };
+
+    fetchReports(); // initial
+    const interval = setInterval(fetchReports, 30000); // alle 30 Sekunden
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   useEffect(() => {
     if (status === "loading") return;
     if (!session) router.push("/");
