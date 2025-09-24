@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/authOptions';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const gameIdParam = req.nextUrl.searchParams.get('gameId');
+  const gameIdParam = req.nextUrl.searchParams.get('query');
   const gameId = parseInt(gameIdParam || '', 10);
 
   if (isNaN(gameId) || gameId <= 0) {
@@ -47,6 +47,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 });
   }
 }
+
 
 
 
