@@ -125,7 +125,7 @@ export async function GET() {
     // Store the calculated results
     result.push({
       gameId: Number(gameId),
-      gameName: entry.game.languages.title || "",
+      gameName: firstEntry.game.languages.title || "",
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
