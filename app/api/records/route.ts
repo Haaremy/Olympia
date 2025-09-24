@@ -47,7 +47,7 @@ export async function GET() {
         select: {
           id: true,
           tagged: true,
-          points: true,  
+          points: true,
         },
         include: {
           languages: {
