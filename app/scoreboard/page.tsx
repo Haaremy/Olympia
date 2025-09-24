@@ -34,6 +34,7 @@ interface Record {
   language: string;
   tagged: string | "";
   topPlayer: string;
+  topTeam: string;
   topPoints: number;
   topEntries: number;
   team: Team;
