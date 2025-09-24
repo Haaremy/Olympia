@@ -130,7 +130,7 @@ await prisma.entries.createMany({
 });
 
   const cheatTime = () => {
-    if((new Date(team.entries[0].lastUpdate).getTime() - Date.now()) < 60000){
+    if((new Date(team.entries[0].lastUpdated).getTime() - Date.now()) < 60000){
       return 3;
     }// Letzter Eintrag ist weniger als 1min von jetzt entfernt
     return 0;
