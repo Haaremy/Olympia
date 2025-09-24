@@ -29,13 +29,13 @@ interface Team {
 }
 
 interface Record {
-  gameId: number,
-  language: string,
-  tagged: string | "",
-  topPlayer: string,
-  topPoints: number,
-  topEntries: number,
-  team: Team
+  gameId: number;
+  language: string;
+  tagged: string | "";
+  topPlayer: string;
+  topPoints: number;
+  topEntries: number;
+  team: Team;
 }
 
 type Settings = {
@@ -65,7 +65,6 @@ export default function ScoreboardTabs() {
         const settings: Settings = await settingsRes.json();
         if (settings.ending) setEnding(new Date(settings.ending));
         if (typeof settings.started === "boolean") setStarted(settings.started);
-        console.log(started);
       } catch (err) {
         console.error(err);
       }
@@ -73,7 +72,7 @@ export default function ScoreboardTabs() {
     fetchSettings();
   }, []);
 
-  // Laden der Dateien und Namen
+  // Load Files and Names
   const loadFiles = async () => {
     try {
       const res = await fetch('/uploads/files.php');
@@ -102,7 +101,7 @@ export default function ScoreboardTabs() {
     return names;
   };
 
-  // Lade Dateien und Namen beim Mount
+  // Fetch Files and Names when Component Mounts
   useEffect(() => {
     const fetchFilesAndNames = async () => {
       const files = await loadFiles();
@@ -111,9 +110,9 @@ export default function ScoreboardTabs() {
       setTeamNames(names);
     };
     fetchFilesAndNames();
-  }, [teams]);
+  }, []);
 
-  // Countdown und Asynchrones Bild-Update jede Sekunde
+  // Countdown and Async Image Update Every Second
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prevTime => {
@@ -125,9 +124,9 @@ export default function ScoreboardTabs() {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [teams]);
+  }, []);
 
-  // Formatierung der Zeit
+  // Format Time
   const formatTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -136,38 +135,39 @@ export default function ScoreboardTabs() {
     return `${hours > 0 ? `${hours}h ` : ''}${minutes > 0 || hours > 0 ? `${minutes}m ` : ''}${seconds}s`;
   };
 
-  // Fetch Scoreboard und Records
+  // Fetch Scoreboard and Records
   useEffect(() => {
-  const fetchScoreboardAndRecords = async () => {
-    try {
-      const [scoreboardRes, recordsRes] = await Promise.all([
-        fetch("/api/scoreboard"),
-        fetch("/api/records"),
-      ]);
-      
-      if (!scoreboardRes.ok || !recordsRes.ok) {
-        throw new Error("Fehler beim Laden der Daten");
+    const fetchScoreboardAndRecords = async () => {
+      try {
+        const [scoreboardRes, recordsRes] = await Promise.all([
+          fetch("/api/scoreboard"),
+          fetch("/api/records"),
+        ]);
+
+        if (!scoreboardRes.ok || !recordsRes.ok) {
+          throw new Error("Fehler beim Laden der Daten");
+        }
+
+        const scoreboardData = await scoreboardRes.json();
+        const recordsData = await recordsRes.json();
+
+        setTeams(scoreboardData);
+        setRecords(recordsData);
+      } catch (error) {
+        console.error("Fehler beim Laden der Daten:", error);
+        setTeams([]); // Reset teams in case of error
+        setRecords([]); // Reset records in case of error
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched or fails
       }
-      
-      const scoreboardData = await scoreboardRes.json();
-      const recordsData = await recordsRes.json();
-      
-      setTeams(scoreboardData);
-      setRecords(recordsData);
-    } catch (error) {
-      console.error("Fehler beim Laden der Daten:", error);
-      setTeams([]); // Reset teams in case of error
-      setRecords([]); // Reset records in case of error
-    } finally {
-      setLoading(false); // Set loading to false once data is fetched or fails
-    }
-  };
+    };
 
-  fetchScoreboardAndRecords();
-}, []); // Run only once when the component mounts
+    fetchScoreboardAndRecords();
+  }, []); // Only run once when the component mounts
 
-
-  const formatDate = (date: Date) => {
+  // Format Date
+  const formatDate = (date: Date | string) => {
+    if (!date || new Date(date).toString() === "Invalid Date") return "-";
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
@@ -205,11 +205,15 @@ export default function ScoreboardTabs() {
           </button>
         </div>
       </div>
+
+      {/* Timer */}
       <div className="flex justify-center">
         <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden text-bold pr-8 pl-8 mb-4">
-          {timeLeft > 0 ? formatTime(timeLeft) : "👑" }
+          {timeLeft > 0 ? formatTime(timeLeft) : "👑"}
         </div>
       </div>
+
+      {/* Carousel */}
       <Carousel
         images={teamImages}
         titles={teamNames}
@@ -245,78 +249,7 @@ export default function ScoreboardTabs() {
                       <td className="px-6 py-4 font-medium">#{i + 1}</td>
                       <td className="px-6 py-4">{team.name}</td>
                       <td className="px-6 py-4">{team.pointsTotal}</td>
-                      <td className="px-6 py-4">
-                        {team.entries.length > 0 && formatDate(team.entries[team.entries.length - 1].lastUpdated)}
-                      </td>
-                    </tr>
-                    <tr className="border-b border-gray-200 dark:border-gray-600">
-                      <td colSpan={4} className="px-6 py-2">
-                        <details>
-                          <summary className="cursor-pointer text-pink-600 dark:text-pink-400 hover:underline">
-                            Details anzeigen
-                          </summary>
-                          <table className="w-full mt-4 text-xs text-center border rounded-md">
-                            <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                              <tr>
-                                <th className="border px-2 py-1">Spiel</th>
-                                <th className="border px-2 py-1">{team.user1}</th>
-                                <th className="border px-2 py-1">{team.user2}</th>
-                                <th className="border px-2 py-1">{team.user3 || "-"}</th>
-                                <th className="border px-2 py-1">{team.user4 || "-"}</th>
-                                <th className="border px-2 py-1">Letztes Update</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
-                                const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
-                                const game = pointsForGame[0]?.game; // wichtig: aktuelles Spiel
-
-                                const getValue = (player: string | undefined) =>
-                                  pointsForGame.find((p) => p.player === player)?.value ?? "-";
-
-                                const updated = pointsForGame[0]?.lastUpdated
-                                  ? formatDate(pointsForGame[0].lastUpdated)
-                                  : "-";
-
-                                return (
-                                  <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
-                                    <td className="border px-2 py-1">{gameId}</td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden")
-                                        ? "????"
-                                        : getValue(team.user1) === -1
-                                        ? "-"
-                                        : getValue(team.user1)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user2) === -1
-                                        ? "-"
-                                        : getValue(team.user2)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user3) === -1
-                                        ? "-"
-                                        : getValue(team.user3)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user4) === -1
-                                        ? "-"
-                                        : getValue(team.user4)}
-                                    </td>
-                                    <td className="border px-2 py-1">{updated}</td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        </details>
-                      </td>
+                      <td className="px-6 py-4">{formatDate(team.entries[0]?.lastUpdated)}</td>
                     </tr>
                   </React.Fragment>
                 ))
@@ -325,49 +258,18 @@ export default function ScoreboardTabs() {
           </table>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        <div className="space-y-4">
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
-          ) : {records.length === 0 ? (
-  <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
-) : (
-  records
-    .filter((record) => {
-      // Ensure `tagged` is a string (fallback to empty string if undefined or null)
-      const tagged = record.tagged || "";
-      
-      // Condition: The topPlayer cannot have "slot" in the name and topEntries > 0
-      return (
-        record.topPlayer &&
-        !tagged.includes("hidden") &&
-        !tagged.includes("noWorldRecord") &&
-        !record.topPlayer.toLowerCase().includes("slot") &&
-        record.topEntries > 0
-      );
-    })
-    .map((record) => (
-      <div
-        key={record.gameId}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
-      >
-        <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
-          Spiel {record.gameId}
-        </h3>
-        <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-          👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
-        </p>
-        <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-          Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
-          ({record.topPoints} Punkte)
-        </p>
-      </div>
-    ))
-)}
-
+          ) : (
+            records.map((record) => (
+              <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{record.gameId}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-300">{record.topPlayer} - {record.topPoints}</p>
+              </div>
+            ))
           )}
         </div>
-
-
       )}
     </main>
   );
