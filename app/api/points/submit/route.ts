@@ -118,6 +118,15 @@ await prisma.entries.createMany({
   data: inputsToInsert, // <-- Einträge vom Team
 });
 
+  const cheatTime = () => {
+    if((new Date(team.lastUpdate).getTime() - Date.now()) < 60000){
+      return 3;
+    }// Letzter Eintrag ist weniger als 1min von jetzt entfernt
+    return 0;
+  }
+
+    cheatValues+=cheatTime;
+    
 await prisma.team.update({
   where: { id: team.id },
   data: {
