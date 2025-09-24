@@ -30,7 +30,7 @@ interface RecordResult {
 // Hauptfunktion für das Abrufen und Verarbeiten der Daten
 export async function GET() {
   // Alle entries aus der Datenbank abrufen
-  const entries = await prisma.entry.findMany({
+  const entries = await prisma.entries.findMany({
     include: {
       game: {
         select: {
