@@ -26,13 +26,12 @@ interface Entry {
   team: Team;
   game: {
     id: number;
-    languages: {
-      title: string;
-    };
-    tagged: string | null;  // Tagged can be null or string
-    points: GamePoint[];    // Array of GamePoint objects
+    languages: { title: string }[];  // Change from a single object to an array of objects
+    tagged: string | null;
+    points: GamePoint[];
   };
 }
+
 
 interface RecordResult {
   gameId: number;
@@ -130,7 +129,7 @@ export async function GET() {
     // Store the calculated results
     result.push({
       gameId: Number(gameId),
-      gameName: firstEntry.game.languages[0].title || "",
+      gameName: firstEntry.game.languages.map(lang => lang.title).join(", "),  // Join all titles
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
