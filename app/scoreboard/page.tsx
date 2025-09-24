@@ -181,37 +181,42 @@ export default function ScoreboardTabs() {
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
       {/* Tabs */}
-      <div className={`flex justify-center mb-8  ${isAndroid ? "mt-16" : "mt-4"}`}>
-        {/* Carousel */}
-      <Carousel
-        images={teamImages}
-        titles={teamNames}
-        width="w-full"
-        height="h-64"
-      />
-        <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <button
-            onClick={() => setActiveTab("scoreboard")}
-            className={`px-6 py-2 text-sm font-medium transition ${
-              activeTab === "scoreboard"
-                ? "bg-pink-500 text-white"
-                : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
-            }`}
-          >
-            Scoreboard
-          </button>
-          <button
-            onClick={() => setActiveTab("records")}
-            className={`px-6 py-2 text-sm font-medium transition ${
-              activeTab === "records"
-                ? "bg-pink-500 text-white"
-                : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
-            }`}
-          >
-            Weltrekorde
-          </button>
-        </div>
-      </div>
+     <div className={`${isAndroid ? "mt-16" : "mt-4"} mb-8`}>
+  {/* Carousel Container */}
+  <div className="mb-4">
+    <Carousel
+      images={teamImages}
+      titles={teamNames}
+      width="w-full"
+      height="h-64"
+    />
+  </div>
+
+  {/* Tab Buttons */}
+  <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+    <button
+      onClick={() => setActiveTab("scoreboard")}
+      className={`px-6 py-2 text-sm font-medium transition duration-300 ${
+        activeTab === "scoreboard"
+          ? "bg-pink-500 text-white"
+          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
+      }`}
+    >
+      Scoreboard
+    </button>
+    <button
+      onClick={() => setActiveTab("records")}
+      className={`px-6 py-2 text-sm font-medium transition duration-300 ${
+        activeTab === "records"
+          ? "bg-pink-500 text-white"
+          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
+      }`}
+    >
+      Weltrekorde
+    </button>
+  </div>
+</div>
+
 
       {/* Timer */}
       <div className="flex justify-center">
