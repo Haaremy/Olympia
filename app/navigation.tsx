@@ -69,23 +69,32 @@ const handleChatOpen = () => {
   useEffect(() => {
   if (typeof window !== "undefined") {
     const root = window.document.documentElement;
-    
-    // Prüfe System-Design
-    const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-    // Prüfe gespeichertes Theme
-    let storedTheme = localStorage.getItem("theme");
-    if (!storedTheme) {
-      localStorage.setItem("theme", sysDesign);
-      storedTheme = sysDesign;
-    }
+// Prüfe System-Design
+const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-    // Theme anwenden
-    if (storedTheme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+// Prüfe gespeichertes Theme
+let storedTheme = localStorage.getItem("theme");
+if (!storedTheme) {
+  localStorage.setItem("theme", "auto");
+  storedTheme = "auto";
+}
+
+// Theme anwenden
+if (storedTheme !== "auto") {
+  if (storedTheme === "dark") {
+    root.classList.add("dark");
+  } else {
+    root.classList.remove("dark");
+  }
+} else {
+  // Auto: Dark nur hinzufügen, wenn System dunkel ist
+  if (sysDesign === "dark") {
+    root.classList.add("dark");
+  } else {
+    root.classList.remove("dark");
+  }
+}
 
     // Sprache setzen
     const lang = localStorage.getItem("language");
