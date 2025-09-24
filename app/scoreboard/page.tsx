@@ -195,7 +195,7 @@ export default function ScoreboardTabs() {
   </div>
 
   {/* Tab Buttons */}
-  <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+  <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-full justify-center">
     <button
       onClick={() => setActiveTab("scoreboard")}
       className={`px-6 py-2 text-sm font-medium transition duration-300 ${
