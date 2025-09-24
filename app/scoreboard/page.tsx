@@ -49,8 +49,7 @@ export default function ScoreboardTabs() {
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
   const [ending, setEnding] = useState<Date>(new Date());
-  const [started, setStarted] = useState<boolean>(false);
-  const [timeLeft, setTimeLeft] = useState(new Date(ending).getTime() - Date.now());
+  const [timeLeft, setTimeLeft] = useState(new Date());
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
@@ -63,8 +62,12 @@ export default function ScoreboardTabs() {
         const settingsRes = await fetch("/api/settings");
         if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
         const settings: Settings = await settingsRes.json();
-        if (settings.ending) setEnding(new Date(settings.ending));
-        if (typeof settings.started === "boolean") setStarted(settings.started);
+        if (settings.ending) {
+          const newEnding = new Date(settings.ending);
+          setEnding(newEnding);
+          setTimeLeft(newEnding.getTime() - Date.now());  // Using getTime() here for a clean calculation
+        }
+
       } catch (err) {
         console.error(err);
       }
