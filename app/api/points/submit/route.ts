@@ -136,7 +136,7 @@ await prisma.entries.createMany({
     return 0;
   }
 
-    cheatValues+=cheatTime;
+    cheatValues+=cheatTime();
     
 await prisma.team.update({
   where: { id: team.id },
