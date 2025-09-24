@@ -45,27 +45,27 @@ interface RecordResult {
 // Main function for fetching and processing the data
 export async function GET() {
   // Fetch all entries from the database
-  const entries = await prisma.entries.findMany({
-  include: {
-    game: {
-      select: {
-        id: true,
-        tagged: true,
-        points: true,  // Points for the game
-      },
-      include: {
-        languages: {
-          select: {
-            title: true,  // Selecting the title field in the languages relation
-          },
-        },
-      },
-    },
+const entries = await prisma.entries.findMany({
+  select: {
+    player: true,
+    value: true,
     team: {
       select: {
         id: true,
         name: true,
         cheatPoints: true,
+      },
+    },
+    game: {
+      select: {
+        id: true,
+        tagged: true,
+        points: true,
+        languages: {
+          select: {
+            title: true,  // Selecting the title field in the languages relation
+          },
+        },
       },
     },
   },
