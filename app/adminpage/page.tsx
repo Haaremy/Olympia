@@ -214,12 +214,7 @@ const getOffsetISO = (dtLocal: string): string => {
       <button
         onClick={() => setShowReports(!showReports)}
         className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-l-lg shadow-md ${
-          {reports.map((reportArr, i) => (
-        <div key={i}>
-          <h2>Index {i + 1}</h2>
-          {reportArr.map((r) => (
-            <div key={r.id}>{r.message}</div>
-          ))}
+          showReports
             ? "bg-pink-500 text-white"
             : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
         }`}
