@@ -170,12 +170,30 @@ const getOffsetISO = (dtLocal: string): string => {
     <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white">
       {showSaved && <InfoBox message={infoMessage} title="Info" color="red" onClose={handleClose} />}
       <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-16" : "mt-4"}`}>Admin Dashboard</h1>
-      <button>
-        Team suchen
-      </button>
-      <button>
-        Meldungen sehen
-      </button>
+      {/* Buttons for switching views */}
+        <div className="inline-flex overflow-hidden w-full justify-center mb-6 gap-4">
+          <button
+            onClick={() => setShowReports(!showReports)}
+            className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-l-lg shadow-md ${
+              showReports
+                ? "bg-pink-500 text-white"
+                : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
+            }`}
+          >
+            Team suchen
+          </button>
+          <button
+            onClick={() => setShowReports(!showReports)}
+            className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-r-lg shadow-md ${
+              !showReports
+                ? "bg-pink-500 text-white"
+                : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
+            }`}
+          >
+            Meldungen sehen
+          </button>
+        </div>
+
       {/* SEARCH */}
       {showReports ? (
       <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 w-full max-w-lg">
