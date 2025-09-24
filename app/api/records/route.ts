@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
-// Definieren der Typen für Team, Entry und Game
+// Definieren der Typen für Team, Entry, GamePoint und RecordResult
 interface Team {
   id: number;
   name: string;
@@ -25,10 +25,9 @@ interface Entry {
   game: {
     id: number;
     tagged: string | null;
-    points: GamePoint[]; // This should be an array of GamePoint objects
+    points: GamePoint[]; // Array von GamePoint-Objekten
   };
 }
-
 
 interface RecordResult {
   gameId: number;
@@ -102,7 +101,8 @@ export async function GET() {
     const topPlayer = sortedEntries[0];
 
     // Berechnen der "gamePoints" basierend auf dem Slot
-    const gamePoints = firstEntry.game.points[`slot${topPlayer.team.id}`] || null;
+    const gamePoint = firstEntry.game.points.find((point) => point.slot === topPlayer.team.id);
+    const gamePoints = gamePoint ? gamePoint.value : null;
 
     // Speichern der berechneten Ergebnisse
     result.push({
