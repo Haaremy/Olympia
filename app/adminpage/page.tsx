@@ -26,6 +26,11 @@ type Settings = {
   ending: string;
 };
 
+interface Report {
+  id: number;
+  message: string;
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const { data: session, status } = useSession();
