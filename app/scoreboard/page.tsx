@@ -32,7 +32,7 @@ interface Record {
   gameId: number;
   gameName: string;
   language: string;
-  tagged: string | "";
+  tagged: string | "no tagging returned";
   topPlayer: string;
   topTeam: string;
   topPoints: number;
@@ -196,10 +196,10 @@ export default function ScoreboardTabs() {
   </div>
 
   {/* Tab Buttons */}
-  <div className="inline-flex  rounded-lg shadow-md overflow-hidden w-full justify-center">
+  <div className="inline-flex  overflow-hidden w-full justify-center">
     <button
       onClick={() => setActiveTab("scoreboard")}
-      className={`px-6 py-2 text-sm  font-medium transition duration-300 ${
+      className={`px-6 py-2 text-sm  font-medium transition duration-300 rounded-lg shadow-md ${
         activeTab === "scoreboard"
           ? "bg-pink-500 text-white"
           : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
@@ -209,7 +209,7 @@ export default function ScoreboardTabs() {
     </button>
     <button
       onClick={() => setActiveTab("records")}
-      className={`px-6 py-2 text-sm font-medium transition duration-300 ${
+      className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-lg shadow-md ${
         activeTab === "records"
           ? "bg-pink-500 text-white"
           : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
