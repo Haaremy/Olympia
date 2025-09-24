@@ -24,7 +24,9 @@ interface Entry {
   team: Team;
   game: {
     id: number;
-    languages: string[];
+    languages: {
+      title: string;
+    };
     tagged: string | null;  // Tagged can be null or string
     points: GamePoint[];    // Array of GamePoint objects
   };
