@@ -4,6 +4,7 @@ import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
 import Carousel from "../common/carousel";
 import { useTranslation } from 'next-i18next';
+import '../lib/i18n'
 
 const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
