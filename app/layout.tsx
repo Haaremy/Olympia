@@ -37,7 +37,7 @@ export default function RootLayout({
     <html lang="de" className="">
         
       <body
-        className={`${geistSans.variable} ${geistMono.variable} {inter.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased`}
       >
               
           <SessionProvider>
