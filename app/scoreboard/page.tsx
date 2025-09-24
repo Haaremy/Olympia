@@ -6,7 +6,6 @@ import Carousel from "../common/carousel";
 import { useTranslation } from 'next-i18next';
 import '../../lib/i18n';
 
-const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
 // Deine bestehenden Interfaces
 interface Team {
@@ -58,6 +57,8 @@ export default function ScoreboardTabs() {
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
+  const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
+
 
   // Fetch Settings
   useEffect(() => {
