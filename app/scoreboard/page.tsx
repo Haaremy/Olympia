@@ -196,13 +196,13 @@ export default function ScoreboardTabs() {
   </div>
 
   {/* Tab Buttons */}
-  <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-full justify-center">
+  <div className="inline-flex  rounded-lg shadow-md overflow-hidden w-full justify-center">
     <button
       onClick={() => setActiveTab("scoreboard")}
-      className={`px-6 py-2 text-sm font-medium transition duration-300 ${
+      className={`px-6 py-2 text-sm  font-medium transition duration-300 ${
         activeTab === "scoreboard"
           ? "bg-pink-500 text-white"
-          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
+          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
       }`}
     >
       Scoreboard
@@ -212,7 +212,7 @@ export default function ScoreboardTabs() {
       className={`px-6 py-2 text-sm font-medium transition duration-300 ${
         activeTab === "records"
           ? "bg-pink-500 text-white"
-          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700"
+          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
       }`}
     >
       Weltrekorde
@@ -344,9 +344,9 @@ export default function ScoreboardTabs() {
           ) : (
             records.map((record) => (
               <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{record.gameId}</h2>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{record.gameId} - {record.gameName.split(", ")[0]; }</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">{record.topTeam} - {record.topPlayer}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-300">{record.topPoints} - {record.topPlayer}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-300">{record.topPoints}</p>
               </div>
             ))
           )}
