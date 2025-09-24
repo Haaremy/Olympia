@@ -16,7 +16,7 @@ export default function Page() {
   const { i18n } = useTranslation();
   const [platform, setPlatform] = useState("");
     const [isApp, setIsApp] = useState(false);
-  const [theme, setTheme] = useState();
+  const [theme, setTheme] = useState<string | null>(null);
 
   // Beim ersten Render den gespeicherten Wert aus localStorage holen
   useEffect(() => {
