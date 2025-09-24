@@ -64,7 +64,17 @@ export default function GamesPage({ games, searchQueryRef }: { games: Game[], se
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
 
+useEffect(() => {
+    const root = window.document.documentElement;
+    const stored = localStorage.getItem("theme");
 
+    if (stored === "dark") {
+      root.classList.add("dark");
+      //setIsDark(true);
+    } else {
+      root.classList.remove("tobedone");
+    }
+  }, []);
 
 
   // Setze die Sprache basierend auf i18n und bereits gespielte Spiele
