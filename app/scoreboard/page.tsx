@@ -347,6 +347,7 @@ export default function ScoreboardTabs() {
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
           ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             records.map((record) => (
              <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
@@ -363,6 +364,7 @@ export default function ScoreboardTabs() {
 
 
             ))
+            </div>
           )}
         </div>
       )}
