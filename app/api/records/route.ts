@@ -110,7 +110,7 @@ const entries = await prisma.entries.findMany({
     // Filter valid entries (no 'slot' players, team points <= 20, value > 0)
     const validEntries = gameEntries.filter(
       (entry) =>
-        !entry.player.includes('slot') && entry.team.cheatPoints <= 20 && entry.value > 0
+        !entry.player.includes('slot') && entry.team.cheatPoints <=12 && entry.value > 0
     );
 
     // If no valid entries, skip
