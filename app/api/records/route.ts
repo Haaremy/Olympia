@@ -90,7 +90,7 @@ export async function GET() {
   for (const gameId in groupedByGame) {
     const gameEntries = groupedByGame[gameId];
     const firstEntry = gameEntries[0];
-    const sortOrder = getSortOrder(firstEntry.game.tagged);
+    const sortOrder = getSortOrder(firstEntry.game.tagged || "");
 
     // Filter valid entries (no 'slot' players, team points <= 20, value > 0)
     const validEntries = gameEntries.filter(
