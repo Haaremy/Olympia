@@ -345,17 +345,14 @@ export default function ScoreboardTabs() {
             records.map((record) => (
              <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  {record.gameId} - {
-                    // Split gameName at the first comma, then extract content between :unit: markers
-                    record.gameName.split(", ")[0].split(":unit:")[1] || record.gameName.split(", ")[0] 
-                  }
+                  {record.gameId} - {record.gameName.split(", ")[0]}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {/* Show team if "field1" is in gameName, otherwise show team + player */}
                   {record.gameName.includes("field1") ? record.topTeam : `${record.topTeam} - ${record.topPlayer}`}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
-                  {record.topPoints}
+                  {record.topPoints} {record.gameName.split(", ")[0].split(":unit:")[1]}
                 </p>
               </div>
 
