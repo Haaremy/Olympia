@@ -85,7 +85,7 @@ let cheatValues = (await prisma.team.findUnique({
       }
 
       let {result, cheats} = calculatePoints({ game, userPoints, multiplier, field });
-      result = Math.ceil(result);
+      result = Math.floor(result);
       cheats = cheats;
 
      
