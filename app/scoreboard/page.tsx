@@ -60,7 +60,7 @@ export default function ScoreboardTabs() {
   const [teamNames, setTeamNames] = useState<string[]>([]);
   const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
   
-  const getLangID = (i18n) => {
+  const getLangID = (i18n: i18n) => {
   switch (i18n.language) {
     case "de":
       return 0;
