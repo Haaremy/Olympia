@@ -41,6 +41,7 @@ interface RecordResult {
   topTeam: string | null;
   tagged: string | null;
   gamePoints: number | null;
+  team: Team || null,
 }
 
 // Main function for fetching and processing the data
@@ -135,6 +136,7 @@ const entries = await prisma.entries.findMany({
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
+      team: topPlayer?.team || null,
       gamePoints,
     });
   }
