@@ -138,26 +138,34 @@ export default function ScoreboardTabs() {
 
   // Fetch Scoreboard und Records
   useEffect(() => {
-    const fetchScoreboardAndRecords = async () => {
-      try {
-        const [scoreboardRes, recordsRes] = await Promise.all([
-          fetch("/api/scoreboard"),
-          fetch("/api/records"),
-        ]);
-        const scoreboardData = await scoreboardRes.json();
-        const recordsData = await recordsRes.json();
-        setTeams(scoreboardData);
-        setRecords(recordsData);
-      } catch (error) {
-        console.error("Fehler beim Laden der Daten:", error);
-      } finally {
-        setLoading(false);
+  const fetchScoreboardAndRecords = async () => {
+    try {
+      const [scoreboardRes, recordsRes] = await Promise.all([
+        fetch("/api/scoreboard"),
+        fetch("/api/records"),
+      ]);
+      
+      if (!scoreboardRes.ok || !recordsRes.ok) {
+        throw new Error("Fehler beim Laden der Daten");
       }
-    };
+      
+      const scoreboardData = await scoreboardRes.json();
+      const recordsData = await recordsRes.json();
+      
+      setTeams(scoreboardData);
+      setRecords(recordsData);
+    } catch (error) {
+      console.error("Fehler beim Laden der Daten:", error);
+      setTeams([]); // Reset teams in case of error
+      setRecords([]); // Reset records in case of error
+    } finally {
+      setLoading(false); // Set loading to false once data is fetched or fails
+    }
+  };
 
-    const interval = setInterval(fetchScoreboardAndRecords, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  fetchScoreboardAndRecords();
+}, []); // Run only once when the component mounts
+
 
   const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -320,35 +328,42 @@ export default function ScoreboardTabs() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
-          ) : (
-            records
-              .filter((record) => {
-                // Bedingung: Der topPlayer darf "Slot" nicht im Namen enthalten und topEntries > 0
-                return (
-                  record.topPlayer &&
-                  !record.tagged.includes("hidden") &&
-                  !record.tagged.includes("noWorldRecord") &&
-                  !record.topPlayer.toLowerCase().includes("slot") && // Hier wird der Text "slot" ausgeschlossen (case-insensitive)
-                  record.topEntries > 0  // topEntries sollte größer als 0 sein
-                );
-              })
-              .map((record) => (
-                <div
-                  key={record.gameId}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
-                >
-                  <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
-                    Spiel {record.gameId}
-                  </h3>
-                  <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-                    👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
-                  </p>
-                  <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
-                    Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
-                    ({record.topPoints} Punkte)
-                  </p>
-                </div>
-              ))
+          ) : {records.length === 0 ? (
+  <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
+) : (
+  records
+    .filter((record) => {
+      // Ensure `tagged` is a string (fallback to empty string if undefined or null)
+      const tagged = record.tagged || "";
+      
+      // Condition: The topPlayer cannot have "slot" in the name and topEntries > 0
+      return (
+        record.topPlayer &&
+        !tagged.includes("hidden") &&
+        !tagged.includes("noWorldRecord") &&
+        !record.topPlayer.toLowerCase().includes("slot") &&
+        record.topEntries > 0
+      );
+    })
+    .map((record) => (
+      <div
+        key={record.gameId}
+        className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105"
+      >
+        <h3 className="text-lg font-semibold text-pink-500 dark:text-pink-500 mb-2">
+          Spiel {record.gameId}
+        </h3>
+        <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+          👑 {record.team.name} {!record.tagged.includes("overridePlayer") ? `- ${record.topPlayer}` : ""}
+        </p>
+        <p className="text-grey-900 dark:text-grey-900 mt-2 font-medium">
+          Rekord: {record.topEntries} {record.tagged ? record.tagged.split(":unit:")[1] : ""} <br/>
+          ({record.topPoints} Punkte)
+        </p>
+      </div>
+    ))
+)}
+
           )}
         </div>
 
