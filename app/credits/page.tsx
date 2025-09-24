@@ -27,7 +27,7 @@ export default function Page() {
     detectPlatform().then(setPlatform);
     setIsApp(Capacitor.getPlatform() === 'android');
 
-    setTheme(localStorage.getItem("theme"));
+    setTheme(localStorage.getItem("theme") || "auto");
     
   }, [i18n]);
 
