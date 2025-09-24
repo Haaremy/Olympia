@@ -31,8 +31,19 @@ export async function POST(req: NextRequest) {
     }
 
     const team = await prisma.team.findUnique({
-      where: { uname: session.user.uname },
-    });
+  where: { uname: session.user.uname },
+  include: {
+    entries: {
+      select: {
+        lastUpdate: true, // Select the lastUpdate field
+      },
+      orderBy: {
+        lastUpdate: 'desc', // Sort entries by lastUpdate in descending order
+      },
+    },
+  },
+});
+
 
     if (!team) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
@@ -119,7 +130,7 @@ await prisma.entries.createMany({
 });
 
   const cheatTime = () => {
-    if((new Date(team.lastUpdate).getTime() - Date.now()) < 60000){
+    if((new Date(team.entries[0].lastUpdate).getTime() - Date.now()) < 60000){
       return 3;
     }// Letzter Eintrag ist weniger als 1min von jetzt entfernt
     return 0;
