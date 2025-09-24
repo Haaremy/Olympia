@@ -57,10 +57,10 @@ export default function ScoreboardTabs() {
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
-  const { t  } = useTranslation();  // Hook innerhalb der Komponente verwenden
+  const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
   
-  const getLangID = (t) => {
-  switch (t.language) {
+  const getLangID = (i18n) => {
+  switch (i18n.language) {
     case "de":
       return 0;
     case "en":
@@ -363,7 +363,7 @@ export default function ScoreboardTabs() {
             records.map((record) => (
              <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-pink-500">
-                  {record.gameId} - {record.gameName.split(", ")[getLangID(t)]}
+                  {record.gameId} - {record.gameName.split(", ")[getLangID(i18n)]}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {/* Show team if "field1" is in gameName, otherwise show team + player */}
