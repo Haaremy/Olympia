@@ -344,7 +344,7 @@ const getOffsetISO = (dtLocal: string): string => {
     ) : (
       <div>
       {reports.map((reportArr, i) => (
-  <div key={i} className={` ${reportArray.length>0? "" : "hidden"} mb-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow`}>
+  <div key={i} className={` ${reportArr.length>0? "" : "hidden"} mb-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow`}>
     <details className="p-4">
       <summary className="cursor-pointer text-lg font-semibold text-gray-800 dark:text-gray-200">
         Index {i + 1} ({reportArr.length} Reports)
