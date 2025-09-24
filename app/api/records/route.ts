@@ -31,6 +31,7 @@ interface Entry {
 
 interface RecordResult {
   gameId: number;
+  gameName: string;
   topPlayer: string | null;
   topPoints: number | null;
   topTeam: string | null;
@@ -45,6 +46,7 @@ export async function GET() {
       game: {
         select: {
           id: true,
+          title: true,
           tagged: true,
           points: true,  // Points for the game
         },
@@ -116,6 +118,7 @@ export async function GET() {
     // Store the calculated results
     result.push({
       gameId: Number(gameId),
+      gameName: gameName,
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
