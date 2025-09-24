@@ -48,7 +48,6 @@ export default function ScoreboardTabs() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
-  const [ending, setEnding] = useState<Date>(new Date());
   const [timeLeft, setTimeLeft] = useState(new Date());
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
@@ -64,7 +63,6 @@ export default function ScoreboardTabs() {
         const settings: Settings = await settingsRes.json();
         if (settings.ending) {
           const newEnding = new Date(settings.ending);
-          setEnding(newEnding);
           setTimeLeft(newEnding.getTime() - Date.now());  // Using getTime() here for a clean calculation
         }
 
