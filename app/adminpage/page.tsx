@@ -30,7 +30,7 @@ interface Report {
   id: number;
   gameId: number;
   message: string;
-  createdAt: Date;
+  createdAt: string;
   teamId: number;
 }
 
@@ -364,8 +364,14 @@ const getOffsetISO = (dtLocal: string): string => {
                 Sender: <span className="italic">[Platzhalter]</span>
               </p>
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                {r.createdAt}
-              </p>
+  {new Date(r.createdAt).toLocaleString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+</p>
             </div>
           ))
         ) : (
