@@ -16,7 +16,7 @@ export default function Page() {
   const { i18n } = useTranslation();
   const [platform, setPlatform] = useState("");
     const [isApp, setIsApp] = useState(false);
-  const [theme, setTheme] = useState("auto");
+  const [theme, setTheme] = useState();
 
   // Beim ersten Render den gespeicherten Wert aus localStorage holen
   useEffect(() => {
@@ -26,6 +26,8 @@ export default function Page() {
     i18n.changeLanguage(savedLang);
     detectPlatform().then(setPlatform);
     setIsApp(Capacitor.getPlatform() === 'android');
+
+    setTheme(localStorage.getItem("theme");
     
   }, [i18n]);
 
