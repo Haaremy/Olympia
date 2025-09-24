@@ -42,24 +42,31 @@ interface RecordResult {
 export async function GET() {
   // Fetch all entries from the database
   const entries = await prisma.entries.findMany({
-    include: {
-      game: {
-        select: {
-          id: true,
-          title: true,
-          tagged: true,
-          points: true,  // Points for the game
-        },
+  include: {
+    game: {
+      select: {
+        id: true,
+        tagged: true,
+        points: true,  // Points for the game
       },
-      team: {
-        select: {
-          id: true,
-          name: true,
-          cheatPoints: true,
+      include: {
+        languages: {
+          select: {
+            title: true,  // Selecting the title field in the languages relation
+          },
         },
       },
     },
-  });
+    team: {
+      select: {
+        id: true,
+        name: true,
+        cheatPoints: true,
+      },
+    },
+  },
+});
+
 
   // Ensure tagged is never undefined or null by defaulting it to an empty string
   const processedEntries = entries.map(entry => ({
@@ -118,7 +125,7 @@ export async function GET() {
     // Store the calculated results
     result.push({
       gameId: Number(gameId),
-      gameName: gameName,
+      gameName: entry.game.languages.title || "",
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
