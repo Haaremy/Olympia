@@ -36,7 +36,7 @@ export default function Page() {
     localStorage.setItem("language", lang);
   };
 
-  const theming = (theme: "light" | "dark" | "auto") => {
+  const theming = (theme: string) => {
   if (typeof window === "undefined") return; // SSR-Schutz
   setTheme(theme);
   const root = window.document.documentElement;
