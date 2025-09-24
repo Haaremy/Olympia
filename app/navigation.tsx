@@ -67,20 +67,34 @@ const handleChatOpen = () => {
   }
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleScroll = () => {
-        setIsScrolled(window.scrollY > 10); // Toggle `isScrolled` based on scroll position
-      };
-  
-      window.addEventListener("scroll", handleScroll); // Attach scroll event listener
-  
-      // Clean up the event listener when the component unmounts
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
+  if (typeof window !== "undefined") {
+    const root = window.document.documentElement;
+    
+    // Prüfe System-Design
+    const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+    // Prüfe gespeichertes Theme
+    let storedTheme = localStorage.getItem("theme");
+    if (!storedTheme) {
+      localStorage.setItem("theme", sysDesign);
+      storedTheme = sysDesign;
     }
-  }, []); // Run once when component mounts
-  
+
+    // Theme anwenden
+    if (storedTheme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    // Sprache setzen
+    const lang = localStorage.getItem("language");
+    i18n.changeLanguage(lang || "de");
+    if (!lang) {
+      setShowLanguage(true); // zeigt Sprachwahl
+    } 
+  }
+}, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
