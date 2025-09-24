@@ -67,6 +67,22 @@ const handleChatOpen = () => {
   }
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 10); // Toggle `isScrolled` based on scroll position
+      };
+  
+      window.addEventListener("scroll", handleScroll); // Attach scroll event listener
+  
+      // Clean up the event listener when the component unmounts
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []); // Run once when component mounts
+  
+
+  useEffect(() => {
   if (typeof window !== "undefined") {
     const root = window.document.documentElement;
 
