@@ -354,7 +354,7 @@ export default function ScoreboardTabs() {
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {/* Show team if "field1" is in gameName, otherwise show team + player */}
-                  {record.gameName.includes("field1") ? record.topTeam : `${record.topTeam} - ${record.topPlayer}`}
+                  {record.tagged.includes("field1") ? record.topTeam : `${record.topTeam} - ${record.topPlayer}`}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {record.topPoints} {t(record.tagged.split(":unit:")[1])}
