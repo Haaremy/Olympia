@@ -41,7 +41,7 @@ interface RecordResult {
   topTeam: string | null;
   tagged: string | null;
   gamePoints: number | null;
-  team: Team || null,
+  team: Team,
 }
 
 // Main function for fetching and processing the data
