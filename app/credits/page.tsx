@@ -16,6 +16,7 @@ export default function Page() {
   const { i18n } = useTranslation();
   const [platform, setPlatform] = useState("");
     const [isApp, setIsApp] = useState(false);
+  const [theme, setTheme] = useState("auto");
 
   // Beim ersten Render den gespeicherten Wert aus localStorage holen
   useEffect(() => {
@@ -35,6 +36,34 @@ export default function Page() {
     localStorage.setItem("language", lang);
   };
 
+  const theming = (theme: "light" | "dark" | "auto") => {
+  if (typeof window === "undefined") return; // SSR-Schutz
+  setTheme(theme);
+  const root = window.document.documentElement;
+
+  // System-Design abfragen
+  const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+  // Theme speichern
+  localStorage.setItem("theme", theme);
+
+  // Theme anwenden
+  if (theme !== "auto") {
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  } else {
+    // Auto: Dark nur hinzufügen, wenn System dunkel ist
+    if (sysDesign === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }
+};
+
 
   return (
     <main className="w-full min-h-screen flex flex-col items-center justify-start sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-colors duration-300">
@@ -42,7 +71,27 @@ export default function Page() {
       {/* Einstellungen */}
       <div className="w-full max-w-3xl mt-8">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{t("browserSettings")}</h2>
-
+        {/* Theme */}
+        <div className="mt-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={`/images/globe.svg`}
+              alt="Globe Icon"
+              className="h-8 w-8 object-cover rounded-lg"
+              width={50}
+              height={50}
+            />
+            <select
+              value={theme}
+              onChange={(e) => theming(e.target.value)}
+              className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            >
+              <option value="auto">Auto</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
         {/* Sprache */}
         <div className="mt-4">
           <div className="flex items-center gap-2">
