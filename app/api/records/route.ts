@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+// Defining the types for Team, Entry, GamePoint, and RecordResult
 interface Team {
   id: number;
   name: string;
@@ -24,10 +25,10 @@ interface Entry {
   game: {
     id: number;
     languages: {
-      title: string;  // Ensure we are fetching the 'title' from the 'languages' relation
+      title: string;
     }[];
-    tagged: string | null;
-    points: GamePoint[];
+    tagged: string | null;  // Tagged can be null or string
+    points: GamePoint[];    // Array of GamePoint objects
   };
 }
 
@@ -40,19 +41,21 @@ interface RecordResult {
   gamePoints: number | null;
 }
 
+// Main function for fetching and processing the data
 export async function GET() {
+  // Fetch all entries from the database
   const entries = await prisma.entries.findMany({
     include: {
       game: {
         select: {
           id: true,
           tagged: true,
-          points: true,
+          points: true,  // Points for the game
         },
         include: {
           languages: {
             select: {
-              title: true,  // Fetch the 'title' field
+              title: true,  // Fetching the 'title' field in the languages relation
             },
           },
         },
@@ -81,8 +84,10 @@ export async function GET() {
     return tagged.includes('lowest') ? 'asc' : 'desc';
   }
 
+  // Calculate the best players and teams
   const result: RecordResult[] = [];
 
+  // Group entries by gameId
   const groupedByGame = processedEntries.reduce((acc, entry) => {
     const gameId = entry.game.id;
     if (!acc[gameId]) {
@@ -92,33 +97,40 @@ export async function GET() {
     return acc;
   }, {} as Record<string, Entry[]>);
 
+  // Iterate through each game
   for (const gameId in groupedByGame) {
     const gameEntries = groupedByGame[gameId];
     const firstEntry = gameEntries[0];
     const sortOrder = getSortOrder(firstEntry.game.tagged || "");
 
+    // Filter valid entries (no 'slot' players, team points <= 20, value > 0)
     const validEntries = gameEntries.filter(
       (entry) =>
         !entry.player.includes('slot') && entry.team.cheatPoints <= 20 && entry.value > 0
     );
 
+    // If no valid entries, skip
     if (validEntries.length === 0) continue;
 
+    // Sort valid entries by value
     const sortedEntries = validEntries.sort((a, b) => {
       return sortOrder === 'asc' ? a.value - b.value : b.value - a.value;
     });
 
+    // Get the best player
     const topPlayer = sortedEntries[0];
 
+    // Calculate the "gamePoints" based on the slot
     const gamePoint = firstEntry.game.points.find((point) => point.slot === topPlayer.team.id);
     const gamePoints = gamePoint ? gamePoint.value : null;
 
+    // Store the calculated results
     result.push({
       gameId: Number(gameId),
-      gameName: firstEntry.game.languages[0]?.title || "",  // Ensure we are fetching the title correctly
+      gameName: firstEntry.game.languages[0]?.title || "",  // Fetch the 'title' properly
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
-      topTeam: topPlayer?.team.name || null,  // Correctly include 'topTeam'
+      topTeam: topPlayer?.team.name || null,  // Include top team here
       gamePoints,
     });
   }
