@@ -343,7 +343,16 @@ const getOffsetISO = (dtLocal: string): string => {
         })}
       </>
     ) : (
-      <div>reports</div>
+      <div>
+      {reports.map((reportArr, i) => (
+        <div key={i}>
+          <h2>Index {i + 1}</h2>
+          {reportArr.map((r) => (
+            <div key={r.id}>{r.message}</div>
+          ))}
+          </div>
+      ))}
+      </div>
     )}
 
     {/* GAME SETTINGS CARD */}
