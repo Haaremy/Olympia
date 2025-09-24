@@ -344,7 +344,7 @@ export default function ScoreboardTabs() {
           ) : (
             records.map((record) => (
               <div key={record.gameId} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 transition duration-300 hover:shadow-xl hover:scale-105">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{record.gameId} - {record.gameName.split(", ")[0]; }</h2>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{record.gameId} - {record.gameName.split(", ")[0]}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">{record.topTeam} - {record.topPlayer}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">{record.topPoints}</p>
               </div>
