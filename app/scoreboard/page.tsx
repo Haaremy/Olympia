@@ -199,7 +199,7 @@ export default function ScoreboardTabs() {
   <div className="inline-flex  overflow-hidden w-full justify-center">
     <button
       onClick={() => setActiveTab("scoreboard")}
-      className={`px-6 py-2 text-sm  font-medium transition duration-300 rounded-lg shadow-md ${
+      className={`px-6 py-2 text-sm  font-medium transition duration-300 rounded-l-lg shadow-md ${
         activeTab === "scoreboard"
           ? "bg-pink-500 text-white"
           : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
@@ -209,7 +209,7 @@ export default function ScoreboardTabs() {
     </button>
     <button
       onClick={() => setActiveTab("records")}
-      className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-lg shadow-md ${
+      className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-r-lg shadow-md ${
         activeTab === "records"
           ? "bg-pink-500 text-white"
           : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
