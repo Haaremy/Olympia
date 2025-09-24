@@ -1,4 +1,3 @@
-Please start over from this Point
 
 
 import { NextResponse } from 'next/server';
