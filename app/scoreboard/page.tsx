@@ -356,7 +356,7 @@ export default function ScoreboardTabs() {
           </table>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 space-y-4 min-h-[16vh]">
 
           {records.length === 0 ? (
             <p className="text-gray-600 dark:text-gray-300">Keine Weltrekorde gefunden.</p>
