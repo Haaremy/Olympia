@@ -60,8 +60,9 @@ export async function GET() {
   });
 
   // Hilfsfunktionen für das Sortieren nach 'tagged'
-  function getSortOrder(tagged: string): 'asc' | 'desc' {
-    return tagged.includes('lowest') ? 'asc' : 'desc';
+  function getSortOrder(tagged: string | null | undefined): 'asc' | 'desc' {
+    // Check if tagged is valid before calling .includes()
+    return tagged && tagged.includes('lowest') ? 'asc' : 'desc';
   }
 
   // Berechnung der besten Spieler und Teams
