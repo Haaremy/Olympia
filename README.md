@@ -54,3 +54,8 @@ npx prisma migrate deploy
 |showF<3/4>| Zeigt das Einträge-Feld unabhängig der Spielerzahl.|
 |hideF<2-4>| Versteckt das Einträge-Feld unabhängig der Spielerzahl.|
 |hidden|Punkte und Werte sind geheim zu halten. Schließt Wertung in Weltrekorde aus.|
+
+## CheatPoints
++1 für zu extreme Einträge 
++1 für zu schnelle Einträge zwischen Spielen
+Genutzt in Scoreboard page und records api  
