@@ -38,6 +38,7 @@ export default function AdminDashboard() {
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
     const [isAndroid, setIsAndroid] = useState(false);
+  const [showReports, setShowReports] = useState(false);
   const gamesMap = new Map(searchedTeam?.games?.map(g => [g.id, g]));
 
 const allGameIds = Array.from({ length: 24 }, (_, i) => i + 1); // 1..24
@@ -168,9 +169,15 @@ const getOffsetISO = (dtLocal: string): string => {
   return (
     <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white">
       {showSaved && <InfoBox message={infoMessage} title="Info" color="red" onClose={handleClose} />}
-      <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-8" : "mt-4"}`}>Admin Dashboard</h1>
-
+      <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-16" : "mt-4"}`}>Admin Dashboard</h1>
+      <button>
+        Team suchen
+      </button>
+      <button>
+        Meldungen sehen
+      </button>
       {/* SEARCH */}
+      {showReports ? (
       <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 w-full max-w-lg">
         <input
           type="text"
@@ -215,7 +222,7 @@ const getOffsetISO = (dtLocal: string): string => {
             Team speichern
           </button>
           <button onClick={handleCheater} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
-            {searchedTeam.cheatPoints>=50 ? "Team re-qualifizieren" : "Team disqualifizieren"}
+            {searchedTeam.cheatPoints>=12 ? "Team re-qualifizieren" : "Team disqualifizieren"}
           </button>
           <button onClick={handleSaveTeam} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
             Team löschen
@@ -246,11 +253,11 @@ const getOffsetISO = (dtLocal: string): string => {
   return (
     <div
       key={`game-${id}`}
-      className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 "
+      className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 w-full"
     >
       <details>
       {/* Game ID */}
-      <summary className="w-full font-bold text-lg mb-4">
+      <summary className="w-full font-bold text-lg mb-4 w-full">
          Spiel {id}
       </summary>
       {/* Spieler + Inputs paarweise */}
@@ -280,7 +287,11 @@ const getOffsetISO = (dtLocal: string): string => {
     </div>
   );
 })}
-
+) : (
+      <div>
+      reports
+      </div>
+      )}
 
 
       {/* GAME SETTINGS CARD */}
