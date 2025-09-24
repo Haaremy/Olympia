@@ -8,6 +8,16 @@ interface Team {
   cheatPoints: number;
 }
 
+interface GamePoint {
+  id: number;
+  gameId: number;
+  teamId: number;
+  player: string;
+  value: number;
+  slot: number;
+  lastUpdated: Date;
+}
+
 interface Entry {
   player: string;
   value: number;
@@ -15,9 +25,10 @@ interface Entry {
   game: {
     id: number;
     tagged: string | null;
-    points: Record<string, number>; // Record für die Punkte: Schlüssel = "slot1", "slot2", etc. | Wert = number
+    points: GamePoint[]; // This should be an array of GamePoint objects
   };
 }
+
 
 interface RecordResult {
   gameId: number;
