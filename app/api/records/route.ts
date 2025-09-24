@@ -61,8 +61,8 @@ export async function GET() {
 
   // Hilfsfunktionen für das Sortieren nach 'tagged'
   function getSortOrder(tagged: string | null | undefined): 'asc' | 'desc' {
-    // Check if tagged is valid before calling .includes()
-    return tagged && tagged.includes('lowest') ? 'asc' : 'desc';
+    // Ensure tagged is a string before calling .includes
+    return typeof tagged === 'string' && tagged.includes('lowest') ? 'asc' : 'desc';
   }
 
   // Berechnung der besten Spieler und Teams
@@ -82,7 +82,7 @@ export async function GET() {
   for (const gameId in groupedByGame) {
     const gameEntries = groupedByGame[gameId];
     const firstEntry = gameEntries[0];
-    const sortOrder = getSortOrder(firstEntry.game.tagged || '');
+    const sortOrder = getSortOrder(firstEntry.game.tagged);
 
     // Filter für gültige Einträge (keine 'slot'-Spieler, Team-Punkte <= 20, value > 0)
     const validEntries = gameEntries.filter(
