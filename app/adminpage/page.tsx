@@ -45,6 +45,7 @@ export default function AdminDashboard() {
     const [isAndroid, setIsAndroid] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const gamesMap = new Map(searchedTeam?.games?.map(g => [g.id, g]));
+  const [reports, setReports] = useState<Report[][]>([]);
 
 const allGameIds = Array.from({ length: 24 }, (_, i) => i + 1); // 1..24
 
