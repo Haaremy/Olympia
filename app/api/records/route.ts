@@ -39,6 +39,7 @@ interface RecordResult {
   topPlayer: string | null;
   topPoints: number | null;
   topTeam: string | null;
+  tagged: string | null;
   gamePoints: number | null;
 }
 
@@ -130,6 +131,7 @@ const entries = await prisma.entries.findMany({
     result.push({
       gameId: Number(gameId),
       gameName: firstEntry.game.languages.map(lang => lang.title).join(", "),  // Join all titles
+      tagged: firstEntry.game.tagged,
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
