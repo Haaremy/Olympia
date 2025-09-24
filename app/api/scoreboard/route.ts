@@ -8,6 +8,9 @@ export async function GET() {
         pointsTotal: {
           gt: 0, // Nur Teams mit Punkten > 0
         },
+        cheatPoints: {
+          lt: 12, // Teams with cheat points < 12
+        },
       },
       orderBy: { pointsTotal: "desc" },
       include: {
