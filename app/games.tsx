@@ -69,7 +69,7 @@ useEffect(() => {
     const stored = localStorage.getItem("theme");
 
     if (stored === "dark") {
-      root.classList.add("dark");
+      root.classList.remove("dark");
       //setIsDark(true);
     } else {
       root.classList.remove("tobedone");
