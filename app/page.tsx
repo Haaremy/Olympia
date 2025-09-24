@@ -9,7 +9,7 @@ type TransformedLanguage = Omit<Language, 'descriptionGame' | 'descriptionPoints
 };
 
 export default async function Page() {
-  document.body.classList.toggle('dark');
+  
   // Fetch all games with their language versions from the database
   const games = await prisma.game.findMany({
     include: {
