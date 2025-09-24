@@ -24,6 +24,7 @@ interface Entry {
   team: Team;
   game: {
     id: number;
+    languages: string[];
     tagged: string | null;  // Tagged can be null or string
     points: GamePoint[];    // Array of GamePoint objects
   };
@@ -125,7 +126,7 @@ export async function GET() {
     // Store the calculated results
     result.push({
       gameId: Number(gameId),
-      gameName: firstEntry.game.languages.title || "",
+      gameName: firstEntry.game.languages[0].title || "",
       topPlayer: topPlayer?.player || null,
       topPoints: topPlayer?.value || null,
       topTeam: topPlayer?.team.name || null,
