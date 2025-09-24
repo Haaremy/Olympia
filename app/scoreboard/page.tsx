@@ -48,7 +48,7 @@ export default function ScoreboardTabs() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(new Date());
+  const [timeLeft, setTimeLeft] = useState(0);
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
