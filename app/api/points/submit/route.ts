@@ -35,10 +35,10 @@ export async function POST(req: NextRequest) {
   include: {
     entries: {
       select: {
-        lastUpdate: true, // Select the lastUpdate field
+        lastUpdated: true, // Select the lastUpdate field
       },
       orderBy: {
-        lastUpdate: 'desc', // Sort entries by lastUpdate in descending order
+        lastUpdated: 'desc', // Sort entries by lastUpdate in descending order
       },
     },
   },
