@@ -3,6 +3,10 @@
 import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
 import Carousel from "../common/carousel";
+import { useTranslation } from 'next-i18next';
+import '../lib/i18n'
+
+const { t, i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
 // Deine bestehenden Interfaces
 interface Team {
@@ -352,7 +356,7 @@ export default function ScoreboardTabs() {
                   {record.gameName.includes("field1") ? record.topTeam : `${record.topTeam} - ${record.topPlayer}`}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
-                  {record.topPoints} {record.tagged.split(":unit:")[1]}
+                  {record.topPoints} {t(record.tagged.split(":unit:")[1])}
                 </p>
               </div>
 
