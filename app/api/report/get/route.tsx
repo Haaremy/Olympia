@@ -14,18 +14,11 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.uname) {
+    if (session?.user?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 });
     }
 
-    const team = await prisma.team.findUnique({
-      where: { uname: session.user.uname },
-    });
-
-    if (!team) {
-      return NextResponse.json({ error: 'Team nicht gefunden' }, { status: 404 });
-    }
-
+ 
 
     const reports = await prisma.reports.findMany({
       where: {

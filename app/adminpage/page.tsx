@@ -32,6 +32,7 @@ interface Report {
   message: string;
   createdAt: string;
   teamId: number;
+  teamName: string;
 }
 
 export default function AdminDashboard() {
@@ -205,6 +206,40 @@ const getOffsetISO = (dtLocal: string): string => {
     }
   }
 
+  const deleteReport = async (id: number) => {
+  if (!id) return;
+
+  try {
+    const res = await fetch("/api/report/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (!res.ok) {
+      const { error } = await res.json();
+      throw new Error(error || "Fehler beim Löschen");
+    }
+
+    // ✅ Optimistisch aus dem State löschen
+    setReports((prev) =>
+      prev.map((reportArr) =>
+        reportArr.filter((item) => item.id !== id) // <-- hier `id` statt `r.id`
+      )
+    );
+
+    const data = await res.json();
+    return data; // { success: true, report: {...} }
+  } catch (err) {
+    console.error("deleteReport error:", err);
+    return null;
+  }
+};
+
+
+
   if (!session) return <div>Loading...</div>;
 
  return (
@@ -344,34 +379,47 @@ const getOffsetISO = (dtLocal: string): string => {
     ) : (
       <div>
       {reports.map((reportArr, i) => (
-  <div key={i} className={` ${reportArr.length>0? "" : "hidden"} mb-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow`}>
+  <div
+    key={i}
+    className={`${
+      reportArr.length > 0 ? "" : "hidden"
+    } mb-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow`}
+  >
     <details className="p-4">
       <summary className="cursor-pointer text-lg font-semibold text-gray-800 dark:text-gray-200">
-        Index {i + 1} ({reportArr.length} Reports)
+        Spiel {i + 1} ({reportArr.length} Reports)
       </summary>
 
       <div className="mt-4 space-y-3">
         {reportArr.length > 0 ? (
           reportArr.map((r) => (
-            
             <div
               key={r.id}
-              className="rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 p-3 shadow-sm"
+              className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 p-3 shadow-sm"
             >
+              {/* ❌ Delete button */}
+              <button
+                onClick={() => deleteReport(r.id)}
+                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow"
+                title="Löschen"
+              >
+                🗑️
+              </button>
+
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 {r.message}
               </p>
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                Sender: <span className="italic">[Platzhalter]</span>
+                Sender: <span className="italic">{r.teamName}</span>
               </p>
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-  {new Date(r.createdAt).toLocaleString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  })}
+                {new Date(r.createdAt).toLocaleString("de-DE", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
 </p>
             </div>
           ))

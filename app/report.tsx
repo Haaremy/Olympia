@@ -35,6 +35,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         gameid: game,
+        teamName: session?.user?.uname,
         message: reportData,
       }),
     });

@@ -47,7 +47,6 @@ model Team {
   entries   Entries[]
   language     String @default("de")
   cheatPoints Int
-  reports Reports[]
   chatMessages ChatMessage[]
 }
 
@@ -56,8 +55,7 @@ model Reports {
   gameId  Int
   message String
   createdAt DateTime @default(now())
-  teamId Int
-  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamName String
 }
 
 model ChatMessage {

@@ -5,15 +5,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 interface ReportRequestBody {
   gameid: number;
+  teamName: string;
   message: string;
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as ReportRequestBody;
-    if (!body.gameid || !body.message) {
+    if (!body.message) {
       return NextResponse.json(
-        { error: 'gameid and message are required' },
+        { error: 'message are required' },
         { status: 400 }
       );
     }
@@ -23,16 +24,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const team = await prisma.team.findUnique({
-      where: { uname: session.user.uname },
-    });
-    if (!team) {
-      return NextResponse.json({ error: 'Team not found' }, { status: 404 });
-    }
 
     await prisma.reports.create({
       data: {
-        teamId: team.id, // Nur die ID des Teams
+        teamName: body.teamName, // Nur der uanme des Teams
         gameId: body.gameid,
         message: body.message,
       },

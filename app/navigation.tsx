@@ -119,7 +119,7 @@ if (storedTheme !== "auto") {
       setShowLanguage(true); // zeigt Sprachwahl
     } 
   }
-}, []);
+}, [i18n]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

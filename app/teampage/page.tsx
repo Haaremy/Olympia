@@ -9,6 +9,7 @@ import InfoBox from "../infoBox";
 import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
 import DeleteConfirmModal from "../confirmDelete";
+import TeamSelfieUploader from "@/app/common/teamSelfieUploader"; 
 
 
 
@@ -45,43 +46,6 @@ const [isAndroid, setIsAndroid] = useState(false);
     setIsAndroid(Capacitor.getPlatform() === 'android');
   }, []);
 
-const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0] || null;
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => setImagePreview(reader.result as string);
-    reader.readAsDataURL(file);
-
-    // Upload to /api/upload endpoint
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch("/api/image/upload", {
-        method: "POST",
-        body: formData,
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && (data.fileurl)) {
-          setImagePreview(data.fileurl);
-          handleSavedMessage("Bild wurde hochgeladen! Ihr könnt es im Scoreboard Karussel sehen!", "Gespeichert!", "pink");
-        } else {
-          handleSavedMessage("Fehler beim Hochladen des Bildes. FileURL fehlt im Response.", "Upload Error", "red");
-        }
-      } else {
-        handleSavedMessage("Fehler beim Hochladen des Bildes. Response", "Upload Error", "red");
-      }
-    } catch (err) {
-      console.error("Upload error:", err);
-      handleSavedMessage("Fehler beim Hochladen des Bildes. POST", "Upload Error", "red");
-    }
-  } else {
-    setImagePreview(null);
-  }
-};
 
 
   const nameTRef = useRef<HTMLInputElement>(null);
@@ -181,7 +145,6 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       router.push("/");
     } else if (session?.user?.uname) {
      
-      setImagePreview("/uploads/"+session.user.uname.toLowerCase()+".jpg" || null); // try to load existing image if not exists, show placeholder
 
    
       const fetchUser = async () => {
@@ -297,33 +260,7 @@ const renderPlayerInput = (
 </div>
 
 
-<div className="mt-8 mb-8">
-  <h2 className="text-lg font-semibold text-pink-600 dark:text-pink-400 mb-2 text-center">
-    Share your Team Selfie
-  </h2>
-  <div className="flex flex-col items-center">
-    <Image
-      src={imagePreview || "/images/teamplaceholder.png"}
-      alt="Team Selfie Preview"
-      width={180}
-      height={180}
-      className="rounded-lg shadow-lg mb-4 object-cover"
-      unoptimized // Ensures direct serving, disables Next.js image optimization
-    />
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleImageChange}
-      className="block w-full text-sm text-gray-500
-        file:mr-4 file:py-2 file:px-4
-        file:rounded-lg file:border-0
-        file:text-sm file:font-semibold
-        file:bg-pink-50 file:text-pink-700
-        hover:file:bg-pink-100
-        dark:file:bg-gray-700 dark:file:text-pink-300"
-    />
-  </div>
-</div>
+      <TeamSelfieUploader teamUname={session.user.uname}/>
 
 
 
