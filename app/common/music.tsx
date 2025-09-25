@@ -17,7 +17,7 @@ export default function Music() {
   return (
     <audio
       ref={audioRef}
-      src="https://streams.radiomast.io/ref-128k-mp3-stereo" // z. B. Icecast/Radio-Stream
+      src="https://www.mp3streams.nl/zender/sky-radio-christmas/stream/61-mp3-128" // z. B. Icecast/Radio-Stream
       loop
     />
   );
