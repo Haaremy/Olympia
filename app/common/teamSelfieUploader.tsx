@@ -109,7 +109,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
   return (
     <div className="mt-8 mb-8">
       <h2 className="text-lg font-semibold text-pink-600 dark:text-pink-400 mb-2 text-center">
-        Share your Team Selfie
+        Share your Team Selfie #{teamUname}
       </h2>
       <div className="flex flex-col items-center">
         {croppedImage ? (
