@@ -45,7 +45,7 @@ export default function RootLayout({
             <UIProvider>
               <Navigation/>
                 <OngoingNotificationClient />
-                <MusicProvider/>
+                <MusicProvider>
                   {children}
                 </MusicProvider>
               <Footer/>
