@@ -6,7 +6,7 @@ import "./globals.css";
 import Footer from "./footer";
 import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
-import Music from "./common/music";  // Import
+import { MusicProvider } from "./common/music";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -45,8 +45,9 @@ export default function RootLayout({
             <UIProvider>
               <Navigation/>
                 <OngoingNotificationClient />
-                <Music />
-                {children}
+                <MusicProvider/>
+                  {children}
+                </MusicProvider>
               <Footer/>
             </UIProvider>
         </SessionProvider>
