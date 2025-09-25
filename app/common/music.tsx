@@ -17,7 +17,7 @@ export default function Music() {
   return (
     <audio
       ref={audioRef}
-      src="https://dein-stream-url-hier/stream" // z. B. Icecast/Radio-Stream
+      src="https://christmasradio.fm/christmasgateway/index.php?mobile=true" // z. B. Icecast/Radio-Stream
       loop
     />
   );
