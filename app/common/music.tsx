@@ -3,7 +3,7 @@
 import { createContext, useContext, useRef, useState, ReactNode } from "react";
 
 type MusicContextType = {
-  audioRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   isPlaying: boolean;
   setIsPlaying: (p: boolean) => void;
 };
@@ -11,7 +11,7 @@ type MusicContextType = {
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export function MusicProvider({ children }: { children: ReactNode }) {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
