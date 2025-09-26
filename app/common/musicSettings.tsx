@@ -1,6 +1,6 @@
 "use client";
 
-import { useMusic } from "./MusicContext";
+import { useMusic } from "./music";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
