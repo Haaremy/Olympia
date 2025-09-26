@@ -18,7 +18,7 @@ export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [showSaved, handleShowSaved] = useState(false);
-  const [theming, setTheming] = useState<string>("auto");
+  const [theme, setTheme] = useState<string>("auto");
   const [infoMessage, setInfoMessage] = useState("");
   const [infoTitle, setInfoTitle] = useState("!?!?!");
   const [infoColor, setInfoColor] = useState("red");
@@ -297,7 +297,27 @@ const renderPlayerInput = (
           {/* Einstellungen */}
           <div className="mt-8">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{t("browserSettings")}</h2>
-
+              {/* Theme */}
+        <div className="mt-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={`/images/globe.svg`}
+              alt="Globe Icon"
+              className="h-8 w-8 object-cover rounded-lg"
+              width={50}
+              height={50}
+            />
+            <select
+              value={theme}
+              onChange={(e) => theming(e.target.value)}
+              className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            >
+              <option value="auto">Auto</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
             <div className="mt-4">
               <div className="flex items-center">
                 <Image
