@@ -18,6 +18,7 @@ export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [showSaved, handleShowSaved] = useState(false);
+  const [theming, setTheming] = useState<string>("auto");
   const [infoMessage, setInfoMessage] = useState("");
   const [infoTitle, setInfoTitle] = useState("!?!?!");
   const [infoColor, setInfoColor] = useState("red");
@@ -97,7 +98,33 @@ const [isAndroid, setIsAndroid] = useState(false);
   };
 
 
+const theming = (theme: string) => {
+  if (typeof window === "undefined") return; // SSR-Schutz
+  setTheme(theme);
+  const root = window.document.documentElement;
 
+  // System-Design abfragen
+  const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+  // Theme speichern
+  localStorage.setItem("theme", theme);
+
+  // Theme anwenden
+  if (theme !== "auto") {
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  } else {
+    // Auto: Dark nur hinzufügen, wenn System dunkel ist
+    if (sysDesign === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }
+};
   
 
 
