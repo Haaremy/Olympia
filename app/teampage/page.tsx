@@ -10,7 +10,7 @@ import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
 import DeleteConfirmModal from "../confirmDelete";
 import TeamSelfieUploader from "@/app/common/teamSelfieUploader"; 
-
+import MusicSettings from "@/app/common/musicSettings";
 
 
 export default function Page() {
@@ -318,6 +318,7 @@ const renderPlayerInput = (
             </select>
           </div>
         </div>
+            {/* Language */}
             <div className="mt-4">
               <div className="flex items-center">
                 <Image
@@ -338,7 +339,7 @@ const renderPlayerInput = (
               </select>
             </div>
 
-      
+           <MusicSettings/>
             
           </div>
           
