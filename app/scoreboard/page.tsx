@@ -205,34 +205,57 @@ export default function ScoreboardTabs() {
       {/* Tabs */}
      <div className={`${isAndroid ? "mt-16" : "mt-4"} mb-8`}>
   {/* Carousel Container */}
-  <div className="mb-4">
+  <div className="mb-4 inline-flex w-full justify-center flex-1 ">
      <Carousel
       animation="slide"
       animationDuration={600}
       auto={4000}        // autoplay alle 4 Sekunden
-      dots={true}        // Punkte-Indikatoren
-      dotColor="#aaa"
-      dotActiveColor="#f50057"
+      dots={false}        // Punkte-Indikatoren
     >
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className="inline-flex flex-row items-center w-full"
           >
             <img
               src={teamImages[idx]}
               alt={`Team ${teamNames[idx]} ${idx}`}
-              className="h-16"
+              className="h-32 m-2"
             />
+          </div>
+        ))}
+    </Carousel>
+    <Carousel
+      animation="slide"
+      animationDuration={600}
+      auto={4000}        // autoplay alle 4 Sekunden
+      dots={false}        // Punkte-Indikatoren
+    >
+       {teamImages.map((src, idx) => (
+          <div
+            key={idx}
+          >
             <img
               src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
-              className="h-16"
+              className="h-16 m-2"
             />
+          </div>
+        ))}
+    </Carousel>
+    <Carousel
+      animation="slide"
+      animationDuration={600}
+      auto={4000}        // autoplay alle 4 Sekunden
+      dots={false}        // Punkte-Indikatoren
+    >
+       {teamImages.map((src, idx) => (
+          <div
+            key={idx}
+          >
             <img
-              src={teamImages[(idx+2) > teamImages.length-1 ? 0 : (idx+2) > teamImages.length ? 1 : idx+2]}
+              src={teamImages[(idx+2) > teamImages.length ? 2 : (idx+2) > teamImages.length-1 ? 1 : idx+2]}
               alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
-              className="h-16"
+              className="h-16 m-2"
             />
           </div>
         ))}
