@@ -36,6 +36,7 @@ build.gradle (Module App) -> Versions Code ++
 # Clean DB
 chmod +x node_modules/.bin/prisma
 chmod -R 755 node_modules
+chmod 755 prisma
 
 npx prisma generate
 npx tsx prisma/cleanDB.ts

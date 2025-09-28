@@ -75,6 +75,9 @@ useEffect(() => {
 
     const initNotification = async () => {
       try {
+        await showPopupNotification(
+          "Notification Service gestartet", "Wir werden dich über deine Punkte und die verbleibende Zeit informieren."
+        );
         await startOngoingNotification(
           `Wir laden alle Daten...`
         );
@@ -84,7 +87,7 @@ useEffect(() => {
 
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Team ${session ? `${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "Warte auf Start..."}` : ""}`
+            `Team ${session ? `${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : ""}`
           );
         }, 60000);
       } catch (err) {
