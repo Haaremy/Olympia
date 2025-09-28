@@ -217,23 +217,22 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className="relative inline-flex flex-col items-center"
-            style={{ width: '33.3333%', padding: '0 4px', boxSizing: 'border-box' }}
+            className="relative inline-flex flex-col items-center w-full"
           >
             <img
-              src={teamImages[idx+1]}
+              src={teamImages[idx]}
+              alt={`Team ${teamNames[idx]} ${idx}`}
+              className="h-16"
+            />
+            <img
+              src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
-              className="w-full h-64 object-cover"
+              className="h-16"
             />
             <img
-              src={teamImages[(idx+2) > teamImages.length ? 0 : idx+2]}
-              alt={`Team ${teamNames[idx+1]} ${idx + 2}`}
-              className="w-full h-64 object-cover"
-            />
-            <img
-              src={teamImages[(idx+3) > teamImages.length ? 0 : (idx+3) > teamImages.length+1 ? 1 : idx+3]}
-              alt={`Team ${teamNames[idx+1]} ${idx + 3}`}
-              className="w-full h-64 object-cover"
+              src={teamImages[(idx+2) > teamImages.length-1 ? 0 : (idx+2) > teamImages.length-1 ? 1 : idx+2]}
+              alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
+              className="h-16"
             />
           </div>
         ))}
