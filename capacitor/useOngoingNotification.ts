@@ -5,6 +5,7 @@ import {
   stopOngoingNotification,
   updateOngoingNotification,
   showPopupNotification,
+  requestNotificationPermission
 } from "@/capacitor/notificationService";
 
 export function useOngoingNotification() {
@@ -69,11 +70,13 @@ useEffect(() => {
   // Notification Intervall (nur einmal starten)
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
+    requestNotificationPermission();
+
 
     const initNotification = async () => {
       try {
         await startOngoingNotification(
-          `Hallo Team ${!!session ? session.user.name+",\nWir laden alle Daten..." : ""}`
+          `Wir laden alle Daten...`
         );
 
         interval = setInterval(async () => {
@@ -81,7 +84,7 @@ useEffect(() => {
 
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Team ${session ? `${session.user.name}: ${pointsRef.current} Punkte.\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : ""}`
+            `Team ${session ? `${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "Warte auf Start..."}` : ""}`
           );
         }, 60000);
       } catch (err) {

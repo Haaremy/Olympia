@@ -187,29 +187,38 @@ const getOffsetISO = (dtLocal: string): string => {
   };
 
   const handlePointsUpdate = async (gameId: number) => {
-    if (!searchedTeam) return;
-    const game = gamesMap.get(gameId);
-    if (!game) return;
-    const inputs = Array.from(document.querySelectorAll(`div[key="game-${gameId}"] input[type="number"]`)) as HTMLInputElement[];
-    if (inputs.length === 0) return;
-    const points = inputs.map((input, i) => ({
-      player: game.points[i]?.player || searchedTeam.players[i] || `Player ${i + 1}`,
-      value: parseInt(input.value) || 0,
-    }));
-    try {
-      const res = await fetch(`/api/admin/team/points`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gameId, points, teamId: searchedTeam.id }),
-      });
-      if (!res.ok) throw new Error("Fehler beim Speichern");
-      handleSavedMessage(`Punkte für Spiel ${gameId} gespeichert ✅`);
-    }
-    catch (err) {
-      console.error(err);
-      handleSavedMessage(`Fehler beim Speichern der Punkte für Spiel ${gameId} ❌`);
-    }
-  };
+  if (!searchedTeam) return;
+
+  const inputs = Array.from(
+    document.querySelectorAll(`div[data-game-id="${gameId}"] input[type="number"]`)
+  ) as HTMLInputElement[];
+
+  if (inputs.length === 0) return;
+
+  const points = inputs.map((input) => ({
+    value: parseInt(input.value) || 0,
+  }));
+  const user1 = points[0]?.value ?? 0;
+  const user2 = points[1]?.value ?? 0;
+  const user3 = points[2]?.value ?? 0;
+  const user4 = points[3]?.value ?? 0;
+
+  try {
+    const res = await fetch(`/api/admin/team/points`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ gameId, user1,user2,user3,user4, teamId: searchedTeam.id }),
+    });
+
+    if (!res.ok) throw new Error("Fehler beim Speichern");
+
+    handleSavedMessage(`Punkte für Spiel ${gameId} gespeichert ✅`);
+  } catch (err) {
+    console.error(err);
+    handleSavedMessage(`Fehler beim Speichern der Punkte für Spiel ${gameId} ❌`);
+  }
+};
+
 
   const handleCheater = async () => {
      if (!searchedTeam) return;
@@ -379,49 +388,54 @@ const getOffsetISO = (dtLocal: string): string => {
         )}
 
         {searchedTeam && allGameIds.map((id: number) => {
-          const game = gamesMap.get(id);
+  const game = gamesMap.get(id);
 
-          // Prepare points (default to 0 if empty)
-          const points = game?.points ?? searchedTeam?.players.map((name: string) => ({ player: name, value: -1 })) ?? [];
+  // Prepare points (default to -1 if empty)
+  const points =
+    game?.points ??
+    searchedTeam?.players.map((name: string) => ({ player: name, value: -1 })) ??
+    [];
 
-          // Group players in pairs
-          const pairs = points.reduce((rows: { player: string; value: number }[][], p, i) => {
-            if (i % 2 === 0) {
-              rows.push([p]);
-            } else {
-              rows[rows.length - 1].push(p);
-            }
-            return rows;
-          }, []);
+  return (
+    <div
+      key={id}
+      data-game-id={id}
+      className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 w-full"
+    >
+      <details>
+        <summary className="w-full font-bold text-lg mb-4">
+          Spiel {id}
+        </summary>
 
-          return (
-            <div key={`game-${id}`} className="text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg p-4 mb-4 w-full">
-              <details>
-                <summary className="w-full font-bold text-lg mb-4">
-                  Spiel {id}
-                </summary>
-                {/* Player input pairs */}
-                {pairs.map((pair, rowIndex) => (
-                  <div key={rowIndex} className="grid grid-cols-2 gap-4 mb-3">
-                    {pair.map((p, idx) => (
-                      <div key={`${id}-${rowIndex}-${idx}`}>
-                        <label className="block text-sm mb-1 text-white">{p.player}</label>
-                        <input
-                          type="number"
-                          defaultValue={p.value}
-                          className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ))}
-                <button onClick={() => handlePointsUpdate(searchedTeam.id)} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white">
-                  Speichern
-                </button>
-              </details>
+        {points.map((p, idx) => (
+          <div
+            key={`${id}-${idx}`}
+            className="grid grid-cols-2 gap-4 mb-3"
+          >
+            <div>
+              <label className="block text-sm mb-1 text-white">
+                {p.player}
+              </label>
+              <input
+                type="number"
+                defaultValue={p.value}
+                className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              />
             </div>
-          );
-        })}
+          </div>
+        ))}
+
+        <button
+          onClick={() => handlePointsUpdate(id)}
+          className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white"
+        >
+          Speichern
+        </button>
+      </details>
+    </div>
+  );
+})}
+
       </>
     ) : (
       <div>

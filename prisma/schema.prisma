@@ -72,15 +72,21 @@ enum Role{
   ADMIN
 }
 
+enum Slot {
+  USER1
+  USER2
+  USER3
+  USER4
+}
+
 model Points { // Auswertung der Einträge der Spieler
   id          Int       @id @default(autoincrement())
   team        Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int
   game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId      Int
-  player      String
   value       Int
-  slot        Int
+  slot        Slot
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
 
@@ -90,9 +96,8 @@ model Entries { // einträge der Spieler
   teamId      Int
   game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId      Int
-  player      String
   value       Int
-  slot        Int
+  slot        Slot
   lastUpdated DateTime  @default(now())  // Store the timestamp of the last update (when points are submitted or updated)
 }
 

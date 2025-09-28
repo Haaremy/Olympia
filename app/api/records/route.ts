@@ -1,37 +1,28 @@
-
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { Slot } from '@prisma/client';
 
-// Defining the types for Team, Entry, GamePoint, and RecordResult
 interface Team {
   id: number;
   name: string;
   cheatPoints: number;
-}
-
-interface GamePoint {
-  id: number;
-  gameId: number;
-  teamId: number;
-  player: string;
-  value: number;
-  slot: number;
-  lastUpdated: Date;
+  user1: string;
+  user2: string;
+  user3?: string | null;
+  user4?: string | null;
 }
 
 interface Entry {
-  player: string;
+  slot: Slot;
   value: number;
   team: Team;
   game: {
     id: number;
-    languages: { title: string }[];  // Change from a single object to an array of objects
+    languages: { title: string }[];
     tagged: string | null;
-    points: GamePoint[];
+    points: { value: number; slot: Slot }[];
   };
 }
-
 
 interface RecordResult {
   gameId: number;
@@ -41,102 +32,86 @@ interface RecordResult {
   topTeam: string | null;
   tagged: string | null;
   gamePoints: number | null;
-  team: Team,
+  team: Team;
 }
 
-// Main function for fetching and processing the data
 export async function GET() {
-  // Fetch all entries from the database
-const entries = await prisma.entries.findMany({
-  select: {
-    player: true,
-    value: true,
-    team: {
-      select: {
-        id: true,
-        name: true,
-        cheatPoints: true,
+  const entries = await prisma.entries.findMany({
+    select: {
+      slot: true,
+      value: true,
+      team: {
+        select: {
+          id: true,
+          name: true,
+          cheatPoints: true,
+          user1: true,
+          user2: true,
+          user3: true,
+          user4: true,
+        },
       },
-    },
-    game: {
-      select: {
-        id: true,
-        tagged: true,
-        points: true,
-        languages: {
-          select: {
-            title: true,  // Selecting the title field in the languages relation
-          },
+      game: {
+        select: {
+          id: true,
+          tagged: true,
+          points: { select: { value: true, slot: true } },
+          languages: { select: { title: true } },
         },
       },
     },
-  },
-});
+  });
 
-
-  // Ensure tagged is never undefined or null by defaulting it to an empty string
-  const processedEntries = entries.map(entry => ({
+  // Map optional tagged
+  const processedEntries = entries.map((entry) => ({
     ...entry,
-    game: {
-      ...entry.game,
-      tagged: entry.game.tagged || '',  // Default to empty string if tagged is undefined or null
-    },
+    game: { ...entry.game, tagged: entry.game.tagged || '' },
   }));
 
-  // Helper function for sorting by 'tagged'
-  function getSortOrder(tagged: string): 'asc' | 'desc' {
-    return tagged.includes('lowest') ? 'asc' : 'desc';
-  }
-
-  // Calculate the best players and teams
   const result: RecordResult[] = [];
 
-  // Group entries by gameId
+  // Group by game
   const groupedByGame = processedEntries.reduce((acc, entry) => {
-    const gameId = entry.game.id;
-    if (!acc[gameId]) {
-      acc[gameId] = [];
-    }
-    acc[gameId].push(entry);
+    const gid = entry.game.id;
+    if (!acc[gid]) acc[gid] = [];
+    acc[gid].push(entry);
     return acc;
-  }, {} as Record<string, Entry[]>);
+  }, {} as Record<number, Entry[]>);
 
-  // Iterate through each game
-  for (const gameId in groupedByGame) {
-    const gameEntries = groupedByGame[gameId];
-    const firstEntry = gameEntries[0];
-    const sortOrder = getSortOrder(firstEntry.game.tagged || "");
+  for (const gid in groupedByGame) {
+    const gameEntries = groupedByGame[gid];
 
-    // Filter valid entries (no 'slot' players, team points <= 20, value > 0)
+    // Filter valid entries
     const validEntries = gameEntries.filter(
-      (entry) =>
-        !entry.player.includes('slot') && entry.team.cheatPoints <12 && entry.value > 0
+      (entry) => entry.value > 0 && entry.team.cheatPoints < 12
     );
+    if (!validEntries.length) continue;
 
-    // If no valid entries, skip
-    if (validEntries.length === 0) continue;
+    // Sort by value descending
+    const sorted = validEntries.sort((a, b) => b.value - a.value);
+    const topEntry = sorted[0];
 
-    // Sort valid entries by value
-    const sortedEntries = validEntries.sort((a, b) => {
-      return sortOrder === 'asc' ? a.value - b.value : b.value - a.value;
-    });
+    // Map slot to player name
+    const slotMap: Record<Slot, string> = {
+      USER1: topEntry.team.user1,
+      USER2: topEntry.team.user2,
+      USER3: topEntry.team.user3 ?? '',
+      USER4: topEntry.team.user4 ?? '',
+    };
+    const topPlayer = slotMap[topEntry.slot];
 
-    // Get the best player
-    const topPlayer = sortedEntries[0];
+    // Get gamePoints for the top slot
+    const gamePoints =
+      topEntry.game.points.find((p) => p.slot === topEntry.slot)?.value ?? null;
 
-    // Calculate the "gamePoints" based on the slot
-    const gamePoint = firstEntry.game.points.find((point) => point.slot === topPlayer.team.id);
-    const gamePoints = gamePoint ? gamePoint.value : null;
-
-    // Store the calculated results
     result.push({
-      gameId: Number(gameId),
-      gameName: firstEntry.game.languages.map(lang => lang.title).join(", "),  // Join all titles
-      tagged: firstEntry.game.tagged,
-      topPlayer: topPlayer?.player || null,
-      topPoints: topPlayer?.value || null,
-      topTeam: topPlayer?.team.name || null,
-      team: topPlayer?.team || null,
+      gameId: Number(gid),
+      gameName: topEntry.game.languages.map((l) => l.title).join(', '),
+      tagged: topEntry.game.tagged,
+      topPlayer,
+      topPoints: topEntry.value,
+      topTeam: topEntry.team.name,
+      team: topEntry.team,
       gamePoints,
     });
   }

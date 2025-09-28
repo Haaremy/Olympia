@@ -3,7 +3,8 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Cropper, { Area } from "react-easy-crop";
-import { getCroppedImg } from "./cropImage";
+import { getCroppedImg } from "./cropImage";//#endregion
+import ShareButton from "./shareButton";
 
 
 type TeamSelfieUploaderProps = {
@@ -91,20 +92,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 };
 
 
-  const handleShare = async () => {
-    if (navigator.share && croppedImage) {
-      const res = await fetch(croppedImage);
-      const blob = await res.blob();
-      const file = new File([blob], "team-selfie.png", { type: "image/png" });
-      try {
-        await navigator.share({ title: "Our Team Selfie", files: [file] });
-      } catch (err) {
-        console.error("Share failed:", err);
-      }
-    } else {
-      alert("Sharing not supported in this browser.");
-    }
-  };
+  
 
   return (
     <div className="mt-8 mb-8">
@@ -132,7 +120,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {croppedImage && (
           <div className="flex gap-3 mt-4">
-            <button onClick={handleShare} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">Teilen</button>
+            <ShareButton />
             <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700">👀</button>
           </div>
         )}

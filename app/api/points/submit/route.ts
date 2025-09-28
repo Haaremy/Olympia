@@ -3,6 +3,9 @@ import { prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions'; // Passe den Pfad ggf. an
 import { NextRequest, NextResponse } from 'next/server';
+import { Slot } from '@prisma/client';
+
+
 
 interface PointsPayload {
   game: number;
@@ -16,6 +19,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as Partial<PointsPayload>;
     const { game, user1, user2, user3, user4 } = body;
+    const slotMap: Record<number, Slot> = {
+  1: Slot.USER1,
+  2: Slot.USER2,
+  3: Slot.USER3,
+  4: Slot.USER4,
+};
 
     if (
       typeof game !== 'number' ||
@@ -49,12 +58,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    const userMap = {
-      user1: team.user1,
-      user2: team.user2,
-      user3: team.user3,
-      user4: team.user4,
-    };
     
     
     const scores = { user1, user2, user3, user4 };
@@ -79,7 +82,6 @@ let cheatValues = (await prisma.team.findUnique({
 
     for (let i = 1; i <= 4; i++) {
       const userKey = `user${i}` as keyof typeof scores;
-      const playerName = userMap[userKey] || `Slot${i}`;
       const userPoints = scores[userKey];
       const field = i;
 
@@ -104,17 +106,15 @@ let cheatValues = (await prisma.team.findUnique({
       pointsToInsert.push({
         teamId: team.id,
         gameId: game,
-        player: playerName,
         value: result,
-        slot: field,
+        slot: slotMap[field],
       });
 
        inputsToInsert.push({
         teamId: team.id,
         gameId: game,
-        player: playerName,
         value: userPoints,
-        slot: field,
+        slot: slotMap[field],
       })
 
       pointValues += result;
@@ -130,6 +130,7 @@ await prisma.entries.createMany({
 });
 
   const cheatTime = () => {
+    if(!team.entries[0]?.lastUpdated) return 0;
     if((new Date(team.entries[0].lastUpdated).getTime() - Date.now()) < 60000){
       return 3;
     }// Letzter Eintrag ist weniger als 1min von jetzt entfernt

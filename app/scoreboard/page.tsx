@@ -7,6 +7,7 @@ import Carousel from 'react-easy-carousel';
 import { useTranslation } from 'next-i18next';
 import {i18n} from 'i18next';
 import '../../lib/i18n';
+import { Slot } from '@prisma/client';
 
 
 // Deine bestehenden Interfaces
@@ -23,7 +24,7 @@ interface Team {
   entries: {
     id: number;
     value: number;
-    player: string;
+    slot: Slot;
     lastUpdated: Date;
     game: {
       id: number;
@@ -33,7 +34,7 @@ interface Team {
   }[];
 }
 
-interface Record {
+interface GameRecord {
   gameId: number;
   gameName: string;
   language: string;
@@ -53,7 +54,7 @@ type Settings = {
 export default function ScoreboardTabs() {
   const [activeTab, setActiveTab] = useState<"scoreboard" | "records">("scoreboard");
   const [teams, setTeams] = useState<Team[]>([]);
-  const [records, setRecords] = useState<Record[]>([]);
+  const [records, setRecords] = useState<GameRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isAndroid, setIsAndroid] = useState(false);
@@ -251,12 +252,16 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[(idx+2) > teamImages.length ? 1 : (idx+2) > teamImages.length-1 ? 0 : idx+2]}
               alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
               className="sm:h-64 h-32"
             />
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+                <h2 className="text-xl font-semibold">{teamNames[(idx+2) > teamNames.length ? 1 : (idx+2) > teamNames.length-1 ? 0 : idx+2]}</h2>
+              </div>
           </div>
         ))}
     </Carousel>
@@ -347,52 +352,56 @@ export default function ScoreboardTabs() {
                               </tr>
                             </thead>
                             <tbody>
-                              {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
-                                const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
-                                const game = pointsForGame[0]?.game; // wichtig: aktuelles Spiel
+                             {[...new Set(team.entries.map((p) => p.game.id))].map((gameId) => {
+  const pointsForGame = team.entries.filter((p) => p.game.id === gameId);
+  const game = pointsForGame[0]?.game;
 
-                                const getValue = (player: string | undefined) =>
-                                  pointsForGame.find((p) => p.player === player)?.value ?? "-";
+  // Map each slot to its value for this game
+   const slotValues: Record<Slot, number | "-"> = {
+      [Slot.USER1]: "-",
+      [Slot.USER2]: "-",
+      [Slot.USER3]: "-",
+      [Slot.USER4]: "-",
+    };
 
-                                const updated = pointsForGame[0]?.lastUpdated
-                                  ? formatDate(pointsForGame[0].lastUpdated)
-                                  : "-";
 
-                                return (
-                                  <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
-                                    <td className="border px-2 py-1">{gameId}</td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden")
-                                        ? "????"
-                                        : getValue(team.user1) === -1
-                                        ? "-"
-                                        : getValue(team.user1)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user2) === -1
-                                        ? "-"
-                                        : getValue(team.user2)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user3) === -1
-                                        ? "-"
-                                        : getValue(team.user3)}
-                                    </td>
-                                    <td className="border px-2 py-1">
-                                      {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
-                                        ? "????"
-                                        : getValue(team.user4) === -1
-                                        ? "-"
-                                        : getValue(team.user4)}
-                                    </td>
-                                    <td className="border px-2 py-1">{updated}</td>
-                                  </tr>
-                                );
-                              })}
+  pointsForGame.forEach((p) => {
+  slotValues[p.slot] = p.value === -1 ? "-" : p.value;
+});
+
+
+  const updated = pointsForGame[0]?.lastUpdated
+    ? formatDate(pointsForGame[0].lastUpdated)
+    : "-";
+
+  return (
+    <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
+      <td className="border px-2 py-1">{gameId}</td>
+      <td className="border px-2 py-1">
+        {game?.tagged.includes("hidden")
+          ? "????"
+          : slotValues["USER1"]}
+      </td>
+      <td className="border px-2 py-1">
+        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+          ? "????"
+          : slotValues["USER2"]}
+      </td>
+      <td className="border px-2 py-1">
+        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+          ? "????"
+          : slotValues["USER3"]}
+      </td>
+      <td className="border px-2 py-1">
+        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+          ? "????"
+          : slotValues["USER4"]}
+      </td>
+      <td className="border px-2 py-1">{updated}</td>
+    </tr>
+  );
+})}
+
                             </tbody>
                           </table>
                         </details>
