@@ -42,7 +42,7 @@ if (display !== 'granted') {
 
 export async function createNotificationChannel() {
   await LocalNotifications.createChannel({
-    id: 'default',              // eindeutige Channel-ID
+    id: 'olympiaTicker',              // eindeutige Channel-ID
     name: 'Standard Channel',    // Name für die Anzeige in Android Einstellungen
     description: 'Für wichtige Benachrichtigungen',
     importance: 5,               // HIGH → erlaubt Heads-up / Popup
@@ -58,7 +58,7 @@ export async function showPopupNotification(title: string, body: string) {
         id: 1225,
         title,
         body,
-        channelId: 'default', // Channel verwenden, der HIGH importance hat
+        channelId: 'olympiaTicker', // Channel verwenden, der HIGH importance hat
         sound: 'default',
         extra: null,
       },
