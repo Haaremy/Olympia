@@ -219,7 +219,7 @@ export default function ScoreboardTabs() {
             <img
               src={teamImages[idx]}
               alt={`Team ${teamNames[idx]} ${idx}`}
-              className="h-64"
+              className="sm:h-64 h-32"
             />
           </div>
         ))}
@@ -237,7 +237,7 @@ export default function ScoreboardTabs() {
             <img
               src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
-              className="h-64"
+              className="sm:h-64 h-32"
             />
           </div>
         ))}
@@ -253,9 +253,9 @@ export default function ScoreboardTabs() {
             key={idx}
           >
             <img
-              src={teamImages[(idx+2) > teamImages.length ? 2 : (idx+2) > teamImages.length-1 ? 1 : idx+2]}
+              src={teamImages[(idx+2) > teamImages.length ? 1 : (idx+2) > teamImages.length-1 ? 0 : idx+2]}
               alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
-              className="h-64"
+              className="sm:h-64 h-32"
             />
           </div>
         ))}
