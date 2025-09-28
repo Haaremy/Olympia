@@ -217,14 +217,20 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className="relative"
-            style={{ width: '33.3333%', padding: '0 4px', boxSizing: 'border-box' }}
+            className="flex gap-2" // flex container, horizontal
+            style={{ width: '100%' }}
           >
-            <img
-              src={src}
-              alt={`Team ${teamNames[idx]} ${idx + 1}`}
-              className="w-full h-64 object-cover rounded-lg"
-            />
+            {[0, 1, 2].map(i => {
+              const imgIdx = (idx + i) % teamImages.length; // wrap-around
+              return (
+                <img
+                  key={imgIdx}
+                  src={teamImages[imgIdx]}
+                  alt={`Team ${teamNames[imgIdx]} ${imgIdx + 1}`}
+                  className="w-1/3 h-64 object-cover rounded-lg"
+                />
+              );
+            })}
           </div>
         ))}
     </Carousel>
