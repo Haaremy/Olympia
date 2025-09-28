@@ -415,7 +415,7 @@ const getOffsetISO = (dtLocal: string): string => {
                     ))}
                   </div>
                 ))}
-                <button onClick={(e) => handlePointsUpdate(searchedTeam.id)} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white">
+                <button onClick={() => handlePointsUpdate(searchedTeam.id)} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white">
                   Speichern
                 </button>
               </details>

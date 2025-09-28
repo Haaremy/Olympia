@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const team = await prisma.team.findUnique({
-  where: { uname: session.user.uname },
+  where: { id: Number(teamid) },
   include: {
     entries: {
       select: {
