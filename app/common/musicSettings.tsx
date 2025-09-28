@@ -6,20 +6,36 @@ import { useEffect, useState } from "react";
 
 export default function MusicSettings() {
   const { audioRef, isPlaying, setIsPlaying } = useMusic();
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0);
 
   useEffect(() => {
+     
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      if(localStorage.getItem("musicPlay") === "playing"){
+        audioRef.current.play().then(() => setIsPlaying(true));
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+      const saVol = localStorage.getItem("musicVolume");
+      setVolume(saVol ? parseFloat(saVol) : 0.5);
+      audioRef.current.volume = saVol ? parseFloat(saVol) : volume;
     }
   }, [volume, audioRef]);
+
+  const handleVolume = (e : number) => {
+      localStorage.setItem("musicVolume", (e).toString());
+      setVolume(e);
+  }
 
   const togglePlay = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      localStorage.setItem("musicPlay", "stopped");
     } else {
+      localStorage.setItem("musicPlay", "playing");
       audioRef.current.play().then(() => setIsPlaying(true));
     }
   };
@@ -41,7 +57,7 @@ export default function MusicSettings() {
             onClick={togglePlay}
             className="p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
           >
-            {isPlaying ? "Pause" : "Play"}
+            {isPlaying ? "⏸️" : "▶️"}
           </button>
 
           {/* Lautstärke Slider */}
@@ -51,7 +67,7 @@ export default function MusicSettings() {
             max={1}
             step={0.01}
             value={volume}
-            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            onChange={(e) => handleVolume(parseFloat(e.target.value))}
             className="flex-1 accent-blue-500"
           />
         </div>

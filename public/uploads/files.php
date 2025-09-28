@@ -12,7 +12,7 @@ foreach (scandir($dir) as $file) {
         $file !== basename(__FILE__) &&
         preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)
     ) {
-        $files[] = "/uploads/$file"; // relativer Pfad zum Abruf
+        $files[] = "https://olympia.haaremy.de/uploads/$file"; // relativer Pfad zum Abruf
     }
 }
 

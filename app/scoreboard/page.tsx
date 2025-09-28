@@ -2,7 +2,8 @@
 
 import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
-import Carousel from "../common/carousel";
+//import Carousel from "../common/carousel";
+import Carousel from 'react-easy-carousel';
 import { useTranslation } from 'next-i18next';
 import {i18n} from 'i18next';
 import '../../lib/i18n';
@@ -96,7 +97,7 @@ export default function ScoreboardTabs() {
   // Load Files and Names
   const loadFiles = async () => {
     try {
-      const res = await fetch('/uploads/files.php');
+      const res = await fetch('https://olympia.haaremy.de/uploads/files.php');
       if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
       const files = await res.json();
       return files;
@@ -205,12 +206,28 @@ export default function ScoreboardTabs() {
      <div className={`${isAndroid ? "mt-16" : "mt-4"} mb-8`}>
   {/* Carousel Container */}
   <div className="mb-4">
-    <Carousel
-      images={teamImages}
-      titles={teamNames}
-      width="w-full"
-      height="h-64"
-    />
+     <Carousel
+      animation="slide"
+      animationDuration={600}
+      auto={4000}        // autoplay alle 4 Sekunden
+      dots={true}        // Punkte-Indikatoren
+      dotColor="#aaa"
+      dotActiveColor="#f50057"
+    >
+       {teamImages.map((src, idx) => (
+          <div
+            key={idx}
+            className="relative"
+            style={{ width: '33.3333%', padding: '0 4px', boxSizing: 'border-box' }}
+          >
+            <img
+              src={src}
+              alt={`Teammitglied ${idx + 1}`}
+              className="w-full h-64 object-cover rounded-lg"
+            />
+          </div>
+        ))}
+    </Carousel>
   </div>
 
   {/* Tab Buttons */}

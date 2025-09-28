@@ -339,7 +339,7 @@ const renderPlayerInput = (
               </select>
             </div>
 
-           <MusicSettings/>
+           <MusicSettings />
             
           </div>
           
