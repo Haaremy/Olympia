@@ -5,7 +5,8 @@ import {
   stopOngoingNotification,
   updateOngoingNotification,
   showPopupNotification,
-  requestNotificationPermission
+  requestNotificationPermission,
+  createNotificationChannel
 } from "@/capacitor/notificationService";
 
 export function useOngoingNotification() {
@@ -75,6 +76,7 @@ useEffect(() => {
 
     const initNotification = async () => {
       try {
+        await createNotificationChannel();
         await showPopupNotification(
           "Notification Service gestartet", "Wir werden dich über deine Punkte und die verbleibende Zeit informieren."
         );
