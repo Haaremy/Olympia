@@ -173,16 +173,41 @@ const getOffsetISO = (dtLocal: string): string => {
     const name = nameTRef.current?.value || "";
     const players = userRefs.map(ref => ref.current?.value || "");
     try {
-      const res = await fetch(`/api/team/update`, {
+      const res = await fetch(`/api/admin/team/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, players }),
+        body: JSON.stringify({ id: searchedTeam.id, name, players }),
       });
       if (!res.ok) throw new Error("Fehler beim Speichern");
       handleSavedMessage("Team gespeichert ✅");
     } catch (err) {
       console.error(err);
       handleSavedMessage("Fehler beim Speichern ❌");
+    }
+  };
+
+  const handlePointsUpdate = async (gameId: number) => {
+    if (!searchedTeam) return;
+    const game = gamesMap.get(gameId);
+    if (!game) return;
+    const inputs = Array.from(document.querySelectorAll(`div[key="game-${gameId}"] input[type="number"]`)) as HTMLInputElement[];
+    if (inputs.length === 0) return;
+    const points = inputs.map((input, i) => ({
+      player: game.points[i]?.player || searchedTeam.players[i] || `Player ${i + 1}`,
+      value: parseInt(input.value) || 0,
+    }));
+    try {
+      const res = await fetch(`/api/admin/team/points`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gameId, points, teamId: searchedTeam.id }),
+      });
+      if (!res.ok) throw new Error("Fehler beim Speichern");
+      handleSavedMessage(`Punkte für Spiel ${gameId} gespeichert ✅`);
+    }
+    catch (err) {
+      console.error(err);
+      handleSavedMessage(`Fehler beim Speichern der Punkte für Spiel ${gameId} ❌`);
     }
   };
 
@@ -205,6 +230,25 @@ const getOffsetISO = (dtLocal: string): string => {
       handleSavedMessage("Fehler beim Speichern ❌");
     }
   }
+
+  const handleTeamDelete = async () => {
+     if (!searchedTeam) return;
+    try {
+      const res = await fetch(`/api/admin/team/delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },  
+        body: JSON.stringify({ id: searchedTeam.id }),
+      });
+      if (!res.ok) throw new Error("Fehler beim Löschen");
+      setSearchedTeam(null);
+      handleSavedMessage("Team gelöscht ✅");
+    } catch (err) {
+      console.error(err);
+      handleSavedMessage("Fehler beim Löschen ❌");
+    }
+  }
+
+// Bericht löschen
 
   const deleteReport = async (id: number) => {
   if (!id) return;
@@ -249,11 +293,11 @@ const getOffsetISO = (dtLocal: string): string => {
     <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-16" : "mt-4"}`}>Admin Dashboard</h1>
     
     {/* Buttons for switching views */}
-    <div className="inline-flex overflow-hidden w-full justify-center mb-6 gap-4">
+    <div className="inline-flex overflow-hidden w-full justify-center mb-6">
       <button
         onClick={() => setShowReports(!showReports)}
         className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-l-lg shadow-md ${
-          showReports
+          !showReports
             ? "bg-pink-500 text-white"
             : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
         }`}
@@ -263,7 +307,7 @@ const getOffsetISO = (dtLocal: string): string => {
       <button
         onClick={() => setShowReports(!showReports)}
         className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-r-lg shadow-md ${
-          !showReports
+          showReports
             ? "bg-pink-500 text-white"
             : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
         }`}
@@ -273,7 +317,7 @@ const getOffsetISO = (dtLocal: string): string => {
     </div>
 
     {/* SEARCH */}
-    {showReports ? (
+    {!showReports ? (
       <>
         <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 w-full max-w-lg">
           <input
@@ -328,7 +372,7 @@ const getOffsetISO = (dtLocal: string): string => {
             <button onClick={handleCheater} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
               {searchedTeam.cheatPoints >= 12 ? "Team re-qualifizieren" : "Team disqualifizieren"}
             </button>
-            <button onClick={handleSaveTeam} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
+            <button onClick={handleTeamDelete} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
               Team löschen
             </button>
           </div>
@@ -371,6 +415,9 @@ const getOffsetISO = (dtLocal: string): string => {
                     ))}
                   </div>
                 ))}
+                <button onClick={(e) => handlePointsUpdate(searchedTeam.id)} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white">
+                  Speichern
+                </button>
               </details>
             </div>
           );

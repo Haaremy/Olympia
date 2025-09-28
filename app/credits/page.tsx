@@ -7,6 +7,8 @@ import { t } from "i18next";
 import Image from "next/image";
 import { detectPlatform } from "../common/detectPlatform";
 import { Capacitor } from '@capacitor/core';
+import MusicSettings from "@/app/common/musicSettings";
+
 
 
 
@@ -70,53 +72,69 @@ export default function Page() {
 
   return (
     <main className="w-full min-h-screen flex flex-col items-center justify-start sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-colors duration-300">
+      <div className="w-[70%]">
+       {/* Einstellungen */}
+                <div className="mt-8 w-full">
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{t("browserSettings")}</h2>
       
-      {/* Einstellungen */}
-      <div className="w-full max-w-3xl mt-8">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white">{t("browserSettings")}</h2>
-        {/* Theme */}
-        <div className="mt-4">
-          <div className="flex items-center gap-2">
-            <Image
-              src={`/images/globe.svg`}
-              alt="Globe Icon"
-              className="h-8 w-8 object-cover rounded-lg"
-              width={50}
-              height={50}
-            />
-            <select
-              value={theme}
-              onChange={(e) => theming(e.target.value)}
-              className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            >
-              <option value="auto">Auto</option>
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-            </select>
-          </div>
-        </div>
-        {/* Sprache */}
-        <div className="mt-4">
-          <div className="flex items-center gap-2">
-            <Image
-              src={`/images/globe.svg`}
-              alt="Globe Icon"
-              className="h-8 w-8 object-cover rounded-lg"
-              width={50}
-              height={50}
-            />
-            <select
-              value={i18n.language}
-              onChange={(e) => handleLanguage(e.target.value)}
-              className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            >
-              <option value="en">English</option>
-              <option value="de">Deutsch</option>
-            </select>
-          </div>
-        </div>
-    </div>
- <div>
+      
+                    {/* Theme */}
+                    <div className="mt-4">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={`/images/globe.svg`}
+                          alt="Globe Icon"
+                          className="h-8 w-8 object-cover rounded-lg"
+                          width={50}
+                          height={50}
+                        />
+                        <select
+                          value={theme}
+                          onChange={(e) => theming(e.target.value)}
+                          className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        >
+                          <option value="auto">Auto</option>
+                          <option value="dark">Dark</option>
+                          <option value="light">Light</option>
+                        </select>
+                      </div>
+                    </div>
+      
+      
+                    {/* Language */}
+                    <div className="mt-4">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={`/images/globe.svg`}
+                          alt="Globe Icon"
+                          className="h-8 w-8 object-cover rounded-lg"
+                          width={50}
+                          height={50}
+                          />
+                      <select
+                        value={i18n.language}
+                        onChange={(e) => handleLanguage(e.target.value)}
+                        className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                      >
+                        <option value="en">English</option>
+                        <option value="de">Deutsch</option>
+                      </select>
+                    </div>
+                </div>
+                 <MusicSettings/>
+                  
+                </div>
+                
+              </div>
+
+
+
+
+
+
+
+
+                <div>
                  <h3 className={` mt-8 ${
                      platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
                    }`}>Playstore Olympia App</h3>

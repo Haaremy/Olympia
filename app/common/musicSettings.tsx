@@ -44,13 +44,6 @@ export default function MusicSettings() {
     <div className="mt-4">
       {/* Musiksteuerung */}
       <div className="flex items-center gap-2">
-        <Image
-          src={`/images/music.svg`} // eigenes Icon hier ablegen
-          alt="Music Icon"
-          className="h-8 w-8 object-cover rounded-lg"
-          width={50}
-          height={50}
-        />
         <div className="flex flex-1 items-center gap-2">
           {/* Play/Pause */}
           <button
