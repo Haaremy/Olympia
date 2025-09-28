@@ -222,7 +222,7 @@ export default function ScoreboardTabs() {
           >
             <img
               src={src}
-              alt={`Teammitglied ${idx + 1}`}
+              alt={`Team ${teamNames[idx]} ${idx + 1}`}
               className="w-full h-64 object-cover rounded-lg"
             />
           </div>
