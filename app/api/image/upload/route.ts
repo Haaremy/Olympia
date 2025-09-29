@@ -1,57 +1,52 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
-import path from 'path';
+// app/api/upload/route.ts (oder pages/api/upload.ts) - Server runtime
+import { NextResponse } from 'next/server';
+import sharp from 'sharp';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 
-// ... previous imports
+export async function POST(req: Request) {
+  const formData = await req.formData();
+  const file = formData.get('file') as File | null;
+  if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 });
 
-export async function POST(req: NextRequest) {
-    const formData = await req.formData();
-    const fileData = formData.get('file');
-    const file = fileData instanceof File ? fileData : null;
+  // Size check (2 MB)
+  const MAX = 2 * 1024 * 1024;
+  if (file.size > MAX) return NextResponse.json({ error: 'File too large' }, { status: 400 });
 
-    if (!file) {
-        return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user?.uname) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const userName = session.user.uname.toLowerCase();
+
+  // convert to JPG with sharp
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const jpgBuffer = await sharp(buffer)
+    .resize({ width: 1600, height: 1600, fit: 'inside' }) // optional resize
+    .jpeg({ quality: 90 })
+    .toBuffer();
+
+  // Build FormData to send to PHP
+  const phpForm = new FormData();
+  // In Node/Next: Blob + FormData are available in modern runtimes
+  const blob = new Blob([jpgBuffer], { type: 'image/jpeg' });
+  phpForm.append('file', blob, `${userName}.jpg`);
+
+  const res = await fetch(process.env.PHP_UPLOAD_URL as string, {
+    method: 'POST',
+    body: phpForm,
+    headers: {
+      'X-Api-Key': process.env.PHP_UPLOAD_KEY as string
+      // NICHT Content-Type setzen — fetch/FormData setzt boundary automatisch
     }
+  });
 
-    // Check file size (max 2 MB)
-    const MAX_SIZE = 2 * 1024 * 1024; // 2 MB in bytes
-    if (file.size > MAX_SIZE) {
-        return NextResponse.json({ error: 'File too large. Maximum size is 2 MB.' }, { status: 400 });
-    }
+  const data = await res.json().catch(() => ({ error: 'Invalid JSON from PHP' }));
+  if (!res.ok) {
+    return NextResponse.json({ error: data.error || 'Upload failed' }, { status: 500 });
+  }
 
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user?.uname) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userName = session.user.uname.toLowerCase();
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    // Check file extension
-    const allowedTypes = ['jpg', 'jpeg', 'png'];
-    const fileName = file.name || '';
-    const ext = fileName.split('.').pop()?.toLowerCase();
-
-    if (!ext || !allowedTypes.includes(ext)) {
-        return NextResponse.json({ error: 'Invalid file type. Only jpg and png allowed.' }, { status: 400 });
-    }
-
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filePath = path.join(uploadDir, `${userName}.jpg`);
-
-    try {
-        await import('fs/promises').then(fs => fs.mkdir(uploadDir, { recursive: true }));
-
-        // Convert image to jpg using sharp
-        const sharp = (await import('sharp')).default;
-        const jpgBuffer = await sharp(buffer).jpeg().toBuffer();
-
-        await writeFile(filePath, jpgBuffer);
-        return NextResponse.json({ message: 'File uploaded', fileurl: `/uploads/${userName}.jpg` }, { status: 200 });
-    } catch (error) {
-        console.error("Error saving file:", error);
-        return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
-    }
+  // Rückgabe an Client (z. B. URL auf das gespeicherte JPG)
+  return NextResponse.json({ success: true, php: data }, { status: 200 });
 }
