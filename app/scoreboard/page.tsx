@@ -118,7 +118,7 @@ export default function ScoreboardTabs() {
         const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Namen');
         const data = await res.json();
-        console.log(date.name);
+        console.log(data.name);
         names.push(data.name);
       } catch (err) {
         names.push("Santas Secret Wish");
