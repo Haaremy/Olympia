@@ -23,25 +23,17 @@ export async function POST(req: Request) {
   // convert to JPG with sharp
  const buffer = Buffer.from(await file.arrayBuffer());
 const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
-
-// Buffer -> Uint8Array (immer gültig als BlobPart)
 const uint8 = new Uint8Array(jpgBuffer);
-
 const fileForPhp = new File([uint8], `${userName}.jpg`, { type: 'image/jpeg' });
 
 const phpForm = new FormData();
 phpForm.append('file', fileForPhp);
 
+const res = await fetch('https://olympia.haaremy.de/uploads/upload.php', {
+  method: 'POST',
+  body: phpForm
+});
 
-
-  const res = await fetch(process.env.PHP_UPLOAD_URL as string, {
-    method: 'POST',
-    body: phpForm,
-    headers: {
-      'X-Api-Key': process.env.PHP_UPLOAD_KEY as string
-      // NICHT Content-Type setzen — fetch/FormData setzt boundary automatisch
-    }
-  });
 
   const data = await res.json().catch(() => ({ error: 'Invalid JSON from PHP' }));
   if (!res.ok) {
