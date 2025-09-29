@@ -144,8 +144,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 className={`flex items-end mb-3 ${
                   isOwnMessage ? "justify-end" : "justify-start"
                 }`}
-                onClick={() =>
-                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat)
+                onClick={(e) =>
+                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat, e)
                 }
               >
 
