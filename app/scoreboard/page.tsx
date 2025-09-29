@@ -112,9 +112,10 @@ export default function ScoreboardTabs() {
     const names: string[] = [];
     for (const file of files) {
       try {
-        const name = file.split('/').pop()?.split('.').shift() || '';
+        const pathname = new URL(file).pathname;
+        const name = pathname.split('/').pop()?.split('.').shift() || '';
         const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
-        if (!res.ok) throw new Error('Fehler beim Laden der Dateien');
+        if (!res.ok) throw new Error('Fehler beim Laden der Namen');
         const data = await res.json();
         names.push(data.name);
       } catch (err) {
