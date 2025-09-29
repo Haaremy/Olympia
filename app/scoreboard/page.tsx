@@ -220,13 +220,18 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[idx]}
               alt={`Team ${teamNames[idx]} ${idx}`}
               className="sm:h-64 h-32"
             />
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+                <h2 className="text-xl font-semibold">{teamNames[(idx+1)}</h2>
+              </div>
           </div>
+      
         ))}
     </Carousel>
     <Carousel
@@ -238,12 +243,16 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
               className="sm:h-64 h-32"
             />
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+                <h2 className="text-xl font-semibold">{teamNames[(idx+1) > teamNames.length-1 ? 0 : idx+1]}</h2>
+              </div>
           </div>
         ))}
     </Carousel>
