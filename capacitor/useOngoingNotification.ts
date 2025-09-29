@@ -14,42 +14,63 @@ export function useOngoingNotification() {
   const [started, setStarted] = useState(false);
   const [ending, setEnding] = useState<Date>(new Date());
   const [points, setPoints] = useState(0);
-
-
+  const [isAppInBackground, setIsAppInBackground] = useState(false); // New state to track background status
 
   const endingRef = useRef(ending);
-
-  useEffect(() => { endingRef.current = ending }, [ending]);
-
-  
-const pointsRef = useRef(points);
-useEffect(() => {
-  pointsRef.current = points;
-}, [points]);
-
+  const pointsRef = useRef(points);
 
   useEffect(() => {
-  const fetchTeamPoints = async () => {
-    if (!session?.user?.uname) return;
+    endingRef.current = ending;
+  }, [ending]);
 
-    try {
-      const res = await fetch(`/api/team/search?query=${session.user.uname}`);
-      if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+  useEffect(() => {
+    pointsRef.current = points;
+  }, [points]);
 
-      const data = await res.json();
-      setPoints(data.team.pointsTotal || 0);
-    } catch (error) {
-      console.error("Fehler beim Abrufen der Punkte:", error);
-    }
-  };
+  // Monitor visibility change to detect when the app goes into the background
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsAppInBackground(true); // App goes to background
+        // Optionally, you could trigger a notification or update here
+        updateOngoingNotification("Kehre zur App zurück, um Updates zu erhalten.");
+      } else {
+        setIsAppInBackground(false); // App comes to foreground
+        // Optionally, you could reset the notification or update here
+        updateOngoingNotification(
+          `${session ? `Team ${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
+        );
+      }
+    };
 
-  fetchTeamPoints(); // Initial fetch
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-  const intervalId = setInterval(fetchTeamPoints, 60000); // Every 60 seconds
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [session, points, ending, started]);
 
-  return () => clearInterval(intervalId); // Cleanup on unmount
-}, [session?.user?.uname]);
+  useEffect(() => {
+    const fetchTeamPoints = async () => {
+      if (!session?.user?.uname) return;
 
+      try {
+        const res = await fetch(`/api/team/search?query=${session.user.uname}`);
+        if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+
+        const data = await res.json();
+        setPoints(data.team.pointsTotal || 0);
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Punkte:", error);
+      }
+    };
+
+    fetchTeamPoints(); // Initial fetch
+
+    const intervalId = setInterval(fetchTeamPoints, 60000); // Every 60 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [session?.user?.uname]);
 
   // Load settings once
   useEffect(() => {
@@ -60,7 +81,6 @@ useEffect(() => {
         const settings = await settingsRes.json();
         if (settings.ending) setEnding(new Date(settings.ending));
         if (typeof settings.started === "boolean") setStarted(settings.started);
-
       } catch (err) {
         console.error(err);
       }
@@ -73,20 +93,14 @@ useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     requestNotificationPermission();
 
-
     const initNotification = async () => {
       try {
-       
-        await startOngoingNotification(
-          `Wir laden alle Daten...`
-        );
+        await startOngoingNotification(`Wir laden alle Daten...`);
 
         interval = setInterval(async () => {
-          
-
           // Notification aktualisieren
           await updateOngoingNotification(
-            `Team ${session ? `${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : ""}`
+            `${session ? `Team ${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
           );
         }, 60000);
       } catch (err) {
@@ -102,7 +116,7 @@ useEffect(() => {
     };
   }, [session?.user?.uname]);
 
-  return { started, ending, points };
+  return { started, ending, points, isAppInBackground };
 }
 
 function formatTime(ms: number) {
