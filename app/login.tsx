@@ -4,6 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUI } from './context/UIContext';
+import {
+  showPopupNotification,
+  createNotificationChannel
+} from "@/capacitor/notificationService";
 
 interface ModalProps {
   onClose: () => void;
