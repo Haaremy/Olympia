@@ -114,12 +114,15 @@ export default function ScoreboardTabs() {
       try {
         const pathname = new URL(file).pathname;
         const name = pathname.split('/').pop()?.split('.').shift() || '';
+        console.log(name);
         const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Namen');
         const data = await res.json();
+        console.log(date.name);
         names.push(data.name);
       } catch (err) {
-        console.error('Fehler bei Datei', file, ':', err);
+        names.push("Santas Secret Wish");
+        console.error('Fehler bei Name', file, ':', err);
       }
     }
     return names;
