@@ -170,7 +170,7 @@ const scrollEnd = () => {
               >
                 ➡️
               </button>
-            </div>
+           
 
             {/* Char counter */}
             <div className="px-6 pb-4 text-right text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -180,6 +180,7 @@ const scrollEnd = () => {
             </div>
           </>
         )}
+               </div>
       </div>
     </div>
   );
