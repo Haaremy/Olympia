@@ -29,6 +29,8 @@
     "light":"Light",
     "enterPlayer":"<Name Player",
     "enterTeam": "<Name of Teams>",
+    "chatLogin": "Log-in to text...",
+    "chatPlaceholder": "Type a message...",
     "probDes": "Describe the problem...",
     "report": "Report"
   }
