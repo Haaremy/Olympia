@@ -104,8 +104,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     }
   };
 
-  // Long press handler
-  const handleMouseDown = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
+  const openOptions = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
     const clientX = "clientX" in e ? e.clientX : e.touches[0].clientX;
     const clientY = "clientY" in e ? e.clientY : e.touches[0].clientY;
 
@@ -114,12 +113,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     }, 600);
   };
 
-  const handleMouseUp = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  };
 
   const closeContextMenu = () => setContextMenu(null);
 
@@ -146,12 +139,14 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             return (
               <div
                 key={i}
-                className={`flex items-end mb-3 ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                onMouseDown={(e) => handleMouseDown(chat, e)}
-                onMouseUp={handleMouseUp}
-                onTouchStart={(e) => handleMouseDown(chat, e)}
-                onTouchEnd={handleMouseUp}
+                className={`flex items-end mb-3 ${
+                  isOwnMessage || session?.user?.role === "ADMIN" ? "justify-end" : "justify-start"
+                }`}
+                onClick={(e) =>
+                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat, e)
+                }
               >
+
                 {/* Avatar */}
                 {!isOwnMessage && (
                   <Image
@@ -253,7 +248,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         >
           <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">✏️ Edit</button>
           <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">🗑️ Delete</button>
-          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">↩️ Reply</button>
         </div>
       )}
     </div>
