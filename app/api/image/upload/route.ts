@@ -22,15 +22,12 @@ export async function POST(req: Request) {
 
   // convert to JPG with sharp
   const buffer = Buffer.from(await file.arrayBuffer());
-  const jpgBuffer = await sharp(buffer)
-    .resize({ width: 1600, height: 1600, fit: 'inside' }) // optional resize
-    .jpeg({ quality: 90 })
-    .toBuffer();
+ const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
+const fileForPhp = new File([jpgBuffer], `${userName}.jpg`, { type: 'image/jpeg' });
 
-  // Build FormData to send to PHP
-  const phpForm = new FormData();
-  // In Node/Next: Blob + FormData are available in modern runtimes
-  const blob = new Blob([jpgBuffer], { type: 'image/jpeg' });
+const phpForm = new FormData();
+phpForm.append('file', fileForPhp);
+
   phpForm.append('file', blob, `${userName}.jpg`);
 
   const res = await fetch(process.env.PHP_UPLOAD_URL as string, {
