@@ -32,6 +32,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
     
   const performLogin = async () => {
+    await createNotificationChannel();
+        await showPopupNotification(
+          "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
+        );
   const result = await signIn('credentials', {
     redirect: false,
     username,
@@ -87,6 +91,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     if (saveRes.ok) {
       alert("Registrierung erfolgreich!");
       // z. B. zur Login-Seite weiterleiten
+       
       await performLogin();
     } else {
       const err = await saveRes.json();
