@@ -77,7 +77,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       formData.append("file", blob, "team-selfie.png");
 
       // POST to API route
-      const uploadRes = await fetch("/uploads/upload.php", {
+      const uploadRes = await fetch("/api/image/upload", {
         method: "POST",
         body: formData,
       });
