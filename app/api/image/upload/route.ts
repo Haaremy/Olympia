@@ -24,17 +24,14 @@ export async function POST(req: Request) {
  const buffer = Buffer.from(await file.arrayBuffer());
 const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
 
-// Buffer -> ArrayBuffer
-const ab = jpgBuffer.buffer.slice(
-  jpgBuffer.byteOffset,
-  jpgBuffer.byteOffset + jpgBuffer.byteLength
-);
+// Buffer -> Uint8Array (immer gültig als BlobPart)
+const uint8 = new Uint8Array(jpgBuffer);
 
-// Jetzt sauber als File
-const fileForPhp = new File([ab], `${userName}.jpg`, { type: 'image/jpeg' });
+const fileForPhp = new File([uint8], `${userName}.jpg`, { type: 'image/jpeg' });
 
 const phpForm = new FormData();
 phpForm.append('file', fileForPhp);
+
 
 
   const res = await fetch(process.env.PHP_UPLOAD_URL as string, {
