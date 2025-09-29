@@ -156,35 +156,38 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     </div>
 
     {/* Input-Leiste */}
-    <div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
-      <textarea
-  className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
-  placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
-  value={message}
-  disabled={!session}
-  onChange={handleInputChange}
-  onInput={(e) => {
-    const target = e.currentTarget;
-    target.style.height = "auto";
-    target.style.height = target.scrollHeight + "px";
-  }}
-  maxLength={100}
-/>
-      {!!session && (
-        <button
-          onClick={handleSend}
-          className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
-        >
-          ➤
-        </button>
-      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
-        <span className={message.length === 100 ? "text-red-600" : ""}>
-          {message.length}/100
-        </span>
-      </div>
-      )}
-    </div>
+    {/* Input-Leiste */}
+<div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
+  <textarea
+    className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
+    placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
+    value={message}
+    disabled={!session}
+    onChange={handleInputChange}
+    onInput={(e) => {
+      const target = e.currentTarget;
+      target.style.height = "auto";
+      target.style.height = target.scrollHeight + "px";
+    }}
+    maxLength={100}
+  />
+
+  {!!session && (
+    <button
+      onClick={handleSend}
+      className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
+    >
+      ➤
+    </button>
+  )}
+
+  {/* Counter – immer sichtbar */}
+  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
+    <span className={message.length === 100 ? "text-red-600" : ""}>
+      {message.length}/100
+    </span>
   </div>
+</div>
 </div>
 
 
