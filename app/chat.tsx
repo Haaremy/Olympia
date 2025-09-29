@@ -31,7 +31,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chat: Chat } | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Modal lifecycle
   useEffect(() => {
@@ -120,7 +119,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const closeContextMenu = () => setContextMenu(null);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50" >
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
@@ -135,7 +134,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         </div>
 
         {/* Nachrichten */}
-        <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800" onClick={closeContextMenu}>
           {error && <div className="text-red-500">{error}</div>}
           {history.map((chat, i) => {
             const isOwnMessage = chat?.team?.uname === session?.user?.uname;
