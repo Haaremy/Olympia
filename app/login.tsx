@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUI } from './context/UIContext';
+import { Capacitor } from "@capacitor/core";
 import {
   showPopupNotification,
   createNotificationChannel
@@ -19,6 +20,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [error, setError] = useState('');
+  const [isApp, setIsApp] = useState(false);
   const router = useRouter();
   const { setIsModalOpen } = useUI();
   const modalRef = useRef<HTMLDivElement>(null);
