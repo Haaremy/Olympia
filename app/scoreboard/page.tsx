@@ -114,11 +114,9 @@ export default function ScoreboardTabs() {
       try {
         const pathname = new URL(file).pathname;
         const name = pathname.split('/').pop()?.split('.').shift() || '';
-        console.log(name);
         const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Namen');
         const data = await res.json();
-        console.log(data.user.name);
         names.push(data.user.name);
       } catch (err) {
         names.push("Santas Secret Wish");
@@ -228,7 +226,7 @@ export default function ScoreboardTabs() {
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[(idx+1)]}</h2>
+                <h2 className="text-xl font-semibold">{teamNames[idx]}</h2>
               </div>
           </div>
       
