@@ -118,8 +118,8 @@ export default function ScoreboardTabs() {
         const res = await fetch(`/api/team/searchunique?query=${encodeURIComponent(name)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Namen');
         const data = await res.json();
-        console.log(data.name);
-        names.push(data.name);
+        console.log(data.user.name);
+        names.push(data.user.name);
       } catch (err) {
         names.push("Santas Secret Wish");
         console.error('Fehler bei Name', file, ':', err);
@@ -220,7 +220,7 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[idx]}
@@ -243,7 +243,7 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800 shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
@@ -265,7 +265,7 @@ export default function ScoreboardTabs() {
        {teamImages.map((src, idx) => (
           <div
             key={idx}
-            className={`relative  flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
+            className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <img
               src={teamImages[(idx+2) > teamImages.length ? 1 : (idx+2) > teamImages.length-1 ? 0 : idx+2]}
