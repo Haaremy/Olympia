@@ -105,13 +105,16 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
 
   const openOptions = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
-    const clientX = "clientX" in e ? e.clientX : e.touches[0].clientX;
-    const clientY = "clientY" in e ? e.clientY : e.touches[0].clientY;
+  const target = e.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
 
-    longPressTimer.current = setTimeout(() => {
-      setContextMenu({ x: clientX, y: clientY, chat });
-    }, 600);
-  };
+  setContextMenu({
+    x: rect.left,          // linke Kante der Message
+    y: rect.bottom + 4,    // knapp unter der Message
+    chat,
+  });
+};
+
 
 
   const closeContextMenu = () => setContextMenu(null);
@@ -140,10 +143,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
               <div
                 key={i}
                 className={`flex items-end mb-3 ${
-                  isOwnMessage || session?.user?.role === "ADMIN" ? "justify-end" : "justify-start"
+                  isOwnMessage ? "justify-end" : "justify-start"
                 }`}
-                onClick={(e) =>
-                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat, e)
+                onClick={() =>
+                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat)
                 }
               >
 
@@ -244,7 +247,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         <div
           style={{ top: contextMenu.y, left: contextMenu.x }}
           className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
-          onMouseLeave={closeContextMenu}
         >
           <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">✏️ Edit</button>
           <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">🗑️ Delete</button>
