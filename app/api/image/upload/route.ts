@@ -21,14 +21,21 @@ export async function POST(req: Request) {
   const userName = session.user.uname.toLowerCase();
 
   // convert to JPG with sharp
-  const buffer = Buffer.from(await file.arrayBuffer());
- const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
-const fileForPhp = new File([jpgBuffer], `${userName}.jpg`, { type: 'image/jpeg' });
+ const buffer = Buffer.from(await file.arrayBuffer());
+const jpgBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
+
+// Buffer -> ArrayBuffer
+const ab = jpgBuffer.buffer.slice(
+  jpgBuffer.byteOffset,
+  jpgBuffer.byteOffset + jpgBuffer.byteLength
+);
+
+// Jetzt sauber als File
+const fileForPhp = new File([ab], `${userName}.jpg`, { type: 'image/jpeg' });
 
 const phpForm = new FormData();
 phpForm.append('file', fileForPhp);
 
-  phpForm.append('file', blob, `${userName}.jpg`);
 
   const res = await fetch(process.env.PHP_UPLOAD_URL as string, {
     method: 'POST',
