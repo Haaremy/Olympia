@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useUI } from "./context/UIContext";
-import { useTranslation } from "next-i18next";  // Importiere die Übersetzungsfunktion
+import { useTranslation } from "next-i18next";
 
 interface ModalProps {
   onClose: () => void;
@@ -23,12 +23,15 @@ interface Chat {
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { data: session } = useSession();
-  const { t } = useTranslation(); // Verwende die Übersetzungsfunktion
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState<Chat[]>([]);
-  const [error, setError] = useState<string | null>(null);  // Fehlerstatus für Chat-Nachrichten
-  const [isSending, setIsSending] = useState(false); // Verhindert das doppelte Senden von Nachrichten
+  const [error, setError] = useState<string | null>(null);
+  const [isSending, setIsSending] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chat: Chat } | null>(null);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Modal lifecycle
   useEffect(() => {
@@ -40,12 +43,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
-  const historyRef = useRef(history);
-  useEffect(() => {
-    historyRef.current = history;
-  }, [history]);
-
-  // Fetch messages periodically
+  // Fetch messages
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -62,19 +60,17 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       }
     };
 
-    fetchMessages(); // initial load
+    fetchMessages();
     const interval = setInterval(fetchMessages, 1000);
-
     return () => clearInterval(interval);
-  }, []); // ❌ don't depend on history
+  }, []);
 
   const scrollEnd = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSend = async () => {
-    if (!message.trim() || isSending) return;  // Verhindert mehrfaches Senden
-
+    if (!message.trim() || isSending) return;
     setIsSending(true);
 
     try {
@@ -98,7 +94,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     if (history.length > 0) {
-      scrollEnd(); // Automatisch zum neuesten Chat scrollen
+      scrollEnd();
     }
   }, [history]);
 
@@ -108,9 +104,25 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     }
   };
 
+  // Long press handler
+  const handleMouseDown = (chat: Chat, e: React.MouseEvent) => {
+    longPressTimer.current = setTimeout(() => {
+      setContextMenu({ x: e.clientX, y: e.clientY, chat });
+    }, 600); // 600ms für Long Press
+  };
+
+  const handleMouseUp = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const closeContextMenu = () => setContextMenu(null);
+
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50 p-4">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
@@ -124,14 +136,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         </div>
 
         {/* Nachrichten */}
-        <div className="flex-grow h-[60vh] p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-md">
-          {error && <div className="text-red-500">{error}</div>} {/* Fehleranzeige */}
+        <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-md">
+          {error && <div className="text-red-500">{error}</div>}
           {history.map((chat, i) => {
             const isOwnMessage = chat?.team?.uname === session?.user?.uname;
             return (
-              <div key={i} className={`flex mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}>
+              <div
+                key={i}
+                className={`flex mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                onMouseDown={(e) => handleMouseDown(chat, e)}
+                onMouseUp={handleMouseUp}
+              >
                 <div
-                  className={`max-w-[70%] px-4 py-2 rounded-2xl shadow 
+                  className={`max-w-[70%] px-4 py-2 rounded-2xl shadow relative
                     ${isOwnMessage
                       ? "bg-pink-500 text-white rounded-br-none"
                       : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"}`}
@@ -143,7 +160,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                         alt=""
                         width={32}
                         height={32}
-                        className="rounded-full object-cover bg-white shadow-lg object-cover w-8 h-8 mr-4"
+                        className="rounded-full object-cover bg-white shadow-lg w-8 h-8 mr-2"
                         unoptimized
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
@@ -162,43 +179,47 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             );
           })}
           <div ref={chatEndRef} />
-          <button
-            className="rounded-full bg-pink-500 fixed bottom-60"
-            onClick={() => scrollEnd()}
-            aria-label="Scroll to bottom"
-          >
-            👇🏼
-          </button>
         </div>
 
-        {/* Input */}
-        {!!session && (
-          <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
-            <textarea
-              className="flex-grow resize-none rounded-md border border-gray-300 dark:border-gray-600 p-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100"
-              placeholder={!session ? t("chatLogin") : t("chatPlaceholder")}
-              value={message}
-              disabled={!session}
-              onChange={handleInputChange}
-              rows={2}
-            />
+        {/* Input (immer sichtbar) */}
+        <div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
+          <textarea
+            className="flex-grow resize-none rounded-full border border-gray-300 dark:border-gray-600 px-4 py-2 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100"
+            placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
+            value={message}
+            disabled={!session}
+            onChange={handleInputChange}
+            rows={1}
+          />
+          {!!session && (
             <button
               onClick={handleSend}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-5 py-2 transition shadow"
+              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
               aria-label="Send message"
             >
-              ➡️
+              ➤
             </button>
-
-            {/* Char counter */}
-            <div className="px-6 pb-4 text-right text-sm font-medium text-gray-500 dark:text-gray-400">
-              <span className={message.length === 100 ? "text-red-600" : ""}>
-                {message.length} / 100
-              </span>
-            </div>
+          )}
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
+            <span className={message.length === 100 ? "text-red-600" : ""}>
+              {message.length}/100
+            </span>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Kontextmenü */}
+      {contextMenu && (
+        <div
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+          className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
+          onMouseLeave={closeContextMenu}
+        >
+          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">✏️ Edit</button>
+          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">🗑️ Delete</button>
+          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">↩️ Reply</button>
+        </div>
+      )}
     </div>
   );
 };
