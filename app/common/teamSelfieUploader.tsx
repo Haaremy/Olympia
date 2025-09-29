@@ -31,7 +31,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const fetchImage = async () => {
       try {
-        const res = await fetch(`/uploads/${teamUname}.jpg`);
+        const res = await fetch(`/uploads/${teamUname.toLowerCase()}.jpg`);
         if (res.ok) {
           // Create a blob URL to use in img src
           const blob = await res.blob();
