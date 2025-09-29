@@ -32,10 +32,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
     
   const performLogin = async () => {
+    if(true){
     await createNotificationChannel();
         await showPopupNotification(
           "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
         );
+    }
   const result = await signIn('credentials', {
     redirect: false,
     username,
