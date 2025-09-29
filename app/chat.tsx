@@ -154,7 +154,7 @@ const scrollEnd = () => {
             <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
               <textarea
                 className="flex-grow resize-none rounded-md border border-gray-300 dark:border-gray-600 p-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100"
-                placeholder="Schreibe deine Nachricht..."
+                placeholder={!session ? t("chatLogin") : t("chatPlaceholder"); 
                 value={message}
                 onChange={(e) => {
                   if (e.target.value.length <= 100) setMessage(e.target.value);
