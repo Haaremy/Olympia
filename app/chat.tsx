@@ -121,92 +121,72 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const closeContextMenu = () => setContextMenu(null);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50 p-4">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
-          <button
-            onClick={onClose}
-            aria-label="Close Modal"
-            className="text-white bg-pink-500 hover:bg-pink-600 rounded-md px-4 py-2 transition"
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+  <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
+    {/* Header */}
+    <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
+      <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+      <button
+        onClick={onClose}
+        aria-label="Close Modal"
+        className="text-white bg-pink-500 hover:bg-pink-600 rounded-md px-4 py-2 transition"
+      >
+        ✕
+      </button>
+    </div>
+
+    {/* Nachrichten */}
+    <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+      {history.map((chat, i) => {
+        const isOwnMessage = chat?.team?.uname === session?.user?.uname;
+        return (
+          <div
+            key={i}
+            className={`flex mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
+            onMouseDown={(e) => handleMouseDown(chat, e)}
+            onMouseUp={handleMouseUp}
+            onTouchStart={(e) => handleMouseDown(chat, e)}
+            onTouchEnd={handleMouseUp}
           >
-            ✕
-          </button>
-        </div>
-
-        {/* Nachrichten */}
-        <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-md">
-          {error && <div className="text-red-500">{error}</div>}
-          {history.map((chat, i) => {
-            const isOwnMessage = chat?.team?.uname === session?.user?.uname;
-            return (
-              <div
-                key={i}
-                className={`flex mb-2 ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                onMouseDown={(e) => handleMouseDown(chat, e)}
-                onMouseUp={handleMouseUp}
-              >
-                <div
-                  className={`max-w-[70%] px-4 py-2 rounded-2xl shadow relative
-                    ${isOwnMessage
-                      ? "bg-pink-500 text-white rounded-br-none"
-                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"}`}
-                >
-                  {!isOwnMessage && (
-                    <div className="flex items-center space-x-1 text-s font-semibold text-pink-600 dark:text-pink-400 mb-1">
-                      <Image
-                        src={"/uploads/" + chat.team.uname.toLowerCase() + ".jpg"}
-                        alt=""
-                        width={32}
-                        height={32}
-                        className="rounded-full object-cover bg-white shadow-lg w-8 h-8 mr-2"
-                        unoptimized
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.src = "/images/teamplaceholder.png";
-                        }}
-                      />
-                      <span>{chat.team.name}</span>
-                    </div>
-                  )}
-                  <div>{chat.message}</div>
-                  <div className="text-[10px] opacity-70 mt-1 text-right">
-                    {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-          <div ref={chatEndRef} />
-        </div>
-
-        {/* Input (immer sichtbar) */}
-        <div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
-          <textarea
-            className="flex-grow resize-none rounded-full border border-gray-300 dark:border-gray-600 px-4 py-2 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100"
-            placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
-            value={message}
-            disabled={!session}
-            onChange={handleInputChange}
-            rows={1}
-          />
-          {!!session && (
-            <button
-              onClick={handleSend}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
-              aria-label="Send message"
-            >
-              ➤
-            </button>
-          )}
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
-            <span className={message.length === 100 ? "text-red-600" : ""}>
-              {message.length}/100
-            </span>
+            {/* Chat bubble */}
           </div>
-        </div>
+        );
+      })}
+      <div ref={chatEndRef} />
+    </div>
+
+    {/* Input-Leiste */}
+    <div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
+      <textarea
+  className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
+  placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
+  value={message}
+  disabled={!session}
+  onChange={handleInputChange}
+  onInput={(e) => {
+    const target = e.currentTarget;
+    target.style.height = "auto";
+    target.style.height = target.scrollHeight + "px";
+  }}
+  maxLength={100}
+/>
+      {!!session && (
+        <button
+          onClick={handleSend}
+          className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
+        >
+          ➤
+        </button>
+      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
+        <span className={message.length === 100 ? "text-red-600" : ""}>
+          {message.length}/100
+        </span>
       </div>
+      )}
+    </div>
+  </div>
+</div>
+
 
       {/* Kontextmenü */}
       {contextMenu && (
