@@ -76,10 +76,7 @@ useEffect(() => {
 
     const initNotification = async () => {
       try {
-        await createNotificationChannel();
-        await showPopupNotification(
-          "Notification Service gestartet", "Wir werden dich über deine Punkte und die verbleibende Zeit informieren."
-        );
+       
         await startOngoingNotification(
           `Wir laden alle Daten...`
         );
