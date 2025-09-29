@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [error, setError] = useState('');
-  const [isApp, setIsApp] = useState(false);
   const router = useRouter();
   const { setIsModalOpen } = useUI();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -34,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
     
   const performLogin = async () => {
-    if(isApp){
+    if(Capacitor.getPlatform() === 'android'){
     await createNotificationChannel();
         await showPopupNotification(
           "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
@@ -109,7 +108,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     const modal = modalRef.current;
-    setIsAndroid(Capacitor.getPlatform() === 'android');
+
     setIsModalOpen(true);
 
     // Fokus auf das Modal setzen
