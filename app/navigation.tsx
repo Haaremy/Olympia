@@ -408,7 +408,7 @@ if (lastChecked) {
                     </p>
                   </button>
                    )
-                  )
+                  
                 }
               <Link
                       href="/scoreboard"
