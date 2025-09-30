@@ -6,6 +6,7 @@ import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "./cropImage";//#endregion
 import ShareButton from "./shareButton";
 import { Capacitor } from "@capacitor/core";
+import { useTranslation } from "next-i18next";
 
 
 type TeamSelfieUploaderProps = {
@@ -20,6 +21,7 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [showCropper, setShowCropper] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { t } = useTranslation();
 const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
@@ -132,7 +134,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             htmlFor="file-upload"
             className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
           >
-            Wähle dein Bild aus
+           t("chooseImage")
           </label>
 
           {/* Unsichtbares Input für die Dateiauswahl */}
@@ -167,7 +169,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           </div>
           <div className="flex gap-3 mt-4">
             <button onClick={() => setShowCropper(false)} className="px-4 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600">Cancel</button>
-            <button onClick={handleCropSave} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">Save</button>
+            <button onClick={handleCropSave} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">t("save")</button>
           </div>
         </div>
       )}
