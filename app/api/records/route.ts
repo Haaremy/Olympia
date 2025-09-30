@@ -37,6 +37,11 @@ interface RecordResult {
 
 export async function GET() {
   const entries = await prisma.entries.findMany({
+    where: {
+      value: {
+        not: 9999,
+      }
+  },
     select: {
       slot: true,
       value: true,
