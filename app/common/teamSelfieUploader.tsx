@@ -143,12 +143,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             className="hidden"
           />
 
-        {/* Anzeige des Dateinamens */}
-        {fileName && (
-          <div className="text-sm text-gray-500 mt-2">
-            <strong>Ausgewählte Datei:</strong> {fileName}
-          </div>
-        )}
+      
       </div>
 
         
