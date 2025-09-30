@@ -101,7 +101,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       </h2>
       <div className="flex flex-col items-center">
         {croppedImage ? (
-          <img
+          <Image
             src={croppedImage}
             alt="Team Selfie Preview"
             className="rounded-lg shadow-lg mb-4 object-cover w-44 h-44 cursor-pointer"
@@ -174,7 +174,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
           {croppedImage && (
-            <img
+            <Image
               src={croppedImage}
               alt="Full Size Team Selfie"
               className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
