@@ -226,8 +226,9 @@ const imageLoader = ({ src }: { src: string }) => {
             key={idx}
             className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
-            <img
+            <Image
               src={teamImages[idx]}
+              loader={imageLoader}
               alt={`Team ${teamNames[idx]} ${idx}`}
               className="sm:h-64 h-32"
             />
@@ -272,8 +273,9 @@ const imageLoader = ({ src }: { src: string }) => {
             key={idx}
             className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
-            <img
-              src={teamImages[(idx+2) > teamImages.length ? 1 : (idx+2) > teamImages.length-1 ? 0 : idx+2]}
+            <Image
+              src={teamImages[(idx+2) > teamImages.length ? ( (idx+2) > teamImages.length-1 ? 0 : 1 ) : idx+2]}
+              loader={imageLoader}
               alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
               className="sm:h-64 h-32"
             />
