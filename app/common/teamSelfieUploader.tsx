@@ -134,7 +134,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             htmlFor="file-upload"
             className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
           >
-           t("chooseImage")
+            {t("chooseImage")}
           </label>
 
           {/* Unsichtbares Input für die Dateiauswahl */}
@@ -169,7 +169,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           </div>
           <div className="flex gap-3 mt-4">
             <button onClick={() => setShowCropper(false)} className="px-4 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600">Cancel</button>
-            <button onClick={handleCropSave} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">t("save")</button>
+            <button onClick={handleCropSave} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">{t("save")}</button>
           </div>
         </div>
       )}
