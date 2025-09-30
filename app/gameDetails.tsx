@@ -14,6 +14,7 @@ import Report from "./report";
 import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
+import Image from "react/Image";
 
 
 
@@ -468,7 +469,7 @@ const formatTime = (ms: number) => {
                     )}
 
                     {/* Responsive Video (optional) */}
-                    {message.url && (
+                    {message.url ? (
                         <div className="aspect-w-16 aspect-h-9 mb-4">
                             <iframe
                                 className="w-full h-full rounded-lg shadow-lg"
@@ -478,7 +479,16 @@ const formatTime = (ms: number) => {
                                 allowFullScreen
                             />
                         </div>
+                    ) : (
+                        <div className="aspect-w-16 aspect-h-9 mb-4">
+                          <Image
+                           src={"/images/22339831_6621255.jpg"}
+                           alt="placeholder"
+                           className="w-full h-full rounded-lg shadow-lg"
+                         />
+                        </div>
                     )}
+                    
                     <div className="items-center justify-center w-full">
                         <button className="text-sm text-blue-500 hover:underline mt-4" onClick={handleReportOpen}>
                             Report Problem
