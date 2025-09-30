@@ -10,7 +10,7 @@ export async function POST(req) {
     }
 
     // Die URL der externen PHP-Datei, die das Bild löscht
-    const phpUrl = `https://dein-server.de/pfad/zur/deleteImage.php`;
+    const phpUrl = `https://olympia.haaremy.de/delete.php`;
 
     // Anfrage an die PHP-Datei senden
     const response = await fetch(phpUrl, {
@@ -30,6 +30,8 @@ export async function POST(req) {
     return NextResponse.json(result, { status: 200 });
 
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
   }
 }
+
