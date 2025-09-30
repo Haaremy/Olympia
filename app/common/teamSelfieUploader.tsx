@@ -5,6 +5,7 @@ import Image from "next/image";
 import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "./cropImage";//#endregion
 import ShareButton from "./shareButton";
+import { Capacitor } from "@capacitor/core";
 
 
 type TeamSelfieUploaderProps = {
