@@ -376,7 +376,7 @@ if (lastChecked) {
                         Admin
                       </p>
                     </Link>
-                  ) : (
+                  ) : user ? (
                     <Link
                       href="/teampage"
                       className="flex flex-col sm:flex-row no-wrap items-center sm:px-2 px-4 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
@@ -391,7 +391,23 @@ if (lastChecked) {
                       <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                         Team
                       </p>
-                    </Link>
+                    </Link> ) : (
+                   <button
+                    onClick={handleLoginOpen}
+                    className="flex flex-col sm:flex-row no-wrap items-center sm:px-2 px-4 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
+                  >
+                    <Image
+                      src="/images/navbuttongroup.svg"
+                      alt="Login"
+                      width={24}
+                      height={24}
+                      className="dark:invert invert-0"
+                    />
+                    <p className="block text-xs sm:text-sm md:text-lg font-semibold">
+                      Login
+                    </p>
+                  </button>
+                   )
                   )
                 }
               <Link
