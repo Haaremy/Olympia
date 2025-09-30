@@ -121,7 +121,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {croppedImage && (
           <div className="flex gap-3 mt-4">
-            <ShareButton />
+            {Capacitor.getPlatform() === 'android' && <ShareButton />}
             <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700">👀</button>
           </div>
         )}
