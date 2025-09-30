@@ -206,7 +206,6 @@ export default function ScoreboardTabs() {
   };
 
 const imageLoader = ({ src }: { src: string }) => {
-  console.log(width, quality);
   return src;
 }
 
