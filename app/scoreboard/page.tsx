@@ -205,6 +205,10 @@ export default function ScoreboardTabs() {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
+ const imageLoader = ({ src, width, quality }) => {
+  return src;
+}
+
   return (
     <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
       {/* Tabs */}
@@ -247,6 +251,7 @@ export default function ScoreboardTabs() {
           >
             <Image
               src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
+              loader={imageLoader}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
               className="sm:h-64 h-32"
             />
