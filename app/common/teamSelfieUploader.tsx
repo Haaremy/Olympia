@@ -142,7 +142,6 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             onChange={handleImageChange}
             className="hidden"
           />
-        </div>
 
         {/* Anzeige des Dateinamens */}
         {fileName && (
