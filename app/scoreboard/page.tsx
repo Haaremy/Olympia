@@ -246,10 +246,8 @@ export default function ScoreboardTabs() {
             className={`relative  flex flex-col bg-white dark:bg-gray-800 shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <Image
-              src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]+`?ts=${Date.now()}`}
+              src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
-              width={512} // Set width here, or adjust based on your design
-              height={512} // Set height here, or adjust based on your design
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
