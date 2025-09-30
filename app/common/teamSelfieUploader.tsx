@@ -121,20 +121,32 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {(croppedImage || imageUrl) && (
           <div className="flex gap-3 mt-4">
-            {Capacitor.getPlatform() === 'android' && <ShareButton />}
-            <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700">👀</button>
+            {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
+            <label 
+              htmlFor="file-upload" 
+              className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
+            >
+              <FaImage className="text-white" /> {/* Das Bild-Icon */}
+              Wähle das Bild, Bildervan...
+            </label>
+    
+            {/* Unsichtbares Input für die Dateiauswahl */}
+            <input 
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
-        )}
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 dark:file:bg-gray-700 dark:file:text-pink-300"
-        />
-
-        
-      </div>
+    
+          {/* Anzeige des Dateinamens */}
+          {fileName && (
+            <div className="text-sm text-gray-500 mt-2">
+              <strong>Ausgewählte Datei:</strong> {fileName}
+            </div>
+          )}
+        </div>
 
       {showCropper && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50 p-4">
