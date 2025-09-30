@@ -8,6 +8,8 @@ import { useTranslation } from 'next-i18next';
 import {i18n} from 'i18next';
 import '../../lib/i18n';
 import { Slot } from '@prisma/client';
+import Image from 'next/image';
+ 
 
 
 // Deine bestehenden Interfaces
