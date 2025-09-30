@@ -120,32 +120,32 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
         )}
 
         {(croppedImage || imageUrl) && (
-          <div className="flex gap-3 mt-4">
-            {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
-            <label 
-              htmlFor="file-upload" 
-              className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
-            >
-              <FaImage className="text-white" /> {/* Das Bild-Icon */}
-              Wähle das Bild, Bildervan...
-            </label>
-    
-            {/* Unsichtbares Input für die Dateiauswahl */}
-            <input 
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-          </div>
-    
-          {/* Anzeige des Dateinamens */}
-          {fileName && (
-            <div className="text-sm text-gray-500 mt-2">
-              <strong>Ausgewählte Datei:</strong> {fileName}
+          <div className="space-y-4">
+            <div className="flex gap-3 mt-4">
+              {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
+              <label 
+                htmlFor="file-upload" 
+                className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
+              >
+                <FaImage className="text-white" /> {/* Das Bild-Icon */}
+                Wähle das Bild, Bildervan...
+              </label>
+      
+              {/* Unsichtbares Input für die Dateiauswahl */}
+              <input 
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </div>
-          )}
+      
+            {fileName && (
+              <div className="text-sm text-gray-500 mt-2">
+                <strong>Ausgewählte Datei:</strong> {fileName}
+              </div>
+            )}
         </div>
 
       {showCropper && (
