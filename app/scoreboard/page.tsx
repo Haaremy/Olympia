@@ -205,7 +205,7 @@ export default function ScoreboardTabs() {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
- const imageLoader = ({ src, width, quality }) => {
+ const imageLoader = ({ src }) => {
   return src;
 }
 
