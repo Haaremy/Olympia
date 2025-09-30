@@ -227,13 +227,13 @@ const imageLoader = ({ src }: { src: string }) => {
             className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <Image
-              src={teamImages[((idx+0)%teamImages.length]}
+              src={teamImages[((idx+0)%teamImages.length)]}
               loader={imageLoader}
-              alt={`Team ${teamNames[((idx+0)%teamImages.length]} ${((idx+0)%teamImages.length}`}
+              alt={`Team ${teamNames[((idx+0)%teamImages.length)]} ${((idx+0)%teamImages.length)}`}
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+0)%teamImages.length]}</h2>
+                <h2 className="text-xl font-semibold">{teamNames[((idx+0)%teamImages.length)]}</h2>
               </div>
           </div>
       
@@ -251,13 +251,13 @@ const imageLoader = ({ src }: { src: string }) => {
             className={`relative  flex flex-col bg-white dark:bg-gray-800 shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <Image
-              src={teamImages[((idx+1)%teamImages.length]}
+              src={teamImages[((idx+1)%teamImages.length)]}
               loader={imageLoader}
-              alt={`Team ${teamNames[((idx+1)%teamImages.length]} ${((idx+1)%teamImages.length}`}
+              alt={`Team ${teamNames[((idx+1)%teamImages.length)]} ${((idx+1)%teamImages.length)}`}
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+1)%teamImages.length]}</h2>
+                <h2 className="text-xl font-semibold">{teamNames[((idx+1)%teamImages.length)]}</h2>
               </div>
           </div>
         ))}
@@ -274,13 +274,13 @@ const imageLoader = ({ src }: { src: string }) => {
             className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <Image
-              src={teamImages[((idx+2)%teamImages.length]}
+              src={teamImages[((idx+2)%teamImages.length)]}
               loader={imageLoader}
-              alt={`Team ${teamNames[((idx+2)%teamImages.length]} ${((idx+2)%teamImages.length}`}
+              alt={`Team ${teamNames[((idx+2)%teamImages.length)]} ${((idx+2)%teamImages.length)}`}
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+2)%teamImages.length]}</h2>
+                <h2 className="text-xl font-semibold">{teamNames[((idx+2)%teamImages.length)]}</h2>
               </div>
           </div>
         ))}
