@@ -280,7 +280,7 @@ const imageLoader = ({ src }: { src: string }) => {
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[(idx+2) > teamNames.length ? 1 : (idx+2) > teamNames.length-1 ? 0 : idx+2]}</h2>
+                <h2 className="text-xl font-semibold">{teamNames[(idx+2) > teamNames.length ? ((idx+2) > teamNames.length-1 ? 0 : 1 ) : idx+2]}</h2>
               </div>
           </div>
         ))}
