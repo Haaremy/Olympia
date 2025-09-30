@@ -274,7 +274,7 @@ const imageLoader = ({ src }: { src: string }) => {
             className={`relative  flex flex-col bg-white dark:bg-gray-800  shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
             <Image
-              src={teamImages[(idx+2) > teamImages.length ? ( (idx+2) > teamImages.length-1 ? 0 : 1 ) : idx+2]}
+              src={teamImages[(idx+2) > teamImages.length ? ( (idx+1) > teamImages.length-1 ? 1 : 0 ) : idx+2]}
               loader={imageLoader}
               alt={`Team ${teamNames[idx+2]} ${idx + 2}`}
               className="sm:h-64 h-32"
