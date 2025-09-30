@@ -3,10 +3,10 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Cropper, { Area } from "react-easy-crop";
-import { getCroppedImg } from "./cropImage"; //#endregion
-import ShareButton from "./shareButton";
+import { getCroppedImg } from "./cropImage"; 
 import { Capacitor } from "@capacitor/core";
 
+// TeamSelfieUploader Props
 type TeamSelfieUploaderProps = {
   teamUname?: string; // optional username for fetching server image
 };
@@ -20,8 +20,12 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
   const [showCropper, setShowCropper] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null); // Zustand für Fehlerbehandlung
+  const [fileName, setFileName] = useState<string | null>(null); // Dateiname für die Anzeige
 
+  // Capacitor Platform Check
+  const isAndroid = Capacitor.getPlatform() === "android"; 
+
+  // Cropper Callback
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -33,16 +37,13 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
       try {
         const res = await fetch(`/uploads/${teamUname.toLowerCase()}.jpg`);
         if (res.ok) {
-          // Erstelle eine Blob-URL, um sie als Image-Source zu verwenden
           const blob = await res.blob();
           const url = URL.createObjectURL(blob);
           setImageUrl(url);
         } else {
-          setError("Bild nicht gefunden"); // Fehlerfall hinzufügen
           console.error("Image not found");
         }
       } catch (err) {
-        setError("Fehler beim Laden des Bildes");
         console.error("Failed to fetch image:", err);
       }
     };
@@ -50,6 +51,7 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
     fetchImage();
   }, [teamUname]);
 
+  // Handle Image Change
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -59,25 +61,22 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
       setShowCropper(true);
     };
     reader.readAsDataURL(file);
+    setFileName(file?.name || null); // Setzt den Dateinamen
   };
 
+  // Handle Image Crop Save
   const handleCropSave = async () => {
     if (imageSrc && croppedAreaPixels) {
       try {
-        // Hole das zugeschnittene Bild als Data-URL
         const croppedDataUrl = await getCroppedImg(imageSrc, croppedAreaPixels);
         setCroppedImage(croppedDataUrl);
         setShowCropper(false);
 
-        // Konvertiere Data-URL in Blob
         const res = await fetch(croppedDataUrl);
         const blob = await res.blob();
-
-        // Erstelle FormData, um es an den Server zu senden
         const formData = new FormData();
         formData.append("file", blob, "team-selfie.png");
 
-        // POST Anfrage an die API
         const uploadRes = await fetch("/api/image/upload", {
           method: "POST",
           body: formData,
@@ -85,24 +84,55 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
 
         if (!uploadRes.ok) throw new Error("Upload failed");
 
-        console.log("Bild erfolgreich hochgeladen!");
+        console.log("Image uploaded successfully!");
       } catch (err) {
-        console.error("Fehler beim Zuschneiden oder Hochladen des Bildes:", err);
-        setError("Fehler beim Hochladen des Bildes");
+        console.error("Error cropping or uploading image:", err);
       }
     }
   };
 
-  const CustomFileInput = () => {
-    const [fileName, setFileName] = useState<string | null>(null);
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        setFileName(file.name); // Zeigt den Namen der ausgewählten Datei an
+  // Share Button Funktion
+  const ShareButton = () => {
+    const shareImage = async () => {
+      try {
+        if (navigator.share) {
+          // Wenn der Browser Sharing unterstützt
+          await navigator.share({
+            title: "Team Selfie",
+            text: "Schau dir unser Team-Selfie an!",
+            url: croppedImage || imageUrl || "/images/teamplaceholder.png",
+          });
+        } else {
+          // Wenn Sharing nicht unterstützt wird (z.B. auf Web)
+          alert("Sharing is not supported on this platform.");
+        }
+      } catch (err) {
+        console.error("Error sharing:", err);
+        alert("Sharing failed.");
       }
     };
 
+    return isAndroid ? (
+      <button onClick={shareImage} className="flex items-center gap-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
+        {/* Einfaches SVG-Icon für Teilen */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H7m7-4h-7" />
+        </svg>
+        Teilen
+      </button>
+    ) : (
+      <button onClick={shareImage} className="flex items-center gap-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
+        {/* Einfaches SVG-Icon für Teilen */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H7m7-4h-7" />
+        </svg>
+        Teilen
+      </button>
+    );
+  };
+
+  // Custom File Input
+  const CustomFileInput = () => {
     return (
       <div className="mt-8 mb-8">
         <h2 className="text-lg font-semibold text-pink-600 dark:text-pink-400 mb-2 text-center">
@@ -129,9 +159,7 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
 
           {(croppedImage || imageUrl) && (
             <div className="space-y-4">
-              {/* Flexbox für den Button */}
               <div className="flex gap-3 mt-4">
-                {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
                 <label
                   htmlFor="file-upload"
                   className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
@@ -139,25 +167,18 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
                 >
                   Wähle dein Bild aus
                 </label>
-
-                {/* Unsichtbares Input für die Dateiauswahl */}
                 <input
                   id="file-upload"
                   type="file"
                   accept="image/*"
-                  onChange={handleFileChange}
+                  onChange={handleImageChange}
                   className="hidden"
                 />
               </div>
 
-              {/* Anzeige des Dateinamens */}
-              {fileName ? (
+              {fileName && (
                 <div className="text-sm text-gray-500 mt-2">
                   <strong>Ausgewählte Datei:</strong> {fileName}
-                </div>
-              ) : (
-                <div className="text-sm text-gray-500 mt-2">
-                  <strong>Kein Bild ausgewählt.</strong>
                 </div>
               )}
             </div>
@@ -201,17 +222,15 @@ export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProp
               )}
             </div>
           )}
-
-          {/* Fehleranzeige */}
-          {error && (
-            <div className="text-sm text-red-500 mt-2">
-              <strong>Fehler:</strong> {error}
-            </div>
-          )}
         </div>
       </div>
     );
   };
 
-  return <CustomFileInput />;
+  return (
+    <div>
+      <CustomFileInput />
+      <ShareButton />
+    </div>
+  );
 }
