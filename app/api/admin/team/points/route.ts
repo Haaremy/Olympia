@@ -57,7 +57,7 @@ const pointsToInsert = userInputs.map(u => ({
 const entriesToInsert = userInputs.map(u => ({
   teamId,
   gameId,
-  value: 404, // placeholder
+  value: 9999, // placeholder
   slot: u.slot,
 }));
 
