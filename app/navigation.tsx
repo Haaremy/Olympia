@@ -343,7 +343,7 @@ if (lastChecked) {
           </div>
 
 
-          <div className={`flex flex-wrap gap-2 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
+          <div className={`flex sm:flex-wrap sm:gap-2 gap-1 justify-center sm:justify-end ${currentPath == "/credits" ? "visible" : "hidden"}`}>
               <Link
                       href="/"
                       className="flex flex-col sm:flex-row no-wrap items-center sm:px-2 px-4 py-1 sm:px-3 sm:py-2 md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500"
