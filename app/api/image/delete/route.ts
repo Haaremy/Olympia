@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     // JSON Body von der Anfrage extrahieren
     const { imageName } = await req.json();
@@ -34,4 +34,5 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
   }
 }
+
 
