@@ -93,7 +93,15 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 };
 
 
-  
+  const CustomFileInput = () => {
+  const [fileName, setFileName] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFileName(file.name); // Zeigt den Namen der ausgewählten Datei an
+    }
+  };
 
   return (
     <div className="mt-8 mb-8">
@@ -121,32 +129,38 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {(croppedImage || imageUrl) && (
           <div className="space-y-4">
-            <div className="flex gap-3 mt-4">
-              {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
-              <label 
-                htmlFor="file-upload" 
-                className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
-              >
-                <FaImage className="text-white" /> {/* Das Bild-Icon */}
-                Wähle das Bild, Bildervan...
-              </label>
-      
-              {/* Unsichtbares Input für die Dateiauswahl */}
-              <input 
-                id="file-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </div>
-      
-            {fileName && (
-              <div className="text-sm text-gray-500 mt-2">
-                <strong>Ausgewählte Datei:</strong> {fileName}
-              </div>
-            )}
+      {/* Flexbox für den Button */}
+      <div className="flex gap-3 mt-4">
+        {/* Benutzerdefinierter "Datei auswählen"-Button mit Icon */}
+        <label 
+          htmlFor="file-upload" 
+          className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
+          title="Wählen Sie ein Bild zum Hochladen"
+        >
+          Wähle dein Bild aus
+        </label>
+
+        {/* Unsichtbares Input für die Dateiauswahl */}
+        <input 
+          id="file-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </div>
+
+      {/* Anzeige des Dateinamens */}
+      {fileName ? (
+        <div className="text-sm text-gray-500 mt-2">
+          <strong>Ausgewählte Datei:</strong> {fileName}
         </div>
+      ) : (
+        <div className="text-sm text-gray-500 mt-2">
+          <strong>Kein Bild ausgewählt.</strong>
+        </div>
+      )}
+    </div>
 
       {showCropper && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50 p-4">
