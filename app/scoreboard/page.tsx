@@ -243,8 +243,8 @@ export default function ScoreboardTabs() {
             key={idx}
             className={`relative  flex flex-col bg-white dark:bg-gray-800 shadow-md overflow-hidden group cursor-pointer transition duration-300 ease-in-out hover:shadow-xl hover:scale-105 `}
           >
-            <img
-              src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]}
+            <Image
+              src={teamImages[(idx+1) > teamImages.length-1 ? 0 : idx+1]+`?ts=${Date.now()}`}
               alt={`Team ${teamNames[idx+1]} ${idx + 1}`}
               className="sm:h-64 h-32"
             />
