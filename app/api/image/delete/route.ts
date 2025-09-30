@@ -1,37 +1,35 @@
-import fetch from 'node-fetch';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { imageName } = req.body;
+export async function POST(req) {
+  try {
+    // JSON Body von der Anfrage extrahieren
+    const { imageName } = await req.json();
 
     if (!imageName) {
-      return res.status(400).json({ error: 'Kein Bildpfad angegeben' });
+      return NextResponse.json({ error: 'Kein Bildname angegeben' }, { status: 400 });
     }
 
-    try {
-      // Die URL der externen PHP-Datei, die das Bild löscht
-      const phpUrl = `https://olympia.haaremy.de/uploads/delete.php`;
+    // Die URL der externen PHP-Datei, die das Bild löscht
+    const phpUrl = `https://dein-server.de/pfad/zur/deleteImage.php`;
 
-      // Anfrage an die PHP-Datei senden
-      const response = await fetch(phpUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ imageName }),
-      });
+    // Anfrage an die PHP-Datei senden
+    const response = await fetch(phpUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({ imageName }), // Hier verwenden wir 'imageName' statt 'imagePath'
+    });
 
-      if (!response.ok) {
-        throw new Error('Fehler beim Löschen des Bildes');
-      }
-
-      const result = await response.json();
-      return res.status(200).json(result);
-
-    } catch (error) {
-      return res.status(500).json({ error: 'Interner Serverfehler' });
+    if (!response.ok) {
+      throw new Error('Fehler beim Löschen des Bildes');
     }
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+
+    const result = await response.json();
+    
+    return NextResponse.json(result, { status: 200 });
+
+  } catch (error) {
+    return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
   }
 }
