@@ -14,7 +14,7 @@ import Report from "./report";
 import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
-import Image from "react/Image";
+import Image from "next/image";
 
 
 
