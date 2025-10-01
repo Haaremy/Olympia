@@ -9,6 +9,7 @@ import {i18n} from 'i18next';
 import '../../lib/i18n';
 import { Slot } from '@prisma/client';
 import Image from 'next/image';
+import socket from "../../lib/socket";
  
 
 
@@ -130,6 +131,7 @@ export default function ScoreboardTabs() {
 
   // Fetch Files and Names when Component Mounts
   useEffect(() => {
+    socket.emit("scoreboard");
     const fetchFilesAndNames = async () => {
       const files = await loadFiles();
       const names = await loadNames(files);
@@ -162,9 +164,14 @@ export default function ScoreboardTabs() {
     return `${hours > 0 ? `${hours}h ` : ''}${minutes > 0 || hours > 0 ? `${minutes}m ` : ''}${seconds}s`;
   };
 
+ 
+  
   // Fetch Scoreboard and Records
   useEffect(() => {
+
+
     const fetchScoreboardAndRecords = async () => {
+      console.log("📥 Fetch scoreboard triggered");
       try {
         const [scoreboardRes, recordsRes] = await Promise.all([
           fetch("/api/scoreboard"),
@@ -187,9 +194,16 @@ export default function ScoreboardTabs() {
       } finally {
         setLoading(false); // Set loading to false once data is fetched or fails
       }
+      
     };
 
-    fetchScoreboardAndRecords();
+    //fetchScoreboardAndRecords();
+    
+    socket.on("scoreboard", fetchScoreboardAndRecords);
+    
+    return () => {
+    socket.off("scoreboard", fetchScoreboardAndRecords);
+  };
   }, []); // Only run once when the component mounts
 
   // Format Date
@@ -398,22 +412,22 @@ const imageLoader = ({ src }: { src: string }) => {
     <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
       <td className="border px-2 py-1">{gameId}</td>
       <td className="border px-2 py-1">
-        {game?.tagged.includes("hidden")
+        {game?.tagged?.includes("hidden")
           ? "????"
           : slotValues["USER1"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
           ? "????"
           : slotValues["USER2"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
           ? "????"
           : slotValues["USER3"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged.includes("hidden") || game?.tagged.includes("field1")
+        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
           ? "????"
           : slotValues["USER4"]}
       </td>
@@ -446,7 +460,7 @@ const imageLoader = ({ src }: { src: string }) => {
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {/* Show team if "field1" is in gameName, otherwise show team + player */}
-                  {record.tagged.includes("field1") ? `👑 ${record.topTeam}` : `👑 ${record.topTeam} - ${record.topPlayer}`}
+                  {record?.tagged?.includes("field1") ? `👑 ${record.topTeam}` : `👑 ${record.topTeam} - ${record.topPlayer}`}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
                   {record.topPoints} {t(record.tagged.split(":unit:")[1])}

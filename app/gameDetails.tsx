@@ -15,6 +15,7 @@ import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
 import Image from "next/image";
+import socket from "../lib/socket";
 
 
 
@@ -151,7 +152,7 @@ const [userData, setUserData] = useState({
 
     if (!response.ok) throw new Error("Fehler beim Speichern");
     if(isApp) await Haptics.impact({ style: ImpactStyle.Medium });
-
+    
     confetti({
       particleCount: 150,
       spread: 360,
@@ -161,6 +162,8 @@ const [userData, setUserData] = useState({
     setShowSaved(true);
     setUpdateSite(true);
     
+    //console.log("📤 Points saved, emitting scoreboard update");
+    socket.emit("scoreboard");
 
     const playedGames = localStorage.getItem("playedGames") || "";
     //const formattedId = message.id < 10 ? `0${message.id}` : message.id;

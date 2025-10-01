@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useUI } from "./context/UIContext";
 import { useTranslation } from "next-i18next";
+import socket from "../lib/socket";
 
 interface ModalProps {
   onClose: () => void;
@@ -44,29 +45,48 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   // Fetch messages
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch("/api/chat/receive");
-        if (res.ok) {
-          const data: Chat[] = await res.json();
-          setHistory(data);
-        } else {
-          setError("Fehler beim Abrufen der Nachrichten.");
-        }
-      } catch (e) {
-        setError("Es gab ein Problem beim Abrufen der Nachrichten.");
-        console.error("Error fetching chat messages:", e);
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("/api/chat/receive");
+      if (res.ok) {
+        const data: Chat[] = await res.json();
+        setHistory(data);
+      } else {
+        setError("Fehler beim Abrufen der Nachrichten.");
       }
-    };
+    } catch (e) {
+      setError("Es gab ein Problem beim Abrufen der Nachrichten.");
+      console.error("Error fetching chat messages:", e);
+    }
+  };
 
+  // define a handler
+  const handleChatMessage = () => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  };
+
+  // subscribe
+  socket.on("chat message", handleChatMessage);
+
+  // initial fetch
+  fetchMessages();
+
+  // polling fallback
+  //const interval = setInterval(fetchMessages, 100000);
+
+  // cleanup
+  return () => {
+    //clearInterval(interval);
+    socket.off("chat message", handleChatMessage);
+  };
+}, []);
+
 
   const scrollEnd = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+
 
   const handleSend = async () => {
     if (!message.trim() || isSending) return;
@@ -78,9 +98,11 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
       });
+      
 
       if (res.ok) {
         setMessage("");
+        socket.emit("chat message");
       } else {
         console.error("Error on Chat send");
       }
