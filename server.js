@@ -15,6 +15,7 @@ io.on("connection", (socket) => {
 
   socket.on("chat message", () => io.emit("chat message"));
   socket.on("scoreboard", () => io.emit("scoreboard"));
+  //socket.on("teams submitted", (id) => io.emit("scoreboard"));
 });
 
 server.listen(4000, () => console.log("> Socket.IO ready on http://localhost:4000"));

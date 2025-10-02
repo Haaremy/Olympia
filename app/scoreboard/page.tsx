@@ -131,7 +131,6 @@ export default function ScoreboardTabs() {
 
   // Fetch Files and Names when Component Mounts
   useEffect(() => {
-    socket.emit("scoreboard");
     const fetchFilesAndNames = async () => {
       const files = await loadFiles();
       const names = await loadNames(files);
@@ -171,7 +170,6 @@ export default function ScoreboardTabs() {
 
 
     const fetchScoreboardAndRecords = async () => {
-      console.log("📥 Fetch scoreboard triggered");
       try {
         const [scoreboardRes, recordsRes] = await Promise.all([
           fetch("/api/scoreboard"),
@@ -197,7 +195,7 @@ export default function ScoreboardTabs() {
       
     };
 
-    //fetchScoreboardAndRecords();
+    fetchScoreboardAndRecords();
     
     socket.on("scoreboard", fetchScoreboardAndRecords);
     

@@ -42,6 +42,11 @@ npx prisma generate
 npx tsx prisma/cleanDB.ts
 npx prisma migrate deploy
 
+# Websocket Info
+server.js
+lib/socket.js
+-> scoreboard, chat trigger to update
+
 
 
 ## Game Entries Tags:
@@ -60,3 +65,4 @@ npx prisma migrate deploy
 +1 für zu extreme Einträge 
 +3 für zu schnelle Einträge zwischen Spielen
 berechnet in punkte submit api & genutzt in Scoreboard api und records api  
+
