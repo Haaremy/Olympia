@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import '../lib/i18n'
 import { Capacitor } from '@capacitor/core';
 import Image from "next/image";
+import socket from "@/lib/socket";
 
 
 
@@ -22,6 +23,7 @@ export default function Navigation() {
   const [showChat, setShowChat] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { t, i18n } = useTranslation();  // Hook innerhalb der Komponente verwenden
+  const [newChat, setNewChat] = useState(false);
 
   const { data: session, status } = useSession();
   const user = session?.user as Session["user"];
@@ -48,6 +50,7 @@ export default function Navigation() {
   
 const handleChatOpen = () => {
  setShowChat(true);
+ setNewChat(false);
 }
   
   // Schließen des Sprachwahl-Modals
@@ -67,6 +70,13 @@ const handleChatOpen = () => {
   }
 
   useEffect(() => {
+    socket.on("chat message", () => {
+      if (!showChat) {
+        setNewChat(true);
+      } 
+    });
+
+    
     if (typeof window !== "undefined") {
       const handleScroll = () => {
         setIsScrolled(window.scrollY > 10); // Toggle `isScrolled` based on scroll position
@@ -79,6 +89,9 @@ const handleChatOpen = () => {
         window.removeEventListener("scroll", handleScroll);
       };
     }
+    return () => {
+      socket.off("chat message");
+    };
   }, []); // Run once when component mounts
   
 
@@ -338,6 +351,7 @@ if (lastChecked) {
                     <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                       Chat
                     </p>
+                    {newChat && !showChat && <span className="absolute ml-18 mb-10 block h-5 w-5 rounded-full bg-red-600 border dark:border-white"></span> }
                   </button>
             
           </div>
@@ -454,6 +468,7 @@ if (lastChecked) {
                     <p className="block text-xs sm:text-sm md:text-lg font-semibold">
                       Chat
                     </p>
+                     {newChat && !showChat && <span className="absolute ml-18 mb-10 block h-5 w-5 rounded-full bg-red-600"></span> }
                   </button>
 
           </div>

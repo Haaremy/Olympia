@@ -11,6 +11,8 @@ export async function DELETE() {
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 401 });
   }
 
+  
+
   try {
     const deletedTeam = await prisma.team.delete({
       where: { uname: session.user.uname },

@@ -12,6 +12,7 @@ interface ModalProps {
 }
 
 interface Chat {
+  id: number;
   message: string;
   createdAt: string;
   team: {
@@ -136,9 +137,27 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   });
 };
 
+const handleDelete = async () => {
+  if (!contextMenu) return;
+  const chat = contextMenu.chat;
+  try {
+    const res = await fetch(`/api/chat/delete?id=${chat.id}`, {
+  method: "DELETE",
+});
+    if (res.ok) {
+      socket.emit("chat message");
+      setContextMenu(null);
+    }
+  } catch (e) {
+    console.error("Error deleting chat message:", e);
+  } finally {
+    setContextMenu(null);
+  } 
+};
 
 
-  const closeContextMenu = () => setContextMenu(null);
+
+  const closeContextMenu = () => { if(contextMenu) {setContextMenu(null)}; };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50" >
@@ -167,7 +186,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                   isOwnMessage ? "justify-end" : "justify-start"
                 }`}
                 onClick={(e) =>
-                  (isOwnMessage || session?.user?.role === "ADMIN") && openOptions(chat, e)
+                  ( session?.user?.role === "ADMIN") && openOptions(chat, e) // isOwnMessage ||
                 }
               >
 
@@ -188,10 +207,11 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 )}
 
                 <div
-                  className={`max-w-[70%] px-4 py-2 rounded-2xl shadow relative
+                  className={`max-w-[50%] px-4 py-2 rounded-2xl shadow relative
                     ${isOwnMessage
                       ? "bg-pink-500 text-white rounded-br-none"
-                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"}`}
+                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"} 
+                    break-words whitespace-normal`}
                 >
                   {!isOwnMessage && (
                     <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1">
@@ -203,6 +223,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </div>
+
 
                 {/* Avatar rechts für eigene Messages */}
                 {isOwnMessage && (
@@ -269,8 +290,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           style={{ top: contextMenu.y, left: contextMenu.x }}
           className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
         >
-          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">✏️ Edit</button>
-          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600">🗑️ Delete</button>
+          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600 dark:text-white">✏️ Edit</button>
+          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600 dark:text-white" onClick={handleDelete}>🗑️ Delete</button>
         </div>
       )}
     </div>

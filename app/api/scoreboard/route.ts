@@ -13,7 +13,11 @@ export async function GET() {
         },
       },
       orderBy: { pointsTotal: "desc" },
-      include: {
+      select: {
+        id: true,
+        uname: true,
+        pointsTotal: true,
+        cheatPoints: true,
         entries: {
           include: {
             game: true,

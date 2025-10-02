@@ -473,7 +473,7 @@ const formatTime = (ms: number) => {
 
                     {/* Responsive Video (optional) */}
                     {message.url ? (
-                        <div className="aspect-[16/9] mb-4">
+                        <div className="aspect-[16/9] mb-4 mt-8">
                             <iframe
                                 className="w-full h-full rounded-lg shadow-lg"
                                 src={message.url}
@@ -483,14 +483,13 @@ const formatTime = (ms: number) => {
                             />
                         </div>
                     ) : (
-                        <div className="aspect-[16/9] mb-4">
+                        <div className="aspect-[16/9] mb-4 mt-8">
   <Image
     src="/images/22339831_6621255.jpg"
     alt="placeholder"
     width={800}
     height={450}
-    className="w-full h-full rounded-lg shadow-lg object-cover"
-  />
+    className="w-full h-full rounded-lg shadow-lg object-cover filter grayscale blur-sm hover:grayscale-0 hover:blur-0 transition"  />
 </div>
                     )}
                     

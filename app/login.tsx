@@ -67,18 +67,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   }
 
   try {
-    // 1. Check if username already exists
-    const checkRes = await fetch(`/api/team/search?query=${username}`, {
-      method: "GET",
-    });
 
-    if (checkRes.ok) {
-      const data = await checkRes.json();
-      if (data.found) {
-        alert("Team ID ist bereits vergeben.");
-        return;
-      }
-    }
 
     // 2. Save the new user
     const saveRes = await fetch("/api/team/register", {

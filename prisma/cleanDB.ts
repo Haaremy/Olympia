@@ -18,6 +18,10 @@ async function cleanDB() {
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Game'`;
   await prisma.gameSettings.deleteMany({});
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='GameSettings'`;
+  await prisma.chatMessage.deleteMany({});
+  await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='chatMessage'`;
+  await prisma.reports.deleteMany({});
+  await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Reports'`;
   
   console.log('✅ Alle Datensätze wurden erfolgreich gelöscht!')
 }

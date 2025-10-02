@@ -10,7 +10,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
   }
 
-  const exists = await prisma.team.findUnique({ where: { uname } });  // where unique explicitly
+  const exists = await prisma.team.findFirst({
+  where: {
+    uname: {
+      equals: uname, // entspricht ===
+    },
+  },
+});  // where unique explicitly
 
   if (exists) {
     return NextResponse.json({ error: "Benutzername bereits vergeben" }, { status: 409 });

@@ -20,44 +20,65 @@ export default function ShareButton() {
         });
 
       // -----------------------------
-      // 1️⃣ Canvas erstellen
-      // -----------------------------
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+// 1️⃣ Canvas erstellen
+// -----------------------------
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
 
-      canvas.width = 800; // Standardbreite
-      canvas.height = 600; // Standardhöhe
+canvas.width = 1280;
+canvas.height = 720;
 
-      // -----------------------------
-      // 2️⃣ Hintergrundbild laden und zeichnen
-      // -----------------------------
-      const bgImage = await loadImage('https://olympia.haaremy.de/uploads/fbins.jpg');
-      canvas.width = bgImage.width;
-      canvas.height = bgImage.height;
-      ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+// -----------------------------
+// 2️⃣ Farbverlauf-Hintergrund (blau → rot)
+// -----------------------------
+const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+gradient.addColorStop(0, '#1E3A8A'); // Blau oben
+gradient.addColorStop(1, '#DC2626'); // Rot unten
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // -----------------------------
-      // 3️⃣ Text hinzufügen
-      // -----------------------------
-      ctx.font = '48px sans-serif';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.fillText('Team Olympia', canvas.width / 2, 100);
+// -----------------------------
+// 3️⃣ Hintergrundbild unten drapieren
+// -----------------------------
+const bgImage = await loadImage('https://olympia.haaremy.de/uploads/fbins.jpg');
+const bgWidth = canvas.width;
+const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
+const bgY = canvas.height - bgHeight - 0; // unten
+ctx.drawImage(bgImage, 0, bgY, bgWidth, bgHeight);
 
-      // -----------------------------
-      // 4️⃣ Overlay-Bild
-      // -----------------------------
-      const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
-      const overlayWidth = 150;
-      const overlayHeight = 150;
-      ctx.drawImage(
-        overlay,
-        canvas.width - overlayWidth - 20,
-        canvas.height - overlayHeight - 20,
-        overlayWidth,
-        overlayHeight
-      );
+// -----------------------------
+// 4️⃣ Text oben in Weiß
+// -----------------------------
+ctx.font = '64px sans-serif';
+ctx.fillStyle = 'white';
+ctx.textAlign = 'center';
+ctx.fillText('Team Olympia', canvas.width / 2, 100);
+
+// -----------------------------
+// 5️⃣ Overlay-Bild (unten rechts oder unter Überschrift)
+// -----------------------------
+const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
+const overlayWidth = 100;
+const overlayHeight = 100;
+
+// Option A: unten rechts
+ctx.drawImage(
+  overlay,
+  canvas.width - overlayWidth - 20,
+  canvas.height - overlayHeight - 20,
+  overlayWidth,
+  overlayHeight
+);
+
+// Option B: unter Überschrift (auskommentieren, falls du A bevorzugst)
+// ctx.drawImage(
+//   overlay,
+//   canvas.width / 2 - overlayWidth / 2,
+//   120, // etwas unter die Überschrift
+//   overlayWidth,
+//   overlayHeight
+// );
 
       // -----------------------------
       // 5️⃣ Canvas zu Blob → Base64

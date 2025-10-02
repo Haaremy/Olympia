@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react"; // Import der useSession Hook
 
 interface DeleteConfirmModalProps {
   onClose: () => void;
@@ -12,6 +13,7 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
   const overlayRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
+  const { data: session } = useSession();
 
   useEffect(() => {
     const modal = modalRef.current;
@@ -37,7 +39,13 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
   const onConfirm = async () =>{
     // clear local storage
       localStorage.removeItem("playedGames");
-    
+      if(!!session)
+      await fetch("/uploads/delete.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageName: session.user.uname }),
+        });
+
       // call delete API
       await fetch(`/api/team/delete`, {
         method: "DELETE",

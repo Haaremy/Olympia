@@ -12,7 +12,11 @@ export async function POST(req: Request) {
   }
 
   const data = await req.json();
-  const { id, name, user1, user2, user3, user4 } = data;
+  const { id, name, players } = data;
+  const user1 = players[0];
+  const user2 = players[1];
+  const user3 = players[2] || null;
+  const user4 = players[3] || null;
 
   if (!id) {
     return NextResponse.json({ error: "ID fehlt" }, { status: 400 });
@@ -25,6 +29,8 @@ export async function POST(req: Request) {
     updatedUser3 = updatedUser4;
     updatedUser4 = null;
   }
+
+  console.log(  "[POST /api/team/update]", { id, name, user1, user2, updatedUser3, updatedUser4 });
 
   try {
     const updatedTeam = await prisma.team.update({
