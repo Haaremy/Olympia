@@ -45,7 +45,7 @@ export function useOngoingNotification() {
         }
 
         const data = await res.json(); // <-- await hier!
-        let count = 1;
+        let count = 0;
         for (const team of data) {   // <-- for...of, nicht for...in
           count++;
           if (team.uname === session.user.uname) {
@@ -96,7 +96,7 @@ export function useOngoingNotification() {
         const [punkte, position] = await fetchTeamPoints();
 
       updateOngoingNotification(
-        `${session ? `Team ${session.user.name}: ${punkte} Punkte - Platz ${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
+        `${session ? `Team ${session.user.name}: ${punkte} Punkte - Platz #${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
       );
     }
 
@@ -127,7 +127,7 @@ export function useOngoingNotification() {
         setIsAppInBackground(false);
         updateOngoingNotification(
           session 
-            ? `Team ${session.user.name}: ${punkte} Punkte - Platz ${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}`
+            ? `Team ${session.user.name}: ${punkte} Punkte - Platz #${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}`
             : "Login für Live Daten."
         );
       } else {
