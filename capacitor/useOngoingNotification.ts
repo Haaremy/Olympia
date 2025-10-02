@@ -35,14 +35,14 @@ export function useOngoingNotification() {
   }, [pos]);
 
  
-
-  useEffect(() => {
-    const fetchTeamPoints = async () => {
-      if (!session?.user?.uname) return;
+  const fetchTeamPoints = async (): Promise<[number, number]> => {
+      if (!session?.user?.uname) return [0, 0];
 
       try {
         const res = await fetch("/api/scoreboard");
-        if (!res.ok) throw new Error("Fehler beim Laden des Teams");
+        if (!res.ok) {
+          throw new Error("Fehler beim Laden des Teams");
+        }
 
         const data = await res.json(); // <-- await hier!
         let count = 1;
@@ -51,27 +51,18 @@ export function useOngoingNotification() {
           if (team.uname === session.user.uname) {
             setPoints(team.pointsTotal || 0);
             setPos(count);
-            return;
-          }
+            return [team.pointsTotal || 0, count];
+          } else return [0, 0];
         }
 
       } catch (err) {
         console.error("Scoreboard konnte nicht geladen werden:", err);
         setPoints(0); // optional Fallback
+        return [0, 0];
       }
+      return [0, 0];
 
     };
-
-    fetchTeamPoints(); // Initial fetch
-    socket.on("scoreboard", fetchTeamPoints);
-
-    //const intervalId = setInterval(fetchTeamPoints, 60000); // Every 60 seconds
-
-    return () => {
-      socket.off("scoreboard", fetchTeamPoints);
-      //clearInterval(intervalId); // Cleanup on unmount
-    }
-  }, [session?.user?.uname]);
 
   // Load settings once
   useEffect(() => {
@@ -101,13 +92,20 @@ export function useOngoingNotification() {
       }
     };
 
-    const triggerUpdate = () =>  {
+    const triggerUpdate = async () =>  {
+        const [punkte, position] = await fetchTeamPoints();
+
       updateOngoingNotification(
-        `${session ? `Team ${session.user.name}: ${pointsRef.current} Punkte. ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
+        `${session ? `Team ${session.user.name}: ${punkte} Punkte - Platz ${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
       );
     }
 
-    socket.on("scoreboard", triggerUpdate);
+    if (socket.connected) {
+      socket.on("scoreboard", triggerUpdate);
+    } else {
+      socket.once("connect", () => socket.on("scoreboard", triggerUpdate));
+    }
+
 
     triggerUpdate();
     initNotification();
@@ -123,12 +121,13 @@ export function useOngoingNotification() {
   let listenerHandle: PluginListenerHandle | null = null;
 
   (async () => {
+    const [punkte, position] = await fetchTeamPoints();
     listenerHandle = await App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         setIsAppInBackground(false);
         updateOngoingNotification(
           session 
-            ? `Team ${session.user.name}: ${pointsRef.current} Punkte - Platz ${posRef.current} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}`
+            ? `Team ${session.user.name}: ${punkte} Punkte - Platz ${position} ${started ? `\nVerbleibende: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}`
             : "Login für Live Daten."
         );
       } else {
