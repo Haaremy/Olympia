@@ -6,50 +6,52 @@ import React from 'react';
 export default function ShareButton() {
   const handleShare = async () => {
     try {
-      // 1️⃣ Canvas erstellen
+      // Canvas erstellen
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-
-      // Größe definieren
       canvas.width = 800;
       canvas.height = 600;
 
-      // 2️⃣ Hintergrundbild laden
-      const image = new Image();
-      image.crossOrigin = 'anonymous'; // falls externes Bild
-      image.src = 'https://olympia.haaremy.de/uploads/fbins.jpg';
+      // Bilder laden als Promise
+      const loadImage = (src: string) =>
+        new Promise<HTMLImageElement>((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.src = src;
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+        });
 
-      image.onload = async () => {
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const bg = await loadImage('https://olympia.haaremy.de/uploads/fbins.jpg');
+      ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-        // 3️⃣ Text oder Overlay hinzufügen
-        ctx.font = '48px sans-serif';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = 'center';
-        ctx.fillText('Team Olympia', canvas.width / 2, 100);
+      const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
+      ctx.drawImage(overlay, canvas.width - 200, canvas.height - 200, 150, 150);
 
-        // Optional: weiteres Overlay-Bild
-        const overlay = new Image();
-        overlay.src = 'https://olympia.haaremy.de/images/applogo.png';
-        overlay.onload = async () => {
-          ctx.drawImage(overlay, canvas.width - 200, canvas.height - 200, 150, 150);
+      // Text hinzufügen
+      ctx.font = '48px sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText('Team Olympia', canvas.width / 2, 100);
 
-          // 4️⃣ Canvas zu Blob konvertieren
-          canvas.toBlob(async (blob) => {
-            if (!blob) return;
-            const blobUrl = URL.createObjectURL(blob);
+      // Canvas zu Blob
+      const blob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      if (!blob) return;
 
-            // 5️⃣ Share mit Capacitor
-            await Share.share({
-              title: 'Check this out!',
-              text: 'This is some awesome content from my app.',
-              url: blobUrl,
-              dialogTitle: 'Share with Santa',
-            });
-          });
-        };
-      };
+      // Temporäre URL für Share
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Share ausführen
+      await Share.share({
+        title: 'Team Olympia',
+        text: 'Hier sind die Punkte!',
+        url: blobUrl,
+        dialogTitle: 'Share with friends',
+      });
+
+      // Aufräumen
+      URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Error sharing:', error);
     }

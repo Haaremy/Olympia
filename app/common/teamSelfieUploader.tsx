@@ -176,9 +176,23 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
-          {croppedImage && (
+          {croppedImage ? (
             <Image
               src={croppedImage}
+              alt="Full Size Team Selfie"
+              className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt="Full Size Team Selfie"
+              className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <Image
+              src={"/images/teamplaceholder.png"}
               alt="Full Size Team Selfie"
               className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
               onClick={(e) => e.stopPropagation()}
