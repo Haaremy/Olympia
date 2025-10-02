@@ -9,7 +9,7 @@ export default function ShareButton() {
       await Share.share({
         title: 'Check this out!',
         text: 'This is some awesome content from my app.',
-        url: 'https://olympia.haaremy.de/fbins.jpg',
+        files: ['https://olympia.haaremy.de/uploads/fbins.jpg'],
         dialogTitle: 'Share with your friends',
       });
     } catch (error) {
