@@ -46,14 +46,15 @@ export function useOngoingNotification() {
 
         const data = await res.json(); // <-- await hier!
         let count = 0;
-        for (const team of data) {   // <-- for...of, nicht for...in
+        for (const team of data) {
           count++;
           if (team.uname === session.user.uname) {
             setPoints(team.pointsTotal || 0);
             setPos(count);
             return [team.pointsTotal || 0, count];
-          } else return [0, 0];
+          } else return [0, 0]; // ❌ Problem: return wird beim ersten Team ausgeführt
         }
+
 
       } catch (err) {
         console.error("Scoreboard konnte nicht geladen werden:", err);
@@ -121,8 +122,9 @@ export function useOngoingNotification() {
   let listenerHandle: PluginListenerHandle | null = null;
 
   (async () => {
-    const [punkte, position] = await fetchTeamPoints();
-    listenerHandle = await App.addListener('appStateChange', ({ isActive }) => {
+    
+    listenerHandle = await App.addListener('appStateChange', async ({ isActive }) => {
+      const [punkte, position] = await fetchTeamPoints();
       if (isActive) {
         setIsAppInBackground(false);
         updateOngoingNotification(

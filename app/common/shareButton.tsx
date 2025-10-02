@@ -1,6 +1,4 @@
 'use client';
-
-import { Share } from '@capacitor/share';
 import React from 'react';
 
 export default function ShareButton() {
@@ -10,50 +8,44 @@ export default function ShareButton() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
+
       canvas.width = 800;
       canvas.height = 600;
 
-      // Bilder laden als Promise
-      const loadImage = (src: string) =>
-        new Promise<HTMLImageElement>((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.src = src;
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-        });
+      // Hintergrundbild laden
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      image.src = 'https://olympia.haaremy.de/uploads/fbins.jpg';
 
-      const bg = await loadImage('https://olympia.haaremy.de/uploads/fbins.jpg');
-      ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-      const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
-      ctx.drawImage(overlay, canvas.width - 200, canvas.height - 200, 150, 150);
+        // Text hinzufügen
+        ctx.font = '48px sans-serif';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Team Olympia', canvas.width / 2, 100);
 
-      // Text hinzufügen
-      ctx.font = '48px sans-serif';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.fillText('Team Olympia', canvas.width / 2, 100);
+        // Canvas zu Data URL
+        const dataUrl = canvas.toDataURL('image/png');
 
-      // Canvas zu Blob
-      const blob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-      if (!blob) return;
-
-      // Temporäre URL für Share
-      const blobUrl = URL.createObjectURL(blob);
-
-      // Share ausführen
-      await Share.share({
-        title: 'Team Olympia',
-        text: 'Hier sind die Punkte!',
-        url: blobUrl,
-        dialogTitle: 'Share with friends',
-      });
-
-      // Aufräumen
-      URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error('Error sharing:', error);
+        // Web Share API nutzen
+        if (navigator.share) {
+          navigator.share({
+            title: 'Team Olympia',
+            text: 'Hier sind die Punkte!',
+            url: dataUrl, // funktioniert nur in Browsern mit Web Share Unterstützung
+          }).catch(console.error);
+        } else {
+          // Fallback: Bild herunterladen
+          const a = document.createElement('a');
+          a.href = dataUrl;
+          a.download = 'team-olympia.png';
+          a.click();
+        }
+      };
+    } catch (err) {
+      console.error('Error sharing:', err);
     }
   };
 
