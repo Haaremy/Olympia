@@ -52,7 +52,7 @@ export function useOngoingNotification() {
             setPoints(team.pointsTotal || 0);
             setPos(count);
             return [team.pointsTotal || 0, count];
-          } else return [0, 0]; // ❌ Problem: return wird beim ersten Team ausgeführt
+          } 
         }
 
 
