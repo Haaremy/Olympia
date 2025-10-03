@@ -7,7 +7,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 
 
 type ShareButtonProps = {
-  teamUname?: string; // optional username for fetching server image
+  teamUname?: string || ""; // optional username for fetching server image
 };
 
 export default function ShareButton({ teamUname }: ShareButtonProps) {
