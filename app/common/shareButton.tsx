@@ -7,7 +7,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 
 
 type ShareButtonProps = {
-  teamUname?: string || ""; // optional username for fetching server image
+  teamUname?: string; // optional username for fetching server image
 };
 
 export default function ShareButton({ teamUname }: ShareButtonProps) {
@@ -47,6 +47,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 // -----------------------------
 // 3️⃣ Hintergrundbild unten drapieren
 // -----------------------------
+      if(!teamUname){teamUname=""};
 const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg`);
 const bgWidth = canvas.width;
 const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
