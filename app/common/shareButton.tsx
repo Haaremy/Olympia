@@ -5,7 +5,12 @@ import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
 
-export default function ShareButton() {
+
+type ShareButtonProps = {
+  teamUname?: string; // optional username for fetching server image
+};
+
+export default function ShareButton({ teamUname }: ShareButtonProps) {
   const handleShare = async () => {
     try {
       // -----------------------------
@@ -42,7 +47,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 // -----------------------------
 // 3️⃣ Hintergrundbild unten drapieren
 // -----------------------------
-const bgImage = await loadImage('https://olympia.haaremy.de/uploads/{session.user.uname.toLower}.jpg');
+const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname}.jpg`);
 const bgWidth = canvas.width;
 const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
 const bgY = canvas.height - bgHeight - 0; // unten
