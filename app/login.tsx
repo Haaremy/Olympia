@@ -33,12 +33,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   };
     
   const performLogin = async () => {
-    if(Capacitor.getPlatform() === 'android'){
-    await createNotificationChannel();
-        await showPopupNotification(
-          "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
-        );
-    }
+    
   const result = await signIn('credentials', {
     redirect: false,
     username,
@@ -48,6 +43,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   if (result?.error) {
     setError('Ungültige Anmeldedaten');
   } else {
+    if(Capacitor.getPlatform() === 'android'){
+    await createNotificationChannel();
+        await showPopupNotification(
+          "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
+        );
+    }
     router.push('/');
     onClose();
   }
