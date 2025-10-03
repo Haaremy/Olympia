@@ -4,6 +4,7 @@ import React from 'react';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
+
 export default function ShareButton() {
   const handleShare = async () => {
     try {
@@ -26,8 +27,8 @@ const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 if (!ctx) return;
 
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = 1080;
+canvas.height = 1920;
 
 // -----------------------------
 // 2️⃣ Farbverlauf-Hintergrund (blau → rot)
@@ -41,7 +42,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 // -----------------------------
 // 3️⃣ Hintergrundbild unten drapieren
 // -----------------------------
-const bgImage = await loadImage('https://olympia.haaremy.de/uploads/fbins.jpg');
+const bgImage = await loadImage('https://olympia.haaremy.de/uploads/{session.user.uname.toLower}.jpg');
 const bgWidth = canvas.width;
 const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
 const bgY = canvas.height - bgHeight - 0; // unten
