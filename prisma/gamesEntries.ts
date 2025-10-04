@@ -66,17 +66,17 @@ const game2 = await prisma.game.create({
 const game3 = await prisma.game.create({
   data: {
     url: '',
-    tagged: "",
+    tagged: "overridePlayers,hidden,noRecord",
     languages: {
       create: [
         {
           language: 'de',
           title: 'Traumblasen',
-          story: 'tobedone',
-          station: 'tobedone',
-          capacity: 'tobedone',
-          descriptionGame: 'In einem Behälter sind 100 Bällebad Bälle und an 4 sind Träume bzw Wünsche von Kindern (zahlen für Felder)',
-          descriptionPoints: 'tobedone'
+          story: 'Der Weihnachtsmann sieht, hört und weiss alles. Immer und bei allem was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Auch unsere Träume sieht er und kann damit die Wünsche Kinder erkennen.',
+          station: '???',
+          capacity: '1 Team',
+          descriptionGame: 'In einem Behälter sind 100 Bällebad-Bälle. Jeder Ball repräsentiert den Traum eines Kindes. Wurde ein Traum dokumentiert, wird dieser nummeriert und eingelagert. Vier der Träume sind leider wieder hineingefallen.',
+          descriptionPoints: 'Findet die vier Bälle und trägt deren Nummerierung in das entsprechende Feld (1 - 4) ein.'
         },
         {
           language: 'en',
