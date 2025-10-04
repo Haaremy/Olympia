@@ -72,20 +72,20 @@ const game3 = await prisma.game.create({
         {
           language: 'de',
           title: 'Traumblasen',
-          story: 'Der Weihnachtsmann sieht, hört und weiss alles. Immer und bei allem was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Auch unsere Träume sieht er und kann damit die Wünsche Kinder erkennen.',
+          story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Auch unsere Träume sieht er und kann damit die Wünsche der Kinder erkennen.',
           station: '???',
           capacity: '1 Team',
           descriptionGame: 'In einem Behälter sind 100 Bällebad-Bälle. Jeder Ball repräsentiert den Traum eines Kindes. Wurde ein Traum dokumentiert, wird dieser nummeriert und eingelagert. Vier der Träume sind leider wieder hineingefallen.',
-          descriptionPoints: 'Findet die vier Bälle und trägt deren Nummerierung in das entsprechende Feld (1 - 4) ein.'
+          descriptionPoints: 'Findet die vier Bälle und tragt deren Nummerierung in das entsprechende Feld (1 - 4) ein.'
         },
         {
           language: 'en',
-          title: 'tobedone',
-          story: 'tobedone',
-          station: 'tobedone',
-          capacity: 'tobedone',
-          descriptionGame: 'tobedone',
-          descriptionPoints: 'tobedone'
+          title: 'Dream Bubbles',
+          story: 'Santa Claus sees, hears, and knows everything. Always, and in everything we do, he records whether we have been good or bad. Playing, laughing, and arguing by day and by night. He also sees our dreams and can recognize the wishes of children through them.',
+          station: '???',
+          capacity: '1 Team',
+          descriptionGame: 'Inside a container are 100 ball-pit balls. Each ball represents the dream of a child. Once a dream has been documented, it is numbered and stored. Unfortunately, four of the dreams have fallen back inside.',
+          descriptionPoints: 'Find the four balls and enter their numbers in the corresponding fields (1 - 4).'
         }
       ]
     }
