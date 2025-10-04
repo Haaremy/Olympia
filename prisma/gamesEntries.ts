@@ -554,7 +554,7 @@ const game19 = await prisma.game.create({
                     story: 'Die Jahreszeit gibt es vor: es wird immer kälter. Am Nordpol ist es immer eisig und klassische Partyspiele wollen dem entgegenwirken. Glühwein-Pong ist ein vollkommen neues, individuell und einzigartiges Spiel, was es nur hier gibt.',
                     station: 'Erdgeschoss - Raum 108',
                     capacity: '2x 2 Teams',
-                    descriptionGame: 'Das Spiel benötigt ein Gegenerteam! Die Wasser gefüllten Becher werden auf die Pyramiden Markierung gestellt. Die Teams und Spieler werfen abwechselnd (außer auf den mit den Bällen drin). Gilt ein Becher als getroffen, wird dieser beiseite gestellt. Sind alle Becher eines Teams getroffen, ist das Spiel beendet.',
+                    descriptionGame: 'Das Spiel benötigt ein Gegenerteam! Die Wasser gefüllten Becher werden auf die Pyramiden Markierung gestellt. Es wird in dieser Version mit 6 Bechern gespielt, von der Spitze hinab aufgebaut. Die Teams und Spieler werfen abwechselnd (außer auf den mit den Bällen drin). Gilt ein Becher als getroffen, wird dieser beiseite gestellt. Sind alle Becher eines Teams getroffen, ist das Spiel beendet.',
                     descriptionPoints: 'Jeder Spieler trägt die vom ihm getroffenen Becher in sein #Feld ein.'
                 },
                 {
@@ -563,7 +563,7 @@ const game19 = await prisma.game.create({
                     story: 'The season dictates: it\'s getting colder and colder. At the North Pole, it’s always freezing, and classic party games are designed to counteract that. Mulled Wine Pong is a completely new, individual and unique game that is only available here.',
                     station: 'Ground Floor - Room 108',
                     capacity: '2x 2 teams',
-                    descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. The teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
+                    descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. In this version we will play with 6 cups, placed top down from the pyramids tip. The teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
                     descriptionPoints: 'Each player enters the cups they have hit in their #field.'
                 }
             ]
