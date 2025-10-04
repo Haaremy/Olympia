@@ -402,20 +402,20 @@ const game14 = await prisma.game.create({
         {
           language: 'de',
           title: 'Gutes Kind, böses Kind',
-          story: 'In den Supermärken und Supermalls der Erde findet man häufiger gesadte Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiss, hat er Mal eine Auszeit verdient und braucht insbesondere in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
+          story: 'In den Supermärkten und Einkaufszentren der Erde trifft man häufig auf die gesandten Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiß, hat er sich hin und wieder eine Auszeit verdient und braucht besonders in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten, und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
           station: '???',
-          capacity: 'Multiple Teams',
+          capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
-          descriptionPoints: "Tragt in das entsprechende Feld eine 1 ein, wenn die Aussage eine Wahrheit ist. Wenn es eine Lüge ist, trägt eine 2 ein."
+          descriptionPoints: "Tragt in das entsprechende Feld eine 1 ein, wenn die Aussage wahr ist. Wenn es eine Lüge ist, tragt eine 2 ein."
         },
         {
           language: 'en',
-          title: 'tobedone',
-          story: 'tobedone',
-          station: 'tobedone',
-          capacity: 'tobedone',
-          descriptionGame: 'tobedone',
-          descriptionPoints: "tobedone"
+          title: 'Good Kid, Bad Kid',
+          story: 'In the supermarkets and shopping malls of the world, one often encounters Santa’s appointed helpers. Even though Santa sees, hears, and knows everything, he deserves a break from time to time and especially needs helpers during the busy season who listen to and assess the wishes and stories of children. The children tell the helpers many different stories, and to help them better evaluate the children, they are trained to recognize lies and truths through specific questions.',
+          station: '???',
+          capacity: 'Multiple Teams',
+          descriptionGame: 'On the table are facts and lies. Examine them using your best judgment.',
+          descriptionPoints: "Enter a 1 in the corresponding field if the statement is true. If it is a lie, enter a 2."
         }
       ]
     }
