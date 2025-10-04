@@ -46,7 +46,7 @@ const game2 = await prisma.game.create({
           station: 'Obergeschoss 1 - Foyer',
           capacity: 'Multiple Teams',
           descriptionGame: 'Vor euch liegen Buchstaben und ihr müsst damit die 4 Wort-Kästchen (gedanklich) ausfüllen. Hierfür habt ihr wie bei einem Kreuzworträtsel Hinweise neben den Kästchen. Besprecht euch im Team.',
-          descriptionPoints: 'Die Buchstaben haben Zahlwerte. Tragt den Zahlenwert in das entsprechende #Feld ein, auf dem der Buchstabe liegt.'
+          descriptionPoints: 'Die Buchstaben haben Zahlwerte (A = 1; B = 2; ...; Z = 26). Tragt den Zahlenwert in das entsprechende #Feld ein, auf dem der Buchstabe liegt.'
         },
         {
           language: 'en',
