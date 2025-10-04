@@ -402,10 +402,10 @@ const game14 = await prisma.game.create({
         {
           language: 'de',
           title: 'Gutes Kind, böses Kind',
-          story: 'In den Supermärken und Supermalls der Erde findet man häufiger gesadte Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiss, hat er Mal eine Auszeit verdient und braucht insbesondere in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten.',
+          story: 'In den Supermärken und Supermalls der Erde findet man häufiger gesadte Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiss, hat er Mal eine Auszeit verdient und braucht insbesondere in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
           station: '???',
           capacity: 'Multiple Teams',
-          descriptionGame: 'Die Kinder erzählen den Helfern vielerlei Geschichten. Damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen. Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
+          descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
           descriptionPoints: "Tragt in das entsprechende Feld eine 1 ein, wenn die Aussage eine Wahrheit ist. Wenn es eine Lüge ist, trägt eine 2 ein."
         },
         {
