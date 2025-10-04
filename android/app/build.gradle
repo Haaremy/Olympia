@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "de.haaremy.olympia"
-        minSdk 23
+        minSdk 26
         targetSdk 36
         versionCode 12 // change on new Release
         versionName "2025"

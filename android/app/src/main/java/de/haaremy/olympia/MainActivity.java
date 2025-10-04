@@ -4,8 +4,14 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.getcapacitor.BridgeActivity;
+import android.app.NotificationManager;
+import android.content.Context;
+
+
 
 public class MainActivity extends BridgeActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,4 +39,16 @@ public class MainActivity extends BridgeActivity {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Alle Notifications löschen, wenn App geschlossen wird
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.cancelAll();
+        }
+    }
+
 }
