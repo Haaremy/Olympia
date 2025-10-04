@@ -469,7 +469,7 @@ const game16 = await prisma.game.create({
         },
         {
           language: 'en',
-          title: 'Sweet Tower of Pisa',
+          title: 'Cold Tower of Pisa',
           story: 'Children everywhere make beautifully decorated gingerbread houses, but here they are standard. At the North Pole, we build snowball towers and try to get as high as we can.',
           station: 'First Floor – Room 216',
           capacity: 'Multiple teams',
@@ -515,26 +515,26 @@ const game17 = await prisma.game.create({
 const game18 = await prisma.game.create({
     data: {
         url: '',
-        tagged:"",
+        tagged:"overridePlayers,hidden,noRecord",
         languages: {
             create: [
                 {
                     language: 'de',
                     title: 'Wunschlos?',
-                    story: 'tobedone',
-                    station: 'tobedone',
-                    capacity: 'tobedone',
-                    descriptionGame: 'Zettel mit malen nach zahlen Rechen Aufgaben. Es kommt ein Bild raus und das was raus kommt wird über Zahlen-Tabelle in Feld eingetragen.',
-                    descriptionPoints: 'tobedone'
+                    story: 'Der Weihnachtsmann erfüllt jedes Jahr Millionen von Wünschen. Doch, was passiert, wenn ein Kind keine Wünsche äußert? Es nichts träumt? Hat es schon alles, was es braucht? Eine Grundregel ist, dass jeder irgendetwas braucht – auch wenn es tief in einem verborgen liegt. Spielsachen, Geld oder einfach nur ein wenig Liebe?',
+                    station: '???',
+                    capacity: 'Mehrere Teams',
+                    descriptionGame: 'Auf dem Tisch liegen Malen-nach-Zahlen-Blätter. Sie zeigen versteckte Wünsche von Kindern, und das entstandene Bild wird mithilfe einer Bild-Zahlen-Tabelle in eine Lösungszahl umgewandelt.',
+                    descriptionPoints: 'Tragt die Lösungszahl in das entsprechende Feld ein.'
                 },
                 {
                     language: 'en',
-                    title: 'tobedone',
-                    story: 'tobedone',
-                    station: 'tobedone',
-                    capacity: 'tobedone',
-                    descriptionGame: 'tobedone',
-                    descriptionPoints: 'tobedone'
+                    title: 'Wishless?',
+                    story: 'Every year, Santa fulfills millions of wishes. But what happens when a child makes no wish at all? When it dreams of nothing? Does it already have everything it needs? One basic rule is that everyone needs something — even if it’s hidden deep inside. Toys, money, or simply a little love?',
+                    station: '???',
+                    capacity: 'Multiple Teams',
+                    descriptionGame: 'On the table are “paint by numbers” sheets showing hidden wishes of children. The completed image is then converted into a solution number using the picture-number table.',
+                    descriptionPoints: 'Enter the solution number into the corresponding field.'
                 }
             ]
         }
