@@ -255,8 +255,7 @@ useEffect(() => {
 const [showLogin, setShowLogin] = useState(false);
 const handleLoginClose = () => setShowLogin(false);
 const handleShowLogin = () => setShowLogin(true);
-const offsetMinutes = new Date().getTimezoneOffset()* 60 * 1000;
-const [timeLeft, setTimeLeft] = useState(message.timeLeft + offsetMinutes);
+const [timeLeft, setTimeLeft] = useState(message.timeLeft);
 
 useEffect(() => {
   const interval = setInterval(() => {
