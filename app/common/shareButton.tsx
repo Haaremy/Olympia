@@ -48,7 +48,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 // 3️⃣ Hintergrundbild unten drapieren
 // -----------------------------
       if(!teamUname){teamUname=""};
-const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg`);
+const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
 const bgWidth = canvas.width;
 const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
 const bgY = canvas.height - bgHeight - 0; // unten
