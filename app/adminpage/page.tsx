@@ -4,8 +4,8 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import InfoBox from "../infoBox";
-import Link from "next/link";
 import { Capacitor } from "@capacitor/core";
+import { Button, CLink} from "@cooperateDesign";
 
 type SearchedTeam = {
   id: number;
@@ -257,6 +257,23 @@ const getOffsetISO = (dtLocal: string): string => {
     }
   }
 
+  const handleImageDelete = async () => {
+     if (!searchedTeam) return;
+    try {   
+      const res = await fetch(`/api/image/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageName: searchedTeam.uname.toLowerCase()+".jpg" }),
+      });
+      if (!res.ok) throw new Error("Fehler beim Löschen");
+      handleSavedMessage("Team Image gelöscht ✅");
+    }
+    catch (err) {
+      console.error(err);
+      handleSavedMessage("Fehler beim Löschen ❌");
+    }
+  }
+
 // Bericht löschen
 
   const deleteReport = async (id: number) => {
@@ -375,15 +392,20 @@ const getOffsetISO = (dtLocal: string): string => {
                 ))}
               </div>
             </div>
-            <button onClick={handleSaveTeam} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white mt-2 mr-2">
+            <Button onClick={handleSaveTeam}>
               Team speichern
-            </button>
-            <button onClick={handleCheater} className="py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white mt-2 mr-2">
+            </Button>
+            <Button onClick={handleCheater} variant="warn" className="ml-4">
               {searchedTeam.cheatPoints >= 12 ? "Team re-qualifizieren" : "Team disqualifizieren"}
-            </button>
-            <button onClick={handleTeamDelete} className="py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white mt-2">
+            </Button>
+            <Button onClick={handleTeamDelete} variant="danger" className="ml-4">
               Team löschen
-            </button>
+            </Button>
+            <Button
+              onClick={handleImageDelete} className="mt-2"
+            >
+              Delete Team Image 
+            </Button>
           </div>
         )}
 
@@ -510,27 +532,34 @@ const getOffsetISO = (dtLocal: string): string => {
         <input type="checkbox" checked={started} onChange={() => setStarted(!started)} />
         <label>Spiele starten</label>
       </div>
-      <button onClick={handleSaveSettings} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white">
+      <Button onClick={handleSaveSettings} variant="primary">
         Einstellungen speichern
-      </button>
+      </Button>
     </div>
 
     {/* LOGOUT */}
-    <button onClick={handleLogout} className="mt-6 py-2 px-6 bg-red-600 hover:bg-red-700 rounded-lg text-white">
+    <Button onClick={handleLogout} variant="danger">
       Logout
-    </button>
-    <Link
+    </Button>
+    <CLink
       href="/fire"
-      className="px-4 py-2 mt-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+      className="mt-4"
     >
       <p className="text">Olympia-Feuer</p>
-    </Link>
-    <Link
+    </CLink>
+    <CLink
       href="/debug"
-      className="px-4 py-2 mt-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+      className="mt-4"
     >
       <p className="text">Debug Testseite</p>
-    </Link>
+    </CLink>
+    <Button
+      onClick={() => router.push('/teampage')}
+      className="mt-4"
+    >
+      Teampage
+    </Button>
+    
   </main>
 );
 

@@ -40,12 +40,12 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
     // clear local storage
       localStorage.removeItem("playedGames");
       if(!!session)
-      await fetch("/uploads/delete.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageName: session.user.uname }),
-        });
-
+        await fetch(`/api/image/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageName: (session.user.uname).toLowerCase()+".jpg" }),
+      });
+      
       // call delete API
       await fetch(`/api/team/delete`, {
         method: "DELETE",

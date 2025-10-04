@@ -34,7 +34,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const fetchImage = async () => {
       try {
-        const res = await fetch(`/uploads/${teamUname.toLowerCase()}.jpg`);
+        const res = await fetch(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
         if (res.ok) {
           // Create a blob URL to use in img src
           const blob = await res.blob();
@@ -80,7 +80,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       formData.append("file", blob, "team-selfie.png");
 
       // POST to API route
-      const uploadRes = await fetch("/api/image/upload", {
+      const uploadRes = await fetch("/api/image/upload", { 
         method: "POST",
         body: formData,
       });
@@ -95,7 +95,9 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 };
 
 
-  
+  const imageLoader = ({ src }: { src: string }) => {
+  return src;
+}
 
   return (
     <div className="mt-8 mb-8">
@@ -103,8 +105,9 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
         Share your Team Selfie #{teamUname}
       </h2>
       <div className="flex flex-col items-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         {croppedImage ? (
-          <Image
+          <img
             src={croppedImage}
             alt="Team Selfie Preview"
             className="rounded-lg shadow-lg mb-4 object-cover w-44 h-44 cursor-pointer"
@@ -113,6 +116,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
         ) : (
           <Image
             src={imageUrl || "/images/teamplaceholder.png"}
+            loader={imageLoader}
             alt="Placeholder"
             width={180}
             height={180}
@@ -179,6 +183,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           {croppedImage ? (
             <Image
               src={croppedImage}
+              loader={imageLoader}
               alt="Full Size Team Selfie"
               className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
               onClick={(e) => e.stopPropagation()}
@@ -186,6 +191,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           ) : imageUrl ? (
             <Image
               src={imageUrl}
+              loader={imageLoader}
               alt="Full Size Team Selfie"
               className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
               onClick={(e) => e.stopPropagation()}
@@ -193,6 +199,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           ) : (
             <Image
               src={"/images/teamplaceholder.png"}
+              loader={imageLoader}
               alt="Full Size Team Selfie"
               className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
               onClick={(e) => e.stopPropagation()}
