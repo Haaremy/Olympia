@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+//import { getServerSession } from "next-auth";
+//import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: Request) {
   try {
     const { imageName } = await req.json();
-    const session = await getServerSession(authOptions);
+    //const session = await getServerSession(authOptions);
 
     if (!imageName) {
       return NextResponse.json({ error: 'Kein Bildname angegeben' }, { status: 400 });
@@ -38,3 +38,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
   }
 }
+
