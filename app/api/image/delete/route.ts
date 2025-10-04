@@ -33,9 +33,13 @@ export async function POST(req: Request) {
     const result = await response.json(); // hier klappt es, weil dein PHP JSON zurückgibt
 
     return NextResponse.json(result, { status: 200 });
-  } catch (error: any) {
-    console.error("Fehler in API delete:", error.message);
-    return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
+  } catch (error) {
+  if (error instanceof Error) {
+    console.error(error.message);
+  } else {
+    console.error('Unbekannter Fehler:', error);
   }
 }
+}
+
 
