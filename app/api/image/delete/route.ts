@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+//import { getServerSession } from "next-auth";
+//import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: Request) {
   try {
     const { imageName } = await req.json();
-    const session = await getServerSession(authOptions);
+    //const session = await getServerSession(authOptions);
 
     if (!imageName) {
       return NextResponse.json({ error: 'Kein Bildname angegeben' }, { status: 400 });
@@ -33,8 +33,13 @@ export async function POST(req: Request) {
     const result = await response.json(); // hier klappt es, weil dein PHP JSON zurückgibt
 
     return NextResponse.json(result, { status: 200 });
-  } catch (error: any) {
-    console.error("Fehler in API delete:", error.message);
-    return NextResponse.json({ error: 'Interner Serverfehler' }, { status: 500 });
+  } catch (error) {
+  if (error instanceof Error) {
+    console.error(error.message);
+  } else {
+    console.error('Unbekannter Fehler:', error);
   }
 }
+}
+
+
