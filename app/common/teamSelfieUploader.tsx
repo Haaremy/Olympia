@@ -166,7 +166,14 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           >
             {t("chooseImage")}
           </label>
-
+          {Capacitor.getPlatform() === 'android' && (
+                    <button
+                      onClick={handleTakePhoto}
+                      className="mt-4 px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
+                    >
+                      {t("takePhoto")}
+                    </button>
+                  )}
           {/* Unsichtbares Input für die Dateiauswahl */}
           <input
             id="file-upload"
@@ -176,14 +183,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             className="hidden"
           />
         </div>
-        {Capacitor.getPlatform() === 'android' && (
-          <button
-            onClick={handleTakePhoto}
-            className="mt-4 px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
-          >
-            {t("takePhoto")}
-          </button>
-        )}
+        
 
         
       </div>
