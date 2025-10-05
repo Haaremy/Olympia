@@ -54,10 +54,10 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
   }, [teamUname]);
 
   const handleTakePhoto = async () => {
-    alert("Bitte erlaube der App den Zugriff auf die Kamera, um ein Team-Selfie aufzunehmen.");
   try {
     const permission = await Camera.requestPermissions();
     if (permission.camera !== 'granted') {
+      alert('Kamera-Zugriff verweigert. Bitte erlaube den Zugriff in den Einstellungen.');
       return;
     }
 
