@@ -74,6 +74,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       setShowCropper(true);
     }
   } catch (error) {
+    alert('Fehler beim Zugriff auf die Kamera: ' + error);
     console.error('Camera error:', error);
   }
 };
