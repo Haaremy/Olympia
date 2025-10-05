@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Fire from "./Fire";
-import { Button } from "@/cooperateDesign";
 
 type Settings = {
   started: boolean;
