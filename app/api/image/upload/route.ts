@@ -10,8 +10,8 @@ export async function POST(req: Request) {
   if (!file) return NextResponse.json({ error: 'No file' }, { status: 400 });
 
   // Size check (2 MB)
-  const MAX = 2 * 1024 * 1024;
-  if (file.size > MAX) return NextResponse.json({ error: 'File too large: ', MAX }, { status: 400 });
+  //const MAX = 2 * 1024 * 1024;
+  //if (file.size > MAX) return NextResponse.json({ error: 'File too large: ', MAX }, { status: 400 });
 
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.uname) {
