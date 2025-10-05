@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/cooperateDesign';
 import { useUI } from './context/UIContext';
 import React, { useEffect, useRef } from 'react';
 
@@ -58,12 +59,11 @@ const Modal: React.FC<ModalProps> = ({ title, message, color, onClose }) => {
                 <br/>
                 <p>{message}</p>
                 <div className="mt-4 flex justify-end">
-                    <button
+                    <Button
                         onClick={onClose}
-                        className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
                     >
                         X
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

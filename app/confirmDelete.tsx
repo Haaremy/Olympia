@@ -4,12 +4,14 @@ import { signOut } from "next-auth/react";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
+import {Button} from "@cooperateDesign";
 
 interface DeleteConfirmModalProps {
   onClose: () => void;
+  teamName?: string;
 }
 
-export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps) {
+export default function DeleteConfirmModal({ onClose, teamName }: DeleteConfirmModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
@@ -38,22 +40,32 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
 
   const onConfirm = async () =>{
     // clear local storage
-      localStorage.removeItem("playedGames");
       if(!!session)
-        await fetch(`/api/image/delete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageName: (session.user.uname).toLowerCase()+".jpg" }),
-      });
-      
+        
+          await fetch(`/api/image/delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imageName: (teamName ?? session.user.uname).toLowerCase()+".jpg" }),
+          });
+      try {
       // call delete API
       await fetch(`/api/team/delete`, {
         method: "DELETE",
+        body: JSON.stringify({ uname: teamName ?? session?.user?.uname }),
       });
     
+      
+    if(!teamName){
+      localStorage.removeItem("playedGames");
       await signOut({ redirect: false });
-    
       router.push("/");
+    }
+    onClose();
+  }catch (error) {  
+      console.error("Fehler beim Löschen des Teams:", error);
+    }
+    
+      
   }
 
   return (
@@ -75,13 +87,12 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
           <h2 id="modal-title" className="text-xl font-semibold text-red-600">
             Konto löschen
           </h2>
-          <button
+          <Button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition"
             aria-label="Modal schließen"
           >
             ✕
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -98,23 +109,23 @@ export default function DeleteConfirmModal({ onClose }: DeleteConfirmModalProps)
 
         {/* Footer */}
         <div className="flex justify-end gap-3 mt-4">
-          <button
+          <Button
             onClick={onClose}
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
           >
             Abbrechen
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onConfirm}
             disabled={input !== "LÖSCHEN"}
-            className={`px-4 py-2 rounded-lg text-white transition ${
+            variant="danger"
+            className={`px-4 py-2 rounded-lg  ${
               input === "LÖSCHEN"
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-red-400 cursor-not-allowed"
+                ? ""
+                : "cursor-not-allowed"
             }`}
           >
             Bestätigen
-          </button>
+          </Button>
         </div>
       </div>
     </div>

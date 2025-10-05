@@ -3,6 +3,7 @@
 import React from 'react';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Button } from '@/cooperateDesign';
 
 
 
@@ -123,11 +124,10 @@ ctx.drawImage(
   };
 
   return (
-    <button
+    <Button
       onClick={handleShare}
-      className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700"
     >
       Share
-    </button>
+    </Button>
   );
 }

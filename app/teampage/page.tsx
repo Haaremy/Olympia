@@ -11,6 +11,7 @@ import { Capacitor } from "@capacitor/core";
 import DeleteConfirmModal from "../confirmDelete";
 import TeamSelfieUploader from "@/app/common/teamSelfieUploader"; 
 import MusicSettings from "@/app/common/musicSettings";
+import { Button } from "@/cooperateDesign";
 
 
 export default function Page() {
@@ -235,12 +236,12 @@ const renderPlayerInput = (
         setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
       }
       disabled={!!userData?.name || userData?.name != "" ? false : true}
-    /> : <button  onClick={(e) => {
+    /> : <Button className="w-full" onClick={(e) => {
     e.preventDefault();
     handlePlayer(fieldKey);
-  }} className=" w-full px-4 py-2 bg-blue-300 dark:bg-pink-500 text-white rounded-lg hover:bg-blue-400 hover:dark:bg-pink-500">
+  }} >
       +
-      </button>}
+      </Button>}
   </div>
 );
 
@@ -303,9 +304,9 @@ const renderPlayerInput = (
               <div className="mt-4">
                 <div className="flex items-center gap-2">
                   <Image
-                    src={`/images/globe.svg`}
+                    src={`/images/settingstheme.svg`}
                     alt="Globe Icon"
-                    className="h-8 w-8 object-cover rounded-lg"
+                    className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
                     width={50}
                     height={50}
                   />
@@ -326,9 +327,9 @@ const renderPlayerInput = (
               <div className="mt-4">
                 <div className="flex items-center gap-2">
                   <Image
-                    src={`/images/globe.svg`}
+                    src={`/images/settingslanguage.svg`}
                     alt="Globe Icon"
-                    className="h-8 w-8 object-cover rounded-lg"
+                    className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
                     width={50}
                     height={50}
                     />
@@ -349,27 +350,29 @@ const renderPlayerInput = (
         </div>
 
         {/* Speichern-Button */}
-        <button
-          className={`fixed bottom-20 right-6 px-6 py-3 bg-pink-500 text-white rounded-lg shadow-lg hover:bg-pink-900 transition duration-300`}
+        <Button
+          className="fixed bottom-0 right-4 mb-4 "
           onClick={handleSave}
         >
           &#x1F4BE;
-        </button>
+        </Button>
 
         {/* Logout-Button */}
-        <button
-          className="fixed bottom-4 right-6 px-6 py-3 bg-red-600 text-white rounded-lg shadow-lg hover:bg-pink-500 transition duration-300"
+        <Button
+          className="fixed bottom-16 left-4 mb-4 "
+          variant="danger"
           onClick={handleLogout}
         >
           Logout
-        </button>
+        </Button>
 
-        <button
-          className="fixed bottom-4 left-6 px-6 py-3 bg-red-600 text-white rounded-lg shadow-lg hover:bg-pink-500 transition duration-300"
+        <Button
+          className="fixed bottom-0 left-4 mb-4"
+          variant="danger"
           onClick={handleDelete}
         >
           Team löschen
-        </button>
+        </Button>
 
         {deleteConfirm && (
           <DeleteConfirmModal onClose={handleClose}/>

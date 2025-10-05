@@ -16,6 +16,7 @@ import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
 import Image from "next/image";
 import socket from "../lib/socket";
+import { Button } from '@/cooperateDesign';
 
 
 
@@ -301,12 +302,11 @@ const formatTime = (ms: number) => {
                 {/* Modal Header */}
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-semibold text-pink-600 dark:text-pink-400">{message.title}</h2>
-                    <button
+                    <Button
                         onClick={onClose}
-                        className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
                     >
                         X
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Modal Content */}
@@ -357,7 +357,7 @@ const formatTime = (ms: number) => {
                         </h3>
                         <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
                                       
-                   {!message.started ? <button className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 ml-2 "> {t("notStarted")}</button> : 
+                   {!message.started ? <Button> {t("notStarted")}</Button> : 
                     userData && !!userData?.user1 && !!userData?.user2 ? (
                     <>
                         <br />
@@ -372,9 +372,9 @@ const formatTime = (ms: number) => {
                             {t("Edit Team")}
                         </Link> 
                     ) :(
-                        <button className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 mt-2" onClick={handleShowLogin}>
+                        <Button onClick={handleShowLogin}>
                             {t("Login")}
-                        </button>
+                        </Button>
                         
                     )}
                     
@@ -435,15 +435,14 @@ const formatTime = (ms: number) => {
 }
     {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !(points[0]?.value >= 0) && userData?.user1!="" && userData?.user1!=""  &&(
     <div className="text-right mt-2">
-      <button
-        className="ml-auto inline-flex px-2 py-1 bg-pink-500 text-white text-xl rounded-lg shadow-lg hover:bg-pink-600 transition duration-300 mt-3"
+      <Button
         onClick={handleSave}
         aria-label="Save"
       >
         &#x1F4BE;<br/>
         
         <div className="text-xl">{t("save")}</div>
-      </button>
+      </Button>
       <br/>
       <label className='mt-2'>
         ({formatTime(timeLeft)})
@@ -493,9 +492,9 @@ const formatTime = (ms: number) => {
                     )}
                     
                     <div className="items-center justify-center w-full">
-                        <button className="text-sm text-blue-500 hover:underline mt-4" onClick={handleReportOpen}>
+                        <Button onClick={handleReportOpen}>
                             Report Problem
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -30,6 +30,7 @@
     "light":"Light",
     "enterPlayer":"<Name Player",
     "enterTeam": "<Name of Teams>",
+    "takePhoto": "Camera Image",
     "chatLogin": "Log-in to text...",
     "chatPlaceholder": "Type a message...",
     "probDes": "Describe the problem...",

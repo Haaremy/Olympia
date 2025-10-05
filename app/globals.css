@@ -63,3 +63,20 @@ canvas.confetti {
   pointer-events: none;
   z-index: 9999 !important;
 }
+
+
+@keyframes flame {
+  0%, 100% {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-50%) scaleY(1.4);
+    opacity: 1;
+  }
+}
+
+.animate-flame {
+  animation: flame 1s infinite ease-in-out alternate;
+}
+

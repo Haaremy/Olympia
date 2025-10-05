@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useUI } from "./context/UIContext";
 import { useTranslation } from "next-i18next";
 import socket from "../lib/socket";
+import { Button } from "@/cooperateDesign";
 
 interface ModalProps {
   onClose: () => void;
@@ -165,13 +166,12 @@ const handleDelete = async () => {
         {/* Header */}
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
-          <button
+          <Button
             onClick={onClose}
-            aria-label="Close Modal"
-            className="text-white bg-pink-500 hover:bg-pink-600 rounded-md px-4 py-2 transition"
+            aria-label="Close Chat"
           >
             ✕
-          </button>
+          </Button>
         </div>
 
         {/* Nachrichten */}
@@ -267,12 +267,11 @@ const handleDelete = async () => {
           />
 
           {!!session && (
-            <button
+            <Button
               onClick={handleSend}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full p-3 transition shadow flex-shrink-0"
             >
               ➤
-            </button>
+            </Button>
           )}
 
           {/* Counter */}
@@ -290,8 +289,8 @@ const handleDelete = async () => {
           style={{ top: contextMenu.y, left: contextMenu.x }}
           className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
         >
-          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600 dark:text-white">✏️ Edit</button>
-          <button className="block w-full px-4 py-2 text-left hover:bg-pink-100 dark:hover:bg-pink-600 dark:text-white" onClick={handleDelete}>🗑️ Delete</button>
+          <Button disabled={true}>✏️ Edit</Button>
+          <Button onClick={handleDelete}>🗑️ Delete</Button>
         </div>
       )}
     </div>

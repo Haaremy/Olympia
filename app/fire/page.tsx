@@ -5,85 +5,127 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Fire from "./Fire";
+import { Button } from "@/cooperateDesign";
 
 type Settings = {
   started: boolean;
   ending: string;
 };
 
-export default function AdminDashboard() {
-  const router = useRouter();
+export default function FirePage() {
   const { data: session, status } = useSession();
-
+  const router = useRouter();
   const [ending, setEnding] = useState("");
-  const [fireStarted, setFireStarted] = useState(false);
+  const [fireOn, setFireOn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const getOffsetISO = (dtLocal: string): string => {
-    const date = new Date(dtLocal);
-    return date.toISOString();
+  /** --- Utility Helpers --- */
+  const formatLocalDateTime = (date: string | Date) => {
+    const d = new Date(date);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+      d.getDate()
+    )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   };
+  const toISO = (local: string) => new Date(local).toISOString();
 
-  const toDateTimeLocalString = (dateString: string | Date): string => {
-    const date = new Date(dateString);
-    const pad = (num: number) => num.toString().padStart(2, "0");
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-      date.getDate()
-    )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-  };
-
+  /** --- Access Control & Settings Load --- */
   useEffect(() => {
     if (status === "loading") return;
-    if (!session) router.push("/");
-    else if (session.user?.role !== "ADMIN") {
-      router.push(session.user.role === "USER" ? "/teampage" : "/");
+
+    if (!session) {
+      router.push("/");
+      return;
     }
 
-    fetch("/api/settings")
-      .then((res) => {
-        if (!res.ok) throw new Error("Fehler beim Laden der Einstellungen");
-        return res.json();
-      })
-      .then((data: Settings) => {
-        if (data.ending) setEnding(toDateTimeLocalString(data.ending));
-      })
-      .catch(console.error);
+    if (session.user.role !== "ADMIN") {
+      router.push(session.user.role === "USER" ? "/teampage" : "/");
+      return;
+    }
+
+    (async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (!res.ok) throw new Error("Failed to load settings");
+        const data: Settings = await res.json();
+        if (data.ending) setEnding(formatLocalDateTime(data.ending));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [session, status, router]);
 
-  const handleFire = async () => {
-    const started = true;
+  /** --- Fire trigger --- */
+  const igniteFire = async () => {
+    if (!ending) return;
     try {
       const res = await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ started, ending: getOffsetISO(ending) }),
+        body: JSON.stringify({ started: true, ending: toISO(ending) }),
       });
-      if (!res.ok) throw new Error("Fehler beim Speichern");
-    } catch (err) {
-      console.error(err);
+      if (!res.ok) throw new Error("Fehler beim Starten des Feuers");
+      setFireOn(true);
+    } catch (e) {
+      console.error(e);
+      alert("Das Feuer konnte nicht entzündet werden.");
     }
-    setFireStarted(true);
   };
 
-  if (!session) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <main className="flex items-center justify-center min-h-screen bg-gray-900 text-gray-200">
+        <p>Lade Daten...</p>
+      </main>
+    );
+  }
 
   return (
-    <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white justify-center">
-      <div className={`page-container ${fireStarted ? "fire-on" : "fire-off"}`}>
-        {/* Fire Animation */}
-        <div className="fire-placeholder">{fireStarted && <Fire />}</div>
+<main
+  className="relative flex flex-col items-center justify-center min-h-screen text-white overflow-hidden
+             bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/images/building.jpg')" }}
+>      {/* Header */}
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-center tracking-wide">
+        Olympisches Feuer
+      </h1>
+
+
+      {/* Fire Area */}
+      <div className="relative flex flex-col items-center justify-end w-full max-w-md h-[400px]">
+        {/* Animated Fire */}
+        {fireOn && (
+          <div className="absolute bottom-32">
+            <Fire />
+          </div>
+        )}
 
         {/* Firepit Image */}
-        <div className="absolute bottom-0 max-w-[500px]">
+        <div
+          onClick={igniteFire}
+          className="cursor-pointer transition-transform z-50"
+        >
           <Image
             alt="Firepit"
-            onClick={handleFire}
             width={500}
-            height={240}
+            height={500}
             src="/images/pit.png"
-            className="firepit-image object-cover"
+            className="object-contain"
           />
         </div>
+
       </div>
+
+      {/* Subtle glow overlay */}
+      {fireOn && (
+        <div className="absolute inset-0 pointer-events-none flex justify-center items-end">
+  {/* Blaue Lichtstrahlen */}
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,200,255,0.2)_0%,transparent_70%)] animate-pulse blur-2xl" />
+</div>
+
+      )}
     </main>
   );
 }

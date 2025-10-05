@@ -1,49 +1,23 @@
+"use client";
+
 import React from "react";
-import "./Fire.css";
+import Image from "next/image";
 
-const Fire: React.FC = () => {
-  const generateSparks = (count: number) => {
-    const sparks = [];
-    for (let i = 0; i < count; i++) {
-      sparks.push(<div key={i} className={`spark spark${i + 1}`}></div>);
-    }
-    return sparks;
-  };
-
+export default function Fire() {
   return (
-    <div
-      className="fire-container"
-    >
-      {/* Core Flames */}
+    <div className="relative flex flex-col items-center justify-center select-none pointer-events-none">
+      {/* Flammen-GIF */}
+      <Image
+        alt="Olympisches Feuer"
+        width={120}
+        height={160}
+        src="/images/blue-blueflame.gif"
+        className="object-contain animate-flicker drop-shadow-[0_0_20px_rgba(0,200,255,0.6)]"
+        priority
+      />
 
-      <div className="outer-flame outer-flame1"></div>
-      
-      
-      <div className="flame flame2"></div>
-      <div className="flame flame6"></div>
-      <div className="flame flame3"></div>
-      <div className="flame flame5"></div>{generateSparks(20)}
-      <div className="flame flame4"></div>
-      <div className="flame flame1"></div>
-      <div className="flame flame7"></div>
-      
-      
-      
-
-      {/* Outer Flames */}
-      <div className="outer-flame outer-flame3"></div>
-      
-      <div className="outer-flame outer-flame2"></div>
-
-      {/* Sparks and Embers */}
-      {generateSparks(20)}
-      
-
-      {/* Halo Glow */}
-      <div className="fire-halo" ></div>
-      
+      {/* Glüh-Effekt */}
+      <div className="absolute bottom-0 w-16 h-4 bg-blue-400 rounded-full blur-xl opacity-40 animate-pulse" />
     </div>
   );
-};
-
-export default Fire;
+}

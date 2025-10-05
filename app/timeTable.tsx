@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { detectPlatform } from './common/detectPlatform';
 import Image from "next/image";
 import { Capacitor } from '@capacitor/core';
+import { Button } from '@cooperateDesign';  
 
 
 
@@ -67,6 +68,18 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
 
 
+    const timetable = [
+  { time: "16:00", key: "tt-0", start: 16*60, end: 17*60 },
+  { time: "17:00", key: "tt-1", start: 17*60, end: 19*60+30 },
+];
+
+const getEventClass = (event: {start: number, end: number}) => {
+  if (curTime < event.start) return "text-pink-500 text-md py-1";
+  if (curTime >= event.start && curTime < event.end) return "text-white-500 text-lg py-4";
+  return "text-blue-500 text-sm";
+};
+
+
     return (
         <div 
             ref={overlayRef}
@@ -90,13 +103,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                         Timetable
                     </h2>
                     
-                    <button
+                    <Button
                         onClick={onClose}
-                        className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
                         aria-label="Modal schließen"
                     >
                         X
-                    </button>
+                    </Button>
                 </div>
  
                 {/* Ist event Zeit : vor nächstem event Zeit : nach Event Zeit*/ }
@@ -109,18 +121,14 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-white/10">
-                      <td className="text-white pr-8">16:00</td>
-                      <td className={`${curTime < (17*60) ? "text-white-500 text-lg py-4" : curTime >= (17*60) ? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal `}>
-                        {t("tt-0")}
-                      </td>
-                    </tr>
-                    <tr className="border-b border-white/10">
-                      <td className="text-white pr-8">17:00</td>
-                      <td className={`${curTime < (19*60+30) && curTime >= (17*60) ? "text-white-500 text-lg py-4" : curTime >= (19*60+30)? "text-blue-500 text-sm" : "text-pink-500 text-md py-1"} break-words whitespace-normal`}>
-                        {t("tt-1")}
-                      </td>
-                    </tr>
+                    {timetable.map((ev, idx) => (
+                      <tr key={idx} className="border-b border-white/10">
+                        <td className="text-white pr-8">{ev.time}</td>
+                        <td className={`${getEventClass(ev)} break-words whitespace-normal`}>
+                          {t(ev.key)}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
                 <div>

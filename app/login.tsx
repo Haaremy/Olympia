@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUI } from './context/UIContext';
 import { Capacitor } from "@capacitor/core";
+import { Button } from '@/cooperateDesign';
 import {
   showPopupNotification,
   createNotificationChannel
@@ -140,13 +141,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 id="modal-title" className="text-2xl font-bold">User-Login</h2>
-          <button
+          <Button
             onClick={onClose}
-            className="text-sm px-3 py-1 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition"
             aria-label="Modal schließen"
           >
             X
-          </button>
+          </Button>
         </div>
 
         {/* Error */}
@@ -219,20 +219,20 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             />
           </div>
         }
-          <button
-            type="button"
+        <div className='flex justify-end gap-4'>
+          <Button
+          type='button'
             onClick={handleLogin}
-            className="w-full py-2 rounded-lg bg-pink-500 text-white font-medium hover:bg-pink-600 transition"
           >
             Login
-          </button>
-          <button
-          type="button"
+          </Button>
+          <Button
+          type='button'
             onClick={register}
-            className="w-full py-2 rounded-lg bg-pink-500 text-white font-medium hover:bg-pink-600 transition"
           >
             Register
-          </button>
+          </Button>
+        </div>
         </form>
       </div>
     </div>

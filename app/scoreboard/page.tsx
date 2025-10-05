@@ -10,6 +10,7 @@ import '../../lib/i18n';
 import { Slot } from '@prisma/client';
 import Image from 'next/image';
 import socket from "../../lib/socket";
+import { Button } from "@/cooperateDesign";
  
 
 
@@ -301,26 +302,22 @@ const imageLoader = ({ src }: { src: string }) => {
 
   {/* Tab Buttons */}
   <div className="inline-flex  overflow-hidden w-full justify-center">
-    <button
+    <Button
       onClick={() => setActiveTab("scoreboard")}
-      className={`px-6 py-2 text-sm  font-medium transition duration-300 rounded-l-lg shadow-md ${
-        activeTab === "scoreboard"
-          ? "bg-pink-500 text-white"
-          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
-      }`}
+      switchOn={activeTab === "scoreboard"}
+      variant="switch"
+      className="rounded-l-lg rounded-r-none"
     >
       Scoreboard
-    </button>
-    <button
+    </Button>
+    <Button
       onClick={() => setActiveTab("records")}
-      className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-r-lg shadow-md ${
-        activeTab === "records"
-          ? "bg-pink-500 text-white"
-          : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
-      }`}
+      switchOn={activeTab === "records"}
+      variant="switch"
+      className="rounded-r-lg rounded-l-none"
     >
       Weltrekorde
-    </button>
+    </Button>
   </div>
 </div>
 

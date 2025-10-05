@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import Image from "next/image";
 import { useUI } from './context/UIContext';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@/cooperateDesign';
 
 interface ModalProps {
     onClose: () => void;
@@ -27,7 +28,10 @@ const setLanguage = (lang: string) => {
         setIsModalOpen(true);
         const tempLang = navigator.language;
         const finLang = tempLang.split("-")[0];
-        setLanguage(finLang);
+        if(finLang === 'de' || finLang === 'en') {
+            setLanguage(finLang);
+        }
+        
         // Fokus auf das Modal setzen
         if (modal) {
             modal.focus();
@@ -85,38 +89,35 @@ const setLanguage = (lang: string) => {
                 <div className="flex justify-between items-center mb-4 ">
                     <div className="flex items-center">
                         <Image
-                            src={`/images/globe.svg`}
+                            src={`/images/settingslanguage.svg`}
                             alt="Globe Icon"
-                            className="w-full h-8 object-cover bg-gray-300 rounded-lg"
+                            className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
                             width={50}
                             height={50}
                         />
                     </div>
-                    <button
+                    <Button
                         onClick={onClose}
-                        className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
-                        aria-label="Modal schließen"
+                        aria-label="Language Selection schließen"
                     >
                         X
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Zwei untereinander platzierte Buttons */}
                 <div className="flex flex-col space-y-4 mt-4">
-                    <button
+                    <Button
                         onClick={() => setLanguage('de')} // Setzt 'de' bei Klick
-                        className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-900 focus:outline-none"
                         aria-label="Deutsch"
                     >
                         Deutsch
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={() => setLanguage('en')} // Setzt 'en' bei Klick
-                        className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-900 focus:outline-none"
                         aria-label="English"
                     >
                         English
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

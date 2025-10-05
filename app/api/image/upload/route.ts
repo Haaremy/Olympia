@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   // Size check (2 MB)
   const MAX = 2 * 1024 * 1024;
-  if (file.size > MAX) return NextResponse.json({ error: 'File too large' }, { status: 400 });
+  if (file.size > MAX) return NextResponse.json({ error: 'File too large: ', MAX }, { status: 400 });
 
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.uname) {
@@ -35,11 +35,17 @@ const res = await fetch('https://olympia.haaremy.de/uploads/upload.php', {
 });
 
 
-  const data = await res.json().catch(() => ({ error: 'Invalid JSON from PHP' }));
-  if (!res.ok) {
-    return NextResponse.json({ error: data.error || 'Upload failed' }, { status: 500 });
-  }
+if (!res.ok) {
+  throw new Error(`PHP-Fehler: ${res.status} ${res.statusText}`);
+}
+
+const data = await res.json();
+
+// Direkt prüfen
+if (!data.success) {
+  throw new Error(data.error);
+}
 
   // Rückgabe an Client (z. B. URL auf das gespeicherte JPG)
-  return NextResponse.json({ success: true, php: data }, { status: 200 });
+  return NextResponse.json({ data }, { status: 200 });
 }

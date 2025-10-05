@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/cooperateDesign";
 import { useMusic } from "./music";
 import { useEffect, useState } from "react";
 
@@ -45,12 +46,11 @@ export default function MusicSettings() {
       <div className="flex items-center gap-2">
         <div className="flex flex-1 items-center gap-2">
           {/* Play/Pause */}
-          <button
+          <Button
             onClick={togglePlay}
-            className="p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
           >
             {isPlaying ? "⏸️" : "▶️"}
-          </button>
+          </Button>
 
           {/* Lautstärke Slider */}
           <input

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import InfoBox from "../infoBox";
 import { Capacitor } from "@capacitor/core";
 import { Button, CLink} from "@cooperateDesign";
+import DeleteConfirmModal from "../confirmDelete";
+
 
 type SearchedTeam = {
   id: number;
@@ -50,6 +52,8 @@ export default function AdminDashboard() {
   const [showReports, setShowReports] = useState(false);
   const gamesMap = new Map(searchedTeam?.games?.map(g => [g.id, g]));
   const [reports, setReports] = useState<Report[][]>([]);
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+
 
 const allGameIds = Array.from({ length: 24 }, (_, i) => i + 1); // 1..24
 
@@ -76,6 +80,7 @@ const getOffsetISO = (dtLocal: string): string => {
   };
 
   const handleClose = () => setShowSaved(false);
+  const handleCloseDelete = () => setDeleteConfirm(false);
 
   const handleLogout = () => {
     localStorage.setItem("playedGames", "");
@@ -242,19 +247,7 @@ const getOffsetISO = (dtLocal: string): string => {
 
   const handleTeamDelete = async () => {
      if (!searchedTeam) return;
-    try {
-      const res = await fetch(`/api/admin/team/delete`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },  
-        body: JSON.stringify({ id: searchedTeam.id }),
-      });
-      if (!res.ok) throw new Error("Fehler beim Löschen");
-      setSearchedTeam(null);
-      handleSavedMessage("Team gelöscht ✅");
-    } catch (err) {
-      console.error(err);
-      handleSavedMessage("Fehler beim Löschen ❌");
-    }
+      setDeleteConfirm(true);
   }
 
   const handleImageDelete = async () => {
@@ -320,26 +313,22 @@ const getOffsetISO = (dtLocal: string): string => {
     
     {/* Buttons for switching views */}
     <div className="inline-flex overflow-hidden w-full justify-center mb-6">
-      <button
+      <Button
         onClick={() => setShowReports(!showReports)}
-        className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-l-lg shadow-md ${
-          !showReports
-            ? "bg-pink-500 text-white"
-            : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
-        }`}
+        switchOn={!showReports}
+      variant="switch"
+      className="rounded-l-lg rounded-r-none"
       >
         Team suchen
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => setShowReports(!showReports)}
-        className={`px-6 py-2 text-sm font-medium transition duration-300 rounded-r-lg shadow-md ${
-          showReports
-            ? "bg-pink-500 text-white"
-            : "text-gray-700 dark:text-gray-300 hover:bg-pink-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800"
-        }`}
+        switchOn={showReports}
+      variant="switch"
+      className="rounded-r-lg rounded-l-none"
       >
         Meldungen sehen
-      </button>
+      </Button>
     </div>
 
     {/* SEARCH */}
@@ -353,12 +342,12 @@ const getOffsetISO = (dtLocal: string): string => {
             placeholder="Search by Team ID or Name"
             className="flex-1 p-2 rounded-lg bg-gray-800 text-white border border-gray-600"
           />
-          <button
+          <Button
             onClick={handleSearch}
             className="py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-lg"
           >
             Suche
-          </button>
+          </Button>
         </div>
         
         {loading && <p>Loading...</p>}
@@ -392,20 +381,36 @@ const getOffsetISO = (dtLocal: string): string => {
                 ))}
               </div>
             </div>
-            <Button onClick={handleSaveTeam}>
-              Team speichern
-            </Button>
-            <Button onClick={handleCheater} variant="warn" className="ml-4">
-              {searchedTeam.cheatPoints >= 12 ? "Team re-qualifizieren" : "Team disqualifizieren"}
-            </Button>
-            <Button onClick={handleTeamDelete} variant="danger" className="ml-4">
-              Team löschen
-            </Button>
-            <Button
-              onClick={handleImageDelete} className="mt-2"
-            >
-              Delete Team Image 
-            </Button>
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 mt-4">
+              <Button onClick={handleSaveTeam} className="w-full sm:w-auto">
+                Team speichern
+              </Button>
+
+              <Button
+                onClick={handleCheater}
+                variant="warn"
+                className="w-full sm:w-auto"
+              >
+                {searchedTeam.cheatPoints >= 12
+                  ? "Team re-qualifizieren"
+                  : "Team disqualifizieren"}
+              </Button>
+
+              <Button
+                onClick={handleTeamDelete}
+                variant="danger"
+                className="w-full sm:w-auto"
+              >
+                Team löschen
+              </Button>
+
+              <Button
+                onClick={handleImageDelete}
+                className="w-full sm:w-auto"
+              >
+                Delete Team Image
+              </Button>
+            </div>
           </div>
         )}
 
@@ -447,12 +452,12 @@ const getOffsetISO = (dtLocal: string): string => {
           </div>
         ))}
 
-        <button
+        <Button
           onClick={() => handlePointsUpdate(id)}
           className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white"
         >
           Speichern
-        </button>
+        </Button>
       </details>
     </div>
   );
@@ -480,14 +485,15 @@ const getOffsetISO = (dtLocal: string): string => {
               key={r.id}
               className="relative rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 p-3 shadow-sm"
             >
-              {/* ❌ Delete button */}
-              <button
+              {/* ❌ Delete Button */}
+              <Button
                 onClick={() => deleteReport(r.id)}
-                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow"
+                variant="danger"
+                className="absolute top-2 right-2 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow"
                 title="Löschen"
               >
                 🗑️
-              </button>
+              </Button>
 
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 {r.message}
@@ -559,7 +565,9 @@ const getOffsetISO = (dtLocal: string): string => {
     >
       Teampage
     </Button>
-    
+    {deleteConfirm && (
+      <DeleteConfirmModal onClose={handleCloseDelete} teamName={searchedTeam?.uname}/>
+    )}
   </main>
 );
 

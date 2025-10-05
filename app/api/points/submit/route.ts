@@ -137,6 +137,10 @@ await prisma.entries.createMany({
     return 0;
   }
 
+  if(team.entries.length===23*4){ // bereits 23 Einträge -> 24. Eintrag -> 40 Bonuspunkte
+    pointValues+=40;
+  }
+
     cheatValues+=cheatTime();
     
 await prisma.team.update({
@@ -146,6 +150,8 @@ await prisma.team.update({
     cheatPoints: cheatValues,
   },
 });
+
+
 
 
     return NextResponse.json({ success: true, inserted: pointsToInsert }, { status: 200 });

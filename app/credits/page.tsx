@@ -82,9 +82,9 @@ export default function Page() {
                     <div className="mt-4">
                       <div className="flex items-center gap-2">
                         <Image
-                          src={`/images/globe.svg`}
+                          src={`/images/settingstheme.svg`}
                           alt="Globe Icon"
-                          className="h-8 w-8 object-cover rounded-lg"
+                          className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
                           width={50}
                           height={50}
                         />
@@ -105,9 +105,9 @@ export default function Page() {
                     <div className="mt-4">
                       <div className="flex items-center gap-2">
                         <Image
-                          src={`/images/globe.svg`}
+                          src={`/images/settingslanguage.svg`}
                           alt="Globe Icon"
-                          className="h-8 w-8 object-cover rounded-lg"
+                          className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
                           width={50}
                           height={50}
                           />
@@ -189,14 +189,39 @@ export default function Page() {
           </thead>
           <tbody>
             <tr className="border-t border-gray-200 dark:border-gray-600">
-              <td className="px-6 py-3 font-medium">Maite Dalchow</td>
-              <td className="px-6 py-3">-</td>
-              <td className="px-6 py-3">Design der Graphiken, Flyer, Hintergründe sowie Teil der Tutorial Produktion.</td>
+              <td className="px-6 py-3 font-medium">Jeremy Becker</td>
+              <td className="px-6 py-3">@Haaremy</td>
+              <td className="px-6 py-3">Programmierung der Website, der App und hosting des Servers. Design von Icons und Teil der Tutorial-Produktion.</td>
             </tr>
             <tr className="border-t border-gray-200 dark:border-gray-600">
-              <td className="px-6 py-3 font-medium">???</td>
+              <td className="px-6 py-3 font-medium">Maite Dalchow</td>
               <td className="px-6 py-3">-</td>
-              <td className="px-6 py-3"></td>
+              <td className="px-6 py-3">Design der Graphiken, Flyer, Hintergründe sowie Teil der Tutorial-Produktion.</td>
+            </tr>
+            <tr className="border-t border-gray-200 dark:border-gray-600">
+              <td className="px-6 py-3 font-medium">Tom Grothum</td>
+              <td className="px-6 py-3">-</td>
+              <td className="px-6 py-3">Teil der Tutorialproduktion.</td>
+            </tr>
+            <tr className="border-t border-gray-200 dark:border-gray-600">
+              <td className="px-6 py-3 font-medium">Erik Engler</td>
+              <td className="px-6 py-3">-</td>
+              <td className="px-6 py-3">Teil der Tutorial-Produktion sowie erwähnenswerter App-Tester.</td>
+            </tr>
+            <tr className="border-t border-gray-200 dark:border-gray-600">
+              <td className="px-6 py-3 font-medium">Jamila Gränzer</td>
+              <td className="px-6 py-3">-</td>
+              <td className="px-6 py-3">Erwähnenswerte App-Testerin.</td>
+            </tr>
+            <tr className="border-t border-gray-200 dark:border-gray-600">
+              <td className="px-6 py-3 font-medium">Max Bader</td>
+              <td className="px-6 py-3">-</td>
+              <td className="px-6 py-3">Erwähnenswerter App-Tester.</td>
+            </tr>
+            <tr className="border-t border-gray-200 dark:border-gray-600">
+              <td className="px-6 py-3 font-medium">Tom Reichelt</td>
+              <td className="px-6 py-3">-</td>
+              <td className="px-6 py-3">Erwähnenswerter App-Tester.</td>
             </tr>
           </tbody>
         </table>

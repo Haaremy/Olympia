@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next';
 import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
+import { Button } from '@cooperateDesign';
 
 interface ModalProps {
   onClose: () => void;
@@ -62,12 +63,11 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           <h2 className="text-2xl font-semibold text-pink-600 dark:text-pink-400">
             {t("report")}
           </h2>
-          <button
+          <Button
             onClick={onClose}
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
           >
             X
-          </button>
+          </Button>
         </div>
 
         {/* Modal Content */}
@@ -86,13 +86,12 @@ const Modal: React.FC<ModalProps> = ({ onClose, game }) => {
           disabled={false}
         />
       <div>
-            <button
+            <Button
               onMouseDown={(e) => e.preventDefault()}
               onClick={handleSave}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition mt-4"
             >
               {t('save')}
-            </button>
+            </Button>
             <div className={`${reportData.length === 200 ? 'text-red-600' : ''}`}>
               {reportData.length} / 100
             </div>

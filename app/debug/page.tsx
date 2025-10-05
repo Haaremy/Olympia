@@ -2,6 +2,7 @@
 "use client";
 import React from 'react';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
+import { Button } from '@/cooperateDesign';
 
 
 
@@ -33,7 +34,7 @@ export default function DebugPage() {
     return (
         <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white">
             <h1 className='mt-16'>Debug Haptics</h1>
-            <button onClick={hapticsTest} className="py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white mt-2">Vibrations</button>
+            <Button onClick={hapticsTest} >Vibrations</Button>
         </main>
     );
 }

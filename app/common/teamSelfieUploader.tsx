@@ -8,6 +8,7 @@ import ShareButton from "./shareButton";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "next-i18next";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { Button } from "@/cooperateDesign";
 
 
 type TeamSelfieUploaderProps = {
@@ -63,7 +64,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt,
+      source: CameraSource.Camera,
     });
 
     if (photo?.dataUrl) {
@@ -79,7 +80,13 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    const MAX_FILE_SIZE_MB = 5;
     if (!file) return;
+     const fileSizeMB = file.size / (1024 * 1024); // Byte → MB
+  if (fileSizeMB > MAX_FILE_SIZE_MB) {
+    alert(`Datei zu groß! Maximal ${MAX_FILE_SIZE_MB} MB erlaubt.`);
+    return;
+  }
     const reader = new FileReader();
     reader.onload = () => {
       setImageSrc(reader.result as string);
@@ -141,12 +148,12 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           />
         ) : (
           <Image
-            src={imageUrl || "/images/teamplaceholder.png"}
+            src={imageUrl || "/images/teamplaceholder.svg"}
             loader={imageLoader}
             alt="Placeholder"
             width={180}
             height={180}
-            className="rounded-lg shadow-lg mb-4 object-cover"
+            className={"rounded-lg shadow-lg mb-4 object-cover" + (imageUrl ? "" : " dark:invert invert-0")}
             unoptimized
           />
         )}
@@ -154,7 +161,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
         {(croppedImage || imageUrl) && (
           <div className="flex gap-3 mt-4">
             {Capacitor.getPlatform() === 'android' && <ShareButton teamUname={teamUname}/>}
-            <button onClick={() => setShowModal(true)} className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700">👀</button>
+            <Button onClick={() => setShowModal(true)}>👀</Button>
           </div>
         )}
         
@@ -162,17 +169,17 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
         <div className="flex flex-col items-center mt-4">
           <label
             htmlFor="file-upload"
-            className="px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
           >
+            <Button>
             {t("chooseImage")}
+            </Button>
           </label>
           {Capacitor.getPlatform() === 'android' && (
-                    <button
+                    <Button
                       onClick={handleTakePhoto}
-                      className="mt-4 px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
                     >
                       {t("takePhoto")}
-                    </button>
+                    </Button>
                   )}
           {/* Unsichtbares Input für die Dateiauswahl */}
           <input
@@ -204,8 +211,8 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             )}
           </div>
           <div className="flex gap-3 mt-4">
-            <button onClick={() => setShowCropper(false)} className="px-4 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600">Cancel</button>
-            <button onClick={handleCropSave} className="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700">{t("save")}</button>
+            <Button onClick={() => setShowCropper(false)}>Cancel</Button>
+            <Button onClick={handleCropSave}>{t("save")}</Button>
           </div>
         </div>
       )}
@@ -230,11 +237,13 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             />
           ) : (
             <Image
-              src={"/images/teamplaceholder.png"}
+              src={"/images/teamplaceholder.svg"}
               loader={imageLoader}
               alt="Full Size Team Selfie"
-              className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain"
+              className="rounded-xl shadow-lg max-h-[90%] max-w-[90%] object-contain dark:invert invert-0"
               onClick={(e) => e.stopPropagation()}
+              width={180}
+              height={180}
             />
           )}
         </div>

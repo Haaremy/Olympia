@@ -30,6 +30,7 @@
     "light":"Hell",
     "enterPlayer":"<Name Spieler",
     "enterTeam": "<Name des Teams>",
+    "takePhoto": "Kamerabild",
     "chatLogin": "Log dich ein, um zu schreiben...",
     "chatPlaceholder": "Schreibe deine Nachricht...",
     "probDes": "Beschreibe das Problem...",
