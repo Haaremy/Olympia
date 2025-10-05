@@ -170,17 +170,10 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
           <label
             htmlFor="file-upload"
           >
-            <Button>
+            <Button className="pointer-events-none">
             {t("chooseImage")}
             </Button>
           </label>
-          {Capacitor.getPlatform() === 'android' && (
-                    <Button
-                      onClick={handleTakePhoto}
-                    >
-                      {t("takePhoto")}
-                    </Button>
-                  )}
           {/* Unsichtbares Input für die Dateiauswahl */}
           <input
             id="file-upload"
@@ -189,6 +182,15 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             onChange={handleImageChange}
             className="hidden"
           />
+
+          {Capacitor.getPlatform() === 'android' && (
+                    <Button
+                      className="mt-2"
+                      onClick={handleTakePhoto}
+                    >
+                      {t("takePhoto")}
+                    </Button>
+                  )}
         </div>
         
 
