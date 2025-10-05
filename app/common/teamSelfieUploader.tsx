@@ -57,10 +57,10 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
   try {
     const permission = await Camera.requestPermissions();
     if (permission.camera !== 'granted') {
-      alert('Kamera-Zugriff verboten. Keine Kamera erlaubt.');
+      //alert('Kamera-Zugriff verboten. Keine Kamera erlaubt.');
       return;
     }
-    alert('Kamera-Zugriff erlaubt. Öffne Kamera.');
+    //alert('Kamera-Zugriff erlaubt. Öffne Kamera.');
 
     const photo = await Camera.getPhoto({
       quality: 90,
@@ -74,7 +74,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
       setShowCropper(true);
     }
   } catch (error) {
-    alert('Fehler beim Zugriff auf die Kamera: ' + error);
+    //alert('Fehler beim Zugriff auf die Kamera: ' + error);
     console.error('Camera error:', error);
   }
 };
