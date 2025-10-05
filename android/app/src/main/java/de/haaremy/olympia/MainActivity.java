@@ -35,7 +35,7 @@ public class MainActivity extends BridgeActivity {
             public void onReceivedError(WebView view, int errorCode,
                                         String description, String failingUrl) {
                 // Lade lokale HTML-Datei aus assets
-                webView.loadUrl("file:///android_asset/public/offline.html");
+                webView.loadUrl("file:///android_assets/public/customfiles/offline.html");
             }
         });
     }

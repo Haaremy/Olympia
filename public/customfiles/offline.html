@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keine Verbindung</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1f2937; /* dunkler Hintergrund */
+      color: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    img {
+      max-width: 250px;
+      margin-bottom: 2rem;
+      animation: float 2s infinite ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #d1d5db;
+      max-width: 400px;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <img src="offline.png" alt="Offline">
+  <h1>Server nicht erreichbar</h1>
+  <p>Der Server ist momentan offline oder nicht erreichbar. Bitte versuchen Sie es später erneut.</p>
+</body>
+</html>
