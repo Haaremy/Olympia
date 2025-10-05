@@ -16,6 +16,10 @@ export async function GET() {
       select: {
         id: true,
         uname: true,
+        user1: true,
+        user2: true,
+        user3: true,
+        user4: true,
         pointsTotal: true,
         cheatPoints: true,
         entries: {

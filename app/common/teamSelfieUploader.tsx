@@ -7,6 +7,7 @@ import { getCroppedImg } from "./cropImage";//#endregion
 import ShareButton from "./shareButton";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "next-i18next";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
 
 type TeamSelfieUploaderProps = {
@@ -50,6 +51,31 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     fetchImage();
   }, [teamUname]);
+
+  const handleTakePhoto = async () => {
+  try {
+    const permission = await Camera.requestPermissions();
+    if (permission.camera !== 'granted') {
+      return;
+    }
+
+    const photo = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Prompt,
+    });
+
+    if (photo?.dataUrl) {
+      setImageSrc(photo.dataUrl);
+      setShowCropper(true);
+    }
+  } catch (error) {
+    console.error('Camera error:', error);
+  }
+};
+
+
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -149,9 +175,15 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             onChange={handleImageChange}
             className="hidden"
           />
-
-      
-      </div>
+        </div>
+        {Capacitor.getPlatform() === 'android' && (
+          <button
+            onClick={handleTakePhoto}
+            className="mt-4 px-6 py-3 bg-pink-600 text-white rounded-lg cursor-pointer hover:bg-pink-700 transition flex items-center gap-2"
+          >
+            {t("takePhoto")}
+          </button>
+        )}
 
         
       </div>

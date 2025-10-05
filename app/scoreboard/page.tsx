@@ -245,7 +245,7 @@ const imageLoader = ({ src }: { src: string }) => {
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+0)%teamImages.length)]}</h2>
+                <h2 className="text-xs sm:text-sm md:text-xl font-semibold">{teamNames[((idx+0)%teamImages.length)]}</h2>
               </div>
           </div>
       
@@ -269,7 +269,7 @@ const imageLoader = ({ src }: { src: string }) => {
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+1)%teamImages.length)]}</h2>
+                <h2 className="text-xs sm:text-sm md:text-xl font-semibold">{teamNames[((idx+1)%teamImages.length)]}</h2>
               </div>
           </div>
         ))}
@@ -292,7 +292,7 @@ const imageLoader = ({ src }: { src: string }) => {
               className="sm:h-64 h-32"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{teamNames[((idx+2)%teamImages.length)]}</h2>
+                <h2 className="text-xs sm:text-sm md:text-xl font-semibold">{teamNames[((idx+2)%teamImages.length)]}</h2>
               </div>
           </div>
         ))}
@@ -327,7 +327,7 @@ const imageLoader = ({ src }: { src: string }) => {
 
       {/* Timer */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden text-bold pr-8 pl-8 mb-4">
+        <div className="inline-flex bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md overflow-hidden text-bold pr-8 pl-8 mb-4">
           {timeLeft > 0 ? formatTime(timeLeft) : "👑"}
         </div>
       </div>
