@@ -57,9 +57,9 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
   try {
     const permission = await Camera.requestPermissions();
     if (permission.camera !== 'granted') {
-      alert('Kamera-Zugriff verweigert. Bitte erlaube den Zugriff in den Einstellungen.');
       return;
     }
+    alert('Kamera-Zugriff erlaubt. Öffne Kamera.');
 
     const photo = await Camera.getPhoto({
       quality: 90,
