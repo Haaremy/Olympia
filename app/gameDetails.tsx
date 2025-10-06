@@ -17,6 +17,7 @@ import confetti from 'canvas-confetti';
 import Image from "next/image";
 import socket from "../lib/socket";
 import { Button } from '@/cooperateDesign';
+import TextInput from '@/cooperateDesign/textInput';
 
 
 
@@ -392,45 +393,101 @@ const formatTime = (ms: number) => {
   <div >
     { !message.tagged.includes("noGame") && !message.tagged.includes("noScoreboard") &&
     <div className="grid grid-cols-2 gap-4">
-    {(!message.tagged.includes("noGame") ) && message.started && userData?.user1 != "" && < input
-      type={`${!!points[0]?.value || points[0]?.value == 0 ? message.tagged.includes("hidden")?  "password" : "text" : "number"}`}
-      placeholder={t("f1w")}
-      value={points[0]?.value  || points[0]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[0].value : (playerInputs.user1 ?? "")}
-      name="user1"
-      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
-      onChange={handleInputChange}
-      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />}
+    {(!message.tagged.includes("noGame") ) && message.started && userData?.user1 != "" && 
+      <TextInput
+        type={
+          !!points[0]?.value || points[0]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "password"
+              : "text"
+            : "number"
+        }
+        placeholder={t("f1w")}
+        value={
+          !!points[0]?.value || points[0]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "00000"
+              : points[0].value
+            : playerInputs.user1 ?? ""
+        }
+        name="user1"
+        disabled={!!points[0]?.value || points[0]?.value === 0}
+        onChange={handleInputChange}
+        className="px-4 py-2 border-2 rounded-md transition"
+      />
+    }
     
-    {(userData?.user2 != "" && !!userData?.user2 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")  && !message.tagged.includes("hideF2") && !message.tagged.includes("noGame")) && message.started && < input
-      type={`${!!points[1]?.value || points[1]?.value == 0 ? message.tagged.includes("hidden")?  "password" : "text" : "number"}`}
-      placeholder={t("f2w")}
-      value={points[1]?.value   || points[1]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[1].value : (playerInputs.user2 ?? "")}
-      name="user2"
-      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
-      onChange={handleInputChange}
-      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />}
+    {(userData?.user2 != "" && !!userData?.user2 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")  && !message.tagged.includes("hideF2") && !message.tagged.includes("noGame")) && message.started && 
+      <TextInput
+        type={
+          !!points[1]?.value || points[1]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "password"
+              : "text"
+            : "number"
+        }
+        placeholder={t("f2w")}
+        value={
+          !!points[1]?.value || points[1]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "00000"
+              : points[1].value
+            : playerInputs.user2 ?? ""
+        }
+        name="user2"
+        disabled={!!points[0]?.value || points[0]?.value === 0}
+        onChange={handleInputChange}
+        className="px-4 py-2 border-2 rounded-md transition"
+      />
+    }
     
-    {(userData?.user3 != "" && !!userData?.user3 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF3") && !message.tagged.includes("hideF3") && !message.tagged.includes("noGame"))  && message.started && < input
-      type={`${!!points[2]?.value || points[2]?.value == 0 ? message.tagged.includes("hidden") ?  "password" : "text" : "number"}`}
-      placeholder={t("f3w")}
-      value={points[2]?.value || points[2]?.value == 0 ? message.tagged.includes("hidden") ? "00000" : points[2].value: (playerInputs.user3 ?? "")}
-      name="user3"
-      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
-      onChange={handleInputChange}
-      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />}
+    {(userData?.user3 != "" && !!userData?.user3 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF3") && !message.tagged.includes("hideF3") && !message.tagged.includes("noGame"))  && message.started && 
+      <TextInput
+        type={
+          !!points[2]?.value || points[2]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "password"
+              : "text"
+            : "number"
+        }
+        placeholder={t("f3w")}
+        value={
+          !!points[2]?.value || points[2]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "00000"
+              : points[2].value
+            : playerInputs.user3 ?? ""
+        }
+        name="user3"
+        disabled={!!points[0]?.value || points[0]?.value === 0}
+        onChange={handleInputChange}
+        className="px-4 py-2 border-2 rounded-md transition"
+      />
+    }
     
-    {(userData?.user4 != "" && !!userData?.user4 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF4") && !message.tagged.includes("noGame") )  && message.started && < input
-      type={`${!!points[3]?.value || points[3]?.value == 0 ? (message.tagged.includes("hidden") ?  "password" : "text") : "number"}`}
-      placeholder={t("f4w")}
-      value={points[3]?.value || points[3]?.value == 0 ? message.tagged.includes("hidden") ? "Secret" : points[3].value : (playerInputs.user4 ?? "")}
-      name="user4"
-      disabled={points[0]?.value || points[0]?.value == 0 ? true : false}
-      onChange={handleInputChange}
-      className="w-full px-4 py-2 border-2 border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 transition dark:text-white"
-    />}
+    {(userData?.user4 != "" && !!userData?.user4 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF4") && !message.tagged.includes("noGame") )  && message.started && 
+      <TextInput
+        type={
+          !!points[3]?.value || points[3]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "password"
+              : "text"
+            : "number"
+        }
+        placeholder={t("f4w")}
+        value={
+          !!points[3]?.value || points[3]?.value === 0
+            ? message.tagged.includes("hidden")
+              ? "Secret"
+              : points[3].value
+            : playerInputs.user4 ?? ""
+        }
+        name="user4"
+        disabled={!!points[0]?.value || points[0]?.value === 0}
+        onChange={handleInputChange}
+        className="px-4 py-2 border-2 rounded-md transition"
+      />
+    }
     </div>
 }
     {timeLeft>0 && message.started && !message.tagged.includes("noGame") && !(points[0]?.value >= 0) && userData?.user1!="" && userData?.user1!=""  &&(
@@ -438,10 +495,8 @@ const formatTime = (ms: number) => {
       <Button
         onClick={handleSave}
         aria-label="Save"
-      >
-        &#x1F4BE;<br/>
-        
-        <div className="text-xl">{t("save")}</div>
+      > 
+        {t("save")}
       </Button>
       <br/>
       <label className='mt-2'>

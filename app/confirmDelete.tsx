@@ -5,6 +5,7 @@ import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import {Button} from "@cooperateDesign";
+import TextInput from "@/cooperateDesign/textInput";
 
 interface DeleteConfirmModalProps {
   onClose: () => void;
@@ -99,13 +100,13 @@ export default function DeleteConfirmModal({ onClose, teamName }: DeleteConfirmM
         <p className="text-sm text-gray-600 dark:text-gray-300">
           Bitte gib <span className="font-bold">„LÖSCHEN“</span> ein, um dein Team endgültig zu löschen.
         </p>
-        <input
-          type="text"
+        <TextInput
+          placeholder="LÖSCHEN"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="LÖSCHEN"
-          className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 outline-none"
+          className="focus:ring-red-500"
         />
+
 
         {/* Footer */}
         <div className="flex justify-end gap-3 mt-4">

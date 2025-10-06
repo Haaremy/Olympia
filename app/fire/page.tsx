@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Fire from "./Fire";
+import {Main} from "@cooperateDesign";
 
 type Settings = {
   started: boolean;
@@ -75,18 +76,21 @@ export default function FirePage() {
 
   if (loading) {
     return (
-      <main className="flex items-center justify-center min-h-screen bg-gray-900 text-gray-200">
+      <Main className="items-center">
         <p>Lade Daten...</p>
-      </main>
+      </Main>
     );
   }
 
   return (
-<main
-  className="relative flex flex-col items-center justify-center min-h-screen text-white overflow-hidden
-             bg-cover bg-center bg-no-repeat"
+<Main
+  className="relative justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
   style={{ backgroundImage: "url('/images/building.jpg')" }}
->      {/* Header */}
+>
+  {/* Inhalt */}
+
+      
+{/* Header */}
       <h1 className="text-3xl md:text-5xl font-bold mb-6 text-center tracking-wide">
         Olympisches Feuer
       </h1>
@@ -125,6 +129,6 @@ export default function FirePage() {
 </div>
 
       )}
-    </main>
+    </Main>
   );
 }

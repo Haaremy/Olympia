@@ -8,6 +8,9 @@ import '../lib/i18n';
 import { useUI } from "./context/UIContext";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
+import {Main} from "@cooperateDesign";
+import TextInput from "@/cooperateDesign/textInput";
+import clsx from "clsx";
 
 type Game = {
   id: number;
@@ -263,7 +266,7 @@ useEffect(() => {
   
 
   return (
-    <main className="flex min-h-screen flex-col p-1 sm:p-8 pt-20 bg-pink-50 dark:bg-gray-900">
+    <Main className="flex flex-col p-1 ">
       <div className="flex-1 w-full transition-all duration-300">
         
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10">
@@ -300,33 +303,24 @@ useEffect(() => {
         {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose}  />}
         
       </div>
-      <input
-          type="text"
-          placeholder="Suche nach Spielnummer..."
-          value={searchQuery}
-          onChange={(e) => { 
-            setSearchQuery(e.target.value); 
-           setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+      <TextInput
+        placeholder="Suche nach Spielnummer..."
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }, 10);
-          }}
-          className={`${isModalOpen ? "hidden" : "block"} 
-            ${isScrolled ? "mx-auto flex items-center justify-center relative" : "fixed  bottom-5"} 
-            sm:fixed
-            left-1/2 -translate-x-1/2
-            lg:-translate-x-2/5 lg:left-2/5
-            xl:left-1/2 xl:-translate-x-1/2
-            z-50 transform
-            sm:top-15 sm:bottom-auto lg:top-4 
-            w-[95%] sm:w-full lg:w-[25%] sm:w-[50%]
-            p-3 pl-6 pr-6  max-w-md 
-            text-gray-800 dark:text-white 
-            bg-white dark:bg-gray-700 
-            border border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500 transition 
-            `}
-        />
-    </main>
+        }}
+        className={clsx(
+          isModalOpen ? "hidden" : "block",
+          isScrolled
+            ? "mx-auto flex items-center justify-center relative"
+            : "fixed bottom-5",
+          "sm:fixed left-1/2 -translate-x-1/2 lg:-translate-x-2/5 lg:left-2/5 xl:left-1/2 xl:-translate-x-1/2 z-50 transform sm:top-15 sm:bottom-auto lg:top-4 w-[95%] sm:w-full lg:w-[25%] sm:w-[50%] pl-6 pr-6 max-w-md transition"
+        )}
+      />
+
+    </Main>
   );
 }

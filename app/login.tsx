@@ -10,6 +10,7 @@ import {
   showPopupNotification,
   createNotificationChannel
 } from "@/capacitor/notificationService";
+import TextInput from '@/cooperateDesign/textInput';
 
 interface ModalProps {
   onClose: () => void;
@@ -160,63 +161,57 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         <form  className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-sm font-medium mb-1">Team Login ID</label>
-            <input
-              id="username"
+            <TextInput
               placeholder="z.B. ABC, Team1, MiMaTe, ..."
-              type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
               autoCapitalize="off"
               autoCorrect="off"
             />
+
           </div>
 
           { showRegister &&<div>
               <label htmlFor="realname" className="block text-sm font-medium mb-1">Team Name</label>
-            <input
-              id="realname"
-              type="text"
-              placeholder='Santas Crew'
+            <TextInput
+              placeholder="Santas Crew"
               value={realname}
               onChange={(e) => setRealName(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
               autoCapitalize="off"
               autoCorrect="off"
             />
+
           </div>
           }
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium mb-1">Passwort</label>
-            <input
-              id="password"
+            <TextInput
               type="password"
-              placeholder='hoHoh0'
+              placeholder="hoHoh0"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
               autoCapitalize="off"
               autoCorrect="off"
             />
+
           </div>
 
          { showRegister && <div>
             <label htmlFor="password" className="block text-sm font-medium mb-1">Passwort II</label>
-            <input
-              id="password"
+            <TextInput
               type="password"
-              placeholder='hoHoh0'
+              placeholder="hoHoh0"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
               autoCapitalize="off"
               autoCorrect="off"
             />
+
           </div>
         }
         <div className='flex justify-end gap-4'>

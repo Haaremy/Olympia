@@ -16,6 +16,7 @@ interface Chat {
   id: number;
   message: string;
   createdAt: string;
+  edited: boolean;
   team: {
     uname: string;
     name: string;
@@ -32,6 +33,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chat: Chat } | null>(null);
+  const [lastContextMenu, setLastContextMenu] = useState<Chat | undefined>(undefined);
+
+  const [editing, setEditing] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -88,9 +92,38 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleSendEdit = async () => {
+    if(!lastContextMenu) return;
+    const chat = lastContextMenu;
+    chat.message = message;
+    chat.edited = true;
+    try {
+      const res = await fetch("/api/chat/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat }),
+      });
+      
+
+      if (res.ok) {
+        setMessage("");
+        socket.emit("chat message");
+      } else {
+        console.error("Error on Chat send");
+      }
+    } catch (e) {
+      console.error("Error on Chat:", e);
+    } finally {
+      setIsSending(false);
+    }
+  }
 
 
   const handleSend = async () => {
+    if(editing){
+      handleSendEdit();
+      return;
+    }
     if (!message.trim() || isSending) return;
     setIsSending(true);
 
@@ -136,6 +169,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     y: rect.bottom + 4,    // knapp unter der Message
     chat,
   });
+
+  setLastContextMenu(chat);
 };
 
 const handleDelete = async () => {
@@ -155,6 +190,18 @@ const handleDelete = async () => {
     setContextMenu(null);
   } 
 };
+
+const handleEdit = () => {
+ if (!contextMenu) return;
+  const chat = contextMenu.chat;
+  setMessage(chat.message);
+  setEditing(true);
+}
+
+const handleCancel = () => {
+  setMessage("");
+  setEditing(false);
+}
 
 
 
@@ -220,7 +267,7 @@ const handleDelete = async () => {
                   )}
                   <div>{chat.message}</div>
                   <div className="text-[10px] opacity-70 mt-1 text-right">
-                    {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    {chat.edited ? t("edited") : ""} {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </div>
 
@@ -267,11 +314,20 @@ const handleDelete = async () => {
           />
 
           {!!session && (
+            <div className="flex space-x-2">
+            { editing && 
+            <Button
+              onClick={handleCancel}
+            >
+              X
+            </Button> 
+            }
             <Button
               onClick={handleSend}
             >
               ➤
             </Button>
+            </div>
           )}
 
           {/* Counter */}
@@ -289,8 +345,8 @@ const handleDelete = async () => {
           style={{ top: contextMenu.y, left: contextMenu.x }}
           className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
         >
-          <Button disabled={true}>✏️ Edit</Button>
-          <Button onClick={handleDelete}>🗑️ Delete</Button>
+          <Button onClick={handleEdit}>✏️</Button>
+          <Button onClick={handleDelete}>🗑️</Button>
         </div>
       )}
     </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/cooperateDesign";
 import { useMusic } from "./music";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function MusicSettings() {
   const { audioRef, isPlaying, setIsPlaying } = useMusic();
@@ -44,13 +44,29 @@ export default function MusicSettings() {
     <div className="mt-4">
       {/* Musiksteuerung */}
       <div className="flex items-center gap-2">
-        <div className="flex flex-1 items-center gap-2">
+        <div className="flex flex-1 items-center gap-4">
           {/* Play/Pause */}
-          <Button
-            onClick={togglePlay}
-          >
-            {isPlaying ? "⏸️" : "▶️"}
-          </Button>
+           
+          
+            {isPlaying ?
+              <Image
+                src="/images/settingspause.svg"
+                alt="Admin"
+                width={24}
+                height={24}
+                className="dark:invert truedark:invert invert-0"
+                onClick={togglePlay}
+              />
+             : 
+              <Image
+                src="/images/settingsplay.svg"
+                alt="Admin"
+                width={24}
+                height={24}
+                className="dark:invert truedark:invert invert-0"
+                onClick={togglePlay}
+              />
+              }
 
           {/* Lautstärke Slider */}
           <input

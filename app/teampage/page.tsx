@@ -11,7 +11,9 @@ import { Capacitor } from "@capacitor/core";
 import DeleteConfirmModal from "../confirmDelete";
 import TeamSelfieUploader from "@/app/common/teamSelfieUploader"; 
 import MusicSettings from "@/app/common/musicSettings";
-import { Button } from "@/cooperateDesign";
+import { Button, Main } from "@/cooperateDesign";
+import ThemeSettings from "../common/themeSettings";
+import TextInput from "@/cooperateDesign/textInput";
 
 
 export default function Page() {
@@ -100,31 +102,8 @@ const [isAndroid, setIsAndroid] = useState(false);
 
 
 const theming = (theme: string) => {
-  if (typeof window === "undefined") return; // SSR-Schutz
   setTheme(theme);
-  const root = window.document.documentElement;
-
-  // System-Design abfragen
-  const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
-  // Theme speichern
   localStorage.setItem("theme", theme);
-
-  // Theme anwenden
-  if (theme !== "auto") {
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  } else {
-    // Auto: Dark nur hinzufügen, wenn System dunkel ist
-    if (sysDesign === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }
 };
   
 
@@ -224,19 +203,17 @@ const renderPlayerInput = (
 ) => (
   <div className="flex-1">
     <label className="block text-gray-800 dark:text-white text-lg">{label}</label>
-    {(fieldKey=="user3" && (player3 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2")  ? <input
-      type="text"
+    {(fieldKey=="user3" && (player3 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2")  ? 
+    <TextInput
       ref={ref}
-      className={`w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500 `}
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
       value={userData?.[fieldKey] ?? ""}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+      onChange={(e) =>
         setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
       }
-      disabled={!!userData?.name || userData?.name != "" ? false : true}
-    /> : <Button className="w-full" onClick={(e) => {
+      className="mt-2 rounded-xl"
+    />
+ : <Button className="w-full" onClick={(e) => {
     e.preventDefault();
     handlePlayer(fieldKey);
   }} >
@@ -251,26 +228,24 @@ const renderPlayerInput = (
 
 
   if (!session) {
-    return ( <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}></main>)
+    return ( <Main className="justify-between">{/* Inhalt hier einfügen */}</Main>)
   } else {
     return (
-      <main className={`w-full flex min-h-screen min-w-screen flex-col items-center justify-between sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-all duration-300`}>
+      <Main className="justify-between">
         {/* Hauptbereich */}
         <div className={`flex-1 w-full max-w-3xl transition-all duration-300  ${isAndroid ? "mt-8" : "mt-4"}`}>
         {showSaved && <InfoBox message={infoMessage} title={infoTitle} color={infoColor} onClose={handleClose}></InfoBox> }
           {/* Header-Bereich */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center m-4">
             Team #{session.user.uname}
-            <input
-              type="text"
+            <TextInput
               ref={nameTRef}
-              className="w-full mt-2 p-3 bg-white border rounded-lg dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-600 
-            rounded-xl shadow-lg 
-            focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder={t("enterTeam")}
               defaultValue={session.user.name || ""}
-              disabled={session.user.name}
+              disabled={!!session.user.name}
+              className="mt-2 rounded-xl"
             />
+
           </h1>
 
          {/* Team-Mitglieder: Player 1 & 2 */}
@@ -377,8 +352,8 @@ const renderPlayerInput = (
         {deleteConfirm && (
           <DeleteConfirmModal onClose={handleClose}/>
         )}
-        
-      </main>
+        <ThemeSettings/>
+      </Main>
     );
   }
 }

@@ -5,8 +5,9 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import InfoBox from "../infoBox";
 import { Capacitor } from "@capacitor/core";
-import { Button, CLink} from "@cooperateDesign";
+import { Button, CLink, Main} from "@cooperateDesign";
 import DeleteConfirmModal from "../confirmDelete";
+import TextInput from "@/cooperateDesign/textInput";
 
 
 type SearchedTeam = {
@@ -306,7 +307,7 @@ const getOffsetISO = (dtLocal: string): string => {
   if (!session) return <div>Loading...</div>;
 
  return (
-  <main className="w-full flex flex-col items-center min-h-screen p-6 bg-gray-900 text-white">
+  <Main>
     {showSaved && <InfoBox message={infoMessage} title="Info" color="red" onClose={handleClose} />}
     
     <h1 className={`text-3xl font-bold mb-6 text-center ${isAndroid ? "mt-16" : "mt-4"}`}>Admin Dashboard</h1>
@@ -335,16 +336,15 @@ const getOffsetISO = (dtLocal: string): string => {
     {!showReports ? (
       <>
         <div className="flex flex-col sm:flex-row items-center mb-6 gap-4 w-full max-w-lg">
-          <input
+          <TextInput
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Team ID or Name"
-            className="flex-1 p-2 rounded-lg bg-gray-800 text-white border border-gray-600"
+            className="flex-1"
           />
           <Button
             onClick={handleSearch}
-            className="py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-lg"
           >
             Suche
           </Button>
@@ -358,12 +358,13 @@ const getOffsetISO = (dtLocal: string): string => {
             <h2 className="text-xl font-bold mb-4">{`Team <${searchedTeam.uname}>`}</h2>
             <div className="mb-4">
               <label className="block font-semibold mb-1">Team Name:</label>
-              <input
+              <TextInput
                 type="text"
                 ref={nameTRef}
                 defaultValue={searchedTeam.name}
-                className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                
               />
+
             </div>
             <div className="mb-4">
               <label className="block font-semibold mb-2">Players:</label>
@@ -371,12 +372,13 @@ const getOffsetISO = (dtLocal: string): string => {
                 {searchedTeam.players.map((p, i) => (
                   <div key={i}>
                     <label className="block text-sm mb-1 text-white">{`Player ${i + 1}`}</label>
-                    <input
+                    <TextInput
                       type="text"
                       defaultValue={p}
                       ref={userRefs[i]}
-                      className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      
                     />
+
                   </div>
                 ))}
               </div>
@@ -443,11 +445,12 @@ const getOffsetISO = (dtLocal: string): string => {
               <label className="block text-sm mb-1 text-white">
                 {p.player}
               </label>
-              <input
+              <TextInput
                 type="number"
                 defaultValue={p.value}
-                className="w-full p-2 rounded-lg text-white border border-gray-300 dark:border-gray-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="p-2 rounded-lg"
               />
+
             </div>
           </div>
         ))}
@@ -553,12 +556,6 @@ const getOffsetISO = (dtLocal: string): string => {
     >
       <p className="text">Olympia-Feuer</p>
     </CLink>
-    <CLink
-      href="/debug"
-      className="mt-4"
-    >
-      <p className="text">Debug Testseite</p>
-    </CLink>
     <Button
       onClick={() => router.push('/teampage')}
       className="mt-4"
@@ -568,7 +565,7 @@ const getOffsetISO = (dtLocal: string): string => {
     {deleteConfirm && (
       <DeleteConfirmModal onClose={handleCloseDelete} teamName={searchedTeam?.uname}/>
     )}
-  </main>
+  </Main>
 );
 
 }

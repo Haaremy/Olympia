@@ -16,6 +16,7 @@ export async function GET() {
       select: {
         id: true,
         uname: true,
+        name: true,
         user1: true,
         user2: true,
         user3: true,

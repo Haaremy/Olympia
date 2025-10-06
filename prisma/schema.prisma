@@ -64,6 +64,7 @@ model ChatMessage {
   message   String
   createdAt DateTime @default(now())
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  edited    Boolean? @default(false)
 }
 
 enum Role{

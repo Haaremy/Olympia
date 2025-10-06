@@ -9,12 +9,12 @@ export type CLinkProps = NextLinkProps &
   };
 
 const baseStyles =
-  'rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50';
+  'rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50 dark:text-white text-gray-900';
 
 const variants = {
-  primary: 'py-2 px-6 bg-pink-500 hover:bg-pink-600 rounded-lg text-white',
-  warn: 'py-2 px-6 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-white',
-  danger: 'py-2 px-6 bg-red-500 hover:bg-red-600 rounded-lg text-white',
+  primary: 'dark:bg-pink-500 hover:dark:bg-pink-600 bg-blue-300 hover:bg-blue-400',
+  warn: 'bg-yellow-500 hover:bg-yellow-600',
+  danger: 'bg-red-500 hover:bg-red-600',
 } as const;
 
 const CLink = React.forwardRef<HTMLAnchorElement, CLinkProps>(

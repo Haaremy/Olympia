@@ -10,7 +10,7 @@ import '../../lib/i18n';
 import { Slot } from '@prisma/client';
 import Image from 'next/image';
 import socket from "../../lib/socket";
-import { Button } from "@/cooperateDesign";
+import { Button, Main } from "@/cooperateDesign";
  
 
 
@@ -25,7 +25,7 @@ interface Team {
   user4: string;
   pointsTotal: number;
   cheatPoints: number;
-  entries: {
+  entries: { 
     id: number;
     value: number;
     slot: Slot;
@@ -223,7 +223,7 @@ const imageLoader = ({ src }: { src: string }) => {
 }
 
   return (
-    <main className="min-h-screen pt-20 bg-pink-50 dark:bg-gray-900 transition-all duration-300 p-4 sm:p-8">
+    <Main>
       {/* Tabs */}
      <div className={`${isAndroid ? "mt-16" : "mt-4"} mb-8`}>
   {/* Carousel Container */}
@@ -467,6 +467,6 @@ const imageLoader = ({ src }: { src: string }) => {
           )}
         </div>
       )}
-    </main>
+    </Main>
   );
 }

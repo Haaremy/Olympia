@@ -8,6 +8,8 @@ import Image from "next/image";
 import { detectPlatform } from "../common/detectPlatform";
 import { Capacitor } from '@capacitor/core';
 import MusicSettings from "@/app/common/musicSettings";
+import {Main} from "@cooperateDesign";
+import ThemeSettings from "../common/themeSettings";
 
 
 
@@ -42,36 +44,13 @@ export default function Page() {
   };
 
   const theming = (theme: string) => {
-  if (typeof window === "undefined") return; // SSR-Schutz
-  setTheme(theme);
-  const root = window.document.documentElement;
-
-  // System-Design abfragen
-  const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
-  // Theme speichern
-  localStorage.setItem("theme", theme);
-
-  // Theme anwenden
-  if (theme !== "auto") {
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  } else {
-    // Auto: Dark nur hinzufügen, wenn System dunkel ist
-    if (sysDesign === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }
-};
+    setTheme(theme);
+    localStorage.setItem("theme", theme);
+  };
 
 
   return (
-    <main className="w-full min-h-screen flex flex-col items-center justify-start sm:p-6 p-4 pt-20 dark:bg-gray-900 transition-colors duration-300">
+    <Main className="justify-start">
       <div className="w-[70%]">
        {/* Einstellungen */}
                 <div className="mt-8 w-full">
@@ -84,18 +63,19 @@ export default function Page() {
                         <Image
                           src={`/images/settingstheme.svg`}
                           alt="Globe Icon"
-                          className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
+                          className="h-8 w-8 object-cover rounded-lg truedark:invert dark:invert invert-0"
                           width={50}
                           height={50}
                         />
                         <select
                           value={theme}
                           onChange={(e) => theming(e.target.value)}
-                          className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                          className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 "
                         >
                           <option value="auto">Auto</option>
                           <option value="dark">Dark</option>
                           <option value="light">Light</option>
+                          <option value="truedark">True Dark Mode</option>
                         </select>
                       </div>
                     </div>
@@ -107,7 +87,7 @@ export default function Page() {
                         <Image
                           src={`/images/settingslanguage.svg`}
                           alt="Globe Icon"
-                          className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
+                          className="h-8 w-8 object-cover rounded-lg dark:invert truedark:invert invert-0 "
                           width={50}
                           height={50}
                           />
@@ -270,7 +250,7 @@ export default function Page() {
         <h3 className="font-semibold">9. Änderungen dieser Datenschutzerklärung</h3>
         <p>Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen. Die jeweils aktuelle Version ist auf unserer Website verfügbar.</p>
       </section>
-
-    </main>
+      <ThemeSettings/>
+    </Main>
   );
 }

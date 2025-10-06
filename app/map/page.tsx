@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import MapSection from '../common/map';
 import {gamesEG, gamesOG} from "../common/mapPos";
 import { useTranslation } from 'next-i18next';
+import {Main} from "@cooperateDesign";
 import '../../lib/i18n'
 
 // Main Component
@@ -29,7 +30,7 @@ export default function Home() {
 
 
   return (
-    <main className="mt-20 flex min-h-screen flex-col p-1 sm:p-8 pt-20 bg-pink-50 dark:bg-gray-900 ">
+    <Main className="mt-20 p-1 sm:p-8 pt-20">
      
 
       {/* Search Input */}
@@ -67,6 +68,6 @@ export default function Home() {
           searchQuery={searchQuery}
         />
       </div>
-    </main>
+    </Main>
   );
 }

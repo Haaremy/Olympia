@@ -1,9 +1,10 @@
 // /app/404/page.tsx
 import Link from "next/link";
+import {Main} from "@cooperateDesign";
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-4">
+    <Main className="justify-center">
       <h1 className="text-6xl font-bold mb-4">404</h1>
       <p className="text-xl mb-6">Oops! Diese Seite wurde nicht gefunden.</p>
       <Link
@@ -12,6 +13,6 @@ export default function NotFound() {
       >
         Zur Startseite
       </Link>
-    </main>
+    </Main>
   );
 }
