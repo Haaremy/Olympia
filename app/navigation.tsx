@@ -321,6 +321,12 @@ export default function Navigation() {
             {/* CHAT */}
             {navButtonChat()}
           </div>
+          <div
+            className={`flex flex-wrap gap-2 justify-center sm:justify-end ${
+              currentPath === "/credits" ? "visible" : "hidden"
+            }`}
+          >
+          </div>
 
           {/* Modals */}
           {timePlan && <PlannedTime onClose={handleTimePlanClose} />}
