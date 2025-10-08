@@ -208,6 +208,12 @@ export default function ScoreboardTabs() {
   // Format Date
   const formatDate = (date: Date | string) => {
     if (!date || new Date(date).toString() === "Invalid Date") return "-";
+    let lang = i18n.language;
+    switch (lang){
+      case "de": lang = "de-DE"; break;
+      case "en": lang = "en-US"; break;
+      default : lang = "de-DE"; break;
+    }
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
@@ -215,7 +221,7 @@ export default function ScoreboardTabs() {
       hour: "2-digit",
       minute: "2-digit",
     };
-    return new Date(date).toLocaleDateString(undefined, options);
+    return new Date(date).toLocaleDateString(lang, options);
   };
 
 const imageLoader = ({ src }: { src: string }) => {
@@ -316,7 +322,7 @@ const imageLoader = ({ src }: { src: string }) => {
       variant="switch"
       className="rounded-r-lg rounded-l-none"
     >
-      Weltrekorde
+      {t("worldrecords")}
     </Button>
   </div>
 </div>
@@ -339,9 +345,9 @@ const imageLoader = ({ src }: { src: string }) => {
           <table className="min-w-full text-left text-sm text-gray-700 dark:text-gray-200">
             <thead className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white uppercase text-xs font-semibold">
               <tr>
-                <th className="px-6 py-4">Rang</th>
+                <th className="px-6 py-4">{t("rank")}</th>
                 <th className="px-6 py-4">Team</th>
-                <th className="px-6 py-4">Punkte</th>
+                <th className="px-6 py-4">{t("Punkte")}</th>
                 <th className="px-6 py-4">Update</th>
               </tr>
             </thead>
@@ -372,12 +378,12 @@ const imageLoader = ({ src }: { src: string }) => {
                           <table className="w-full mt-4 text-xs text-center border rounded-md">
                             <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
                               <tr>
-                                <th className="border px-2 py-1">Spiel</th>
+                                <th className="border px-2 py-1">{t("game")}</th>
                                 <th className="border px-2 py-1">{team.user1}</th>
                                 <th className="border px-2 py-1">{team.user2}</th>
                                 <th className="border px-2 py-1">{team.user3 || "-"}</th>
                                 <th className="border px-2 py-1">{team.user4 || "-"}</th>
-                                <th className="border px-2 py-1">Letztes Update</th>
+                                <th className="border px-2 py-1">Updated</th>
                               </tr>
                             </thead>
                             <tbody>

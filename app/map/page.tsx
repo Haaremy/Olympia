@@ -30,11 +30,11 @@ export default function Home() {
 
 
   return (
-    <Main className="mt-20 p-1 sm:p-8 pt-20">
+    <Main className="sm:p-8 pt-20">
      
 
       {/* Search Input */}
-      <div className="flex flex-col items-center justify-between">
+      <div className="flex flex-col items-center justify-between w-full">
       {/*<input
           type="text"
           placeholder="Suche nach Spielnummer..."

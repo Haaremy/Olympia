@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import { Capacitor } from '@capacitor/core';
 import {Geolocation, Position} from "@capacitor/geolocation";
-
-
+import { useTranslation } from 'next-i18next';
+import '../../lib/i18n';
  
 
 interface Game {
@@ -25,7 +25,19 @@ interface MapSectionProps {
 function MapSection({ title, imageSrc, games, searchQuery }: MapSectionProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position  | null>(null);
- 
+ const { i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
+
+
+const getLangID = () => {
+  switch (i18n.language) {
+    case "de":
+      return 0;
+    case "en":
+      return 1;
+    default:
+      return 0; // Default ID if language is not "de" or "en"
+  }
+}
 
   // GPS-Referenzpunkte für dein Bild
 
@@ -166,9 +178,11 @@ useEffect(() => {
     mapInstance.current.fitBounds(bounds);
 
     const titles =  await loadGames();
+    
+      let lang = getLangID();
 
     await filteredGames.forEach((game) => {
-      const currTitle =titles[parseInt(game.id)-1].languages[0].title ?? "test";
+      const currTitle =titles[parseInt(game.id)-1].languages[lang].title ?? "test";
       L.marker([game.y, game.x], { icon: idIcon(game.id) })
         .addTo(mapInstance.current!)
         .bindPopup(currTitle);
@@ -181,7 +195,7 @@ useEffect(() => {
 
       L.marker([cY, cX], { icon: idIcon("X") })
         .addTo(mapInstance.current!)
-        .bindPopup(`${cY}, ${cX}`);
+        .bindPopup(`🫵🏻`);
     }
     
   })();

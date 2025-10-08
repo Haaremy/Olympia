@@ -91,11 +91,11 @@ const [isAndroid, setIsAndroid] = useState(false);
 
     if (res.ok) {
       
-      handleSavedMessage("Team erfolgreich gespeichert.", "Gespeichert", "pink");
+      handleSavedMessage(t("teamsaved"), t("saved"), "pink");
       //await new Promise((resolve) => setTimeout(resolve, 10000));
       setUpdateData(true);
     } else {
-      handleSavedMessage("Fehler beim Speichern. Bitte versuche es erneut.", "Fehler", "red");
+      handleSavedMessage(t("errorOnSave")+ t("tryAgain"), t("error"), "red");
     }
   }
   };
@@ -346,7 +346,7 @@ const renderPlayerInput = (
           variant="danger"
           onClick={handleDelete}
         >
-          Team löschen
+          {t("deleteTeam")}
         </Button>
 
         {deleteConfirm && (

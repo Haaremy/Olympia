@@ -269,7 +269,7 @@ useEffect(() => {
     <Main className="flex flex-col p-1 ">
       <div className="flex-1 w-full transition-all duration-300">
         
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 mt-10">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
           {randomizedGames.length === 0 && !searchQuery && (
             <p className="col-span-full text-center text-gray-500">Keine Spiele gefunden.</p>
           )}
@@ -317,7 +317,7 @@ useEffect(() => {
           isScrolled
             ? "mx-auto flex items-center justify-center relative"
             : "fixed bottom-5",
-          "sm:fixed left-1/2 -translate-x-1/2 lg:-translate-x-2/5 lg:left-2/5 xl:left-1/2 xl:-translate-x-1/2 z-50 transform sm:top-15 sm:bottom-auto lg:top-4 w-[95%] sm:w-full lg:w-[25%] sm:w-[50%] pl-6 pr-6 max-w-md transition"
+          "sm:fixed left-1/2 -translate-x-1/2 lg:-translate-x-3/10 lg:left-7/20 xl:left-1/2 xl:-translate-x-1/2 z-50 transform sm:top-15 sm:bottom-auto lg:top-4 w-[95%]  lg:w-[25%] sm:w-[50%] pl-6 pr-6 max-w-md transition"
         )}
       />
 

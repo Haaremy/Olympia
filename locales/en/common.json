@@ -1,6 +1,7 @@
 {
     "fsr_long": "Student Council of Computer Science and Languages",
     "games": "Games",
+    "game": "Game",
     "map": "Map",
     "rank": "Rank",
     "calender": "-Calender",
@@ -34,6 +35,9 @@
     "enterTeam": "<Name of Teams>",
     "takePhoto": "Camera Image",
     "teamsaved": "Team saved successfully!",
+    "errorOnSave": "Failed to save.",
+    "tryAgain": "Please try again.",
+    "error": "Error",
     "deleteTeam": "Delete Team",
     "chatLogin": "Log-in to text...",
     "chatPlaceholder": "Type a message...",
