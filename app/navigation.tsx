@@ -335,7 +335,7 @@ export default function Navigation() {
           {showChat && <Chat onClose={handleChatClose} />}
         </div>
       </header>
-      <ThemeSettings/>
+      <ThemeSettings className="hidden"/>
     </Main>
   );
 }
