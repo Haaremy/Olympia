@@ -416,22 +416,22 @@ const imageLoader = ({ src }: { src: string }) => {
     <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
       <td className="border px-2 py-1">{gameId}</td>
       <td className="border px-2 py-1">
-        {(game?.tagged?.includes("hidden") && !session?.user?.role=="ADMIN")
+        {(game?.tagged?.includes("hidden") && session?.user?.role!="ADMIN")
           ? "????"
           : slotValues["USER1"]}
       </td>
       <td className="border px-2 py-1">
-        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && session?.user?.role!="ADMIN")
           ? "????"
           : slotValues["USER2"]}
       </td>
       <td className="border px-2 py-1">
-        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && session?.user?.role!="ADMIN")
           ? "????"
           : slotValues["USER3"]}
       </td>
       <td className="border px-2 py-1">
-        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && session?.user?.role!="ADMIN")
           ? "????"
           : slotValues["USER4"]}
       </td>
