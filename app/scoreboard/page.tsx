@@ -2,7 +2,6 @@
 
 import { Capacitor } from "@capacitor/core";
 import React, { useEffect, useState } from "react";
-//import Carousel from "../common/carousel";
 import Carousel from 'react-easy-carousel';
 import { useTranslation } from 'next-i18next';
 import {i18n} from 'i18next';
