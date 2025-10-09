@@ -386,7 +386,6 @@ const imageLoader = ({ src }: { src: string }) => {
                                 <th className="border px-2 py-1">{team.user3 || "-"}</th>
                                 <th className="border px-2 py-1">{team.user4 || "-"}</th>
                                 <th className="border px-2 py-1">Updated</th>
-                                {session?.user?.role == "ADMIN" && <th className="px-2 py-1"></th>}
                                 
                               </tr>
                             </thead>
