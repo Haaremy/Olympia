@@ -66,3 +66,8 @@ lib/socket.js
 +3 für zu schnelle Einträge zwischen Spielen
 berechnet in punkte submit api & genutzt in Scoreboard api und records api  
 
+# language 
+- selection in language.tsx, trigger in navbar
+- get language in map component nicht page (game names)
+- get language in scoreboard (String für Datum)
+
