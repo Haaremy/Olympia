@@ -65,7 +65,7 @@ export default function ScoreboardTabs() {
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
   const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
-  
+  const { data: session } = useSession();
   const getLangID = (i18n: i18n) => {
   switch (i18n.language) {
     case "de":
