@@ -59,25 +59,7 @@ export default function Page() {
       
                     {/* Theme */}
                     <div className="mt-4">
-                      <div className="flex items-center gap-2">
-                        <Image
-                          src={`/images/settingstheme.svg`}
-                          alt="Globe Icon"
-                          className="h-8 w-8 object-cover rounded-lg truedark:invert dark:invert invert-0"
-                          width={50}
-                          height={50}
-                        />
-                        <select
-                          value={theme}
-                          onChange={(e) => theming(e.target.value)}
-                          className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 "
-                        >
-                          <option value="auto">Auto</option>
-                          <option value="dark">Dark</option>
-                          <option value="light">Light</option>
-                          <option value="truedark">True Dark Mode</option>
-                        </select>
-                      </div>
+                            <ThemeSettings/>
                     </div>
       
       
@@ -250,7 +232,6 @@ export default function Page() {
         <h3 className="font-semibold">9. Änderungen dieser Datenschutzerklärung</h3>
         <p>Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen. Die jeweils aktuelle Version ist auf unserer Website verfügbar.</p>
       </section>
-      <ThemeSettings/>
     </Main>
   );
 }
