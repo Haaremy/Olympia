@@ -277,24 +277,7 @@ const renderPlayerInput = (
 
               {/* Theme */}
               <div className="mt-4">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={`/images/settingstheme.svg`}
-                    alt="Globe Icon"
-                    className="h-8 w-8 object-cover rounded-lg dark:invert invert-0"
-                    width={50}
-                    height={50}
-                  />
-                  <select
-                    value={theme}
-                    onChange={(e) => theming(e.target.value)}
-                    className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                  >
-                    <option value="auto">Auto</option>
-                    <option value="dark">Dark</option>
-                    <option value="light">Light</option>
-                  </select>
-                </div>
+                <ThemeSettings/>
               </div>
 
 
@@ -352,7 +335,7 @@ const renderPlayerInput = (
         {deleteConfirm && (
           <DeleteConfirmModal onClose={handleClose}/>
         )}
-        <ThemeSettings/>
+        
       </Main>
     );
   }
