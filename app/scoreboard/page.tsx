@@ -348,7 +348,7 @@ const imageLoader = ({ src }: { src: string }) => {
                 <th className="px-6 py-4">{t("rank")}</th>
                 <th className="px-6 py-4">Team</th>
                 <th className="px-6 py-4">{t("Punkte")}</th>
-               {session?.user?.role == "ADMIN" && <th className="px-6 py-4">{t("Punkte")}</th>}
+               {session?.user?.role == "ADMIN" && <th className="px-6 py-4">{t("Cheated")}</th>}
                 <th className="px-6 py-4">Update</th>
               </tr>
             </thead>
@@ -364,9 +364,10 @@ const imageLoader = ({ src }: { src: string }) => {
                   <React.Fragment key={team.id}>
                     <tr className="border-t border-gray-200 dark:border-gray-600">
                       <td className="px-6 py-4 font-medium">#{i + 1}</td>
-                      {session?.user?.role == "ADMIN" ? <td className="px-6 py-4">{team.uname}</td> : <td className="px-6 py-4">{team.name}</td> }
+                      {session?.user?.role == "ADMIN" ? <td className="px-6 py-4">#{team.uname}</td> : <td className="px-6 py-4">{team.name}</td> }
                       <td className="px-6 py-4">{team.pointsTotal}</td>
                      {session?.user?.role == "ADMIN" && <td className="px-6 py-4">{team.cheatPoints}</td>}
+                      <td className="px-6 py-4"></td>
                       <td className="px-6 py-4">
                         {team.entries.length > 0 && formatDate(team.entries[team.entries.length - 1].lastUpdated)}
                       </td>
@@ -415,22 +416,22 @@ const imageLoader = ({ src }: { src: string }) => {
     <tr key={gameId} className="even:bg-gray-50 dark:even:bg-gray-800">
       <td className="border px-2 py-1">{gameId}</td>
       <td className="border px-2 py-1">
-        {game?.tagged?.includes("hidden")
+        {(game?.tagged?.includes("hidden") && !session?.user?.role=="ADMIN")
           ? "????"
           : slotValues["USER1"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
           ? "????"
           : slotValues["USER2"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
           ? "????"
           : slotValues["USER3"]}
       </td>
       <td className="border px-2 py-1">
-        {game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")
+        {((game?.tagged?.includes("hidden") || game?.tagged?.includes("field1")) && !session?.user?.role=="ADMIN")
           ? "????"
           : slotValues["USER4"]}
       </td>
