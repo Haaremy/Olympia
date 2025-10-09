@@ -1,6 +1,7 @@
 "use client"; 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {SelectField} from "@cooperateDesign/select";
 
 export default function ThemeSelector() {
   const [theme, setTheme] = useState<string>("auto");
@@ -65,16 +66,15 @@ export default function ThemeSelector() {
         width={50}
         height={50}
       />
-      <select
+      <SelectField
         value={theme}
         onChange={(e) => theming(e.target.value)} // Themenwechsel triggern
-        className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="auto">Auto</option>
         <option value="dark">Dark</option>
         <option value="light">Light</option>
         <option value="truedark">True Dark Mode</option>
-      </select>
+      </SelectField>
     </div>
   );
 }
