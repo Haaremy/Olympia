@@ -367,7 +367,6 @@ const imageLoader = ({ src }: { src: string }) => {
                       {session?.user?.role == "ADMIN" ? <td className="px-6 py-4">#{team.uname}</td> : <td className="px-6 py-4">{team.name}</td> }
                       <td className="px-6 py-4">{team.pointsTotal}</td>
                      {session?.user?.role == "ADMIN" && <td className="px-6 py-4">{team.cheatPoints}</td>}
-                      <td className="px-6 py-4"></td>
                       <td className="px-6 py-4">
                         {team.entries.length > 0 && formatDate(team.entries[team.entries.length - 1].lastUpdated)}
                       </td>
@@ -386,6 +385,7 @@ const imageLoader = ({ src }: { src: string }) => {
                                 <th className="border px-2 py-1">{team.user2}</th>
                                 <th className="border px-2 py-1">{team.user3 || "-"}</th>
                                 <th className="border px-2 py-1">{team.user4 || "-"}</th>
+                                {session?.user?.role == "ADMIN" && <th className="px-6 py-4"></th>}
                                 <th className="border px-2 py-1">Updated</th>
                               </tr>
                             </thead>
