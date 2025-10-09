@@ -10,6 +10,7 @@ import { Slot } from '@prisma/client';
 import Image from 'next/image';
 import socket from "../../lib/socket";
 import { Button, Main } from "@/cooperateDesign";
+import { useSession } from "next-auth/react";
  
 
 
