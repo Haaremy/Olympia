@@ -1,7 +1,7 @@
 "use client"; 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import {SelectField} from "@cooperateDesign/select";
+import {SelectField} from "@cooperateDesign";
 
 export default function ThemeSelector() {
   const [theme, setTheme] = useState<string>("auto");
