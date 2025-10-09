@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function ThemeSelector() {
-  const [theme, setTheme] = useState("auto");
+  const [theme, setTheme] = useState<string>("auto");
 
   // Effekt, um das gespeicherte Thema aus localStorage zu laden
   useEffect(() => {
@@ -13,10 +13,10 @@ export default function ThemeSelector() {
   }, []);
 
   // Funktion zum Anwenden des Themas
-  const applyTheme = (themeToApply) => {
-    const root = document.documentElement;
+  const applyTheme = (themeToApply: string) => {
+    const root = document.documentElement as HTMLElement;  // Typ explizit setzen
     const sysDesign = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    const clearClasses = (keep) => {
+    const clearClasses = (keep?: string) => {
       [...root.classList].forEach((cls) => {
         if (cls !== keep) root.classList.remove(cls);
       });
@@ -50,7 +50,7 @@ export default function ThemeSelector() {
   };
 
   // Funktion zum Handhaben der Themenänderung
-  const theming = (newTheme) => {
+  const theming = (newTheme: string) => {
     localStorage.setItem("theme", newTheme); // Thema im localStorage speichern
     setTheme(newTheme); // Zustand aktualisieren
     applyTheme(newTheme); // Thema anwenden
