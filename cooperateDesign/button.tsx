@@ -8,14 +8,31 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   switchOn?: boolean;
 };
 
-const baseStyles =
-  'rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50 dark:text-white text-gray-900 px-4';
+const baseStyles = `
+rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50 px-4
+text-gray-900 
+dark:text-white 
+truedark:text-white
+`;
 
 const variants = {
-  primary: '  dark:bg-pink-500 hover:dark:bg-pink-600 bg-blue-300 hover:bg-blue-400 ',
-  warn: '  bg-yellow-500 hover:bg-yellow-600  ',
-  danger: '  bg-red-500 hover:bg-red-600  ',
-  navigation: 'flex flex-col sm:flex-row no-wrap items-center py-1 sm: md:flex-row md:gap-2 bg-blue-300 dark:bg-pink-500 hover:bg-blue-400 hover:dark:bg-pink-500'
+  primary: ` 
+  bg-blue-300 hover:bg-blue-400 
+  dark:bg-pink-500 hover:dark:bg-pink-600 
+  truedark:bg-black truedark:border truedark:border-white hover:truedark:bg-gray-900
+  `,
+  warn: `
+  bg-yellow-500 hover:bg-yellow-600  
+  `,
+  danger: `  
+  bg-red-500 hover:bg-red-600  
+  `,
+  navigation: `
+  flex flex-col sm:flex-row no-wrap items-center py-1 sm: md:flex-row md:gap-2 
+  bg-blue-300 hover:bg-blue-400 
+  dark:bg-pink-500 hover:dark:bg-pink-500
+  truedark:bg-black truedark:border truedark:border-white hover:truedark:bg-gray-900
+  `
 } as const;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
