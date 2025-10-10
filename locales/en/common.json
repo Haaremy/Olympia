@@ -54,6 +54,8 @@
     "report": "Report",
     "remaining": "Remaining",
     "loginForData": "Login for live data.",
-    "returnToApp": "Return to App, to get more updates."
+    "returnToApp": "Return to App, to get more updates.",
+    "statusInfos1": "Points - Timer - Start",
+    "statusInfos2": "Every information in your statusbar"
   }
   
