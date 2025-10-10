@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [infoColor, setInfoColor] = useState('pink');
   const [showInfo, setShowInfo] = useState(false);
   const [infoTitle, setInfoTitle]  = useState('');
-  
+  const [awaitLogin, setAwaitLogin] = useState(false);
   const {t} = useTranslation();
   
 
@@ -94,9 +94,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       setInfoTitle(t("registrationSuccess"));
       setInfoColor("pink");
       setShowInfo(true);
-      // z. B. zur Login-Seite weiterleiten
-       
-      await performLogin();
+      // z. B. zur Login-Seite weiterleiten, wenn close Info
+       setAwaitLogin(true);
+      
     } else {
       const err = await saveRes.json();
       setInfoText(t("postRegistrationF"));
@@ -144,6 +144,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   const handleInfoClose = () => {
     setShowInfo(false);
+    if(awaitLogin){
+      setAwaitLogin(false);
+      await performLogin();
+    }
   }
 
   return (
