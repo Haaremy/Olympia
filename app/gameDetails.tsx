@@ -16,7 +16,7 @@ import { Capacitor } from '@capacitor/core';
 import confetti from 'canvas-confetti';
 import Image from "next/image";
 import socket from "../lib/socket";
-import { Button } from '@/cooperateDesign';
+import { Button, CLink } from '@/cooperateDesign';
 import TextInput from '@/cooperateDesign/textInput';
 
 
@@ -324,7 +324,7 @@ const formatTime = (ms: number) => {
 >
                     <summary
                       onClick={handleShowMap}
-                      className="flex items-center gap-2 w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 dark:text-pink-400 justify-center text-center"
+                      className="flex items-center gap-2 w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 truedark:text-white dark:text-pink-400 justify-center text-center"
                   >
                       {isDetailsOpen ? '👇' : '👉'}
                       <span className="flex-1 text-center">{message.station}</span>
@@ -342,26 +342,26 @@ const formatTime = (ms: number) => {
 
                     {/* Capacity */}
                      <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">{t("capacity")}</h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">{message.capacity}</p>
+                    <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4 truedark:text-white">{t("capacity")}</h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 truedark:text-white">{message.capacity}</p>
                     { !points[0]?.value && (
                       <>
                         {/* Instructions */}
-                        <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                        <hr className="my-6 border-gray-300 dark:border-gray-600 truedark:border-white" />
+                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mb-2 mt-4 truedark:text-white">
                           {t("howTo")}
                         </h3>
                         <p
-                          className="text-sm text-gray-700 dark:text-gray-300 mb-4"
+                          className="text-sm text-gray-700 dark:text-gray-300 mb-4 truedark:text-white"
                           dangerouslySetInnerHTML={{ __html: message.content }}
                         />
 
                         {/* Points Description */}
-                        <hr className="my-6 border-gray-300 dark:border-gray-600" />
-                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4 mb-4">
+                        <hr className="my-6 border-gray-300 dark:border-gray-600 truedark:border-white" />
+                        <h3 className="text-lg text-gray-700 dark:text-gray-300 mt-4 mb-4 truedark:text-white">
                           {t("descriptionPoints")}
                         </h3>
-                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 truedark:text-white">
                                       
                    {!message.started ? <Button> {t("notStarted")}</Button> : 
                     userData && !!userData?.user1 && !!userData?.user2 ? (
@@ -371,9 +371,8 @@ const formatTime = (ms: number) => {
                         <br />
                     </>
                     ) : session  ? (
-                        <Link
+                        <CLink
                             href="/teampage"
-                            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 mt-2"
                         >
                             {t("Edit Team")}
                         </Link> 
