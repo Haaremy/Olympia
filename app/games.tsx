@@ -8,8 +8,7 @@ import '../lib/i18n';
 import { useUI } from "./context/UIContext";
 import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
-import {Main} from "@cooperateDesign";
-import TextInput from "@/cooperateDesign/textInput";
+import {Main, TextInput} from "@cooperateDesign";
 import clsx from "clsx";
 
 type Game = {
