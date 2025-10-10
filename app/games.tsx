@@ -285,7 +285,7 @@ useEffect(() => {
               <Image
                 src={`/images/christmas_calender${game.id % 5}.jpg`}
                 alt="Türchen Cover"
-                className={`w-full h-64 object-cover object-right bg-gray-300 dark:brightness-100 brightness-120 ${gamePointsMap[game.id] === true ? "grayscale" : "" }`}
+                className={`w-full h-64 object-cover object-right bg-gray-300 dark:brightness-100 brightness-120 truedark:grayscale ${gamePointsMap[game.id] === true ? "grayscale truedark:contrast-200" : "" }`}
                 width={500}
                 height={500}
               />
