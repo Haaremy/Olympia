@@ -158,7 +158,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       role="dialog"
       aria-labelledby="modal-title"
     >
-      <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-6 rounded-2xl shadow-2xl w-full max-w-md max-h-[80vh] overflow-auto m-4">
+      <div className="bg-white dark:bg-gray-800 text-gray-800 truedark:bg-black truedark:text-white dark:text-gray-200 p-6 rounded-2xl shadow-2xl w-full max-w-md max-h-[80vh] overflow-auto m-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 id="modal-title" className="text-2xl font-bold">User-Login</h2>
