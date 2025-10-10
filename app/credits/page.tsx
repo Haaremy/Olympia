@@ -8,7 +8,7 @@ import Image from "next/image";
 import { detectPlatform } from "../common/detectPlatform";
 import { Capacitor } from '@capacitor/core';
 import MusicSettings from "@/app/common/musicSettings";
-import {Main} from "@cooperateDesign";
+import {Main, SelectField} from "@cooperateDesign";
 import ThemeSettings from "../common/themeSettings";
 
 
@@ -73,14 +73,13 @@ export default function Page() {
                           width={50}
                           height={50}
                           />
-                      <select
+                      <SelectField
                         value={i18n.language}
                         onChange={(e) => handleLanguage(e.target.value)}
-                        className="flex-1 p-3 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                       >
                         <option value="en">English</option>
                         <option value="de">Deutsch</option>
-                      </select>
+                      </SelectField>
                     </div>
                 </div>
                  <MusicSettings/>
