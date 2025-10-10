@@ -54,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     if(Capacitor.getPlatform() === 'android'){
     await createNotificationChannel();
         await showPopupNotification(
-          "🎁 Olympia Live Ticker 🎁", "Punkte - Timer - Start\nAlle Infos in der Statusleiste 👆🏼"
+          "🎁 Olympia Live Ticker 🎁", `${t("statusInfos1")}\n${t("statusInfos2")} 👆🏼`
         );
     }
     router.push('/');
@@ -180,7 +180,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         {/* Form */}
         <form  className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium mb-1">{t("secret")} ID</label>
+            <label htmlFor="username" className="block text-sm font-medium mb-1">{t("secret")}-ID</label>
             <TextInput
               placeholder="z.B. ABC, Team1, MiMaTe, ..."
               value={username}
