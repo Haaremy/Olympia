@@ -93,7 +93,7 @@ const getEventClass = (event: {start: number, end: number}) => {
           >
             <div
                 ref={modalRef}
-                className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 truedark:bg-black truedark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
+                className="truedark:border truedark:border-white bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 truedark:bg-black truedark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
                 onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside modal
                 aria-labelledby="modal-title"
             >
