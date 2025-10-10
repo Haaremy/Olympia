@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [showInfo, handleShowInfo] = useState(false);
   const [infoTitle, setInfoTitle]  = useState('');
   
-  const t = useTranslation();
+  const {t} = useTranslation();
   
 
   const handleLogin = async (e: React.FormEvent) => {
