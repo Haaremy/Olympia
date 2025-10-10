@@ -5,6 +5,8 @@
     "map": "Map",
     "rank": "Rank",
     "calender": "-Calender",
+    "password": "Password",
+    "secret": "Secret",
     "registrationSuccess": "Registration successfull!",
     "postRegistrationS": "You'll be logged in. Next Step: edit your teams information.",
     "registrationFail": "Registration failed!",
