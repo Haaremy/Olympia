@@ -5,7 +5,9 @@
     "map": "Map",
     "rank": "Rank",
     "calender": "-Calender",
+    "registrationSuccess": "Registration successfull!",
     "notStarted": "Awaiting Start...",
+    "searchGame": "Search for game...",
     "tt-0": "Enlightment of our digital Olympia Flame.",
     "tt-1": "Hot no dog: Wiener.",
     "loc_0": "Groundfloor",
@@ -22,6 +24,7 @@
     "f2w": "Entry #2",
     "f3w": "Entry #3",
     "f4w": "Entry #4",
+    "showDetails": "Show details",
     "worldrecords": "Worldrecords",
     "sec": "seconds",
     "Zuckerstangen": "Candy Canes",
@@ -43,6 +46,9 @@
     "chatPlaceholder": "Type a message...",
     "edited": "bearbeitet",
     "probDes": "Describe the problem...",
-    "report": "Report"
+    "report": "Report",
+    "remaining": "Remaining",
+    "loginForData": "Login for live data.",
+    "returnToApp": "Return to App, to get more updates."
   }
   
