@@ -85,7 +85,7 @@ const getEventClass = (event: {start: number, end: number}) => {
             ref={overlayRef}
             id="modal"
             tabIndex={-1}  // Fokus auf das Modal setzen
-            className="fixed inset-0 flex justify-center items-center bg-white/20 dark:bg-black/30 backdrop-blur-sm z-100"
+            className="fixed inset-0 flex justify-center items-center bg-white/20 dark:bg-black/30 truedark:bg-black/50 backdrop-blur-sm z-100"
             role="dialog"
             aria-labelledby="modal-title"
             aria-hidden="false"
@@ -93,7 +93,7 @@ const getEventClass = (event: {start: number, end: number}) => {
           >
             <div
                 ref={modalRef}
-                className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
+                className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 truedark:bg-black truedark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
                 onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside modal
                 aria-labelledby="modal-title"
             >
@@ -122,7 +122,7 @@ const getEventClass = (event: {start: number, end: number}) => {
                   </thead>
                   <tbody>
                     {timetable.map((ev, idx) => (
-                      <tr key={idx} className="border-b border-white/10">
+                      <tr key={idx} className="border-b dark:border-white/10 border-black/10 truedark:border-white/10">
                         <td className="text-white pr-8">{ev.time}</td>
                         <td className={`${getEventClass(ev)} break-words whitespace-normal`}>
                           {t(ev.key)}
