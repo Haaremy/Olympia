@@ -7,6 +7,7 @@ import { useUI } from './context/UIContext';
 import { Capacitor } from "@capacitor/core";
 import { Button, TextInput } from '@/cooperateDesign';
 import { useTranslation } from 'next-i18next';
+import Infobox from './infoBox'; 
 import {
   showPopupNotification,
   createNotificationChannel
@@ -26,6 +27,11 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [infoText, setInfoText}  = useState('');
+  const [infoColor, setInfoColor] = useState('pink');
+  const [showInfo, handleShowInfo] = useState(false);
+  const [infoTitle, setInfoTitle}  = useState('');
+  
   const t = useTranslation();
   
 
@@ -84,13 +90,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     });
 
     if (saveRes.ok) {
-      alert("Registrierung erfolgreich!");
+      setInfoText(t("postRegistrationS"));
+      setInfoTitle(t("registrationSuccess"));
+      setInfoColor("pink");
+      setShowInfo(true);
       // z. B. zur Login-Seite weiterleiten
        
       await performLogin();
     } else {
       const err = await saveRes.json();
-      alert("Fehler bei der Registrierung: " + err.error);
+      setInfoText(t("postRegistrationF"));
+      setInfoTitle(t("registrationFail"));
+      setInfoColor("red");
+      setShowInfo(true);
     }
   } catch (error) {
     console.error("Fehler bei der Registrierung:", error);
@@ -129,6 +141,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         document.body.style.overflow = 'auto';
     };
 }, [onClose, setIsModalOpen]);
+
+  const handleInfoClose = () => {
+    setShowInfo(false);
+  }
 
   return (
     <div
@@ -230,6 +246,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         </div>
         </form>
       </div>
+      {showInfo && (
+                <Infobox onClose={handleInfoClose} message={infoText} title={infoTitle} color={infoColor} />
+            )}
     </div>
   );
 };
