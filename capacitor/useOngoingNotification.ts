@@ -99,7 +99,7 @@ export function useOngoingNotification() {
         const [punkte, position] = await fetchTeamPoints();
 
       updateOngoingNotification(
-        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : ´\n${t("notStarted")}´}` : `${t("loginForData")}`}`
+        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : `\n${t("notStarted")}`}` : `${t("loginForData")}`}`
       );
     }
 
@@ -130,7 +130,7 @@ export function useOngoingNotification() {
       if (isActive) {
         setIsAppInBackground(false);
         updateOngoingNotification(
-        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : ´\n${t("notStarted")}´}` : `${t("loginForData")}`}`
+        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : `\n${t("notStarted")}`}` : `${t("loginForData")}`}`
         );
       } else {
         setIsAppInBackground(true);
