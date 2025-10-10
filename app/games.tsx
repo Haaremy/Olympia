@@ -304,7 +304,7 @@ useEffect(() => {
         
       </div>
       <TextInput
-        placeholder="Suche nach Spielnummer..."
+        placeholder={t("searchGame")}
         value={searchQuery}
         onChange={(e) => {
           setSearchQuery(e.target.value);
