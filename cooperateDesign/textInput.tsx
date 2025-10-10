@@ -7,14 +7,10 @@ export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 // Optional: Basis-Styles für alle TextInputs
 const baseStyles = `
-  w-full
-  px-3 py-2
-  rounded-lg
-  border border-gray-300 dark:border-gray-600
-  bg-white dark:bg-gray-700
-  dark:text-white
-  shadow-lg
-  focus:outline-none focus:ring-2 focus:ring-pink-500
+  w-full px-3 py-2 rounded-lg border shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500
+  bg-white border-gray-300 
+  dark:bg-gray-700 dark:border-gray-600 dark:text-white
+  truedark:bg-black truedark:border-white truedark:text-white
 `;
 
 
