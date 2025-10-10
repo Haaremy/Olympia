@@ -54,6 +54,8 @@
     "report": "Meldung",
     "remaining": "Verbleibend",
     "loginForData": "Login für live Daten",
-    "returnToApp": "Kehre zur App zurück, um mehr Updates zu erhalten."
+    "returnToApp": "Kehre zur App zurück, um mehr Updates zu erhalten.",
+    "statusInfos1": "Punkte - Timer - Start",
+    "statusInfos2": "Alle Infos in der Statusleiste"
   }
   
