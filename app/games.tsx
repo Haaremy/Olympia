@@ -316,7 +316,7 @@ useEffect(() => {
           isModalOpen ? "hidden" : "block",
           isScrolled
             ? "mx-auto flex items-center justify-center relative"
-            : "fixed bottom-5",
+            : "fixed bottom-10",
           "sm:fixed left-1/2 -translate-x-1/2 lg:-translate-x-3/10 lg:left-7/20 xl:left-1/2 xl:-translate-x-1/2 z-50 transform sm:top-15 sm:bottom-auto lg:top-4 w-[95%]  lg:w-[25%] sm:w-[50%] pl-6 pr-6 max-w-md transition"
         )}
       />
