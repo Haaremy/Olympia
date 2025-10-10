@@ -9,7 +9,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseStyles = `
-rounded-lg px-1 sm:px-2 md:px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50
+rounded-lg px-1 px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50
 text-gray-900 
 dark:text-white 
 truedark:text-white
@@ -28,7 +28,7 @@ const variants = {
   bg-red-500 hover:bg-red-600  
   `,
   navigation: `
-  flex flex-col sm:flex-row no-wrap items-center py-1 md:flex-row md:gap-2 
+  flex flex-col sm:flex-row no-wrap items-center md:flex-row md:gap-2 
   bg-blue-300 hover:bg-blue-400 
   dark:bg-pink-500 hover:dark:bg-pink-500
   truedark:bg-black truedark:border truedark:border-white hover:truedark:bg-gray-900
