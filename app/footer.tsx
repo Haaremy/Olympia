@@ -16,7 +16,7 @@ export default function Footer() {
       {/* Footer Section */}
       <div className="flex flex-col sm:flex-row items-center justify-center p-4 space-y-4 sm:space-y-0 sm:space-x-8">
         {/* Link 1 */}
-        <Link href="/" className="flex items-center text-gray-800 dark:text-gray-200">
+        <Link href="/" className="flex items-center text-gray-800 dark:text-gray-200 truedark:text-white">
           <p className="text-lg font-semibold">
             {t('fsr_long')} -{" "}
             <span className="font-mono font-bold text-blue-400 dark:text-pink-500">
@@ -29,15 +29,15 @@ export default function Footer() {
         <div className="sm:hidden" />
         <div className="inline-flex">
           {/* Link 2 */}
-          <Link href="https://instagram.com/haaremy" className="flex items-center text-gray-800 dark:text-gray-200 mr-8">
+          <Link href="https://instagram.com/haaremy" className="flex items-center text-gray-800 dark:text-gray-200 mr-8 truedark:text-white">
             <p className="font-mono font-bold">
-              <span className="text-md font-semibold text-white-500 dark:text-white-400">{t("author")} </span>
+              <span className="text-md font-semibold text-white-500 dark:text-white-400 truedark:text-white">{t("author")} </span>
               <span className="text-lg font-semibold text-blue-400 dark:text-pink-500">@Haaremy  </span>
             </p>
           </Link>
 
           {/* Link 2 */}
-          <Link href="/credits" className="flex items-center text-gray-800 dark:text-gray-200">
+          <Link href="/credits" className="flex items-center text-gray-800 dark:text-gray-200 truedark:text-white">
             <p className="font-mono font-bold">
               <span className="text-md font-semibold text-white-500 dark:text-white-400">⚙️</span>
             </p>
