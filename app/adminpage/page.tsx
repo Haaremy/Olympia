@@ -5,10 +5,8 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import InfoBox from "../infoBox";
 import { Capacitor } from "@capacitor/core";
-import { Button, CLink, Main} from "@cooperateDesign";
+import { Button, CLink, Main, TextInput} from "@cooperateDesign";
 import DeleteConfirmModal from "../confirmDelete";
-import TextInput from "@/cooperateDesign/textInput";
-
 
 type SearchedTeam = {
   id: number;
