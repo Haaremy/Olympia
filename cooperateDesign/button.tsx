@@ -9,7 +9,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseStyles = `
-rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50 px-4
+rounded-lg px-1 sm:px-2 md:px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none disabled:opacity-50 px-4
 text-gray-900 
 dark:text-white 
 truedark:text-white
