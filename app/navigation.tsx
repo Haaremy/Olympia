@@ -103,7 +103,7 @@ export default function Navigation() {
                       alt="Admin"
                       width={24}
                       height={24}
-                      className="dark:invert invert-0"
+                      className="dark:invert invert-0 truedark:invert"
                     />
                     <p className="text-xs sm:text-sm md:text-lg font-semibold">Admin</p>
                   </Button>
@@ -114,7 +114,7 @@ export default function Navigation() {
                       alt="Team"
                       width={24}
                       height={24}
-                      className="dark:invert invert-0"
+                      className="dark:invert invert-0 truedark:invert"
                     />
                     <p className="text-xs sm:text-sm md:text-lg font-semibold">Team</p>
                   </Button>
@@ -126,7 +126,7 @@ export default function Navigation() {
                     alt="Login"
                     width={24}
                     height={24}
-                    className="dark:invert invert-0"
+                    className="dark:invert invert-0 truedark:invert"
                   />
                   <p className="text-xs sm:text-sm md:text-lg font-semibold">Login</p>
                 </Button>
@@ -151,7 +151,7 @@ export default function Navigation() {
                 alt="Rank"
                 width={24}
                 height={24}
-                className="dark:invert invert-0"
+                className="dark:invert invert-0 truedark:invert"
               />
               <p className="text-xs sm:text-sm md:text-lg font-semibold">
                 {currentPath === "/scoreboard" ? t("games") : t("rank")}
@@ -168,7 +168,7 @@ export default function Navigation() {
                   alt="Games"
                   width={24}
                   height={24}
-                  className="dark:invert invert-0"
+                  className="dark:invert invert-0 truedark:invert"
                 />
                 <p className="text-xs sm:text-sm md:text-lg font-semibold">{t("games")}</p>
               </Button>
@@ -190,7 +190,7 @@ export default function Navigation() {
                 alt="Map"
                 width={24}
                 height={24}
-                className="dark:invert invert-0"
+                className="dark:invert invert-0 truedark:invert"
               />
               <p className="text-xs sm:text-sm md:text-lg font-semibold">
                 {currentPath === "/map" ? t("games") : t("map")}
@@ -208,7 +208,7 @@ export default function Navigation() {
             alt="Chat"
             width={24}
             height={24}
-            className="dark:invert invert-0"
+            className="dark:invert invert-0 truedark:invert"
           />
           {(newChat && !showChat) && (
             <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-600 border-2 border-white"></span>
