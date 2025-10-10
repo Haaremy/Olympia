@@ -375,7 +375,7 @@ const imageLoader = ({ src }: { src: string }) => {
                       <td colSpan={4} className="px-6 py-2">
                         <details>
                           <summary className="cursor-pointer text-pink-600 dark:text-pink-400 hover:underline">
-                            Details anzeigen
+                           {t("showDetails")}
                           </summary>
                           <table className="w-full mt-4 text-xs text-center border rounded-md">
                             <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
