@@ -180,7 +180,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         {/* Form */}
         <form  className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium mb-1">Team Login ID</label>
+            <label htmlFor="username" className="block text-sm font-medium mb-1">{t("secret")} ID</label>
             <TextInput
               placeholder="z.B. ABC, Team1, MiMaTe, ..."
               value={username}
@@ -207,7 +207,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           }
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">Passwort</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">{t("password")}</label>
             <TextInput
               type="password"
               placeholder="hoHoh0"
@@ -221,7 +221,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           </div>
 
          { showRegister && <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">Passwort II</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">{t("password")} II</label>
             <TextInput
               type="password"
               placeholder="hoHoh0"
