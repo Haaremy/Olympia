@@ -22,7 +22,7 @@ export function useOngoingNotification() {
   const endingRef = useRef(ending);
   const pointsRef = useRef(points);
   const posRef = useRef(pos);
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   useEffect(() => {
     endingRef.current = ending;
