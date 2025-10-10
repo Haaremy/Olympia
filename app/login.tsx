@@ -27,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [infoText, setInfoText}  = useState('');
+  const [infoText, setInfoText]  = useState('');
   const [infoColor, setInfoColor] = useState('pink');
   const [showInfo, handleShowInfo] = useState(false);
   const [infoTitle, setInfoTitle]  = useState('');
