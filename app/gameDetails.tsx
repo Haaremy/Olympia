@@ -375,7 +375,7 @@ const formatTime = (ms: number) => {
                             href="/teampage"
                         >
                             {t("Edit Team")}
-                        </Link> 
+                        </CLink> 
                     ) :(
                         <Button onClick={handleShowLogin}>
                             {t("Login")}
