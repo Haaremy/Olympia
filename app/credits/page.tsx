@@ -141,7 +141,7 @@ export default function Page() {
       <div className="w-full max-w-3xl mt-8 overflow-x-auto">
   <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Credits</h2>
   <table className="min-w-full text-left text-sm text-gray-700 dark:text-gray-200 border-collapse">
-    <thead className="bg-gray-100 dark:bg-gray-700 text-gray-800 truedark:text-white dark:text-white uppercase text-xs font-semibold">
+    <thead className="bg-gray-100 truedark:bg-black dark:bg-gray-700 text-gray-800 truedark:text-white dark:text-white uppercase text-xs font-semibold">
             <tr>
               <th className="px-6 py-3">Person</th>
               <th className="px-6 py-3">Social Media</th>
