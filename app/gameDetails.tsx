@@ -324,7 +324,12 @@ const formatTime = (ms: number) => {
 >
                     <summary
                       onClick={handleShowMap}
-                      className="flex items-center gap-2 w-full p-1 bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-l font-bold text-pink-600 truedark:text-white dark:text-pink-400 justify-center text-center"
+                      className={`
+                      flex items-center gap-2 w-full p-1 border rounded-lg text-l font-bold justify-center text-center
+                      bg-white border-gray-300 text-pink-600 
+                      dark:bg-gray-700 dark:border-gray-600 dark:text-pink-400
+                      truedark:bg-black truedark:border-white truedark:text-white truedark:text-white
+                      `}
                   >
                       {isDetailsOpen ? '👇' : '👉'}
                       <span className="flex-1 text-center">{message.station}</span>
