@@ -5,6 +5,8 @@
     "map": "Karte",
     "rank": "Rang",
     "calender": "-Kalender",
+    "password": "Passwort",
+    "secret": "Geheim",
     "registerSuccess": "Registrierung erfolgreich!",
     "postRegistrationS": "Du wirst nun eingeloggt. Nächster Schritt: editiere deine Team-Infos.",
     "registrationFail": "Registrierung fehlgeschlagen!",
