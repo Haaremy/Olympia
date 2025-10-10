@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [infoText, setInfoText}  = useState('');
   const [infoColor, setInfoColor] = useState('pink');
   const [showInfo, handleShowInfo] = useState(false);
-  const [infoTitle, setInfoTitle}  = useState('');
+  const [infoTitle, setInfoTitle]  = useState('');
   
   const t = useTranslation();
   
