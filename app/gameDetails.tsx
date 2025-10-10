@@ -303,7 +303,7 @@ const formatTime = (ms: number) => {
                 p-8 rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col
                 bg-white text-gray-800 
                 dark:bg-gray-800 dark:text-gray-200 
-                truedark:bg-black truedark-text-white
+                truedark:bg-black truedark:text-white
                 `}>
                 {/* Modal Header */}
                 <div className="flex justify-between items-center mb-6">
