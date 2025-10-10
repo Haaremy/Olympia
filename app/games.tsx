@@ -293,7 +293,7 @@ useEffect(() => {
                 {game.id < 10 ? "0" : ""}{game.id}
               </div>
               <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-                <h2 className="text-xl font-semibold">{game.languages[language]?.title}</h2>
+                <h2 className="text-md md:text-xl font-semibold">{game.languages[language]?.title}</h2>
               </div>
             </div>
             </div>
