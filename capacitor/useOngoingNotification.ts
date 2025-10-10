@@ -9,6 +9,7 @@ import {
 } from "@/capacitor/notificationService";
 import { App } from '@capacitor/app';
 import { PluginListenerHandle } from "@capacitor/core";
+import { useTranslation } from 'next-i18next';
 
 export function useOngoingNotification() {
   const { data: session } = useSession();
@@ -21,6 +22,7 @@ export function useOngoingNotification() {
   const endingRef = useRef(ending);
   const pointsRef = useRef(points);
   const posRef = useRef(pos);
+  const t = useTranslation();
 
   useEffect(() => {
     endingRef.current = ending;
@@ -97,7 +99,7 @@ export function useOngoingNotification() {
         const [punkte, position] = await fetchTeamPoints();
 
       updateOngoingNotification(
-        `${session ? `#${position} ${session.user.name}: ${punkte} Punkte  ${started ? `\nVerbleibend: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
+        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : ´\n${t("notStarted")}´}` : `${t("loginForData")}`}`
       );
     }
 
@@ -128,11 +130,11 @@ export function useOngoingNotification() {
       if (isActive) {
         setIsAppInBackground(false);
         updateOngoingNotification(
-          `${session ? `#${position} ${session.user.name}: ${punkte} Punkte  ${started ? `\nVerbleibend: ${formatTime(endingRef.current.getTime() - Date.now())}` : "\nWarte auf Start..."}` : "Login für Live Daten."}`
+        `${session ? `#${position} ${session.user.name}: ${punkte} ${t("Punkte")}  ${started ? `\n${t("remaining")}: ${formatTime(endingRef.current.getTime() - Date.now())}` : ´\n${t("notStarted")}´}` : `${t("loginForData")}`}`
         );
       } else {
         setIsAppInBackground(true);
-        updateOngoingNotification("Kehre zur App zurück, um Updates zu erhalten.");
+        updateOngoingNotification(t("returnToApp"));
       }
     });
   })();
