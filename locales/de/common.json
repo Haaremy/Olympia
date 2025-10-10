@@ -5,6 +5,8 @@
     "map": "Karte",
     "rank": "Rang",
     "calender": "-Kalender",
+    "registerSuccess": "Registrierung erfolgreich!",
+    "searchGame": "Suche nach Spielnummer...",
     "notStarted": "Warte auf Start...",
     "tt-0": "Entzündung der digitalen Olympia-Flamme.",
     "tt-1": "Hot no dog: Wiener.",
@@ -22,6 +24,7 @@
     "f2w": "Eintrag #2",
     "f3w": "Eintrag #3",
     "f4w": "Eintrag #4",
+    "showDetails": "Details anzeigen",
     "worldrecords": "Weltrekorde",
     "sec": "Sekunden",
     "Zuckerstangen": "Zuckerstangen",
@@ -43,6 +46,10 @@
     "chatPlaceholder": "Schreibe deine Nachricht...",
     "edited": "bearbeitet",
     "probDes": "Beschreibe das Problem...",
-    "report": "Meldung"
+    "report": "Meldung",
+    "remaining": "Verbleibend",
+    "waitStart": "Warte auf Start...",
+    "loginForData": "Login für live Daten",
+    "returnToApp": "Kehre zur App zurück, um mehr Updates zu erhalten."
   }
   
