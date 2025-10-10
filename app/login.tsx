@@ -142,7 +142,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
 }, [onClose, setIsModalOpen]);
 
-  const handleInfoClose = () => {
+  const handleInfoClose = async () => {
     setShowInfo(false);
     if(awaitLogin){
       setAwaitLogin(false);
