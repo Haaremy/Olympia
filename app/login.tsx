@@ -5,13 +5,12 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUI } from './context/UIContext';
 import { Capacitor } from "@capacitor/core";
-import { Button } from '@/cooperateDesign';
+import { Button, TextInput } from '@/cooperateDesign';
+import { useTranslation } from 'next-i18next';
 import {
   showPopupNotification,
   createNotificationChannel
 } from "@/capacitor/notificationService";
-import TextInput from '@/cooperateDesign/textInput';
-
 interface ModalProps {
   onClose: () => void;
 }
@@ -27,6 +26,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const t = useTranslation();
   
 
   const handleLogin = async (e: React.FormEvent) => {
