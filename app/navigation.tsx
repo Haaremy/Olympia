@@ -287,9 +287,9 @@ export default function Navigation() {
           >
             <Link
               href={"/"}
-              className="bg-transparent hover:bg-transparent text-gray-800 dark:text-gray-200"
+              className="bg-transparent hover:bg-transparent text-gray-800 dark:text-gray-200 truedark:text-white"
             >
-              <p className="text-lg font-semibold">
+              <p className="text-lg font-semibold ">
                 FSR INS&nbsp;
                 <code className="font-mono font-bold text-blue-400 dark:text-pink-500 truedark:text-white">
                   AdGames{t("calender")}
