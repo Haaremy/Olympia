@@ -299,7 +299,12 @@ const formatTime = (ms: number) => {
     return (
         
         <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
-            <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-8 rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
+            <div className={`
+                p-8 rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col
+                bg-white text-gray-800 
+                dark:bg-gray-800 dark:text-gray-200 
+                truedark:bg-black truedark-text-white
+                `}>
                 {/* Modal Header */}
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-semibold text-pink-600 dark:text-pink-400">{message.title}</h2>
