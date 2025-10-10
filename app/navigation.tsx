@@ -268,7 +268,11 @@ export default function Navigation() {
   return (
     <Main className="!min-h-0 z-50">
       <header
-        className={`fixed top-0 left-0 w-full bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 shadow-md z-50 transition-transform duration-300`}
+        className={`fixed top-0 left-0 w-full border-b shadow-md z-50 transition-transform duration-300
+        bg-white border-gray-300 
+        dark:bg-gray-800 dark:border-gray-700 
+        truedark:bg-black truedark:border-white
+        `}
       >
         <div
           className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${
@@ -287,7 +291,7 @@ export default function Navigation() {
             >
               <p className="text-lg font-semibold">
                 FSR INS&nbsp;
-                <code className="font-mono font-bold text-blue-400 dark:text-pink-500">
+                <code className="font-mono font-bold text-blue-400 dark:text-pink-500 truedark:text-white">
                   AdGames{t("calender")}
                 </code>
               </p>
