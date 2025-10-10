@@ -7,7 +7,8 @@ export default function Footer() {
   const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
 
   return (
-    <footer className=`bottom-0 left-0 w-full border-t shadow-md z-50
+    <footer className=`
+    bottom-0 left-0 w-full border-t shadow-md z-50
     bg-white border-gray-300  
     dark:bg-gray-800 dark:border-gray-700
     truedark:bg-black truedark:border-white
