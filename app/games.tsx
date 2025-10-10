@@ -65,6 +65,7 @@ export default function GamesPage({ games, searchQueryRef }: { games: Game[], se
   const [fetchPointsForGames, setfetchPointsForGames] = useState(false);
   const [ending, setEnding] = useState("");
   const [started, setStarted] = useState(false);
+  const t = useTranslation();
 
 
 
