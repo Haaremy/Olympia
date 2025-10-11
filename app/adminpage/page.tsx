@@ -227,7 +227,7 @@ const getOffsetISO = (dtLocal: string): string => {
   const handleCheater = async () => {
      if (!searchedTeam) return;
      let cheatNum = 50;
-     if(searchedTeam.cheatPoints>=50){
+     if(searchedTeam.cheatPoints>=12){
       cheatNum = 0;
      } 
     try {
@@ -237,6 +237,7 @@ const getOffsetISO = (dtLocal: string): string => {
         body: JSON.stringify({ cheatNum, searchedTeam }),
       });
       if (!res.ok) throw new Error("Fehler beim Speichern");
+      searchedTeam.cheatPoints = cheatNum;
       handleSavedMessage("Team Cheating gespeichert ✅");
     } catch (err) {
       console.error(err);
