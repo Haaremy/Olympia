@@ -406,7 +406,7 @@ const game14 = await prisma.game.create({
           station: '???',
           capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
-          descriptionPoints: "Tragt in das entsprechende Feld eine 1 ein, wenn die Aussage wahr ist. Wenn es eine Lüge ist, tragt eine 2 ein."
+          descriptionPoints: "In jeder Aussage ist eine Zahl enthalten. Tragt die Zahl der wahren Aussage in das entsprechende Feld ein."
         },
         {
           language: 'en',
@@ -415,7 +415,7 @@ const game14 = await prisma.game.create({
           station: '???',
           capacity: 'Multiple Teams',
           descriptionGame: 'On the table are facts and lies. Examine them using your best judgment.',
-          descriptionPoints: "Enter a 1 in the corresponding field if the statement is true. If it is a lie, enter a 2."
+          descriptionPoints: "Every Text contains a number. Submit the number of the true text in its corresponding field."
         }
       ]
     }
