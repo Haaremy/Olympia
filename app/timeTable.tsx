@@ -69,8 +69,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
 
     const timetable = [
-  { time: "16:00", key: "tt-0", start: 16*60, end: 17*60 },
-  { time: "17:00", key: "tt-1", start: 18*60, end: 21*60 },
+  { time: "16:00", key: "tt-0", start: 16*60, end: 18*60 },
+  { time: "18:00", key: "tt-1", start: 18*60, end: 21*60 },
   { time: "20:00", key: "tt-5", start: 20*60, end: 20*60+15 },
   { time: "21:00", key: "tt-2", start: 21*60, end: 21*60+30 },
   { time: "21:30", key: "tt-4", start: 21*60+30, end: 22*60+30 },
