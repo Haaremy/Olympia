@@ -70,7 +70,11 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
     const timetable = [
   { time: "16:00", key: "tt-0", start: 16*60, end: 17*60 },
-  { time: "17:00", key: "tt-1", start: 17*60, end: 19*60+30 },
+  { time: "17:00", key: "tt-1", start: 18*60, end: 21*60 },
+  { time: "20:00", key: "tt-5", start: 20*60, end: 20*60+15 },
+  { time: "21:00", key: "tt-2", start: 21*60, end: 21*60+30 },
+  { time: "21:30", key: "tt-4", start: 21*60+30, end: 22*60+30 },
+  { time: "22:30", key: "tt-3", start: 22*60+30, end: 23*60+59 },
 ];
 
 const getEventClass = (event: {start: number, end: number}) => {

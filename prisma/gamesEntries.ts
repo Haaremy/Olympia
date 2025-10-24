@@ -315,8 +315,8 @@ const game11 = await prisma.game.create({
           story: 'Eigentlich wollten sie Boccia spielen, aber die Elfen hatten kein verschiedenfarbigen Schnee und den gelben wollte keiner anfassen. Jetzt haben sie gelbe Markierungen in den Schnee gemalt und versuchen sich an Zielwerfen.',
           station: 'Obergeschoss 1 - Flur Westflügel',
           capacity: '1 Team',
-          descriptionGame: 'Jeder Spieler hat 3 Versuche. Die höchste geworfene Zahl wird gewertet.',
-          descriptionPoints: "Tragt die größte Zahl aus den Versuchen in euer #Feld ein."
+          descriptionGame: 'Jeder Spieler hat 3 Versuche. Die Summe der Trefferpunkte wird eingetragen.',
+          descriptionPoints: "Tragt die Summe der Zahlen aus den Versuchen in euer #Feld ein."
         },
         {
           language: 'en',
@@ -324,8 +324,8 @@ const game11 = await prisma.game.create({
           story: "They actually wanted to play bocce, but the elves didn’t have snow in different colors, and no one wanted to touch the yellow one. Now they have drawn yellow markings in the snow and are trying their hand at target throwing.",
           station: 'First Floor – West wing corridor',
           capacity: '1 Team',
-          descriptionGame: 'Each player has 3 attempts. The highest number thrown is scored.',
-          descriptionPoints: "Enter the largest number from the attempts in your #Feld."
+          descriptionGame: 'Each player has 3 attempts. The sum of the numbers thrown is scored.',
+          descriptionPoints: "Enter the sum of the numbers from the attempts in your #Feld."
         }
       ]
     }
