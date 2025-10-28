@@ -194,18 +194,18 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
   }
   ////////////////////////////
-  ////////////////////////////[15, 26, 37, 49]
+  //////////////////////////// stand 2025
     if (game==10){
-    if(field==1 && userPoints==15){
+    if(field==1 && userPoints==13){ // elias 6 + spekulatius 7 = 13
       result=10;
     }
-    if(field==2 && userPoints==26){
+    if(field==2 && userPoints==14){ // fiona 9 + lebkuchen 5 = 14
       result=10;
     }
-    if(field==3 && userPoints==37){
+    if(field==3 && userPoints==24){ // greta 7 + zimtstrerne 17 = 24
       result=10;
     }
-    if(field==4 && userPoints==49){
+    if(field==4 && userPoints==26){ // hannes 5 + vanillekipferl 11 = 26
       result=10;
     }
       
@@ -228,13 +228,13 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
   }
   ////////////////////////////
-  //////////////////////////// schätzen mit abweihung
+  //////////////////////////// schätzen mit abweichung stand 2025
     if (game==13){
      let check = 0;
-    if(field=1){check = 8;}
-    if(field=2){check = 12;}
-    if(field=3){check = 15;}
-    if(field=4){check = 12;}
+    if(field=1){check = 6;}
+    if(field=2){check = 10;}
+    if(field=3){check = 9;}
+    if(field=4){check = 7;}
     if(userPoints<userPoints+check*0.9 && userPoints>userPoints-check*0.9){
       result = 1;
     }

@@ -76,7 +76,7 @@ const game3 = await prisma.game.create({
           station: '???',
           capacity: '1 Team',
           descriptionGame: 'In einem Behälter sind 100 Bällebad-Bälle. Jeder Ball repräsentiert den Traum eines Kindes. Wurde ein Traum dokumentiert, wird dieser nummeriert und eingelagert. Vier der Träume sind leider wieder hineingefallen.',
-          descriptionPoints: 'Findet die vier Bälle und tragt deren Nummerierung in das entsprechende Feld (1 - 4) ein.'
+          descriptionPoints: 'Findet die vier Bälle und tragt deren Nummerierung in das entsprechende Feld (1 - 4) ein. Verstecke sie anschließend im Behälter für andere Teams.'
         },
         {
           language: 'en',
@@ -85,7 +85,7 @@ const game3 = await prisma.game.create({
           station: '???',
           capacity: '1 Team',
           descriptionGame: 'Inside a container are 100 ball-pit balls. Each ball represents the dream of a child. Once a dream has been documented, it is numbered and stored. Unfortunately, four of the dreams have fallen back inside.',
-          descriptionPoints: 'Find the four balls and enter their numbers in the corresponding fields (1 - 4).'
+          descriptionPoints: 'Find the four balls and enter their numbers in the corresponding fields (1 - 4). Hide it in the container for other teams afterwards.'
         }
       ]
     }
@@ -586,7 +586,7 @@ const game20 = await prisma.game.create({
                     station: 'Erdgeschoss - Ostflügel Flur',
                     capacity: '1 Team oder 2 Teams',
                     descriptionGame: 'Es werden (4 Spieler) 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
-                    descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden. Die Felder 2 bis 4 werden mit 0 ausgefüllt.'
+                    descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden.'
                 },
                 {
                     language: 'en',
@@ -595,7 +595,7 @@ const game20 = await prisma.game.create({
                     station: 'Ground floor – East wing corridor',
                     capacity: '1 team or 2 teams',
                     descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
-                    descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1. Fields 2 to 4 are filled in with 0.'
+                    descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1.'
                 }
             ]
         }
