@@ -426,7 +426,7 @@ const formatTime = (ms: number) => {
       />
     }
     
-    {(userData?.user2 != "" && !!userData?.user2 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")  && !message.tagged.includes("hideF2") && !message.tagged.includes("noGame")) && message.started && 
+    {(((userData?.user2 != "" && !!userData?.user2) || (message.tagged.includes("overridePlayers") || message.tagged.includes("showF2")))  && (!message.tagged.includes("hideF2") && !message.tagged.includes("noGame"))) && message.started && 
       <TextInput
         type={
           !!points[1]?.value || points[1]?.value === 0
@@ -450,7 +450,7 @@ const formatTime = (ms: number) => {
       />
     }
     
-    {(userData?.user3 != "" && !!userData?.user3 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF3") && !message.tagged.includes("hideF3") && !message.tagged.includes("noGame"))  && message.started && 
+    {(((userData?.user3 != "" && !!userData?.user3) || (message.tagged.includes("overridePlayers") || message.tagged.includes("showF3"))) && (!message.tagged.includes("hideF3") && !message.tagged.includes("noGame")))  && message.started && 
       <TextInput
         type={
           !!points[2]?.value || points[2]?.value === 0
@@ -474,7 +474,7 @@ const formatTime = (ms: number) => {
       />
     }
     
-    {(userData?.user4 != "" && !!userData?.user4 || message.tagged.includes("overridePlayers") || message.tagged.includes("showF4") && !message.tagged.includes("noGame") )  && message.started && 
+    {(((userData?.user4 != "" && !!userData?.user4) || (message.tagged.includes("overridePlayers")) || message.tagged.includes("showF4"))) && ((!message.tagged.includes("hideF3") && !message.tagged.includes("noGame")) )  && message.started && 
       <TextInput
         type={
           !!points[3]?.value || points[3]?.value === 0

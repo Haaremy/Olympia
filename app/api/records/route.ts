@@ -37,35 +37,57 @@ interface RecordResult {
 
 export async function GET() {
   const entries = await prisma.entries.findMany({
-    where: {
-      value: {
-        not: 9999,
-      }
-  },
-    select: {
-      slot: true,
-      value: true,
-      team: {
-        select: {
-          id: true,
-          name: true,
-          cheatPoints: true,
-          user1: true,
-          user2: true,
-          user3: true,
-          user4: true,
-        },
-      },
-      game: {
-        select: {
-          id: true,
-          tagged: true,
-          points: { select: { value: true, slot: true } },
-          languages: { select: { title: true } },
-        },
+  where: {
+    value: {
+      notIn: [9999, 0],
+    },
+    game: {
+      NOT: {
+        OR: [
+          {
+            tagged: {
+              contains: 'hidden',
+            },
+          },
+          {
+            tagged: {
+              contains: 'noRecord',
+            },
+          },
+          {
+            points:{
+              every: { value: 0 },
+            }
+          },
+        ],
       },
     },
-  });
+  },
+  select: {
+    slot: true,
+    value: true,
+    team: {
+      select: {
+        id: true,
+        name: true,
+        cheatPoints: true,
+        user1: true,
+        user2: true,
+        user3: true,
+        user4: true,
+      },
+    },
+    game: {
+      select: {
+        id: true,
+        tagged: true,
+        points: { select: { value: true, slot: true } },
+        languages: { select: { title: true } },
+      },
+    },
+  },
+});
+
 
   // Map optional tagged
   const processedEntries = entries.map((entry) => ({

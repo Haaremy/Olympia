@@ -97,6 +97,7 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     if(field==4 && userPoints==1){
       result=10;
     }
+    result=result**multiplier;
   }
   ////////////////////////////
   ////////////////////////////

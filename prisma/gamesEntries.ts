@@ -66,7 +66,7 @@ const game2 = await prisma.game.create({
 const game3 = await prisma.game.create({
   data: {
     url: '',
-    tagged: "overridePlayers,hidden,noRecord",
+    tagged: "overridePlayers,hidden",
     languages: {
       create: [
         {
@@ -396,7 +396,7 @@ const game13 = await prisma.game.create({
 const game14 = await prisma.game.create({
   data: {
     url: '',
-    tagged:"overridePlayers,hidden,noRecord",
+    tagged:"overridePlayers,hidden",
     languages: {
       create: [
         {
@@ -515,7 +515,7 @@ const game17 = await prisma.game.create({
 const game18 = await prisma.game.create({
     data: {
         url: '',
-        tagged:"overridePlayers,hidden,noRecord",
+        tagged:"overridePlayers,hidden",
         languages: {
             create: [
                 {
@@ -576,7 +576,7 @@ const game20 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/WXbwk-7uOTg',
         
-        tagged: "field1,lowest,:unit:sec:unit:,overridePlayers",
+        tagged: "hideF2,hideF3,hideF4,field1,lowest,:unit:sec:unit:",
         languages: {
             create: [
                 {
@@ -696,7 +696,7 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
-        tagged: "overridePlayer,field1,lowest",
+        tagged: "hideF2,hideF3,hideF4,field1,lowest",
         languages: {
             create: [
                 {
