@@ -84,8 +84,8 @@ export default function FirePage() {
 
   return (
 <Main
-  className="relative justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
-  style={{ backgroundImage: "url('/images/building.jpg')" }}
+  className=" justify-center overflow-hidden bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/images/building.jpg')",     backgroundSize: "contain",} }
 >
   {/* Inhalt */}
 
@@ -96,30 +96,33 @@ export default function FirePage() {
       </h1>
 
 
-      {/* Fire Area */}
-      <div className="relative flex flex-col items-center justify-end w-full max-w-md h-[400px]">
-        {/* Animated Fire */}
-        {fireOn && (
-          <div className="absolute bottom-32">
-            <Fire />
-          </div>
-        )}
+{/* Fire Area */}
+<div className="fixed flex flex-col items-center justify-end w-full bottom-20  scale-120">
+  {/* Animated Fire */}
+  {fireOn && (
+    <div className="absolute bottom-[370px] z-40 scale-300 right-1/2">
+      <Fire />
+    </div>
+  )}
 
-        {/* Firepit Image */}
-        <div
-          onClick={igniteFire}
-          className="cursor-pointer transition-transform z-50"
-        >
-          <Image
-            alt="Firepit"
-            width={500}
-            height={500}
-            src="/images/pit.png"
-            className="object-contain"
-          />
-        </div>
+  {/* Firepit Image */}
+  <div
+    onClick={igniteFire}
+    className="cursor-pointer transition-transform z-50"
+  >
+    <Image
+      alt="Firepit"
+      width={1000}
+      height={1000}
+      src="/images/pit.png"
+      className="object-contain w-[600px] h-auto"
+      priority
+    />
+  </div>
+</div>
 
-      </div>
+
+
 
       {/* Subtle glow overlay */}
       {fireOn && (
