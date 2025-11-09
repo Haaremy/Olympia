@@ -29,5 +29,5 @@ export const gamesOG = [
   { id: "02", x: 840, y: 340 },
   { id: "01", x: 860, y: 250 },
   { id: "16", x: 800, y: 250 },
-  { id: "09", x: 820, y: 235 }, // Mitte Unten
+  { id: "09", x: 820, y: 210 }, // Mitte Unten
   ];
