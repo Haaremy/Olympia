@@ -168,13 +168,13 @@ useEffect(() => {
     });
 
    const idIcon = (id: string) =>
-  L.divIcon({
-    className: "id-marker",
-    html: `<span>${id}</span>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -15],
-  });
+      L.divIcon({
+        className: "id-marker",
+        html: `<span>${id}</span>`, 
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -15],
+      });
 
    const posIcon = (id: string) =>
   L.divIcon({
