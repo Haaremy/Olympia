@@ -41,7 +41,7 @@ const getLangID = () => {
 
   // GPS-Referenzpunkte für dein Bild
 
-
+const positionMarkerRef = useRef<L.Marker | null>(null);
 
 
 // Annahmen: src-Geo-Punkte (lat,lng) als in deinem Projekt
@@ -84,22 +84,24 @@ async function loadGames() {
   }
 }
 
- const fetchPosition = async () => {
-    const perm = await Geolocation.requestPermissions();
-    console.log("Geo Permissions:", perm);
 
-    if (perm.location === "granted") {  // nur "granted" verwenden
-      const pos = await Geolocation.getCurrentPosition(); // Capacitor
-      setPosition(pos); // Typ passt zu GeolocationPosition
-      //console.log("Position:", pos.coords.latitude, pos.coords.longitude);
-      return latLngToPixel(
-        pos.coords.latitude,
-        pos.coords.longitude,
-      );
-    } else {
-      console.warn("Geolocation permission not granted");
+ const fetchPosition = async () => {
+  const perm = await Geolocation.requestPermissions();
+
+  if (perm.location === "granted") {
+    const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+    setPosition(pos);
+
+    const [x, y] = latLngToPixel(pos.coords.latitude, pos.coords.longitude);
+
+    // Wenn Marker existiert → Position aktualisieren
+    if (positionMarkerRef.current) {
+      positionMarkerRef.current.setLatLng([y, x]);
     }
-  };
+
+    return [x, y];
+  }
+};
 
 
    useEffect(() => {
@@ -192,13 +194,13 @@ useEffect(() => {
 
     
      const coords = await fetchPosition();
-    if (coords) {
-      const [cX, cY] = coords;
-
-      L.marker([cY, cX], { icon: idIcon("📍", "none") })
-        .addTo(mapInstance.current!)
-        .bindPopup(`🫵🏻`);
-    }
+if (coords) {
+  const [cX, cY] = coords;
+  const marker = L.marker([cY, cX], { icon: idIcon("📍", "none") })
+    .addTo(mapInstance.current!)
+    .bindPopup("🫵🏻");
+  positionMarkerRef.current = marker;
+}
     
   })();
 }, [imageSrc, filteredGames, position]);
