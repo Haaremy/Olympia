@@ -5,6 +5,7 @@
 
 /* Marker-Text ohne Hintergrund */
 .id-marker {
+  backgeound-color: #db2777 !important;
   border: none !important;       /* kein Rahmen */
   box-shadow: none !important;   /* kein Schatten */
   border-radius: 100%;
@@ -16,6 +17,21 @@
   font-size: 20px;
   pointer-events: none;           /* Klick geht durch den Text auf Marker */
 }
+
+.id-marker-pos {
+  background-color: none !important;
+  border: none !important;       /* kein Rahmen */
+  box-shadow: none !important;   /* kein Schatten */
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;                /* Textfarbe */
+  font-weight: bold;
+  font-size: 20px;
+  pointer-events: none;           /* Klick geht durch den Text auf Marker */
+}
+
 .id-marker span {
   background: none !important;   /* span ebenfalls transparent */
 }
