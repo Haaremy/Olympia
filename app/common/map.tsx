@@ -193,7 +193,7 @@ useEffect(() => {
       
 
     await filteredGames.forEach((game) => {
-      const currTitle =titles[parseInt(game.id)-1].languages[getLangID()].title ?? "test";
+      const currTitle =titles[parseInt(game.id)-1].languages[getLangID()].title ?? "???";
       L.marker([game.y, game.x], { icon: idIcon(game.id) })
         .addTo(mapInstance.current!)
         .bindPopup(currTitle);
