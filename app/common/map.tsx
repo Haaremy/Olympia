@@ -213,7 +213,7 @@ useEffect(() => {
     if (coords) {
       const [cX, cY] = coords;
 
-      L.marker([cY, cX], { icon: posIcon("📍", none) })
+      L.marker([cY, cX], { icon: posIcon("📍", "none") })
         .addTo(mapInstance.current!)
         .bindPopup(`🫵🏻`);
     }
