@@ -202,7 +202,7 @@ useEffect(() => {
 
    
   mapInstance.current.createPane("posPane");
-  mapInstance.current.getPane("posPane")!.style.zIndex = "30";
+  mapInstance.current.getPane("posPane")!.style.zIndex = "670";
 
     
      const coords = await fetchPosition();
