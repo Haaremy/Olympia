@@ -5,7 +5,7 @@
 
 /* Marker-Text ohne Hintergrund */
 .id-marker {
-  backgeound: #db2777 !important;
+  background: #db2777 !important;
   border: none !important;       /* kein Rahmen */
   box-shadow: none !important;   /* kein Schatten */
   border-radius: 100%;
