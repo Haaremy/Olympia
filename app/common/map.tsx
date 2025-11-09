@@ -165,29 +165,11 @@ useEffect(() => {
       maxBoundsViscosity: 1.0,
     });
 
-    const idIcon = (id: string) =>
-      L.divIcon({
-        className: "id-marker",
-        html: `<span>${id}</span>`, 
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-        popupAnchor: [0, -15],
-      });
-
-   const posIcon = (id: string, color = "#3b82f6") =>
+   const idIcon = (id: string, color = "#3b82f6") =>
   L.divIcon({
     className: "id-marker",
     html: `<span style="
-      background:${color};
-      border-radius:50%;
-      display:flex;
-      width:30px;
-      height:30px;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-size:18px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+    background:${color};
     ">${id}</span>`,
     iconSize: [30, 30],
     iconAnchor: [15, 15],
@@ -203,7 +185,7 @@ useEffect(() => {
 
     await filteredGames.forEach((game) => {
       const currTitle =titles[parseInt(game.id)-1].languages[getLangID()].title ?? "test";
-      L.marker([game.y, game.x], { icon: idIcon(game.id) })
+      L.marker([game.y, game.x], { icon: idIcon(game.id, "#db2777") })
         .addTo(mapInstance.current!)
         .bindPopup(currTitle);
     });
@@ -213,7 +195,7 @@ useEffect(() => {
     if (coords) {
       const [cX, cY] = coords;
 
-      L.marker([cY, cX], { icon: posIcon("📍", "none") })
+      L.marker([cY, cX], { icon: idIcon("📍", "none") })
         .addTo(mapInstance.current!)
         .bindPopup(`🫵🏻`);
     }
