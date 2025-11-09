@@ -193,7 +193,7 @@ useEffect(() => {
     if (coords) {
       const [cX, cY] = coords;
 
-      L.marker([cY, cX], { icon: idIcon("X") })
+      L.marker([cY, cX], { icon: idIcon("📍") })
         .addTo(mapInstance.current!)
         .bindPopup(`🫵🏻`);
     }
@@ -215,7 +215,7 @@ useEffect(() => {
 
       {/* Container für Leaflet Map */}
       <div ref={mapRef} style={{ height: "32vh", width: "100%", zIndex: "0", background: "linear-gradient(to bottom, #E3001B, #140079"} } />
-      <div>{!!position ? `${position.coords.latitude},${position.coords.longitude} `: ""}</div>
+      <div>{!!position ? `Position: ${position.coords.latitude},${position.coords.longitude} `: ""}</div>
     </section>
   );
 }
