@@ -20,7 +20,7 @@
 
 .id-marker-pos {
   background: none !important;
-  border: none !important;       /* kein Rahmen */
+  border-style: dashed;
   box-shadow: none !important;   /* kein Schatten */
   border-radius: 100%;
   display: flex;
