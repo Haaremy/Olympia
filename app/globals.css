@@ -16,7 +16,6 @@
   font-weight: bold;
   font-size: 20px;
   pointer-events: none;           /* Klick geht durch den Text auf Marker */
-  z-index: 30;
 }
 
 .id-marker-pos {
@@ -31,6 +30,7 @@
   font-weight: bold;
   font-size: 20px;
   pointer-events: none;           /* Klick geht durch den Text auf Marker */
+  z-index: 30;
 }
 
 .id-marker span {
