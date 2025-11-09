@@ -5,7 +5,7 @@
 
 /* Marker-Text ohne Hintergrund */
 .id-marker {
-  backgeound-color: #db2777 !important;
+  backgeound: #db2777 !important;
   border: none !important;       /* kein Rahmen */
   box-shadow: none !important;   /* kein Schatten */
   border-radius: 100%;
@@ -19,7 +19,7 @@
 }
 
 .id-marker-pos {
-  background-color: none !important;
+  background: none !important;
   border: none !important;       /* kein Rahmen */
   box-shadow: none !important;   /* kein Schatten */
   border-radius: 100%;
