@@ -176,6 +176,7 @@ useEffect(() => {
         popupAnchor: [0, -15],
       });
 
+   
    const posIcon = (id: string) =>
   L.divIcon({
     className: "id-marker-pos",
@@ -199,11 +200,15 @@ useEffect(() => {
         .bindPopup(currTitle);
     });
 
+   
+  mapInstance.current.createPane("posPane");
+  mapInstance.current.getPane("posPane")!.style.zIndex = "30";
+
     
      const coords = await fetchPosition();
 if (coords) {
   const [cX, cY] = coords;
-  const marker = L.marker([cY, cX], { icon: posIcon("📍") })
+  const marker = L.marker([cY, cX], { icon: posIcon("📍"), pane:"posPane", })
     .addTo(mapInstance.current!)
     .bindPopup("🫵🏻");
   positionMarkerRef.current = marker;
