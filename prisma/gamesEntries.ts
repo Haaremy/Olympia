@@ -73,7 +73,7 @@ const game3 = await prisma.game.create({
           language: 'de',
           title: 'Traumblasen',
           story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Auch unsere Träume sieht er und kann damit die Wünsche der Kinder erkennen.',
-          station: '???',
+          station: 'Erdgeschoss - Raum 110',
           capacity: '1 Team',
           descriptionGame: 'In einem Behälter sind 100 Bällebad-Bälle. Jeder Ball repräsentiert den Traum eines Kindes. Wurde ein Traum dokumentiert, wird dieser nummeriert und eingelagert. Vier der Träume sind leider wieder hineingefallen.',
           descriptionPoints: 'Findet die vier Bälle und tragt deren Nummerierung in das entsprechende Feld (1 - 4) ein. Verstecke sie anschließend im Behälter für andere Teams.'
@@ -82,7 +82,7 @@ const game3 = await prisma.game.create({
           language: 'en',
           title: 'Dream Bubbles',
           story: 'Santa Claus sees, hears, and knows everything. Always, and in everything we do, he records whether we have been good or bad. Playing, laughing, and arguing by day and by night. He also sees our dreams and can recognize the wishes of children through them.',
-          station: '???',
+          station: 'Ground Floor - Room 110',
           capacity: '1 Team',
           descriptionGame: 'Inside a container are 100 ball-pit balls. Each ball represents the dream of a child. Once a dream has been documented, it is numbered and stored. Unfortunately, four of the dreams have fallen back inside.',
           descriptionPoints: 'Find the four balls and enter their numbers in the corresponding fields (1 - 4). Hide it in the container for other teams afterwards.'
@@ -223,7 +223,7 @@ const game8 = await prisma.game.create({
           language: 'de',
           title: '.. 22, 23, 24, ..',
           story: 'Die Gewerkschaft der Elfen hat feste Regelungen, unter anderem zu den Pausenzeiten und den Vergütungen. Jedem Elf stehen bei einem 24 Stunden Arbeitstag 24 Pausen zu. In jeder Pause müssen sie Zugang zu Snacks haben. Da der Weihnachtsmann gar nicht mehr weiß, wie viele über sind, müsst ihr schätzen.',
-          station: 'Obergeschoss 1 - Foyer',
+          station: 'Erdgeschoss - Foyer',
           capacity: 'Multiple Teams',
           descriptionGame: 'Schätzt die Anzahl der Süßigkeiten.',
           descriptionPoints: 'Tragt in das jeweilige #Feld die Schätzung ein.'
@@ -232,7 +232,7 @@ const game8 = await prisma.game.create({
           language: 'en',
           title: '... 22, 23, 24, ...',
           story: 'The Elf Union has established strict regulations, including rules for break times and compensation. Every elf is entitled to 24 breaks in a 24-hour working day. During every break, they must have access to snacks. Since Santa doesn\'t even know how many are left, you\'ll have to guess.',
-          station: 'First Floor – Foyer',
+          station: 'Ground Floor – Foyer',
           capacity: 'Multiple teams',
           descriptionGame: 'Estimate the number of sweets.',
           descriptionPoints: 'Enter the estimate in the respective #field.'
@@ -251,18 +251,18 @@ const game9 = await prisma.game.create({
       create: [
         {
           language: 'de',
-          title: 'Schneeballschlacht',
+          title: 'Schlacht der Elfen',
           story: 'Kokosmakronen sind die Besten! - Nein, Vanille-Kipferl! : Die Elfen haben sich in 2 Parteien gespalten, was die besten Kekse sind und bekriegen sich nun mit Schneebällen (hoffentlich ohne Steine).',
-          station: 'Erdgeschoss - Foyer',
+          station: 'Obergeschoss 1 - Foyer',
           capacity: '1 Team',
           descriptionGame: 'Jeder Spieler hat 5 Würfe. Ihr werft auf die Wichtel/Elfen auf dem Tisch. Nach der Runde wird für den nächsten Spieler aufgebaut.',
           descriptionPoints: 'Tragt die Anzahl der umgeworfenen Wichtel euer entsprechendes #Feld.'
         },
         {
           language: 'en',
-          title: 'Snowballfight',
+          title: 'Battle of the Elves',
           story: 'Coconut macaroons are the best! – No, vanilla crescents! The elves have split into two parties over which are the best cookies and are now fighting each other with snowballs (hopefully without stones).',
-          station: 'Ground Floor - Foyer',
+          station: 'First Floor - Foyer',
           capacity: '1 Team',
           descriptionGame: 'Each player has 5 throws. You throw at the cans on the table (elves). After the round, the game is set up for the next player.',
           descriptionPoints: 'Enter the number of cans that have fallen off the table in the corresponding #field.'
@@ -313,7 +313,7 @@ const game11 = await prisma.game.create({
           language: 'de',
           title: 'Zielen und Feuer',
           story: 'Eigentlich wollten sie Boccia spielen, aber die Elfen hatten kein verschiedenfarbigen Schnee und den gelben wollte keiner anfassen. Jetzt haben sie gelbe Markierungen in den Schnee gemalt und versuchen sich an Zielwerfen.',
-          station: 'Obergeschoss 1 - Flur Westflügel',
+          station: 'Obergeschoss 1 - Foyer',
           capacity: '1 Team',
           descriptionGame: 'Jeder Spieler hat 3 Versuche. Die Summe der Trefferpunkte wird eingetragen.',
           descriptionPoints: "Tragt die Summe der Zahlen aus den Versuchen in euer #Feld ein."
@@ -322,7 +322,7 @@ const game11 = await prisma.game.create({
           language: 'en',
           title: 'Aim and Fire',
           story: "They actually wanted to play bocce, but the elves didn’t have snow in different colors, and no one wanted to touch the yellow one. Now they have drawn yellow markings in the snow and are trying their hand at target throwing.",
-          station: 'First Floor – West wing corridor',
+          station: 'First Floor – Foyer',
           capacity: '1 Team',
           descriptionGame: 'Each player has 3 attempts. The sum of the numbers thrown is scored.',
           descriptionPoints: "Enter the sum of the numbers from the attempts in your #Feld."
@@ -373,7 +373,7 @@ const game13 = await prisma.game.create({
           language: 'de',
           title: 'Bilderrätsel',
           story: 'Qualität steht am Nordpol im Gesetz. Alle Spielzeuge für Groß und Klein müssen sicher sein. Kleinste Makel können schwere Schäden verursachen. Zur Übung wird schon im Elfen-Kindergarten trainiert.',
-          station: 'Erdgeschoss - Raum 107',
+          station: 'Erdgeschoss - Foyer',
           capacity: 'Multiple Teams',
           descriptionGame: 'Vor euch liegen #4 Bilder. Jedes Bild hat Makel zu seinem Kontrollbild daneben. Tipp: macht euch Fotos der Bilder und besprecht euch im Team.',
           descriptionPoints: "Zählt die Makel und tragt sie im entsprechenden #Feld ein."
@@ -382,7 +382,7 @@ const game13 = await prisma.game.create({
           language: 'en',
           title: 'Hawk Eye',
           story: 'Quality is the law at the North Pole. All toys for young and old must be safe. The smallest blemishes can cause serious damage. The elves are already practicing in kindergarten.',
-          station: 'First Floor - Room 107',
+          station: 'Ground Floor - Foyer',
           capacity: 'Multiple teams',
           descriptionGame: 'In front of you are #4 pictures. Each image has imperfections compared to its reference image next to it. Tip: take photos of the images and discuss them as a team.',
           descriptionPoints: "Count the imperfections and enter them in the corresponding #Feld."
@@ -403,7 +403,7 @@ const game14 = await prisma.game.create({
           language: 'de',
           title: 'Gutes Kind, böses Kind',
           story: 'In den Supermärkten und Einkaufszentren der Erde trifft man häufig auf die gesandten Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiß, hat er sich hin und wieder eine Auszeit verdient und braucht besonders in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten, und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
-          station: '???',
+          station: 'Obergeschoss 1 - Foyer',
           capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
           descriptionPoints: "In jeder Aussage ist eine Zahl enthalten. Tragt die Zahl der wahren Aussage in das entsprechende Feld ein."
@@ -412,7 +412,7 @@ const game14 = await prisma.game.create({
           language: 'en',
           title: 'Good Kid, Bad Kid',
           story: 'In the supermarkets and shopping malls of the world, one often encounters Santa’s appointed helpers. Even though Santa sees, hears, and knows everything, he deserves a break from time to time and especially needs helpers during the busy season who listen to and assess the wishes and stories of children. The children tell the helpers many different stories, and to help them better evaluate the children, they are trained to recognize lies and truths through specific questions.',
-          station: '???',
+          station: 'First Floor - Foyer',
           capacity: 'Multiple Teams',
           descriptionGame: 'On the table are facts and lies. Examine them using your best judgment.',
           descriptionPoints: "Every Text contains a number. Submit the number of the true text in its corresponding field."
@@ -455,7 +455,7 @@ const game15 = await prisma.game.create({
 const game16 = await prisma.game.create({
   data: {
     url: '',
-    tagged: ":unit:Marshmallows:unit:",
+    tagged: ":unit:Etagen:unit:",
     languages: {
       create: [
         {
@@ -492,7 +492,7 @@ const game17 = await prisma.game.create({
             language: 'de',   // Deutsche Version
             title: 'Eishockey',
             story: 'Unser lieblings Eishockeyteam die \'INS-ICE-Pythons\' haben uns ihre geheimen Trainingstipps verraten. Wir nutzen die Gelegenheit und teilen unser Wissen mit euch (natürlich mit Erlaubnis). An den Weihnachtsfeiertagen haben wir dann ein wichtiges Spiel gegen die Nordpolar-Bären.',
-            station: 'Obergeschoss - Foyer',
+            station: 'Obergeschoss - Westflügel',
             capacity: '2 Teams',
             descriptionGame: 'Vor euch ist ein Tor aufgebaut vor dem Hindernisse stehen. Stellt euch in die Startmarkierung und schießt auf das Tor. Jeder Schießt 5 Mal.',
             descriptionPoints: 'Das vordere Tor gibt 1 Punkt, das hintere 2 Punkte. Tragt eure Punktzahl in euer #Feld ein.'
@@ -501,7 +501,7 @@ const game17 = await prisma.game.create({
             language: 'en',   // Englische Version
             title: 'Ice hockey',
             story: 'Our favorite ice hockey team, the "INS ICE Pythons", have revealed their hidden training tips. We take the opportunity to share our knowledge with you (with permission, of course). We then have an important game against the North Polar Bears over the Christmas break.',
-            station: 'First Floor - Foyer',
+            station: 'First Floor - Westwing',
             capacity: '2 teams',
             descriptionGame: 'A goal is set up in front of you, with obstacles in the way. Stand at the starting mark and shoot at the goal. Everyone shoots 5 times.',
             descriptionPoints: 'Enter your number of hits in your #field.',
@@ -522,7 +522,7 @@ const game18 = await prisma.game.create({
                     language: 'de',
                     title: 'Wunschlos?',
                     story: 'Der Weihnachtsmann erfüllt jedes Jahr Millionen von Wünschen. Doch, was passiert, wenn ein Kind keine Wünsche äußert? Es nichts träumt? Hat es schon alles, was es braucht? Eine Grundregel ist, dass jeder irgendetwas braucht – auch wenn es tief in einem verborgen liegt. Spielsachen, Geld oder einfach nur ein wenig Liebe?',
-                    station: '???',
+                    station: 'Ergeschoss - Foyer',
                     capacity: 'Mehrere Teams',
                     descriptionGame: 'Auf dem Tisch liegen Malen-nach-Zahlen-Blätter. Sie zeigen versteckte Wünsche von Kindern, und das entstandene Bild wird mithilfe einer Bild-Zahlen-Tabelle in eine Lösungszahl umgewandelt.',
                     descriptionPoints: 'Tragt die Lösungszahl in das entsprechende Feld ein.'
@@ -531,7 +531,7 @@ const game18 = await prisma.game.create({
                     language: 'en',
                     title: 'Wishless?',
                     story: 'Every year, Santa fulfills millions of wishes. But what happens when a child makes no wish at all? When it dreams of nothing? Does it already have everything it needs? One basic rule is that everyone needs something — even if it’s hidden deep inside. Toys, money, or simply a little love?',
-                    station: '???',
+                    station: 'Ground Floor - Foyer',
                     capacity: 'Multiple Teams',
                     descriptionGame: 'On the table are “paint by numbers” sheets showing hidden wishes of children. The completed image is then converted into a solution number using the picture-number table.',
                     descriptionPoints: 'Enter the solution number into the corresponding field.'
