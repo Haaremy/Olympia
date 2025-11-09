@@ -6,8 +6,8 @@ export const gamesEG = [
     { id: "19", x: 355, y: 580 }, // done
     { id: "13", x: 355, y: 420 }, // done
     { id: "12", x: 355, y: 460 }, // done
-    { id: "03", x: 355, y: 330},  // done
-    { id: "10", x: 490, y: 690 }, // done
+    { id: "03", x: 510, y: 690},  // done
+    { id: "10", x: 470, y: 690 }, // done
     { id: "05", x: 490, y: 730 }, // done
     { id: "04", x: 820, y: 565 }, // Mitte, Mensa
     { id: "08", x: 855, y: 355 },
