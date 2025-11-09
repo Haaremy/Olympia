@@ -174,6 +174,26 @@ useEffect(() => {
         popupAnchor: [0, -15],
       });
 
+   const posIcon = (id: string, color = "#3b82f6") =>
+  L.divIcon({
+    className: "id-marker",
+    html: `<span style="
+      background:${color};
+      border-radius:50%;
+      display:flex;
+      width:30px;
+      height:30px;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:18px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+    ">${id}</span>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -15],
+  });
+
     L.imageOverlay(imageSrc, bounds).addTo(mapInstance.current!);
     mapInstance.current.fitBounds(bounds);
 
@@ -193,7 +213,7 @@ useEffect(() => {
     if (coords) {
       const [cX, cY] = coords;
 
-      L.marker([cY, cX], { icon: idIcon("📍") })
+      L.marker([cY, cX], { icon: posIcon("📍", none) })
         .addTo(mapInstance.current!)
         .bindPopup(`🫵🏻`);
     }
