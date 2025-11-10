@@ -4,7 +4,6 @@ export const gamesEG = [
     { id: "14", x: 380, y: 690 }, // done
     { id: "22", x: 355, y: 540 }, // done
     { id: "19", x: 355, y: 580 }, // done
-    { id: "13", x: 355, y: 420 }, // done
     { id: "12", x: 355, y: 460 }, // done
     { id: "03", x: 520, y: 690},  // done
     { id: "10", x: 470, y: 690 }, // done
