@@ -151,7 +151,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   /* Download Box Logik */
   const showAndroidStore = platform === "Android" && !isNative;
-  const showIOSStore = platform === "iPhone" && !isNative;
+  const showIOSStore = platform === "iPhone" && isNative;
 
   return (
     <div
@@ -178,8 +178,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           <table className="mt-4 table-auto w-full text-left">
             <thead>
               <tr>
-                <th className="text-white font-semibold pb-2 pr-8">Zeit</th>
-                <th className="text-white font-semibold pb-2">Event</th>
+                <th className="dark:text-white text-black font-semibold pb-2 pr-8">Zeit</th>
+                <th className="dark:text-white text-black font-semibold pb-2">Event</th>
               </tr>
             </thead>
             <tbody>
@@ -189,7 +189,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                   className="border-b dark:border-white/10 border-black/10"
                 >
                   <td className="text-black dark:text-white pr-8">{ev.time}</td>
-                  <td className={`${getEventClass(ev)} break-words`}>
+                  <td className={`${getEventClass(ev)} dark:text-white text-black break-words`}>
                     {t(ev.key)}
                   </td>
                 </tr>
