@@ -26,6 +26,7 @@
     "bcrypt": "^6.0.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
+    "cocoapods": "^0.0.0",
     "fs": "^0.0.1-security",
     "leaflet": "^1.9.4",
     "next": "^15.5.4",
