@@ -17,6 +17,11 @@ interface StoreBoxProps {
   visible: boolean;
 }
 
+interface TimeEvent {
+  start: number; // oder Date, falls du Date nutzt
+  end: number;
+}
+
 const StoreBox: React.FC<StoreBoxProps> = ({ store, visible }) => {
   if (!visible) return null;
 
@@ -137,7 +142,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     { time: "22:30", key: "tt-3", start: 22 * 60 + 30, end: 23 * 60 + 59 },
   ];
 
-  const getEventClass = (ev: any) => {
+  const getEventClass = (ev: TimeEvent) => {
     if (curTime < ev.start) return "text-pink-400 text-md py-1";
     if (curTime >= ev.start && curTime < ev.end)
       return "text-white font-bold text-lg py-2";
