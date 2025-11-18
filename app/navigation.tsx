@@ -36,7 +36,7 @@ export default function Navigation() {
 
   useEffect(() => {
     setIsAndroid(Capacitor.getPlatform() === "android");
-    setIsIOS(Capacitor.getPlatform() = "ios");
+    setIsIOS(Capacitor.getPlatform() === "ios");
   }, []);
 
   const handleLoginOpen = useCallback(() => {
