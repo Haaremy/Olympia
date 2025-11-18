@@ -267,18 +267,18 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
     }
   }
   ////////////////////////////
-  ////////////////////////////
+  //////////////////////////// stand 2025
     if (game==14){
-        if(field==1 && userPoints==15){
+        if(field==1 && userPoints==5){
       result=10;
     }
-    if(field==2 && userPoints==26){
+    if(field==2 && userPoints==3){
       result=10;
     }
-    if(field==3 && userPoints==37){
+    if(field==3 && userPoints==1){
       result=10;
     }
-    if(field==4 && userPoints==49){
+    if(field==4 && userPoints==2){
       result=10;
     }
 
