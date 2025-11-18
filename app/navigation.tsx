@@ -26,6 +26,7 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [newChat, setNewChat] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   const { t, i18n } = useTranslation();
   const { data: session, status } = useSession();
@@ -35,6 +36,7 @@ export default function Navigation() {
 
   useEffect(() => {
     setIsAndroid(Capacitor.getPlatform() === "android");
+    setIsIOS(Capacitor.getPlatform() = "ios");
   }, []);
 
   const handleLoginOpen = useCallback(() => {
@@ -277,7 +279,7 @@ export default function Navigation() {
         <div
           className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${
             isAndroid ? "mt-6" : ""
-          } gap-4`}
+          } ${isIOS ? "mt-6" : ""} gap-4`}
         >
           {/* Headline */}
           <div
