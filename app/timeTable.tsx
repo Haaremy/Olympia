@@ -127,7 +127,7 @@ const getEventClass = (event: {start: number, end: number}) => {
                   <tbody>
                     {timetable.map((ev, idx) => (
                       <tr key={idx} className="border-b dark:border-white/10 border-black/10 truedark:border-white/10">
-                        <td className="text-white pr-8">{ev.time}</td>
+                        <td className="text-black dark:text-white pr-8">{ev.time}</td>
                         <td className={`${getEventClass(ev)} break-words whitespace-normal`}>
                           {t(ev.key)}
                         </td>
