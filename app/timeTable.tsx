@@ -149,13 +149,13 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const getEventClass = (ev: TimeEvent) => {
     if (curTime < ev.start) return "text-pink-400 text-md py-1";
     if (curTime >= ev.start && curTime < ev.end)
-      return "text-white font-bold text-lg py-2";
+      return "truedark:text-white dark:text-white text-black font-bold text-lg py-2";
     return "text-blue-400 text-sm";
   };
 
   /* Download Box Logik */
   const showAndroidStore = platform === "Android" && !isNative;
-  const showIOSStore = (platform === "iPhone" || platform === "iPhone Simulator") && isNative;
+  const showIOSStore = (platform === "iPhone" || platform === "iPhone Simulator" || platform === "iOS") && !isNative;
 
   return (
     <div
@@ -167,9 +167,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="bg-white dark:bg-gray-800 truedark:bg-black truedark:text-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh] overflow-hidden flex flex-col m-4"
+        className="
+          bg-white dark:bg-gray-800 truedark:bg-black
+          p-6 rounded-lg shadow-lg w-full max-w-md max-h-[70vh]
+          overflow-hidden flex flex-col m-4
+          border-2
+          border-blue-500/40
+          dark:border-pink-500/40
+          truedark:border-white/40
+          focus:outline-none focus:ring-0
+        "
         onClick={(e) => e.stopPropagation()}
       >
+
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-3xl font-semibold">Timetable</h2>
 
@@ -182,18 +192,18 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           <table className="mt-4 table-auto w-full text-left">
             <thead>
               <tr>
-                <th className="dark:text-white text-black font-semibold pb-2 pr-8">Zeit</th>
-                <th className="dark:text-white text-black font-semibold pb-2">Event</th>
+                <th className="truedark:text-white dark:text-white text-black font-semibold pb-2 pr-8">Zeit</th>
+                <th className="truedark:text-white dark:text-white text-black font-semibold pb-2">Event</th>
               </tr>
             </thead>
             <tbody>
               {timetable.map((ev, idx) => (
                 <tr
                   key={idx}
-                  className="border-b dark:border-white/10 border-black/10"
+                  className="border-b-2 truedark:border-white/20 dark:border-white/20 border-gray-300/20"
                 >
-                  <td className="text-black dark:text-white pr-8">{ev.time}</td>
-                  <td className={`${getEventClass(ev)} dark:text-white text-black break-words`}>
+                  <td className="truedark:text-white dark:text-white text-black pr-8">{ev.time}</td>
+                  <td className={`${getEventClass(ev)} break-words`}>
                     {t(ev.key)}
                   </td>
                 </tr>
