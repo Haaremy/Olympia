@@ -17,7 +17,8 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ onClose }) => {
     const { setIsModalOpen } = useUI();
     const [platform, setPlatform] = useState("");
-    const [isApp, setIsApp] = useState(false);
+    const [isAndroid, setIsAndroid] = useState(false);
+    const [isIOS, setIsIOS] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
@@ -28,7 +29,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
     useEffect(() => {
         detectPlatform().then(setPlatform);
-        setIsApp(Capacitor.getPlatform() === 'android');
+        
+        setIsAndroid(Capacitor.getPlatform() === 'android');
+        setIsIOS(Capacitor.getPlatform() === "ios");
+  
         const modal = modalRef.current;
         setIsModalOpen(true);
 
@@ -137,11 +141,55 @@ const getEventClass = (event: {start: number, end: number}) => {
                 </table>
                 <div>
                 <h3 className={` mt-8 ${
-                    platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
+                    platform === "Android" ? (isAndroid ? "hidden" : "block" ): "hidden"
                   }`}>Playstore Olympia App</h3>
                       <div
                   className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition bg-black ${
-                    platform === "Android" ? (isApp ? "hidden" : "block" ): "hidden"
+                    platform === "Android" ? (isAndroid ? "hidden" : "block" ): "hidden"
+                  }`}
+                >
+                  
+                  {/* Linker Bereich mit Titel + Badge */}
+                  <div className="flex flex-col">
+                
+                    <a
+                      href="https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center"
+                    >
+                      <Image
+                        src={`/images/googlebadge.png`}
+                        alt="Google Play Store Badge"
+                        width={150}
+                        height={60}
+                        className="hover:scale-105 transition-transform"
+                      />
+                    </a>
+                  </div>
+                
+                  {/* Rechter Bereich mit App-Icon */}
+                  <div className="flex-shrink-0 ml-4">
+                    <Image
+                      src={`/images/applogo.png`}
+                      alt="Olympia App Icon"
+                      width={80}
+                      height={80}
+                      className="rounded-lg shadow-md"
+                    />
+                  </div>
+                </div>
+              </div>
+                </div>
+
+
+                 <div>
+                <h3 className={` mt-8 ${
+                    platform === "iPhone" ? (!isIOS ? "hidden" : "block" ): "hidden"
+                  }`}>IOS Olympia App</h3>
+                      <div
+                  className={`w-full max-w-3xl mt-2 flex items-center justify-between p-4 border rounded-lg border-gray-300 dark:border-gray-600 transition bg-black ${
+                    platform === "iPhone" ? (!isIOS ? "hidden" : "block" ): "hidden"
                   }`}
                 >
                   
