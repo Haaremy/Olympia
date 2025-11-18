@@ -32,7 +32,7 @@ const StoreBox: React.FC<StoreBoxProps> = ({ store, visible }) => {
   const lang = i18n.language.split("-")[0].toUpperCase();
   const badgeSrc = isAndroid
   ? "/images/googlebadge.png"
-  : `/images/applebadge/${lang}/Download_on_App_Store/Black_lockup/SVG/Download_on_the_App_Store_Badge_${lang}_RGB_blk_092917.svg`;
+  : `/images/applebadge/${lang}/Download_on_App_Store/Black_lockup/SVG/logo.svg`;
 
   const storeUrl = isAndroid
     ? "https://play.google.com/store/apps/details?id=de.haaremy.olympia&pcampaignid=web_share"
