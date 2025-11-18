@@ -180,7 +180,7 @@ const getEventClass = (event: {start: number, end: number}) => {
                   </div>
                 </div>
               </div>
-                </div>
+                
 
 
                  <div>
@@ -226,6 +226,7 @@ const getEventClass = (event: {start: number, end: number}) => {
               </div>
                 </div>
                 
+                </div>
             </div>
         </div>
     );
