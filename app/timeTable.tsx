@@ -19,7 +19,7 @@ const openPaypalNative = async () => {
 
     // Versuche die PayPal-App zu öffnen
     try {
-      await App.openUrl({ url: nativeUrl });
+      await Capacitor.openUrl({ url: nativeUrl });
       
       // Wenn App sich wirklich öffnet, wird die App in den Hintergrund gedrückt
       // Wir setzen einen kurzen Timeout, um zu erkennen, dass NICHTS passiert ist.
