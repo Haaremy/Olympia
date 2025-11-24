@@ -15,22 +15,31 @@ const openPaypalNative = async () => {
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
   if (Capacitor.isNativePlatform()) {
-    // Prüfen, ob die PayPal-App installiert ist
-    const canOpen = await App.canOpenUrl({ url: nativeUrl });
+    let fallback = true;
 
-    if (canOpen.value) {
-      // PayPal-App öffnen
+    // Versuche die PayPal-App zu öffnen
+    try {
       await App.openUrl({ url: nativeUrl });
-      return;
+      
+      // Wenn App sich wirklich öffnet, wird die App in den Hintergrund gedrückt
+      // Wir setzen einen kurzen Timeout, um zu erkennen, dass NICHTS passiert ist.
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Wenn die App erfolgreich geöffnet wurde, landet der Nutzer nicht mehr hier zurück.
+      // Wenn er aber zurückkommt → App nicht installiert.
+    } catch (e) {
+      // Fehler → sofort Fallback
     }
 
-    // Wenn App nicht installiert → Browser öffnen
+    // Fallback → Browser öffnen
     await Browser.open({ url: webFallback });
+
   } else {
-    // Web-Version → normaler Link im Browser
-    window.open(webFallback, "_blank");
+    // Web-Version
+    window.open(webFallback, '_blank');
   }
 };
+
 
 /* -----------------------------------------------------------
    StoreBox Component
