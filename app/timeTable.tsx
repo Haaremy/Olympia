@@ -15,7 +15,7 @@ const openPaypalNative = async () => {
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
   if (Capacitor.isNativePlatform()) {
-    let fallback = true;
+    const fallback = true;
 
     // Versuche die PayPal-App zu öffnen
     try {
