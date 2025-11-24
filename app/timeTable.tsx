@@ -31,7 +31,7 @@ const openPaypalNative = async () => {
     window.open(webFallback, "_blank");
   }
 };
-};
+
 /* -----------------------------------------------------------
    StoreBox Component
 ----------------------------------------------------------- */
