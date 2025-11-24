@@ -11,10 +11,26 @@ import { App } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 
 const openPaypalNative = async () => {
+  const nativeUrl = 'paypal://www.paypal.com/pools/c/9kkurTFl2b';
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
-  // Prüfen, ob die PayPal-App installiert ist
+  if (Capacitor.isNativePlatform()) {
+    // Prüfen, ob die PayPal-App installiert ist
+    const canOpen = await App.canOpenUrl({ url: nativeUrl });
+
+    if (canOpen.value) {
+      // PayPal-App öffnen
+      await App.openUrl({ url: nativeUrl });
+      return;
+    }
+
+    // Wenn App nicht installiert → Browser öffnen
     await Browser.open({ url: webFallback });
+  } else {
+    // Web-Version → normaler Link im Browser
+    window.open(webFallback, "_blank");
+  }
+};
 };
 /* -----------------------------------------------------------
    StoreBox Component
