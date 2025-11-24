@@ -15,27 +15,22 @@ const openPaypalNative = async () => {
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
   if (Capacitor.isNativePlatform()) {
-    const fallback = true;
-
-    // Versuche die PayPal-App zu öffnen
     try {
-      await Capacitor.openUrl({ url: nativeUrl });
-      
-      // Wenn App sich wirklich öffnet, wird die App in den Hintergrund gedrückt
-      // Wir setzen einen kurzen Timeout, um zu erkennen, dass NICHTS passiert ist.
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Versuche PayPal-App zu öffnen
+      await Capacitor.openURL(nativeUrl);
 
-      // Wenn die App erfolgreich geöffnet wurde, landet der Nutzer nicht mehr hier zurück.
-      // Wenn er aber zurückkommt → App nicht installiert.
+      // Wenn PayPal installiert ist, verlässt der Nutzer die App.
+      // Wenn nicht, wird danach Fallback ausgelöst.
+      await new Promise(resolve => setTimeout(resolve, 400));
     } catch (e) {
-      // Fehler → sofort Fallback
+      // Ignorieren → weiter zum Fallback
     }
 
-    // Fallback → Browser öffnen
+    // Fallback: Browser öffnen
     await Browser.open({ url: webFallback });
 
   } else {
-    // Web-Version
+    // Web: normaler Link
     window.open(webFallback, '_blank');
   }
 };
