@@ -14,9 +14,11 @@ const openPaypalNative = async () => {
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
   
-    // Web: normaler Link
+  if (Capacitor.isNativePlatform()) {
+    await Browser.open({ url: webFallback });
+  } else {
     window.open(webFallback, '_blank');
-  
+  }
 };
 
 
