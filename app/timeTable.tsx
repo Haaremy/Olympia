@@ -7,7 +7,25 @@ import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
 import { Button } from "@cooperateDesign";
 import { detectPlatform } from "./common/detectPlatform";
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
 
+const openPaypalNative = async () => {
+
+  const nativeUrl = 'paypal://www.paypal.com/pools/c/9kkurTFl2b';
+  const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
+
+  // Prüfen, ob die PayPal-App installiert ist
+  const canOpen = await App.canOpenUrl({ url: nativeUrl });
+
+  if (canOpen.value) {
+    // Native App öffnen
+    await App.openUrl({ url: nativeUrl });
+  } else {
+    // Fallback zum Browser
+    await Browser.open({ url: webFallback });
+  }
+};
 /* -----------------------------------------------------------
    StoreBox Component
 ----------------------------------------------------------- */
@@ -189,20 +207,15 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         </div>
          <div>
                <div className="flex flex-col">
-          <a
-            href="https://www.paypal.com/pools/c/9kkurTFl2b"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center"
-          >
-            <Image
-              src="/images/googlebadge.png"
-              alt="Spenden"
-              width={50}
-              height={20}
-              className="hover:scale-105 transition-transform"
-            />
-          </a>
+         <button onClick={openPaypalNative} className="inline-flex items-center">
+  <Image
+    src="/images/googlebadge.png"
+    alt="Spenden"
+    width={50}
+    height={20}
+    className="hover:scale-105 transition-transform"
+  />
+</button>
         </div>
          </div>
 
