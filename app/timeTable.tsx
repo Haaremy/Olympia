@@ -11,20 +11,10 @@ import { App } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 
 const openPaypalNative = async () => {
-
-  const nativeUrl = 'paypal://www.paypal.com/pools/c/9kkurTFl2b';
   const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
 
   // Prüfen, ob die PayPal-App installiert ist
-  const canOpen = await App.canOpenUrl({ url: nativeUrl });
-
-  if (canOpen.value) {
-    // Native App öffnen
-    await App.openUrl({ url: nativeUrl });
-  } else {
-    // Fallback zum Browser
     await Browser.open({ url: webFallback });
-  }
 };
 /* -----------------------------------------------------------
    StoreBox Component
