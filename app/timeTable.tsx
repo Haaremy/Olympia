@@ -187,6 +187,24 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             X
           </Button>
         </div>
+         <div>
+               <div className="flex flex-col">
+          <a
+            href="https://www.paypal.com/pools/c/9kkurTFl2b"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center"
+          >
+            <Image
+              src={badgeSrc}
+              alt="Spenden"
+              width={50}
+              height={20}
+              className="hover:scale-105 transition-transform"
+            />
+          </a>
+        </div>
+         </div>
 
         <div className="overflow-y-auto max-h-[40vh] pr-2">
           <table className="mt-4 table-auto w-full text-left">
