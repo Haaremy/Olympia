@@ -196,7 +196,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             className="inline-flex items-center"
           >
             <Image
-              src={badgeSrc}
+              src="/images/googlebadge.png"
               alt="Spenden"
               width={50}
               height={20}
