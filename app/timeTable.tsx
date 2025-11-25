@@ -205,10 +205,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                <div className="flex flex-col">
          <button onClick={openPaypalNative} className="inline-flex items-center">
   <Image
-    src="/images/googlebadge.png"
+    src="/images/paypalbadge.png"
     alt="Spenden"
-    width={50}
-    height={20}
+    width={150}
+    height={60}
     className="hover:scale-105 transition-transform"
   />
 </button>
