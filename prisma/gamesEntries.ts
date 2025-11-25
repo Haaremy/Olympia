@@ -71,22 +71,23 @@ const game3 = await prisma.game.create({
       create: [
         {
           language: 'de',
-          title: 'Traumblasen',
-          story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Auch unsere Träume sieht er und kann damit die Wünsche der Kinder erkennen.',
+          title: 'Computerfehler',
+          story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Alles wird auf seinem Computer gespeichert.',
           station: 'Erdgeschoss - Raum 110',
           capacity: '1 Team',
-          descriptionGame: 'In einem Behälter sind 100 Bällebad-Bälle. Jeder Ball repräsentiert den Traum eines Kindes. Wurde ein Traum dokumentiert, wird dieser nummeriert und eingelagert. Vier der Träume sind leider wieder hineingefallen.',
-          descriptionPoints: 'Findet die vier Bälle und tragt deren Nummerierung in das entsprechende Feld (1 - 4) ein. Verstecke sie anschließend im Behälter für andere Teams.'
+          descriptionGame: 'Auf dem Tisch liegen vier Suchrätsel. In jedem Suchrätsel werden Wörter vorgegeben, die ihr finden müsst. Eines der Wörter ist jedoch nicht im Buchstabensalat zu finden.',
+          descriptionPoints: 'Sucht nach dem Wort, was nicht im Buchstabensalat zu finden ist und tragt dessen Lösungszahl in das entsprechende #Feld ein.'
         },
         {
-          language: 'en',
-          title: 'Dream Bubbles',
-          story: 'Santa Claus sees, hears, and knows everything. Always, and in everything we do, he records whether we have been good or bad. Playing, laughing, and arguing by day and by night. He also sees our dreams and can recognize the wishes of children through them.',
-          station: 'Ground Floor - Room 110',
-          capacity: '1 Team',
-          descriptionGame: 'Inside a container are 100 ball-pit balls. Each ball represents the dream of a child. Once a dream has been documented, it is numbered and stored. Unfortunately, four of the dreams have fallen back inside.',
-          descriptionPoints: 'Find the four balls and enter their numbers in the corresponding fields (1 - 4). Hide it in the container for other teams afterwards.'
+          language: "en",
+          title: "Computer Error",
+          story: "Santa Claus sees, hears, and knows everything. All the time and for everything we do, he records whether we have been good or bad. Playing, laughing, and arguing day and night. Everything is stored on his computer.",
+          station: "Ground Floor - Room 110",
+          capacity: "1 Team",
+          descriptionGame: "On the table are four word search puzzles. In each puzzle, words are given that you must find. However, one of the words cannot be found in the word search.",
+          descriptionPoints: "Find the word that cannot be found in the word search and enter its solution number in the corresponding #field."
         }
+
       ]
     }
   }

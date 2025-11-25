@@ -7,6 +7,20 @@ import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
 import { Button } from "@cooperateDesign";
 import { detectPlatform } from "./common/detectPlatform";
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
+
+const openPaypalNative = async () => {
+  const webFallback = 'https://www.paypal.com/pools/c/9kkurTFl2b';
+
+  
+  if (Capacitor.isNativePlatform()) {
+    await Browser.open({ url: webFallback });
+  } else {
+    window.open(webFallback, '_blank');
+  }
+};
+
 
 /* -----------------------------------------------------------
    StoreBox Component
@@ -187,6 +201,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             X
           </Button>
         </div>
+         <div>
+               <div className="flex flex-col">
+         <button onClick={openPaypalNative} className="inline-flex items-center">
+  <Image
+    src="/images/googlebadge.png"
+    alt="Spenden"
+    width={50}
+    height={20}
+    className="hover:scale-105 transition-transform"
+  />
+</button>
+        </div>
+         </div>
 
         <div className="overflow-y-auto max-h-[40vh] pr-2">
           <table className="mt-4 table-auto w-full text-left">
