@@ -2,9 +2,33 @@
 import Link from "next/link";
 import { useTranslation } from 'next-i18next';
 import '../lib/i18n'
+import { Capacitor } from "@capacitor/core";
+import { Browser } from "@capacitor/browser";
+import { Button } from "@/cooperateDesign";
 
 export default function Footer() {
   const { t } = useTranslation();  // Hook innerhalb der Komponente verwenden
+
+  const openWebNative = async (url : string) => {
+  const webFallback = url;
+
+  
+  if (Capacitor.isNativePlatform()) {
+    try {
+      await Browser.open({
+        url: webFallback,
+        presentationStyle: 'popover' // optional
+      });
+    } catch (err) {
+      console.error('Cannot open native browser:', err);
+    }
+  } 
+  
+  // Web-Fallback (Browser)
+  else {
+    window.open(webFallback, '_blank');
+  }
+};
 
   return (
     <footer className={`
@@ -29,12 +53,16 @@ export default function Footer() {
         <div className="sm:hidden" />
         <div className="inline-flex">
           {/* Link 2 */}
-          <Link href="https://instagram.com/haaremy" className="flex items-center text-gray-800 dark:text-gray-200 mr-8 truedark:text-white">
+          <Button
+            onClick={() => openWebNative("https://www.instagram.com/haaremy/")}
+            className="flex items-center mr-8 text-gray-800 dark:text-gray-200"
+          >
             <p className="font-mono font-bold">
-              <span className="text-md font-semibold text-white-500 dark:text-white-400 truedark:text-white">{t("author")} </span>
-              <span className="text-lg font-semibold text-blue-400 dark:text-pink-500">@Haaremy  </span>
+              <span className="text-md font-semibold text-gray-500 dark:text-gray-400">{t("author")} </span>
+              <span className="text-lg font-semibold text-blue-400 dark:text-pink-500">@Haaremy</span>
             </p>
-          </Link>
+          </Button>
+
 
           {/* Link 2 */}
           <Link href="/credits" className="flex items-center text-gray-800 dark:text-gray-200 truedark:text-white">

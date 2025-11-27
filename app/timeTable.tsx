@@ -7,7 +7,6 @@ import Image from "next/image";
 import { Capacitor } from "@capacitor/core";
 import { Button } from "@cooperateDesign";
 import { detectPlatform } from "./common/detectPlatform";
-import { App } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 
 const openPaypalNative = async () => {
@@ -15,8 +14,18 @@ const openPaypalNative = async () => {
 
   
   if (Capacitor.isNativePlatform()) {
-    await Browser.open({ url: webFallback });
-  } else {
+    try {
+      await Browser.open({
+        url: webFallback,
+        presentationStyle: 'popover' // optional
+      });
+    } catch (err) {
+      console.error('Cannot open native browser:', err);
+    }
+  } 
+  
+  // Web-Fallback (Browser)
+  else {
     window.open(webFallback, '_blank');
   }
 };
@@ -43,7 +52,8 @@ const StoreBox: React.FC<StoreBoxProps> = ({ store, visible }) => {
   if (!visible) return null;
 
   
-  const lang = i18n.language.split("-")[0].toUpperCase();
+  const lang = i18n.language.toLocaleUpperCase();
+
   const badgeSrc = isAndroid
   ? "/images/googlebadge.png"
   : `/images/applebadge/${lang}/Download_on_App_Store/Black_lockup/SVG/logo.svg`;
@@ -157,7 +167,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     { time: "20:00", key: "tt-5", start: 20 * 60, end: 20 * 60 + 15 },
     { time: "21:00", key: "tt-2", start: 21 * 60, end: 21 * 60 + 30 },
     { time: "21:30", key: "tt-4", start: 21 * 60 + 30, end: 22 * 60 + 30 },
-    { time: "22:30", key: "tt-3", start: 22 * 60 + 30, end: 23 * 60 + 59 },
+    { time: "22:00", key: "tt-3", start: 22 * 60, end: 23 * 60 + 59 },
   ];
 
   const getEventClass = (ev: TimeEvent) => {

@@ -163,7 +163,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {(croppedImage || imageUrl) && (
           <div className="flex gap-3 mt-4">
-            {Capacitor.getPlatform() === 'android' && <ShareButton teamUname={teamUname}/>}
+            {Capacitor.isNativePlatform() && <ShareButton teamUname={teamUname}/>}
             <Button onClick={() => setShowModal(true)}>👀</Button>
           </div>
         )}
@@ -186,7 +186,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
             className="hidden"
           />
 
-          {Capacitor.getPlatform() === 'android' && (
+          {Capacitor.isNativePlatform() && (
                     <Button
                       className="mt-2"
                       onClick={handleTakePhoto}

@@ -28,16 +28,17 @@ export default function ShareButton({ teamUname }: ShareButtonProps) {
 
       // -----------------------------
 // 1️⃣ Canvas erstellen
-// -----------------------------
 const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-if (!ctx) return;
-console.log(teamUname);
 canvas.width = 1080;
 canvas.height = 1920;
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+
+if (!teamUname) teamUname = "";
+console.log(teamUname);
 
 // -----------------------------
-// 2️⃣ Farbverlauf-Hintergrund (blau → rot)
+// 2️⃣ Dynamischer Farbverlauf-Hintergrund
 // -----------------------------
 const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
 gradient.addColorStop(0, '#1E3A8A'); // Blau oben
@@ -46,38 +47,62 @@ ctx.fillStyle = gradient;
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 // -----------------------------
-// 3️⃣ Hintergrundbild unten drapieren
+// 3️⃣ Hintergrundbild unten drapieren (proportional, leicht transparent)
 // -----------------------------
-      if(!teamUname){teamUname=""};
 const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
 const bgWidth = canvas.width;
-const bgHeight = bgImage.height * (canvas.width / bgImage.width); // proportional skalieren
-const bgY = canvas.height - bgHeight - 0; // unten
+const bgHeight = bgImage.height * (canvas.width / bgImage.width);
+const bgY = canvas.height - bgHeight;
+ctx.globalAlpha = 0.7; // leicht transparent für coolen Look
 ctx.drawImage(bgImage, 0, bgY, bgWidth, bgHeight);
+ctx.globalAlpha = 1; // zurücksetzen
 
 // -----------------------------
-// 4️⃣ Text oben in Weiß
+// 4️⃣ Überschrift oben mit Shadow/Glow
 // -----------------------------
-ctx.font = '64px sans-serif';
-ctx.fillStyle = 'white';
+ctx.font = 'bold 80px "Helvetica Neue", sans-serif';
+ctx.fillStyle = '#FFFFFF';
 ctx.textAlign = 'center';
-ctx.fillText('Team Olympia', canvas.width / 2, 100);
+ctx.shadowColor = 'rgba(0,0,0,0.5)';
+ctx.shadowBlur = 10;
+ctx.fillText('Team Olympia', canvas.width / 2, 120);
+ctx.shadowBlur = 0; // Shadow zurücksetzen
 
 // -----------------------------
-// 5️⃣ Overlay-Bild (unten rechts oder unter Überschrift)
+// 5️⃣ Overlay-Bild (unten rechts, halbtransparent)
 // -----------------------------
 const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
-const overlayWidth = 100;
-const overlayHeight = 100;
-
-// Option A: unten rechts
+const overlayWidth = 120;
+const overlayHeight = 120;
+ctx.globalAlpha = 0.85; // leicht transparentes Overlay
 ctx.drawImage(
   overlay,
-  canvas.width - overlayWidth - 20,
-  canvas.height - overlayHeight - 20,
+  canvas.width - overlayWidth - 40,
+  canvas.height - overlayHeight - 40,
   overlayWidth,
   overlayHeight
 );
+ctx.globalAlpha = 1;
+
+// -----------------------------
+// 6️⃣ Optional: abgerundete Ecken
+// -----------------------------
+const radius = 40;
+ctx.globalCompositeOperation = 'destination-in';
+ctx.beginPath();
+ctx.moveTo(radius, 0);
+ctx.lineTo(canvas.width - radius, 0);
+ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+ctx.lineTo(canvas.width, canvas.height - radius);
+ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+ctx.lineTo(radius, canvas.height);
+ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+ctx.lineTo(0, radius);
+ctx.quadraticCurveTo(0, 0, radius, 0);
+ctx.closePath();
+ctx.fill();
+ctx.globalCompositeOperation = 'source-over';
+
 
 // Option B: unter Überschrift (auskommentieren, falls du A bevorzugst)
 // ctx.drawImage(
