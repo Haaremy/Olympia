@@ -253,7 +253,7 @@ const renderPlayerInput = (
           <div>
                Kontakt (Mail / WhatsApp / @Insta)
             <TextInput
-              ref={contactTRef}
+              ref={contactRef}
               placeholder={t("enterContact")}
               className="mt-2 rounded-xl"
             />
