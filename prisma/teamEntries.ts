@@ -27,24 +27,11 @@ export async function teamEntries() {
       uname: 'DUMMY',
       password: '$2b$10$9VGBYkvRY8TZwfCTVu6VSuAKlF3niGaY4fqYGVB0169k6Riiu7ZCW', // TEST
       role: 'USER',
-      name: 'DummyTeam#1',
-      user1: 'Testi',
-      user2: 'Bruder von Testi',
+      name: 'Helfer Elfen',
+      user1: 'Elfe 002',
+      user2: 'Elfe 12782111',
       pointsTotal: 0,
       cheatPoints: 0,
-    },
-  })
-
-await prisma.team.create({
-    data: {
-      uname: 'CHEAT',
-      password: '$2b$10$9VGBYkvRY8TZwfCTVu6VSuAKlF3niGaY4fqYGVB0169k6Riiu7ZCW', // TEST
-      role: 'USER',
-      name: 'Cheater',
-      user1: 'Cheating',
-      user2: 'Cheating even more',
-      pointsTotal: 0,
-      cheatPoints: 50,
     },
   })
 
