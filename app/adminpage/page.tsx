@@ -14,6 +14,7 @@ type SearchedTeam = {
   name: string;
   players: string[];
   cheatPoints: number;
+  contact: string;
   games: {
     id: number;
     title: string;
@@ -361,6 +362,14 @@ const getOffsetISO = (dtLocal: string): string => {
                 type="text"
                 ref={nameTRef}
                 defaultValue={searchedTeam.name}
+                
+              />
+              <div className="mb-4">
+              <label className="block font-semibold mb-1">Kontakt:</label>
+              <TextInput
+                type="text"
+                ref={nameTRef}
+                defaultValue={searchedTeam.contact}
                 
               />
 
