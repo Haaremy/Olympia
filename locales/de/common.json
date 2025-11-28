@@ -7,6 +7,8 @@
     "calender": "-Kalender",
     "password": "Passwort",
     "secret": "Geheim",
+    "contact": "Kontakt",
+    "enterContact": "Kontakt, falls ihr als Gewinner die Preisverleihung verpasst.",
     "registerSuccess": "Registrierung erfolgreich!",
     "postRegistrationS": "Du wirst nun eingeloggt. Nächster Schritt: editiere deine Team-Infos.",
     "registrationFail": "Registrierung fehlgeschlagen!",
