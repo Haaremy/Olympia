@@ -7,6 +7,8 @@
     "calender": "-Calender",
     "password": "Password",
     "secret": "Secret",
+        "contact": "Contact",
+    "enterContact": "Contact to reach out, if you won, but left already.",
     "registrationSuccess": "Registration successfull!",
     "postRegistrationS": "You'll be logged in. Next Step: edit your teams information.",
     "registrationFail": "Registration failed!",
