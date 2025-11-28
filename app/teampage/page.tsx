@@ -251,7 +251,7 @@ const renderPlayerInput = (
 
           </h1>
           <div>
-               Kontakt (Mail / WhatsApp / @Insta)
+            {t("contact")} (Mail / WhatsApp / @Insta)
             <TextInput
               ref={contactRef}
               placeholder={t("enterContact")}
