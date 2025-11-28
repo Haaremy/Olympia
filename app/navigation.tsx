@@ -279,8 +279,8 @@ export default function Navigation() {
       >
         <div
           className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${
-            isAndroid() ? "mt-6" : ""
-          } ${isIOS() || isIPhoneSimulator() || isNativeIOSSimulator() ? "mt-10" : ""} gap-4`}
+            Capacitor.getPlatform()==="android" ? "mt-6" : ""
+          } ${Capacitor.getPlatform()==="ios" ? "mt-10" : ""} gap-4`}
         >
           {/* Headline */}
           <div
