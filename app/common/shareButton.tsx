@@ -27,7 +27,7 @@ export default function ShareButton({ teamUname }: ShareButtonProps) {
         });
 
       // -----------------------------
-// 1️⃣ Canvas erstellen
+// 1 Canvas erstellen
 const canvas = document.createElement('canvas');
 canvas.width = 1080;
 canvas.height = 1920;
@@ -38,80 +38,48 @@ if (!teamUname) teamUname = "";
 console.log(teamUname);
 
 // -----------------------------
-// 2️⃣ Dynamischer Farbverlauf-Hintergrund
+// 2 Dynamischer Farbverlauf-Hintergrund (links -> rechts)
 // -----------------------------
-const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-gradient.addColorStop(0, '#1E3A8A'); // Blau oben
-gradient.addColorStop(1, '#DC2626'); // Rot unten
+const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+gradient.addColorStop(0, '#140079'); // Blau links
+gradient.addColorStop(1, '#E2001A'); // Rot rechts
 ctx.fillStyle = gradient;
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 // -----------------------------
-// 3️⃣ Hintergrundbild unten drapieren (proportional, leicht transparent)
+// 3 Team Bild (1:1, rund, unten rechts)
 // -----------------------------
-const bgImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
-const bgWidth = canvas.width;
-const bgHeight = bgImage.height * (canvas.width / bgImage.width);
-const bgY = canvas.height - bgHeight;
-ctx.globalAlpha = 0.7; // leicht transparent für coolen Look
-ctx.drawImage(bgImage, 0, bgY, bgWidth, bgHeight);
-ctx.globalAlpha = 1; // zurücksetzen
+const teamImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
 
-// -----------------------------
-// 4️⃣ Überschrift oben mit Shadow/Glow
-// -----------------------------
-ctx.font = 'bold 80px "Helvetica Neue", sans-serif';
-ctx.fillStyle = '#FFFFFF';
-ctx.textAlign = 'center';
-ctx.shadowColor = 'rgba(0,0,0,0.5)';
-ctx.shadowBlur = 10;
-ctx.fillText('Team Olympia', canvas.width / 2, 120);
-ctx.shadowBlur = 0; // Shadow zurücksetzen
+const overlaySize = 120;
 
-// -----------------------------
-// 5️⃣ Overlay-Bild (unten rechts, halbtransparent)
-// -----------------------------
-const overlay = await loadImage('https://olympia.haaremy.de/images/applogo.png');
-const overlayWidth = 120;
-const overlayHeight = 120;
-ctx.globalAlpha = 0.85; // leicht transparentes Overlay
-ctx.drawImage(
-  overlay,
-  canvas.width - overlayWidth - 40,
-  canvas.height - overlayHeight - 40,
-  overlayWidth,
-  overlayHeight
-);
-ctx.globalAlpha = 1;
+// Mittelpunkt aus dem neuen Paint-Bereich
+const cx = 560;
+const cy = 595;
 
-// -----------------------------
-// 6️⃣ Optional: abgerundete Ecken
-// -----------------------------
-const radius = 40;
-ctx.globalCompositeOperation = 'destination-in';
+// Startpunkt
+const posX = cx - overlaySize / 2;
+const posY = cy - overlaySize / 2;
+
+// Rundes Bild zeichnen
+ctx.save();
+ctx.globalAlpha = 0.85;
 ctx.beginPath();
-ctx.moveTo(radius, 0);
-ctx.lineTo(canvas.width - radius, 0);
-ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
-ctx.lineTo(canvas.width, canvas.height - radius);
-ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
-ctx.lineTo(radius, canvas.height);
-ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
-ctx.lineTo(0, radius);
-ctx.quadraticCurveTo(0, 0, radius, 0);
+ctx.arc(cx, cy, overlaySize / 2, 0, Math.PI * 2);
 ctx.closePath();
-ctx.fill();
-ctx.globalCompositeOperation = 'source-over';
+ctx.clip();
+
+ctx.drawImage(teamImage, posX, posY, overlaySize, overlaySize);
+ctx.restore();
 
 
-// Option B: unter Überschrift (auskommentieren, falls du A bevorzugst)
-// ctx.drawImage(
-//   overlay,
-//   canvas.width / 2 - overlayWidth / 2,
-//   120, // etwas unter die Überschrift
-//   overlayWidth,
-//   overlayHeight
-// );
+// -----------------------------
+// 4 Großes Overlay (Titelbild etc. 1920x1080)
+// -----------------------------
+const largeOverlay = await loadImage(`/images/share.png`);
+ctx.drawImage(largeOverlay, 0, 0, canvas.width, canvas.height);
+
+
 
       // -----------------------------
       // 5️⃣ Canvas zu Blob → Base64
