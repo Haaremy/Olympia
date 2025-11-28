@@ -29,8 +29,8 @@ export const isIPod = () => isIOS() && /iPod/.test(ua);
 export const isIpadOS = () =>
   typeof navigator !== "undefined" &&
   navigator.platform === "MacIntel" &&
-  typeof (navigator as any).maxTouchPoints === "number" &&
-  (navigator as any).maxTouchPoints > 1;
+  typeof navigator.maxTouchPoints === "number" &&
+  navigator.maxTouchPoints > 1;
 export const isIPad = () => isIOS() && (isIpadOS() || /iPad/.test(ua));
 
 /**
@@ -90,7 +90,7 @@ export const isIPhoneSimulator = () => {
   if (typeof navigator === "undefined") return false;
 
   const isMacIntel = navigator.platform === "MacIntel";
-  const hasTouch = (navigator as any).maxTouchPoints > 1;
+  const hasTouch = navigator.maxTouchPoints > 1;
 
   return isMacIntel && hasTouch && isIPhone();
 };

@@ -72,7 +72,7 @@ const game3 = await prisma.game.create({
         {
           language: 'de',
           title: 'Computerfehler',
-          story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Alles wird auf seinem Computer gespeichert.',
+          story: 'Der Weihnachtsmann sieht, hört und weiß alles. Immer und bei allem, was wir machen, dokumentiert er, ob wir gut oder böse waren. Spielen, Lachen und Streiten bei Tag und Nacht. Alles wird auf seinem Computer gespeichert, aber leider ist etwas beim Speichern schief gelaufen.',
           station: 'Erdgeschoss - Raum 110',
           capacity: '1 Team',
           descriptionGame: 'Auf dem Tisch liegen vier Suchrätsel. In jedem Suchrätsel werden Wörter vorgegeben, die ihr finden müsst. Eines der Wörter ist jedoch nicht im Buchstabensalat zu finden.',
@@ -81,7 +81,7 @@ const game3 = await prisma.game.create({
         {
           language: "en",
           title: "Computer Error",
-          story: "Santa Claus sees, hears, and knows everything. All the time and for everything we do, he records whether we have been good or bad. Playing, laughing, and arguing day and night. Everything is stored on his computer.",
+          story: "Santa Claus sees, hears, and knows everything. All the time and for everything we do, he records whether we have been good or bad. Playing, laughing, and arguing day and night. Everything is stored on his computer, but something went wrong duriong saving.",
           station: "Ground Floor - Room 110",
           capacity: "1 Team",
           descriptionGame: "On the table are four word search puzzles. In each puzzle, words are given that you must find. However, one of the words cannot be found in the word search.",
