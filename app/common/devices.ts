@@ -15,8 +15,8 @@ export const isWeb = () => !Capacitor.isNativePlatform();
 /**
  * OS detection
  */
-export const isIOS = () => /iPad|iPhone|iPod/.test(ua) || isIpadOS() || Capacitor.getPlatform()=="ios";
-export const isAndroid = () => /Android/.test(ua) || Capacitor.getPlatform() == "android";
+export const isIOS = () => Capacitor.getPlatform()==="ios";
+export const isAndroid = () => Capacitor.getPlatform() === "android";
 export const isMacOS = () => /Macintosh/.test(ua) && !isIOS();
 export const isWindows = () => /Windows/.test(ua);
 export const isLinux = () => /Linux/.test(ua);
