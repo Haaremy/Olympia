@@ -32,6 +32,7 @@ export async function teamEntries() {
       user2: 'Elfe 12782111',
       pointsTotal: 0,
       cheatPoints: 0,
+      contact: 'dummy@olympia.de',
     },
   })
 
