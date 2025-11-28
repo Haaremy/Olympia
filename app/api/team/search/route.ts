@@ -13,6 +13,7 @@ type SearchedTeam = {
     id: number;
     points: { slot: Slot; value: number }[];
   }[];
+  contact: string;
 };
 
 export async function GET(req: Request) {
@@ -92,6 +93,7 @@ const pointsArray = Object.values(slotPoints); // now it's {slot,value}[]
     players: playerNames,
     cheatPoints: foundTeam.cheatPoints ?? 0,
     pointsTotal: foundTeam.pointsTotal ?? 0,
+    contact: foundTeam.contact,
     games,
   };
 
