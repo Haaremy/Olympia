@@ -51,7 +51,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 // -----------------------------
 const teamImage = await loadImage(`https://olympia.haaremy.de/uploads/${teamUname.toLowerCase()}.jpg?t=${Date.now()}`);
 
-const overlaySize = 120;
+const overlaySize = 780;
 
 // Mittelpunkt aus dem neuen Paint-Bereich
 const cx = 560;
