@@ -48,6 +48,7 @@ model Team {
   language     String @default("de")
   cheatPoints Int
   chatMessages ChatMessage[]
+  contact String?
 }
 
 model Reports {
