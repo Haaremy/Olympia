@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         user2: data.user2, 
         user3: data.user3,
         user4: data.user4,
+        contact: data.contact,
       },
     });
 
