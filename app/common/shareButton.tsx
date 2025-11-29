@@ -4,11 +4,15 @@ import React, { useEffect } from 'react';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Button } from '@/cooperateDesign';
+import { useTranslation } from 'next-i18next';
+import '../lib/i18n'
 
 type ShareButtonProps = {
   teamUname?: string;
   teamName?: string;
 };
+
+
 
 // --------------------------
 // Word-Wrap Textbox
@@ -49,10 +53,12 @@ export function drawTextBox(
 
 export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
 
+  const { t } = useTranslation();
+
   // Schrift laden
   useEffect(() => {
     const loadFont = async () => {
-      const font = new FontFace("RubicBold", "url(/fonts/rubic/bold.ttf)");
+      const font = new FontFace("RubicBold", "url(/fonts/rubic/extrabold.ttf)");
       await font.load();
       document.fonts.add(font);
     };
@@ -125,18 +131,24 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
       // -----------------------------
       // 5 Texte (mit Word-Wrap)
       // -----------------------------
-      const title = "Festspiele am FB5";
-      const subtitle = "3. Weihnachtsolympiade";
-      const myTeam = "Mein Team:";
+      
+      
+
+      
       const insta = "@Instagram";
+      drawTextBox(ctx, insta, canvas.width / 4 - 200 , 30, 500, 50, "60px RubicBold");
 
-      drawTextBox(ctx, title, canvas.width / 2 - 400, 1450, 800, 60, "50px RubicBold");
-      drawTextBox(ctx, subtitle, canvas.width / 2 - 400, 1510, 800, 90, "80px RubicBold");
+      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 200, 1200, 400, 60, "80px RubicBold");
+      if(!teamName) teamName = "";
+      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 700, 90, "50px RubicBold");
+      
+      ctx.fillStyle = "#000000";
+      drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1450, 1100, 60, "60px RubicBold");
+      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1310, 800, 90, "80px RubicBold");
 
-      drawTextBox(ctx, myTeam, canvas.width / 4 - 200, 900, 400, 60, "50px RubicBold");
-      drawTextBox(ctx, teamUname, canvas.width / 4 - 200, 1000, 400, 90, "80px RubicBold");
+      
 
-      drawTextBox(ctx, insta, canvas.width * 2 / 5, 30, 500, 50, "40px RubicBold");
+     
 
       // -----------------------------
       // 6 Canvas → Blob → Base64
