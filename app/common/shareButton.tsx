@@ -179,9 +179,9 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
       // -----------------------------
       await Share.share({
         title: "Olympia @ HS Anhalt",
-        text: "Christmas regards from the faculty of Computer Science.",
+        text: t("shareText"),
         files: [file.uri],
-        dialogTitle: "Share with friends",
+        dialogTitle: t("shareDialogTitle"),
       });
 
     } catch (err) {
