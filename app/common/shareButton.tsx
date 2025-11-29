@@ -56,13 +56,18 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
 
   // Schrift laden
   useEffect(() => {
-    const loadFont = async () => {
-      const font = new FontFace("RubicBold", "url(/fonts/rubic/extrabold.ttf)");
-      await font.load();
-      document.fonts.add(font);
-    };
-    loadFont();
-  }, []);
+  const loadFont = async () => {
+    const font = new FontFace("RubicBold", "url(/fonts/rubic/extrabold.ttf)");
+    await font.load();
+    document.fonts.add(font);
+
+    // Wichtig: warten bis alle Fonts bereit sind!
+    await document.fonts.ready;
+
+    console.log("Font RubicBold ist bereit!");
+  };
+  loadFont();
+}, []);
 
   // ---------------------------------------------------------
   // SHARE BUTTON HANDLER
@@ -134,15 +139,15 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
     // ctx text posX, posY, maxWidth, lineHeight, font, color
       
       const insta = "Instagram: @hsanhalt @fb5.ins @haaremy";
-      drawTextBox(ctx, insta, 10 , 10, 750, 50, "40px RubicBold", "#FFFFFF");
+      drawTextBox(ctx, insta, 10 , 10, 900, 50, "30px RubicBold", "#FFFFFF"); //+150l -10px
 
-      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 150, 1000, 500, 60, "80px RubicBold", "#FFFFFF"); //-50x
+      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 150, 950, 500, 60, "700 60px RubicBold", "#FFFFFF"); // +50y -20px
       if(!teamName) teamName = "";
-      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1150, 400, 90, "50px RubicBold", "#FFFFFF"); //+50y
+      drawTextBox(ctx, teamName, canvas.width / 4 - 150, 1150, 400, 90, "700 50px RubicBold", "#FFFFFF"); 
       
       ctx.fillStyle = "#000000";
-      drawTextBox(ctx, t("shareTitle"), canvas.width / 2 - 300, 1650, 1080, 60, "70px RubicBold", "#000000"); //-100
-      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1800, 1080, 120, "80px RubicBold", "#000000"); //-100
+      drawTextBox(ctx, t("shareTitle"), canvas.width / 2 - 350, 1700, 1080, 60, "900 70px RubicBold", "#000000"); //+50y -50x
+      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 450, 1800, 1080, 120, "900 80px RubicBold", "#000000"); // -50x
 
       
 
