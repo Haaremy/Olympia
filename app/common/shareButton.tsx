@@ -24,7 +24,7 @@ export function drawTextBox(
   maxWidth: number,
   lineHeight: number,
   font: string,
-  color: string = "#fff"
+  color: string
 ) {
   ctx.font = font;
   ctx.fillStyle = color;
@@ -113,7 +113,6 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
       const posY = cy - overlaySize / 2;
 
       ctx.save();
-      ctx.globalAlpha = 0.85;
       ctx.beginPath();
       ctx.arc(cx, cy, overlaySize / 2, 0, Math.PI * 2);
       ctx.closePath();
@@ -132,18 +131,18 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
       // -----------------------------
       
       
-
+    // ctx text posX, posY, maxWidth, lineHeight, font, color
       
-      const insta = "@Instagram";
-      drawTextBox(ctx, insta, canvas.width / 4 - 200 , 30, 500, 50, "60px RubicBold");
+      const insta = "Instagram: @hsanhalt @fb5.ins @haaremy";
+      drawTextBox(ctx, insta, 0 , 10, 750, 50, "60px RubicBold", "#FFFFFF");
 
-      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 200, 1200, 400, 60, "80px RubicBold");
+      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 200, 1200, 400, 60, "80px RubicBold", "#FFFFFF");
       if(!teamName) teamName = "";
-      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 700, 90, "50px RubicBold");
+      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 300, 90, "50px RubicBold", "#FFFFFF");
       
       ctx.fillStyle = "#000000";
-      drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1450, 1100, 60, "60px RubicBold");
-      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1310, 800, 90, "80px RubicBold");
+      drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1450, 1100, 60, "70px RubicBold", "#000000");
+      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1700, 800, 120, "80px RubicBold", "#000000");
 
       
 

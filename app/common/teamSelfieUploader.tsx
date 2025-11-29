@@ -13,9 +13,10 @@ import { Button } from "@/cooperateDesign";
 
 type TeamSelfieUploaderProps = {
   teamUname?: string; // optional username for fetching server image
+  teamName?: string;
 };
 
-export default function TeamSelfieUploader({ teamUname }: TeamSelfieUploaderProps) {
+export default function TeamSelfieUploader({ teamUname, teamName }: TeamSelfieUploaderProps) {
   const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
   const [croppedImage, setCroppedImage] = useState<string | undefined>(undefined);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -163,7 +164,7 @@ const [imageUrl, setImageUrl] = useState<string | null>(null);
 
         {(croppedImage || imageUrl) && (
           <div className="flex gap-3 mt-4">
-            {Capacitor.isNativePlatform() && <ShareButton teamUname={teamUname}/>}
+            {Capacitor.isNativePlatform() && <ShareButton teamUname={teamUname} teamName={teamName ?? ""} />}
             <Button onClick={() => setShowModal(true)}>👀</Button>
           </div>
         )}

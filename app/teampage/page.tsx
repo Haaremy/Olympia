@@ -274,7 +274,7 @@ const renderPlayerInput = (
 </div>
 
 
-      <TeamSelfieUploader teamUname={session.user.uname}/>
+      <TeamSelfieUploader teamUname={session.user.uname} teamName={session.user.name}/>
 
 
 
