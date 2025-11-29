@@ -5,7 +5,6 @@ import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Button } from '@/cooperateDesign';
 import { useTranslation } from 'next-i18next';
-import '../lib/i18n'
 
 type ShareButtonProps = {
   teamUname?: string;
