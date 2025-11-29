@@ -134,15 +134,15 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
     // ctx text posX, posY, maxWidth, lineHeight, font, color
       
       const insta = "Instagram: @hsanhalt @fb5.ins @haaremy";
-      drawTextBox(ctx, insta, 0 , 10, 750, 50, "60px RubicBold", "#FFFFFF");
+      drawTextBox(ctx, insta, 10 , 10, 750, 50, "40px RubicBold", "#FFFFFF");
 
-      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 200, 1200, 400, 60, "80px RubicBold", "#FFFFFF");
+      drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 100, 1000, 400, 60, "80px RubicBold", "#FFFFFF");
       if(!teamName) teamName = "";
-      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 400, 90, "50px RubicBold", "#FFFFFF");
+      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1100, 400, 90, "50px RubicBold", "#FFFFFF");
       
       ctx.fillStyle = "#000000";
-      drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1450, 1100, 60, "70px RubicBold", "#000000");
-      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1700, 800, 120, "80px RubicBold", "#000000");
+      drawTextBox(ctx, t("shareTitle"), canvas.width / 2 - 300, 1750, 1080, 60, "70px RubicBold", "#000000");
+      drawTextBox(ctx, t("shareSubtitle"), canvas.width / 2 - 400, 1900, 1080, 120, "80px RubicBold", "#000000");
 
       
 
