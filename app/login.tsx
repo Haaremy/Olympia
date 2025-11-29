@@ -201,8 +201,11 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
               required
               autoCapitalize="off"
               autoCorrect="off"
+              maxLength={20}
             />
-
+             <p className="text-xs text-gray-500 mt-1">
+              {realname.length}/20 Zeichen
+            </p>
           </div>
           }
 

@@ -207,6 +207,7 @@ const renderPlayerInput = (
   <div className="flex-1">
     <label className="block text-gray-800 dark:text-white text-lg">{label}</label>
     {(fieldKey=="user3" && (player3 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2")  ? 
+    <div>
     <TextInput
       ref={ref}
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
@@ -215,7 +216,15 @@ const renderPlayerInput = (
         setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
       }
       className="mt-2 rounded-xl"
+      required
+      autoCapitalize="off"
+      autoCorrect="off"
+      maxLength={10}
     />
+     <p className="text-xs text-gray-500 mt-1">
+      {userData?.[fieldKey].length}/10 Zeichen
+    </p>
+    </div>
  : <Button className="w-full" onClick={(e) => {
     e.preventDefault();
     handlePlayer(fieldKey);
