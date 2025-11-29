@@ -138,7 +138,7 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
 
       drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 200, 1200, 400, 60, "80px RubicBold", "#FFFFFF");
       if(!teamName) teamName = "";
-      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 300, 90, "50px RubicBold", "#FFFFFF");
+      drawTextBox(ctx, teamName, canvas.width / 4 - 200, 1000, 400, 90, "50px RubicBold", "#FFFFFF");
       
       ctx.fillStyle = "#000000";
       drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1450, 1100, 60, "70px RubicBold", "#000000");
