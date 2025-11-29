@@ -369,7 +369,6 @@ const getOffsetISO = (dtLocal: string): string => {
               <label className="block font-semibold mb-1">Kontakt:</label>
               <TextInput
                 type="text"
-                ref={nameTRef}
                 defaultValue={searchedTeam.contact}
                 
               />
