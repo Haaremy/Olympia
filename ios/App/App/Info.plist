@@ -51,6 +51,8 @@
 	<string>Diese App benötigt Zugriff auf deine Fotobibliothek, um ein Teambild hochzuladen.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Diese App benötigt Zugriff auf deinen Standort, um deinen Standort im Geböude zu zeigen.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
