@@ -73,7 +73,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      customArchiveName = "Olympia"
+      customArchiveName = "App"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
