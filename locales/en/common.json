@@ -7,6 +7,8 @@
     "calender": "-Calender",
     "password": "Password",
     "secret": "Secret",
+        "contact": "Contact",
+    "enterContact": "Contact to reach out, if you won, but left already.",
     "registrationSuccess": "Registration successfull!",
     "postRegistrationS": "You'll be logged in. Next Step: edit your teams information.",
     "registrationFail": "Registration failed!",
@@ -60,6 +62,12 @@
     "loginForData": "Login for live data.",
     "returnToApp": "Return to App, to get more updates.",
     "statusInfos1": "Points - Timer - Start",
-    "statusInfos2": "Every information in your statusbar"
-  }
+    "statusInfos2": "Every information in your statusbar",
+    "shareTeam": "My Team:",
+    "shareTitle": "Festival at FB5",
+    "shareSubtitle": "3rd Christmas Olympics",
+    "shareInsta": "@Instagram HS Anhalt & Dpt. of Computerscience FB.INS",
+   "shareText": "Christmas greetings from my Olympic team and the Computer Science and Languages ​​Student Council at Anhalt University of Applied Sciences.",
+"shareDialogTitle": "Share with friends."
+}
   

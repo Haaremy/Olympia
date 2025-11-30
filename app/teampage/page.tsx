@@ -57,6 +57,7 @@ const [isAndroid, setIsAndroid] = useState(false);
   const user2Ref = useRef<HTMLInputElement>(null);
   const user3Ref = useRef<HTMLInputElement>(null);
   const user4Ref = useRef<HTMLInputElement>(null);
+  const contactRef = useRef<HTMLInputElement>(null);
 
   type playerKey = "user1" | "user2" | "user3" | "user4";
 
@@ -85,6 +86,7 @@ const [isAndroid, setIsAndroid] = useState(false);
         user2: user2Ref.current?.value,
         user3: user3Ref.current?.value,
         user4: user4Ref.current?.value,
+        contact: contactRef.current?.value,
         language: i18n.language,
       }),
     });
@@ -164,6 +166,7 @@ const theming = (theme: string) => {
         user2: response.team.players[1],
         user3: response.team.players[2],
         user4: response.team.players[3],
+        contact: response.team.contact,
       }); // setze nur das team-Objekt
       setWasInput({
         ...response.team,
@@ -204,6 +207,7 @@ const renderPlayerInput = (
   <div className="flex-1">
     <label className="block text-gray-800 dark:text-white text-lg">{label}</label>
     {(fieldKey=="user3" && (player3 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user4" && (player4 || userData?.[fieldKey] || wasInput?.[fieldKey])) || (fieldKey=="user1") || (fieldKey=="user2")  ? 
+    <div>
     <TextInput
       ref={ref}
       placeholder={`${t("enterPlayer")} ${index + 1}>`}
@@ -212,7 +216,15 @@ const renderPlayerInput = (
         setUserData((prev) => ({ ...prev, [fieldKey]: e.target.value }))
       }
       className="mt-2 rounded-xl"
+      required
+      autoCapitalize="off"
+      autoCorrect="off"
+      maxLength={10}
     />
+     <p className="text-xs text-gray-500 mt-1">
+      {userData?.[fieldKey].length}/10 Zeichen
+    </p>
+    </div>
  : <Button className="w-full" onClick={(e) => {
     e.preventDefault();
     handlePlayer(fieldKey);
@@ -247,6 +259,14 @@ const renderPlayerInput = (
             />
 
           </h1>
+          <div>
+            {t("contact")} (Mail / WhatsApp / @Insta)
+            <TextInput
+              ref={contactRef}
+              placeholder={t("enterContact")}
+              className="mt-2 rounded-xl"
+            />
+          </div>
 
          {/* Team-Mitglieder: Player 1 & 2 */}
 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -263,7 +283,7 @@ const renderPlayerInput = (
 </div>
 
 
-      <TeamSelfieUploader teamUname={session.user.uname}/>
+      <TeamSelfieUploader teamUname={session.user.uname} teamName={session.user.name}/>
 
 
 

@@ -17,7 +17,6 @@ import Chat from "./chat";
 import "../lib/i18n";
 import Link from "next/link";
 import ThemeSettings from "./common/themeSettings";
-import { isIOS, isAndroid, isIPhoneSimulator, isNativeIOSSimulator } from "./common/devices";
 
 export default function Navigation() {
   const [showLanguage, setShowLanguage] = useState(false);
@@ -26,8 +25,8 @@ export default function Navigation() {
   const [showChat, setShowChat] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [newChat, setNewChat] = useState(false);
-  //const [isAndroid, setIsAndroid] = useState(false);
-  //const [isIOS, setIsIOS] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   const { t, i18n } = useTranslation();
   const { data: session, status } = useSession();
@@ -35,10 +34,10 @@ export default function Navigation() {
   const currentPath = usePathname();
   const router = useRouter();
 
-  //useEffect(() => {
-    //setIsAndroid(Capacitor.getPlatform() === "android");
-    //setIsIOS(Capacitor.getPlatform() === "iOS");
-  //}, []);
+  useEffect(() => {
+    setIsAndroid(Capacitor.getPlatform() === "android");
+    setIsIOS(Capacitor.getPlatform() === "ios");
+  }, []);
 
   const handleLoginOpen = useCallback(() => {
     if (!session) setShowLogin(true);
@@ -279,8 +278,8 @@ export default function Navigation() {
       >
         <div
           className={`container mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 ${
-            isAndroid() ? "mt-6" : ""
-          } ${isIOS() || isIPhoneSimulator() || isNativeIOSSimulator() ? "mt-10" : ""} gap-4`}
+            isAndroid ? "mt-6" : ""
+          } ${isIOS ? "mt-10" : ""} gap-4`}
         >
           {/* Headline */}
           <div

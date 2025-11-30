@@ -21,10 +21,12 @@ export async function POST(req: Request) {
     const updatedTeam = await prisma.team.update({
       where: { uname: session.user.uname },
       data: {
+        name: data.name,
         user1: data.user1,
         user2: data.user2, 
         user3: data.user3,
         user4: data.user4,
+        contact: data.contact,
       },
     });
 

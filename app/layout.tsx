@@ -7,19 +7,14 @@ import Footer from "./footer";
 import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
 import { MusicProvider } from "./common/music";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+import localFont from "next/font/local";
+
+const rubicRegular = localFont({
+  src: "./fonts/rubic/regular.ttf",
+  variable: "--font-rubic-regular",
+  weight: "400",
 });
-import { Inter } from "next/font/google";
 
-
-const inter = Inter({ subsets: ["latin"] });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Olympia",
@@ -38,7 +33,7 @@ export default function RootLayout({
     <html lang="de" >
         
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased`}
+        className={` ${rubicRegular.className} antialiased`}
       >
               
           <SessionProvider>

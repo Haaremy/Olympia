@@ -54,9 +54,9 @@ export default function Footer() {
         <div className="inline-flex">
           {/* Link 2 */}
           <Button
+            variant="primary"
             onClick={() => openWebNative("https://www.instagram.com/haaremy/")}
-            className="flex items-center mr-8 text-gray-800 dark:text-gray-200"
-          >
+            className="bg-transparent hover:bg-transparent dark:bg-transparent truedark:bg-transparent border-0"          >
             <p className="font-mono font-bold">
               <span className="text-md font-semibold text-gray-500 dark:text-gray-400">{t("author")} </span>
               <span className="text-lg font-semibold text-blue-400 dark:text-pink-500">@Haaremy</span>
