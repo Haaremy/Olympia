@@ -9,7 +9,7 @@
     "secret": "Geheim",
     "contact": "Kontakt",
     "enterContact": "Kontakt, falls ihr als Gewinner die Preisverleihung verpasst.",
-    "registerSuccess": "Registrierung erfolgreich!",
+    "registrationSuccess": "Registrierung erfolgreich!",
     "postRegistrationS": "Du wirst nun eingeloggt. Nächster Schritt: editiere deine Team-Infos.",
     "registrationFail": "Registrierung fehlgeschlagen!",
     "postRegistrationF": "Leider ist ein Problem aufgetreten. Versuche es erneut oder wende dich an einen Admin.",
