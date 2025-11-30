@@ -143,7 +143,7 @@ export default function ShareButton({ teamUname, teamName }: ShareButtonProps) {
 
       drawTextBox(ctx, t("shareTeam"), canvas.width / 4 - 150, 1050, 500, 60, "700 40px RubicBold", "#FFFFFF"); // +50y -20px
       if(!teamName) teamName = "";
-      drawTextBox(ctx, teamName, canvas.width / 4 - 150, 1150, 400, 90, "700 50px RubicBold", "#FFFFFF"); 
+      drawTextBox(ctx, teamName, canvas.width / 4 - 150, 1125, 400, 70, "700 50px RubicBold", "#FFFFFF"); 
       
       ctx.textAlign = "center";
       drawTextBox(ctx, t("shareTitle"), canvas.width / 2, 1700, 1080, 60, "900 70px RubicBold", "#000000"); //+50y -50x
