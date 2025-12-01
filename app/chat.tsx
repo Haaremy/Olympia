@@ -70,7 +70,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     socket.on("chat message", update);
     fetchMessages();
 
-    return () => socket.off("chat message", update);
+    return () => {
+  socket.off("chat message", update);
+};
   }, []);
 
   useEffect(() => {
