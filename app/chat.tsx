@@ -1,6 +1,3 @@
-// Complete responsive, mobile-optimized Chat Modal component
-// --- Paste into your project ---
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -71,8 +68,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     fetchMessages();
 
     return () => {
-  socket.off("chat message", update);
-};
+      socket.off("chat message", update);
+    };
   }, []);
 
   useEffect(() => {
@@ -84,7 +81,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     setIsSending(true);
 
     const url = editing ? "/api/chat/edit" : "/api/chat/send";
-    const body = editing ? { chat: { ...contextMenuChat, message, edited: true } } : { message };
+    const body = editing
+      ? { chat: { ...contextMenuChat, message, edited: true } }
+      : { message };
 
     try {
       const res = await fetch(url, {
@@ -121,15 +120,17 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
       <div className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden rounded-none bg-white dark:bg-gray-900 shadow-xl md:rounded-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">
+            Live Chat
+          </h2>
 
-          {/* FIXED: Large, tappable close button for iOS */}
-          <button
+          {/* Close Button */}
+          <Button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-700 hover:bg-gray-200 active:scale-95 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             ×
-          </button>
+          </Button>
         </div>
 
         {/* Messages */}
@@ -150,13 +151,16 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     className="mr-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src =
+                        "/images/teamplaceholder.png";
                     }}
                   />
                 )}
 
-                <button
-                  onClick={() => session?.user?.role === "ADMIN" && handleEditStart(chat)}
+                <Button
+                  onClick={() =>
+                    session?.user?.role === "ADMIN" && handleEditStart(chat)
+                  }
                   className={`max-w-[80%] break-words rounded-2xl px-4 py-2 shadow-md text-left ${
                     own
                       ? "bg-pink-500 text-white rounded-br-none"
@@ -164,13 +168,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                   }`}
                 >
                   {!own && (
-                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">{chat.team.name}</div>
+                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">
+                      {chat.team.name}
+                    </div>
                   )}
                   <div>{chat.message}</div>
                   <div className="mt-1 text-[10px] opacity-70 text-right">
-                    {chat.edited && t("edited")} {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    {chat.edited && t("edited")}{" "}
+                    {new Date(chat.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </div>
-                </button>
+                </Button>
 
                 {own && (
                   <Image
@@ -181,7 +191,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     className="ml-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src =
+                        "/images/teamplaceholder.png";
                     }}
                   />
                 )}
@@ -202,7 +213,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           />
 
           {editing && (
-            <button
+            <Button
               onClick={() => {
                 setEditing(false);
                 setMessage("");
@@ -210,16 +221,16 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
               className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-lg dark:bg-gray-700"
             >
               ×
-            </button>
+            </Button>
           )}
 
           {session && (
-            <button
+            <Button
               onClick={sendMessage}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-pink-500 text-xl text-white active:scale-95"
             >
               ➤
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -228,69 +239,3 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 };
 
 export default Modal;
-
-import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
-
-interface ChatModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // Close on outside click
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        onClose();
-      }
-    }
-    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div
-        ref={modalRef}
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 relative animate-fade-in"
-      >
-        {/* Improved X button (larger touch target for iOS) */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 p-3 rounded-full hover:bg-gray-100 active:scale-95 transition flex items-center justify-center"
-        >
-          <X className="w-6 h-6" />
-        </button>
-
-        <h2 className="text-2xl font-bold mb-4">Chat</h2>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            type="password"
-            className="w-full border rounded-lg p-3 text-base"
-            placeholder="Password"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Confirm Password</label>
-          <input
-            type="password"
-            className="w-full border rounded-lg p-3 text-base"
-            placeholder="Confirm Password"
-          />
-        </div>
-
-        <button className="w-full py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold active:scale-[0.97] transition">
-          Submit
-        </button>
-      </div>
-    </div>
-  );
-}
