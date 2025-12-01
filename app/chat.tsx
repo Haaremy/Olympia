@@ -88,7 +88,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
   // Keyboard handling for iOS/Android
   useEffect(() => {
   if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
-    // addListener liefert direkt ein Listener-Objekt mit remove()
+    // Keyboard Listener
     const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
       setKeyboardHeight(info.keyboardHeight);
     });
@@ -98,8 +98,8 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     });
 
     return () => {
-      showListener.remove();
-      hideListener.remove();
+      // Bei den neuen Versionen remove() existiert nicht
+      Keyboard.removeAllListeners();
     };
   }
 }, []);
