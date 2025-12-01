@@ -228,7 +228,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 };
 
 export default Modal;
-```tsx
+
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
@@ -294,4 +294,3 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
     </div>
   );
 }
-```
