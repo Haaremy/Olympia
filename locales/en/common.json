@@ -6,6 +6,9 @@
     "rank": "Rank",
     "calender": "-Calender",
     "password": "Password",
+    "password2": "Confirm Password",
+    "fillFields": "Please fill out all fields correctly.",
+    
     "secret": "Secret",
         "contact": "Contact",
     "enterContact": "Contact to reach out, if you won, but left already.",
