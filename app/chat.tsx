@@ -52,26 +52,36 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   // Fetch messages
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch("/api/chat/receive");
-        if (res.ok) {
-          const data: Chat[] = await res.json();
-          setHistory(data);
-        } else {
-          setError("Fehler beim Abrufen der Nachrichten.");
-        }
-      } catch (e) {
-        setError("Es gab ein Problem beim Abrufen der Nachrichten.");
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("/api/chat/receive");
+      if (res.ok) {
+        const data: Chat[] = await res.json();
+        setHistory(data);
+      } else {
+        setError("Fehler beim Abrufen der Nachrichten.");
       }
-    };
+    } catch (e) {
+      setError("Es gab ein Problem beim Abrufen der Nachrichten.");
+    }
+  };
 
-    const update = () => fetchMessages();
-    socket.on("chat message", update);
+  // Handler nur als Funktion definieren
+  const handleChatUpdate = () => {
     fetchMessages();
+  };
 
-    return () => socket.off("chat message", update);
-  }, []);
+  // Socket Event registrieren
+  socket.on("chat message", handleChatUpdate);
+
+  // Initial fetch
+  fetchMessages();
+
+  // Cleanup korrekt zurückgeben
+  return () => {
+    socket.off("chat message", handleChatUpdate);
+  };
+}, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
