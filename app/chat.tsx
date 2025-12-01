@@ -8,8 +8,7 @@ import { useTranslation } from "next-i18next";
 import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
 import { Capacitor } from "@capacitor/core";
-import { Keyboard, PluginListenerHandle } from "@capacitor/keyboard";
-
+import { Keyboard } from "@capacitor/keyboard";
 interface ModalProps {
   onClose: () => void;
 }
