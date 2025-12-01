@@ -6,6 +6,8 @@
     "rank": "Rang",
     "calender": "-Kalender",
     "password": "Passwort",
+    "password2": "Passwort Wiederholung",
+    "fillFields": "Bitte alle Felder korrekt ausfüllen",
     "secret": "Geheim",
     "contact": "Kontakt",
     "enterContact": "Kontakt, falls ihr als Gewinner die Preisverleihung verpasst.",
