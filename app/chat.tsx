@@ -51,24 +51,34 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   // Fetch chat messages
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch("/api/chat/receive");
-        if (res.ok) {
-          const data: Chat[] = await res.json();
-          setHistory(data);
-        }
-      } catch (e) {
-        console.error(e);
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("/api/chat/receive");
+      if (res.ok) {
+        const data: Chat[] = await res.json();
+        setHistory(data);
       }
-    };
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-    const update = () => fetchMessages();
-    socket.on("chat message", update);
+  // Handler für eingehende Nachrichten
+  const handleChatMessage = () => {
     fetchMessages();
+  };
 
-    return () => socket.off("chat message", update);
-  }, []);
+  // Subscribe
+  socket.on("chat message", handleChatMessage);
+
+  // Initial fetch
+  fetchMessages();
+
+  // Cleanup
+  return () => {
+    socket.off("chat message", handleChatMessage);
+  };
+}, []);
 
   // Scroll to bottom on new messages
   useEffect(() => {
