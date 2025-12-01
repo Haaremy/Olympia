@@ -71,7 +71,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   }
 
   if (password !== password2 || !username || !realname) {
-    alert("Bitte alle Felder korrekt ausfüllen.");
+    alert(t("fillFields"));
     return;
   }
 
@@ -224,7 +224,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           </div>
 
          { showRegister && <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">{t("password")} II</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">{t("password2")}</label>
             <TextInput
               type="password"
               placeholder="hoHoh0"
