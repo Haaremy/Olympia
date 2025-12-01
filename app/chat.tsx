@@ -35,11 +35,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [isSending, setIsSending] = useState(false);
   const [contextMenuChat, setContextMenuChat] = useState<Chat | null>(null);
   const [editing, setEditing] = useState(false);
-
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // iOS detection
-  const isIOS = Capacitor.getPlatform() === "ios";
+  const isMobile = Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android";
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   // Modal lifecycle
   useEffect(() => {
@@ -71,14 +70,26 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     socket.on("chat message", update);
     fetchMessages();
 
-    return () => {
-      socket.off("chat message", update);
-    };
+    return () => socket.off("chat message", update);
   }, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
+
+  // Keyboard offset for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const onResize = () => {
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+      const offset = Math.max(0, window.innerHeight - vh);
+      setKeyboardOffset(offset);
+    };
+
+    window.visualViewport?.addEventListener("resize", onResize);
+    return () => window.visualViewport?.removeEventListener("resize", onResize);
+  }, [isMobile]);
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -122,18 +133,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-0">
       <div className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden rounded-none bg-white dark:bg-gray-900 shadow-xl md:rounded-xl">
-        
         {/* Header */}
-        <div
-          className={`flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700 ${
-            isIOS ? "pt-6" : ""
-          }`}
-        >
-          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">
-            Live Chat
-          </h2>
-
-          {/* Close Button */}
+        <div className={`flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700 ${isMobile ? "pt-6" : ""}`}>
+          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
           <Button
             onClick={onClose}
             className="flex h-12 w-12 items-center justify-center rounded-full text-2xl text-gray-700 hover:bg-gray-200 active:scale-95 dark:text-gray-200 dark:hover:bg-gray-700"
@@ -147,10 +149,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           {history.map((chat, i) => {
             const own = chat.team.uname === session?.user?.uname;
             return (
-              <div
-                key={i}
-                className={`flex items-end ${own ? "justify-end" : "justify-start"}`}
-              >
+              <div key={i} className={`flex items-end ${own ? "justify-end" : "justify-start"}`}>
                 {!own && (
                   <Image
                     src={`/uploads/${chat.team.uname.toLowerCase()}.jpg`}
@@ -160,16 +159,13 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     className="mr-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src =
-                        "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
                     }}
                   />
                 )}
 
                 <Button
-                  onClick={() =>
-                    session?.user?.role === "ADMIN" && handleEditStart(chat)
-                  }
+                  onClick={() => session?.user?.role === "ADMIN" && handleEditStart(chat)}
                   className={`max-w-[80%] break-words rounded-2xl px-4 py-2 shadow-md text-left ${
                     own
                       ? "bg-pink-500 text-white rounded-br-none"
@@ -177,17 +173,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                   }`}
                 >
                   {!own && (
-                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">
-                      {chat.team.name}
-                    </div>
+                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">{chat.team.name}</div>
                   )}
                   <div>{chat.message}</div>
                   <div className="mt-1 text-[10px] opacity-70 text-right">
                     {chat.edited && t("edited")}{" "}
-                    {new Date(chat.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </Button>
 
@@ -200,8 +191,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     className="ml-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src =
-                        "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
                     }}
                   />
                 )}
@@ -213,9 +203,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
         {/* Footer/Input */}
         <div
-          className={`flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900 ${
-            isIOS ? "pb-6" : ""
-          }`}
+          style={{ marginBottom: keyboardOffset }}
+          className="flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900"
         >
           <textarea
             className="flex-grow max-h-28 min-h-12 resize-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900 shadow-sm outline-none focus:ring-2 focus:ring-pink-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
