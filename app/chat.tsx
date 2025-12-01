@@ -8,6 +8,7 @@ import { useTranslation } from "next-i18next";
 import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
 import { Capacitor } from "@capacitor/core";
+import { Keyboard } from "@capacitor/keyboard";
 
 interface ModalProps {
   onClose: () => void;
@@ -33,14 +34,13 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [history, setHistory] = useState<Chat[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
-  const [contextMenuChat, setContextMenuChat] = useState<Chat | null>(null);
+  const [contextChat, setContextChat] = useState<Chat | null>(null);
   const [editing, setEditing] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android";
-  const [keyboardOffset, setKeyboardOffset] = useState(0);
-
-  // Modal lifecycle
+  // Modal Lifecycle
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -50,64 +50,59 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
-  // Fetch messages
+  // Fetch & subscribe chat messages
   useEffect(() => {
-  const fetchMessages = async () => {
-    try {
-      const res = await fetch("/api/chat/receive");
-      if (res.ok) {
-        const data: Chat[] = await res.json();
-        setHistory(data);
-      } else {
-        setError("Fehler beim Abrufen der Nachrichten.");
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch("/api/chat/receive");
+        if (res.ok) {
+          const data: Chat[] = await res.json();
+          setHistory(data);
+        } else {
+          setError("Fehler beim Abrufen der Nachrichten.");
+        }
+      } catch (e) {
+        setError("Es gab ein Problem beim Abrufen der Nachrichten.");
       }
-    } catch (e) {
-      setError("Es gab ein Problem beim Abrufen der Nachrichten.");
-    }
-  };
+    };
 
-  // Handler nur als Funktion definieren
-  const handleChatUpdate = () => {
+    const handleChatUpdate = () => fetchMessages();
+    socket.on("chat message", handleChatUpdate);
     fetchMessages();
-  };
 
-  // Socket Event registrieren
-  socket.on("chat message", handleChatUpdate);
+    return () => {
+      socket.off("chat message", handleChatUpdate);
+    };
+  }, []);
 
-  // Initial fetch
-  fetchMessages();
-
-  // Cleanup korrekt zurückgeben
-  return () => {
-    socket.off("chat message", handleChatUpdate);
-  };
-}, []);
-
+  // Scroll to end
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
 
-  // Keyboard offset for mobile
+  // Keyboard events (iOS & Android)
   useEffect(() => {
-    if (!isMobile) return;
-
-    const onResize = () => {
-      const vh = window.visualViewport?.height ?? window.innerHeight;
-      const offset = Math.max(0, window.innerHeight - vh);
-      setKeyboardOffset(offset);
-    };
-
-    window.visualViewport?.addEventListener("resize", onResize);
-    return () => window.visualViewport?.removeEventListener("resize", onResize);
-  }, [isMobile]);
+    if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
+      const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+        setKeyboardHeight(info.keyboardHeight);
+      });
+      const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+        setKeyboardHeight(0);
+      });
+      return () => {
+        showListener.remove();
+        hideListener.remove();
+      };
+    }
+  }, []);
 
   const sendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || isSending) return;
     setIsSending(true);
 
     const url = editing ? "/api/chat/edit" : "/api/chat/send";
     const body = editing
-      ? { chat: { ...contextMenuChat, message, edited: true } }
+      ? { chat: { ...contextChat, message, edited: true } }
       : { message };
 
     try {
@@ -127,9 +122,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     }
   };
 
-  const handleEditStart = (chat: Chat) => {
+  const startEdit = (chat: Chat) => {
     setMessage(chat.message);
-    setContextMenuChat(chat);
+    setContextChat(chat);
     setEditing(true);
   };
 
@@ -144,11 +139,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-0">
       <div className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden rounded-none bg-white dark:bg-gray-900 shadow-xl md:rounded-xl">
         {/* Header */}
-        <div className={`flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700 ${isMobile ? "pt-6" : ""}`}>
+        <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700">
           <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+
           <Button
             onClick={onClose}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-2xl text-gray-700 hover:bg-gray-200 active:scale-95 dark:text-gray-200 dark:hover:bg-gray-700"
+            className="h-10 w-10 text-2xl flex items-center justify-center rounded-full"
           >
             ×
           </Button>
@@ -156,6 +152,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
         {/* Messages */}
         <div className="flex-grow space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-800">
+          {error && <div className="text-red-500">{error}</div>}
           {history.map((chat, i) => {
             const own = chat.team.uname === session?.user?.uname;
             return (
@@ -163,7 +160,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 {!own && (
                   <Image
                     src={`/uploads/${chat.team.uname.toLowerCase()}.jpg`}
-                    alt="avatar"
+                    alt={chat.team.name}
                     width={36}
                     height={36}
                     className="mr-2 h-9 w-9 rounded-full object-cover"
@@ -174,8 +171,8 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                   />
                 )}
 
-                <Button
-                  onClick={() => session?.user?.role === "ADMIN" && handleEditStart(chat)}
+                <button
+                  onClick={() => session?.user?.role === "ADMIN" && startEdit(chat)}
                   className={`max-w-[80%] break-words rounded-2xl px-4 py-2 shadow-md text-left ${
                     own
                       ? "bg-pink-500 text-white rounded-br-none"
@@ -190,7 +187,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                     {chat.edited && t("edited")}{" "}
                     {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
-                </Button>
+                </button>
 
                 {own && (
                   <Image
@@ -211,10 +208,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Footer/Input */}
+        {/* Input-Leiste (verschiebbar bei Tastatur) */}
         <div
-          style={{ marginBottom: keyboardOffset }}
           className="flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900"
+          style={{ marginBottom: keyboardHeight }}
         >
           <textarea
             className="flex-grow max-h-28 min-h-12 resize-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900 shadow-sm outline-none focus:ring-2 focus:ring-pink-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
@@ -230,17 +227,13 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
                 setEditing(false);
                 setMessage("");
               }}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 text-lg dark:bg-gray-700"
             >
               ×
             </Button>
           )}
 
           {session && (
-            <Button
-              onClick={sendMessage}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-500 text-xl text-white active:scale-95"
-            >
+            <Button onClick={sendMessage}>
               ➤
             </Button>
           )}
