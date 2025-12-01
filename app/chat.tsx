@@ -1,3 +1,6 @@
+// Complete responsive, mobile-optimized Chat Modal component
+// --- Paste into your project ---
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -32,9 +35,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   const [history, setHistory] = useState<Chat[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
-  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chat: Chat } | null>(null);
-  const [lastContextMenu, setLastContextMenu] = useState<Chat | undefined>(undefined);
-
+  const [contextMenuChat, setContextMenuChat] = useState<Chat | null>(null);
   const [editing, setEditing] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -51,243 +52,134 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
 
   // Fetch messages
   useEffect(() => {
-  const fetchMessages = async () => {
-    try {
-      const res = await fetch("/api/chat/receive");
-      if (res.ok) {
-        const data: Chat[] = await res.json();
-        setHistory(data);
-      } else {
-        setError("Fehler beim Abrufen der Nachrichten.");
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch("/api/chat/receive");
+        if (res.ok) {
+          const data: Chat[] = await res.json();
+          setHistory(data);
+        } else {
+          setError("Fehler beim Abrufen der Nachrichten.");
+        }
+      } catch (e) {
+        setError("Es gab ein Problem beim Abrufen der Nachrichten.");
       }
-    } catch (e) {
-      setError("Es gab ein Problem beim Abrufen der Nachrichten.");
-      console.error("Error fetching chat messages:", e);
-    }
-  };
+    };
 
-  // define a handler
-  const handleChatMessage = () => {
+    const update = () => fetchMessages();
+    socket.on("chat message", update);
     fetchMessages();
-  };
 
-  // subscribe
-  socket.on("chat message", handleChatMessage);
-
-  // initial fetch
-  fetchMessages();
-
-  // polling fallback
-  //const interval = setInterval(fetchMessages, 100000);
-
-  // cleanup
-  return () => {
-    //clearInterval(interval);
-    socket.off("chat message", handleChatMessage);
-  };
-}, []);
-
-
-  const scrollEnd = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSendEdit = async () => {
-    if(!lastContextMenu) return;
-    const chat = lastContextMenu;
-    chat.message = message;
-    chat.edited = true;
-    try {
-      const res = await fetch("/api/chat/edit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat }),
-      });
-      
-
-      if (res.ok) {
-        setMessage("");
-        socket.emit("chat message");
-      } else {
-        console.error("Error on Chat send");
-      }
-    } catch (e) {
-      console.error("Error on Chat:", e);
-    } finally {
-      setIsSending(false);
-    }
-  }
-
-
-  const handleSend = async () => {
-    if(editing){
-      handleSendEdit();
-      return;
-    }
-    if (!message.trim() || isSending) return;
-    setIsSending(true);
-
-    try {
-      const res = await fetch("/api/chat/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      
-
-      if (res.ok) {
-        setMessage("");
-        socket.emit("chat message");
-      } else {
-        console.error("Error on Chat send");
-      }
-    } catch (e) {
-      console.error("Error on Chat:", e);
-    } finally {
-      setIsSending(false);
-    }
-  };
+    return () => socket.off("chat message", update);
+  }, []);
 
   useEffect(() => {
-    if (history.length > 0) {
-      scrollEnd();
-    }
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length <= 100) {
-      setMessage(e.target.value);
+  const sendMessage = async () => {
+    if (!message.trim()) return;
+    setIsSending(true);
+
+    const url = editing ? "/api/chat/edit" : "/api/chat/send";
+    const body = editing ? { chat: { ...contextMenuChat, message, edited: true } } : { message };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        setMessage("");
+        setEditing(false);
+        socket.emit("chat message");
+      }
+    } finally {
+      setIsSending(false);
     }
   };
 
-  const openOptions = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
-  const target = e.currentTarget as HTMLElement;
-  const rect = target.getBoundingClientRect();
+  const handleEditStart = (chat: Chat) => {
+    setMessage(chat.message);
+    setContextMenuChat(chat);
+    setEditing(true);
+  };
 
-  setContextMenu({
-    x: rect.left,          // linke Kante der Message
-    y: rect.bottom + 4,    // knapp unter der Message
-    chat,
-  });
-
-  setLastContextMenu(chat);
-};
-
-const handleDelete = async () => {
-  if (!contextMenu) return;
-  const chat = contextMenu.chat;
-  try {
-    const res = await fetch(`/api/chat/delete?id=${chat.id}`, {
-  method: "DELETE",
-});
-    if (res.ok) {
+  const deleteMessage = async (chat: Chat) => {
+    try {
+      await fetch(`/api/chat/delete?id=${chat.id}`, { method: "DELETE" });
       socket.emit("chat message");
-      setContextMenu(null);
-    }
-  } catch (e) {
-    console.error("Error deleting chat message:", e);
-  } finally {
-    setContextMenu(null);
-  } 
-};
-
-const handleEdit = () => {
- if (!contextMenu) return;
-  const chat = contextMenu.chat;
-  setMessage(chat.message);
-  setEditing(true);
-}
-
-const handleCancel = () => {
-  setMessage("");
-  setEditing(false);
-}
-
-
-
-  const closeContextMenu = () => { if(contextMenu) {setContextMenu(null)}; };
+    } catch {}
+  };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50" >
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-0">
+      <div className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden rounded-none bg-white dark:bg-gray-900 shadow-xl md:rounded-xl">
         {/* Header */}
-        <div className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
-          <Button
+        <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+
+          {/* FIXED: Large, tappable close button for iOS */}
+          <button
             onClick={onClose}
-            aria-label="Close Chat"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-700 hover:bg-gray-200 active:scale-95 dark:text-gray-200 dark:hover:bg-gray-700"
           >
-            ✕
-          </Button>
+            ×
+          </button>
         </div>
 
-        {/* Nachrichten */}
-        <div className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800" onClick={closeContextMenu}>
-          {error && <div className="text-red-500">{error}</div>}
+        {/* Messages */}
+        <div className="flex-grow space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-800">
           {history.map((chat, i) => {
-            const isOwnMessage = chat?.team?.uname === session?.user?.uname;
+            const own = chat.team.uname === session?.user?.uname;
             return (
               <div
                 key={i}
-                className={`flex items-end mb-3 ${
-                  isOwnMessage ? "justify-end" : "justify-start"
-                }`}
-                onClick={(e) =>
-                  ( session?.user?.role === "ADMIN") && openOptions(chat, e) // isOwnMessage ||
-                }
+                className={`flex items-end ${own ? "justify-end" : "justify-start"}`}
               >
-
-                {/* Avatar */}
-                {!isOwnMessage && (
+                {!own && (
                   <Image
                     src={`/uploads/${chat.team.uname.toLowerCase()}.jpg`}
-                    alt={chat.team.name}
+                    alt="avatar"
                     width={36}
                     height={36}
-                    className="rounded-full object-cover bg-white shadow w-9 h-9 mr-2"
+                    className="mr-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      const target = e.currentTarget as HTMLImageElement;
-                      target.src = "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
                     }}
                   />
                 )}
 
-                <div
-                  className={`max-w-[50%] px-4 py-2 rounded-2xl shadow relative
-                    ${isOwnMessage
+                <button
+                  onClick={() => session?.user?.role === "ADMIN" && handleEditStart(chat)}
+                  className={`max-w-[80%] break-words rounded-2xl px-4 py-2 shadow-md text-left ${
+                    own
                       ? "bg-pink-500 text-white rounded-br-none"
-                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"} 
-                    break-words whitespace-normal`}
+                      : "bg-white text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-gray-100"
+                  }`}
                 >
-                  {!isOwnMessage && (
-                    <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1">
-                      {chat.team.name}
-                    </div>
+                  {!own && (
+                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">{chat.team.name}</div>
                   )}
                   <div>{chat.message}</div>
-                  <div className="text-[10px] opacity-70 mt-1 text-right">
-                    {chat.edited ? t("edited") : ""} {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  <div className="mt-1 text-[10px] opacity-70 text-right">
+                    {chat.edited && t("edited")} {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
-                </div>
+                </button>
 
-
-                {/* Avatar rechts für eigene Messages */}
-                {isOwnMessage && (
+                {own && (
                   <Image
-                    src={
-                      session
-                        ? `/uploads/${session.user.uname.toLowerCase()}.jpg`
-                        : "/images/teamplaceholder.png"
-                    }
-                    alt={session?.user?.uname || "user"}
+                    src={`/uploads/${session?.user?.uname.toLowerCase()}.jpg`}
+                    alt="avatar"
                     width={36}
                     height={36}
-                    className="rounded-full object-cover bg-white shadow w-9 h-9 ml-2"
+                    className="ml-2 h-9 w-9 rounded-full object-cover"
                     unoptimized
                     onError={(e) => {
-                      const target = e.currentTarget as HTMLImageElement;
-                      target.src = "/images/teamplaceholder.png";
+                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
                     }}
                   />
                 )}
@@ -297,60 +189,107 @@ const handleCancel = () => {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input-Leiste */}
-        <div className="sticky bottom-0 flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2">
+        {/* Footer input */}
+        <div className="flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
           <textarea
-            className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
+            className="flex-grow max-h-28 min-h-12 resize-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900 shadow-sm outline-none focus:ring-2 focus:ring-pink-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
             value={message}
             disabled={!session}
-            onChange={handleInputChange}
-            onInput={(e) => {
-              const target = e.currentTarget;
-              target.style.height = "auto";
-              target.style.height = target.scrollHeight + "px";
-            }}
-            maxLength={100}
+            onChange={(e) => setMessage(e.target.value.slice(0, 100))}
           />
 
-          {!!session && (
-            <div className="flex space-x-2">
-            { editing && 
-            <Button
-              onClick={handleCancel}
+          {editing && (
+            <button
+              onClick={() => {
+                setEditing(false);
+                setMessage("");
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-lg dark:bg-gray-700"
             >
-              X
-            </Button> 
-            }
-            <Button
-              onClick={handleSend}
-            >
-              ➤
-            </Button>
-            </div>
+              ×
+            </button>
           )}
 
-          {/* Counter */}
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
-            <span className={message.length === 100 ? "text-red-600" : ""}>
-              {message.length}/100
-            </span>
-          </div>
+          {session && (
+            <button
+              onClick={sendMessage}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-pink-500 text-xl text-white active:scale-95"
+            >
+              ➤
+            </button>
+          )}
         </div>
       </div>
-
-      {/* Kontextmenü */}
-      {contextMenu && (
-        <div
-          style={{ top: contextMenu.y, left: contextMenu.x }}
-          className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
-        >
-          <Button onClick={handleEdit}>✏️</Button>
-          <Button onClick={handleDelete}>🗑️</Button>
-        </div>
-      )}
     </div>
   );
 };
 
 export default Modal;
+```tsx
+import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
+
+interface ChatModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    }
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div
+        ref={modalRef}
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 relative animate-fade-in"
+      >
+        {/* Improved X button (larger touch target for iOS) */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 p-3 rounded-full hover:bg-gray-100 active:scale-95 transition flex items-center justify-center"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        <h2 className="text-2xl font-bold mb-4">Chat</h2>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Password</label>
+          <input
+            type="password"
+            className="w-full border rounded-lg p-3 text-base"
+            placeholder="Password"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Confirm Password</label>
+          <input
+            type="password"
+            className="w-full border rounded-lg p-3 text-base"
+            placeholder="Confirm Password"
+          />
+        </div>
+
+        <button className="w-full py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold active:scale-[0.97] transition">
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+}
+```
