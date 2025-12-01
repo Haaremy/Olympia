@@ -78,24 +78,21 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   // Keyboard handling for iOS/Android
   useEffect(() => {
-    if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
-      let showListener: PluginListenerHandle;
-      let hideListener: PluginListenerHandle;
+  if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
+    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+      setKeyboardHeight(info.keyboardHeight);
+    });
 
-      Keyboard.addListener("keyboardWillShow", (info) => {
-        setKeyboardHeight(info.keyboardHeight);
-      }).then((handle) => (showListener = handle));
+    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+      setKeyboardHeight(0);
+    });
 
-      Keyboard.addListener("keyboardWillHide", () => {
-        setKeyboardHeight(0);
-      }).then((handle) => (hideListener = handle));
-
-      return () => {
-        showListener?.remove?.();
-        hideListener?.remove?.();
-      };
-    }
-  }, []);
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }
+}, []);
 
   // Send message
   const sendMessage = async () => {
