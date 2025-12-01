@@ -8,7 +8,7 @@ import { useTranslation } from "next-i18next";
 import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
 import { Capacitor } from "@capacitor/core";
-import { Keyboard } from "@capacitor/keyboard";
+import { Keyboard, PluginListenerHandle } from "@capacitor/keyboard";
 
 interface ModalProps {
   onClose: () => void;
@@ -26,21 +26,21 @@ interface Chat {
   };
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose }) => {
+const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
   const { setIsModalOpen } = useUI();
   const { data: session } = useSession();
   const { t } = useTranslation();
+
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState<Chat[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
-  const [contextChat, setContextChat] = useState<Chat | null>(null);
   const [editing, setEditing] = useState(false);
+  const [contextChat, setContextChat] = useState<Chat | null>(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Modal Lifecycle
+  // Modal lifecycle
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
-  // Fetch & subscribe chat messages
+  // Fetch chat messages
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -58,44 +58,46 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         if (res.ok) {
           const data: Chat[] = await res.json();
           setHistory(data);
-        } else {
-          setError("Fehler beim Abrufen der Nachrichten.");
         }
       } catch (e) {
-        setError("Es gab ein Problem beim Abrufen der Nachrichten.");
+        console.error(e);
       }
     };
 
-    const handleChatUpdate = () => fetchMessages();
-    socket.on("chat message", handleChatUpdate);
+    const update = () => fetchMessages();
+    socket.on("chat message", update);
     fetchMessages();
 
-    return () => {
-      socket.off("chat message", handleChatUpdate);
-    };
+    return () => socket.off("chat message", update);
   }, []);
 
-  // Scroll to end
+  // Scroll to bottom on new messages
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
 
-  // Keyboard events (iOS & Android)
+  // Keyboard handling for iOS/Android
   useEffect(() => {
     if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
-      const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+      let showListener: PluginListenerHandle;
+      let hideListener: PluginListenerHandle;
+
+      Keyboard.addListener("keyboardWillShow", (info) => {
         setKeyboardHeight(info.keyboardHeight);
-      });
-      const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+      }).then((handle) => (showListener = handle));
+
+      Keyboard.addListener("keyboardWillHide", () => {
         setKeyboardHeight(0);
-      });
+      }).then((handle) => (hideListener = handle));
+
       return () => {
-        showListener.remove();
-        hideListener.remove();
+        showListener?.remove?.();
+        hideListener?.remove?.();
       };
     }
   }, []);
 
+  // Send message
   const sendMessage = async () => {
     if (!message.trim() || isSending) return;
     setIsSending(true);
@@ -111,10 +113,10 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-
       if (res.ok) {
         setMessage("");
         setEditing(false);
+        setContextChat(null);
         socket.emit("chat message");
       }
     } finally {
@@ -132,7 +134,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
     try {
       await fetch(`/api/chat/delete?id=${chat.id}`, { method: "DELETE" });
       socket.emit("chat message");
-    } catch {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -141,18 +145,16 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700">
           <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
-
           <Button
             onClick={onClose}
-            className="h-10 w-10 text-2xl flex items-center justify-center rounded-full"
+            className="h-10 w-10 flex items-center justify-center text-2xl"
           >
             ×
           </Button>
         </div>
 
-        {/* Messages */}
+        {/* Chat messages */}
         <div className="flex-grow space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-800">
-          {error && <div className="text-red-500">{error}</div>}
           {history.map((chat, i) => {
             const own = chat.team.uname === session?.user?.uname;
             return (
@@ -208,7 +210,7 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input-Leiste (verschiebbar bei Tastatur) */}
+        {/* Input area */}
         <div
           className="flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900"
           style={{ marginBottom: keyboardHeight }}
@@ -243,4 +245,4 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   );
 };
 
-export default Modal;
+export default ChatModal;
