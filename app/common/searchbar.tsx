@@ -65,11 +65,11 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
   // 3. Immer zum Top scrollen, zuverlässig
   //
   const handleFocus = () => {
-    setTimeout(() => {
-      window.scrollTo({ top: 0 });
-      inputRef.current?.scrollIntoView({ block: "start" });
-    }, 80);
-  };
+        setTimeout(() => {
+          inputRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 80);
+      };
 
   const keyboardOpen = keyboardHeight > 0;
 
@@ -83,7 +83,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
         transform: "translateX(-50%)",
         width: "85%",
         zIndex: 9999,
-
+        margin: "0",
         // The MAGIC:
         // iOS scrolls the *visual viewport*, so we add its offset
         bottom: keyboardHeight - viewportOffset + 10,
@@ -97,6 +97,9 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
         zIndex: 30,
       };
 
+      
+
+
   return (
     <div style={style}>
       <TextInput
@@ -108,7 +111,7 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         }}
         placeholder="Search..."
-        className="px-6 py-3 shadow-xl rounded-xl bg-white dark:bg-gray-700 w-full"
+        className="px-6 py-3 shadow-xl rounded-x w-full"
       />
 
     </div>
