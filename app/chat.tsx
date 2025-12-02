@@ -7,11 +7,8 @@ import { useUI } from "./context/UIContext";
 import { useTranslation } from "next-i18next";
 import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
-import type { PluginListenerHandle } from "@capacitor/core";
-
-
 
 interface ModalProps {
   onClose: () => void;
@@ -46,7 +43,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Modal Lifecycle
+  // --- Modal lifecycle ---
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -56,39 +53,38 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
-  // Fetch Messages
-  const fetchMessages = async () => {
-    try {
-      const res = await fetch("/api/chat/receive");
-      if (res.ok) {
-        const data: Chat[] = await res.json();
-        setHistory(data);
-      }
-    } catch (e) {
-      console.error("Error fetching chat messages:", e);
-    }
-  };
-
-  // Socket subscription
+  // --- Fetch initial messages + socket ---
   useEffect(() => {
-  const handleChatMessage = () => fetchMessages();
+    let isMounted = true;
 
-  socket.on("chat message", handleChatMessage);
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch("/api/chat/receive");
+        if (!res.ok) throw new Error("Fehler beim Laden der Nachrichten");
+        const data: Chat[] = await res.json();
+        if (isMounted) setHistory(data);
+      } catch (error) {
+        console.error("Error fetching chat messages:", error);
+      }
+    };
 
-  return () => {
-    socket.off("chat message", handleChatMessage); // Cleanup
-  };
-}, []);
+    fetchMessages();
 
+    const handleNewMessage = () => fetchMessages();
+    socket.on("chat message", handleNewMessage);
 
-  // Scroll to bottom
+    return () => {
+      isMounted = false;
+      socket.off("chat message", handleNewMessage);
+    };
+  }, []);
+
+  // --- Scroll to bottom ---
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
 
- 
-
-  // Keyboard Handling
+  // --- Keyboard handling ---
   useEffect(() => {
     if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
       let showSub: PluginListenerHandle | undefined;
@@ -101,8 +97,9 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
         hideSub = await Keyboard.addListener("keyboardWillHide", () => {
           setKeyboardHeight(0);
         });
-      }
+      };
       attach();
+
       const vv = window.visualViewport;
       const updateOffset = () => setViewportOffset(vv?.offsetTop || 0);
       vv?.addEventListener("scroll", updateOffset);
@@ -117,7 +114,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     }
   }, []);
 
-  // Input Handlers
+  // --- Input handlers ---
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= 100) setMessage(e.target.value);
   };
@@ -246,10 +243,10 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
         {/* Input */}
         <div
-          className="flex items-end p-3 border-t border-gray-200 dark:border-gray-700 truedark:boder-white bg-white dark:bg-gray-900 truedark:bg-black space-x-2"
+          className="flex items-end p-3 border-t border-gray-200 dark:border-gray-700 truedark:border-white bg-white dark:bg-gray-900 truedark:bg-black space-x-2"
           style={{
             position: "sticky",
-            bottom: keyboardHeight - viewportOffset + 10,
+            bottom: keyboardHeight - viewportOffset,
             zIndex: 20,
           }}
         >
