@@ -9,6 +9,10 @@ import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
 import { Capacitor } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
+import type { PluginListenerHandle } from "@capacitor/core";
+
+
+
 interface ModalProps {
   onClose: () => void;
 }
@@ -34,12 +38,15 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
   const [history, setHistory] = useState<Chat[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [contextChat, setContextChat] = useState<Chat | null>(null);
+  const [lastContextMenu, setLastContextMenu] = useState<Chat | undefined>(undefined);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; chat: Chat } | null>(null);
+
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [viewportOffset, setViewportOffset] = useState(0);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Modal lifecycle
+  // Modal Lifecycle
   useEffect(() => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -49,8 +56,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     };
   }, [setIsModalOpen]);
 
-  // Fetch chat messages
-  useEffect(() => {
+  // Fetch Messages
   const fetchMessages = async () => {
     try {
       const res = await fetch("/api/chat/receive");
@@ -59,59 +65,70 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
         setHistory(data);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Error fetching chat messages:", e);
     }
   };
 
-  // Handler für eingehende Nachrichten
-  const handleChatMessage = () => {
-    fetchMessages();
-  };
+  // Socket subscription
+  useEffect(() => {
+  const handleChatMessage = () => fetchMessages();
 
-  // Subscribe
   socket.on("chat message", handleChatMessage);
 
-  // Initial fetch
-  fetchMessages();
-
-  // Cleanup
   return () => {
-    socket.off("chat message", handleChatMessage);
+    socket.off("chat message", handleChatMessage); // Cleanup
   };
 }, []);
 
-  // Scroll to bottom on new messages
+
+  // Scroll to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
 
-  // Keyboard handling for iOS/Android
+ 
+
+  // Keyboard Handling
   useEffect(() => {
-  if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
-    // Keyboard Listener
-    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
-      setKeyboardHeight(info.keyboardHeight);
-    });
+    if (Capacitor.getPlatform() === "ios" || Capacitor.getPlatform() === "android") {
+      let showSub: PluginListenerHandle | undefined;
+      let hideSub: PluginListenerHandle | undefined;
 
-    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
-      setKeyboardHeight(0);
-    });
+      const attach = async () => {
+        showSub = await Keyboard.addListener("keyboardWillShow", (info) => {
+          setKeyboardHeight(info.keyboardHeight);
+        });
+        hideSub = await Keyboard.addListener("keyboardWillHide", () => {
+          setKeyboardHeight(0);
+        });
+      }
+      attach();
+      const vv = window.visualViewport;
+      const updateOffset = () => setViewportOffset(vv?.offsetTop || 0);
+      vv?.addEventListener("scroll", updateOffset);
+      vv?.addEventListener("resize", updateOffset);
 
-    return () => {
-      // Bei den neuen Versionen remove() existiert nicht
-      Keyboard.removeAllListeners();
-    };
-  }
-}, []);
+      return () => {
+        showSub?.remove?.();
+        hideSub?.remove?.();
+        vv?.removeEventListener("scroll", updateOffset);
+        vv?.removeEventListener("resize", updateOffset);
+      };
+    }
+  }, []);
 
-  // Send message
-  const sendMessage = async () => {
+  // Input Handlers
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length <= 100) setMessage(e.target.value);
+  };
+
+  const handleSend = async () => {
     if (!message.trim() || isSending) return;
     setIsSending(true);
 
-    const url = editing ? "/api/chat/edit" : "/api/chat/send";
-    const body = editing
-      ? { chat: { ...contextChat, message, edited: true } }
+    const url = editing && lastContextMenu ? "/api/chat/edit" : "/api/chat/send";
+    const body = editing && lastContextMenu
+      ? { chat: { ...lastContextMenu, message, edited: true } }
       : { message };
 
     try {
@@ -123,7 +140,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
       if (res.ok) {
         setMessage("");
         setEditing(false);
-        setContextChat(null);
+        setLastContextMenu(undefined);
         socket.emit("chat message");
       }
     } finally {
@@ -133,82 +150,93 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   const startEdit = (chat: Chat) => {
     setMessage(chat.message);
-    setContextChat(chat);
     setEditing(true);
+    setLastContextMenu(chat);
+    setContextMenu(null);
   };
 
-  const deleteMessage = async (chat: Chat) => {
+  const handleDelete = async () => {
+    if (!contextMenu) return;
     try {
-      await fetch(`/api/chat/delete?id=${chat.id}`, { method: "DELETE" });
+      await fetch(`/api/chat/delete?id=${contextMenu.chat.id}`, { method: "DELETE" });
       socket.emit("chat message");
     } catch (e) {
       console.error(e);
+    } finally {
+      setContextMenu(null);
     }
   };
 
+  const openOptions = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
+    const target = e.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    setContextMenu({ x: rect.left, y: rect.bottom + 4, chat });
+    setLastContextMenu(chat);
+  };
+
+  const closeContextMenu = () => setContextMenu(null);
+  const handleCancel = () => { setMessage(""); setEditing(false); };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-0">
-      <div className="flex h-[100dvh] w-full max-w-xl flex-col overflow-hidden rounded-none bg-white dark:bg-gray-900 shadow-xl md:rounded-xl">
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
-          <Button
-            onClick={onClose}
-            className="h-10 w-10 flex items-center justify-center text-2xl"
-          >
-            ×
-          </Button>
+        <div
+          className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700"
+          style={{ paddingTop: "env(safe-area-inset-top)" }}
+        >
+          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+          <Button onClick={onClose} aria-label="Close Chat">✕</Button>
         </div>
 
-        {/* Chat messages */}
-        <div className="flex-grow space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-800">
+        {/* Messages */}
+        <div
+          className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
+          onClick={closeContextMenu}
+        >
           {history.map((chat, i) => {
-            const own = chat.team.uname === session?.user?.uname;
+            const isOwn = chat.team.uname === session?.user?.uname;
             return (
-              <div key={i} className={`flex items-end ${own ? "justify-end" : "justify-start"}`}>
-                {!own && (
+              <div
+                key={i}
+                className={`flex items-end mb-3 ${isOwn ? "justify-end" : "justify-start"}`}
+                onClick={(session?.user?.role === "ADMIN") ? (e) => openOptions(chat, e) : undefined}
+              >
+                {!isOwn && (
                   <Image
                     src={`/uploads/${chat.team.uname.toLowerCase()}.jpg`}
                     alt={chat.team.name}
                     width={36}
                     height={36}
-                    className="mr-2 h-9 w-9 rounded-full object-cover"
+                    className="rounded-full object-cover bg-white shadow w-9 h-9 mr-2"
                     unoptimized
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
-                    }}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png"; }}
                   />
                 )}
 
-                <button
-                  onClick={() => session?.user?.role === "ADMIN" && startEdit(chat)}
-                  className={`max-w-[80%] break-words rounded-2xl px-4 py-2 shadow-md text-left ${
-                    own
-                      ? "bg-pink-500 text-white rounded-br-none"
-                      : "bg-white text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-gray-100"
-                  }`}
+                <div className={`max-w-[50%] px-4 py-2 rounded-2xl shadow relative
+                  ${isOwn ? "bg-pink-500 text-white rounded-br-none" : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"} break-words whitespace-normal`}
                 >
-                  {!own && (
-                    <div className="mb-1 text-xs font-semibold text-pink-600 dark:text-pink-400">{chat.team.name}</div>
+                  {!isOwn && (
+                    <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1">
+                      {chat.team.name}
+                    </div>
                   )}
                   <div>{chat.message}</div>
-                  <div className="mt-1 text-[10px] opacity-70 text-right">
-                    {chat.edited && t("edited")}{" "}
-                    {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  <div className="text-[10px] opacity-70 mt-1 text-right">
+                    {chat.edited ? t("edited") : ""} {new Date(chat.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
-                </button>
+                </div>
 
-                {own && (
+                {isOwn && (
                   <Image
                     src={`/uploads/${session?.user?.uname.toLowerCase()}.jpg`}
-                    alt="avatar"
+                    alt={session?.user?.uname || "user"}
                     width={36}
                     height={36}
-                    className="ml-2 h-9 w-9 rounded-full object-cover"
+                    className="rounded-full object-cover bg-white shadow w-9 h-9 ml-2"
                     unoptimized
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png";
-                    }}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png"; }}
                   />
                 )}
               </div>
@@ -217,37 +245,48 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input area */}
+        {/* Input */}
         <div
-          className="flex items-end gap-2 border-t border-gray-300 bg-white p-3 dark:border-gray-700 dark:bg-gray-900"
-          style={{ marginBottom: keyboardHeight }}
+          className="flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2"
+          style={{
+            position: "sticky",
+            bottom: keyboardHeight - viewportOffset,
+            zIndex: 20,
+          }}
         >
           <textarea
-            className="flex-grow max-h-28 min-h-12 resize-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900 shadow-sm outline-none focus:ring-2 focus:ring-pink-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+            className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
             placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
             value={message}
             disabled={!session}
-            onChange={(e) => setMessage(e.target.value.slice(0, 100))}
+            onChange={handleInputChange}
+            onInput={(e) => {
+              const target = e.currentTarget;
+              target.style.height = "auto";
+              target.style.height = target.scrollHeight + "px";
+            }}
+            maxLength={100}
           />
-
-          {editing && (
-            <Button
-              onClick={() => {
-                setEditing(false);
-                setMessage("");
-              }}
-            >
-              ×
-            </Button>
-          )}
-
-          {session && (
-            <Button onClick={sendMessage}>
-              ➤
-            </Button>
-          )}
+          <div className="flex space-x-2">
+            {editing && <Button onClick={handleCancel}>✕</Button>}
+            {!!session && <Button onClick={handleSend}>➤</Button>}
+          </div>
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2">
+            <span className={message.length === 100 ? "text-red-600" : ""}>{message.length}/100</span>
+          </div>
         </div>
       </div>
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+          className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
+        >
+          <Button onClick={() => startEdit(contextMenu.chat)}>✏️</Button>
+          <Button onClick={handleDelete}>🗑️</Button>
+        </div>
+      )}
     </div>
   );
 };
