@@ -1,5 +1,6 @@
-'use client';
+"use client";
 
+import React from "react";
 import { TextInput } from "@cooperateDesign";
 import clsx from "clsx";
 import { useKeyboardOffset } from "@/common/useKeyboardOffset";
@@ -24,9 +25,7 @@ export default function SearchBar({
       )}
       style={{
         bottom: keyboardVisible ? 0 : 20,
-        transform: keyboardVisible
-          ? `translateY(-${offset}px)`
-          : "translateY(0)",
+        transform: keyboardVisible ? `translateY(-${offset}px)` : "translateY(0)",
       }}
     >
       <TextInput
@@ -34,10 +33,8 @@ export default function SearchBar({
         value={searchQuery}
         onChange={(e) => {
           setSearchQuery(e.target.value);
-
-          setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }, 10);
+          // scroll to top but keep searchbar fixed
+          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
         }}
         className="px-6 py-3 shadow-xl rounded-xl bg-white dark:bg-gray-700"
       />
