@@ -1,60 +1,36 @@
-// app/common/useKeyboardOffset.ts
 import { useState, useEffect } from "react";
-import { Capacitor } from "@capacitor/core";
-import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
 
-// Typ für das Rückgabeobjekt von addListener
-type ListenerHandle = {
-  remove: () => void;
-};
-
-export function useKeyboardOffset() {
-  const [offset, setOffset] = useState(0);
+export function useKeyboardOffsetStable() {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
-    let showSub: ListenerHandle | null = null;
-    let hideSub: ListenerHandle | null = null;
-
-    // --- NATIVE CAPACITOR APP ---
-    if (Capacitor.isNativePlatform()) {
-      Keyboard.addListener("keyboardWillShow", (info: KeyboardInfo) => {
-        setOffset(info.keyboardHeight ?? 0);
-      }).then((sub) => (showSub = sub));
-
-      Keyboard.addListener("keyboardWillHide", () => {
-        setOffset(0); 
-      }).then((sub) => (hideSub = sub));
-
-      return () => {
-        showSub?.remove();
-        hideSub?.remove();
-      };
-    }
-
-    // --- BROWSER FALLBACK ---
-    const viewport = window.visualViewport;
-    if (!viewport) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
 
     const handler = () => {
-      const diff = window.innerHeight - viewport.height;
+      const viewportHeight = vv.height;
+      const layoutHeight = window.innerHeight;
 
-      if (diff > 150) {
-        setOffset(diff);
+      const diff = layoutHeight - viewportHeight;
+
+      if (diff > 80) {
+        // echte Tastaturhöhe
+        setKeyboardHeight(diff + (vv.offsetTop || 0));
       } else {
-        setOffset(0);
+        setKeyboardHeight(0);
       }
     };
 
-    viewport.addEventListener("resize", handler);
-    viewport.addEventListener("scroll", handler);
+    vv.addEventListener("resize", handler);
+    vv.addEventListener("scroll", handler);
 
     handler();
 
     return () => {
-      viewport.removeEventListener("resize", handler);
-      viewport.removeEventListener("scroll", handler);
+      vv.removeEventListener("resize", handler);
+      vv.removeEventListener("scroll", handler);
     };
   }, []);
 
-  return offset;
+  return keyboardHeight;
 }

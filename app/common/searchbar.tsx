@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { TextInput } from "@cooperateDesign";
 import clsx from "clsx";
-import { useKeyboardOffset } from "./useKeyboardOffset";
+import { useKeyboardOffsetStable } from "./useKeyboardOffset";
 
 type Props = {
   searchQuery: string;
@@ -16,52 +16,39 @@ export default function SearchBar({
   setSearchQuery,
   isModalOpen,
 }: Props) {
-  
-  const offset = useKeyboardOffset();
-  const keyboardVisible = offset > 0;
+  const keyboardHeight = useKeyboardOffsetStable();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // FIXED (Keyboard sichtbar)
-  const styleFixed: React.CSSProperties = {
+  const isKeyboardOpen = keyboardHeight > 0;
+
+  const style: React.CSSProperties = {
     position: "fixed",
     left: 0,
     right: 0,
     marginLeft: "auto",
     marginRight: "auto",
-    width: "85%", 
-    bottom: offset, 
-    zIndex: 9999,
-  };
-
-  // STICKY (normal)
-  const styleSticky: React.CSSProperties = {
-    position: "sticky",
-    left: 0,
-    right: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
     width: "85%",
-    bottom: 16,
-    zIndex: 20,
+    maxWidth: "420px",
+    bottom: isKeyboardOpen ? keyboardHeight : 16,
+    zIndex: 9999,
+    transition: "bottom 0.15s ease-out",
   };
 
   const handleFocus = () => {
-    // Automatisch an den oberen Rand scrollen
+    // iOS braucht minimalen Delay, sonst scrollt nichts
     setTimeout(() => {
       inputRef.current?.scrollIntoView({
         block: "start",
+        inline: "nearest",
         behavior: "smooth",
       });
-    }, 0);
+    }, 50);
   };
 
   return (
     <div
-      className={clsx(
-        isModalOpen && "hidden",
-        "transition-all duration-200"
-      )}
-      style={keyboardVisible ? styleFixed : styleSticky}
+      className={clsx(!isModalOpen && "block", isModalOpen && "hidden")}
+      style={style}
     >
       <TextInput
         ref={inputRef}
