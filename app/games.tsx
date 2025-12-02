@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
 import {Main, TextInput} from "@cooperateDesign";
 import clsx from "clsx";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/common/searchbar";
 
 type Game = {
   id: number;
