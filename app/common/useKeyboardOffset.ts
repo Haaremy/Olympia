@@ -7,26 +7,25 @@ export function useKeyboardOffset() {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    let showSub: any;
-    let hideSub: any;
+    // Typ für Listener, die .remove() haben
+    type ListenerHandle = { remove: () => void };
+
+    let showSub: ListenerHandle | undefined;
+    let hideSub: ListenerHandle | undefined;
 
     // --- NATIVE CAPACITOR APP ---
     if (Capacitor.isNativePlatform()) {
-      const initListeners = async () => {
-        showSub = await Keyboard.addListener("keyboardWillShow", (info) => {
-          setOffset(info.keyboardHeight ?? 0);
-        });
+      showSub = Keyboard.addListener("keyboardWillShow", (info) => {
+        setOffset(info.keyboardHeight ?? 0);
+      });
 
-        hideSub = await Keyboard.addListener("keyboardWillHide", () => {
-          setOffset(0);
-        });
-      };
-
-      initListeners();
+      hideSub = Keyboard.addListener("keyboardWillHide", () => {
+        setOffset(0);
+      });
 
       return () => {
-        showSub?.remove?.();
-        hideSub?.remove?.();
+        showSub?.remove();
+        hideSub?.remove();
       };
     }
 
