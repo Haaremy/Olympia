@@ -2,9 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { TextInput } from "@cooperateDesign";
-import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
-import type { PluginListenerHandle } from '@capacitor/core';
-
+import { Keyboard } from "@capacitor/keyboard";
+import type { PluginListenerHandle } from "@capacitor/core";
 
 type Props = {
   searchQuery: string;
@@ -13,21 +12,22 @@ type Props = {
 
 export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [viewportOffset, setViewportOffset] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  //
+  // 1. Native Keyboard Events (iOS & Android)
+  //
   useEffect(() => {
-    let showHandler: PluginListenerHandle;
-    let hideHandler: PluginListenerHandle;
+    let showSub: PluginListenerHandle | undefined;
+    let hideSub: PluginListenerHandle | undefined;
 
     const attach = async () => {
-      showHandler = await Keyboard.addListener(
-        "keyboardWillShow",
-        (info: KeyboardInfo) => {
-          setKeyboardHeight(info.keyboardHeight ?? 0);
-        }
-      );
+      showSub = await Keyboard.addListener("keyboardWillShow", (info) => {
+        setKeyboardHeight(info.keyboardHeight ?? 0);
+      });
 
-      hideHandler = await Keyboard.addListener("keyboardWillHide", () => {
+      hideSub = await Keyboard.addListener("keyboardWillHide", () => {
         setKeyboardHeight(0);
       });
     };
@@ -35,40 +35,70 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
     attach();
 
     return () => {
-      showHandler?.remove();
-      hideHandler?.remove();
+      showSub?.remove();
+      hideSub?.remove();
     };
   }, []);
 
-  const keyboardOpen = keyboardHeight > 0;
+  //
+  // 2. iOS: VisualViewport Offset (wichtig beim Scrollen)
+  //
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
 
+    const updateOffset = () => {
+      setViewportOffset(vv.offsetTop);
+    };
+
+    vv.addEventListener("resize", updateOffset);
+    vv.addEventListener("scroll", updateOffset);
+    updateOffset();
+
+    return () => {
+      vv.removeEventListener("resize", updateOffset);
+      vv.removeEventListener("scroll", updateOffset);
+    };
+  }, []);
+
+  //
+  // 3. Immer zum Top scrollen, zuverlässig
+  //
   const handleFocus = () => {
     setTimeout(() => {
       window.scrollTo({ top: 0 });
       inputRef.current?.scrollIntoView({ block: "start" });
-    }, 60);
+    }, 80);
   };
 
-  const stickyStyle: React.CSSProperties = {
-    position: "sticky",
-    bottom: 0,
-    paddingBottom: "env(safe-area-inset-bottom)",
-    width: "85%",
-    margin: "0 auto",
-    zIndex: 30,
-  };
+  const keyboardOpen = keyboardHeight > 0;
 
-  const fixedStyle: React.CSSProperties = {
-    position: "fixed",
-    left: "50%",
-    transform: "translateX(-50%)",
-    bottom: keyboardHeight,
-    width: "85%",
-    zIndex: 9999,
-  };
+  //
+  // 4. Exakte, geräteunabhängige Positionierung
+  //
+  const style: React.CSSProperties = keyboardOpen
+    ? {
+        position: "fixed",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "85%",
+        zIndex: 9999,
+
+        // The MAGIC:
+        // iOS scrolls the *visual viewport*, so we add its offset
+        bottom: keyboardHeight - viewportOffset,
+      }
+    : {
+        position: "sticky",
+        bottom: 0,
+        width: "85%",
+        margin: "0 auto",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        zIndex: 30,
+      };
 
   return (
-    <div style={keyboardOpen ? fixedStyle : stickyStyle}>
+    <div style={style}>
       <TextInput
         ref={inputRef}
         value={searchQuery}
