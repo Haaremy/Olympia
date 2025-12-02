@@ -10,6 +10,7 @@ import { Session } from "next-auth";
 import { Main } from "@cooperateDesign";
 import clsx from "clsx";
 import SearchBar from "./common/searchbar";
+import InfoBox from "./gameDetails";
 
 type TransformedLanguage = {
   content: string;
