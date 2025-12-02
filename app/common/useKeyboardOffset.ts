@@ -1,23 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export function useKeyboardOffsetStable() {
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
+export function useKeyboardOffset() {
+  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
 
     const handler = () => {
-      const viewportHeight = vv.height;
-      const layoutHeight = window.innerHeight;
-
-      const diff = layoutHeight - viewportHeight;
+      const diff = window.innerHeight - vv.height;
 
       if (diff > 80) {
-        // echte Tastaturhöhe
-        setKeyboardHeight(diff + (vv.offsetTop || 0));
+        // iOS benötigt offsetTop
+        setHeight(diff + vv.offsetTop);
       } else {
-        setKeyboardHeight(0);
+        setHeight(0);
       }
     };
 
@@ -32,5 +29,5 @@ export function useKeyboardOffsetStable() {
     };
   }, []);
 
-  return keyboardHeight;
+  return height;
 }

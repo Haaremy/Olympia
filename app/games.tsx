@@ -269,8 +269,12 @@ export default function GamesPage({
 
         {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={closeInfo} />}
       </div>
+      <div className="h-20" />  {/* Platzhalter für Sticky */}
+        <div id="searchbar-container">
+          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} isModalOpen={isModalOpen} />
+        </div>
 
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} isModalOpen={isModalOpen} />
+      
     </Main>
   );
 } 
