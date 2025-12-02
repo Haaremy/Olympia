@@ -1,27 +1,25 @@
 // app/common/useKeyboardOffset.ts
 import { useState, useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
-import { Keyboard } from "@capacitor/keyboard";
+import { Keyboard, PluginListenerHandle } from "@capacitor/keyboard";
 
 export function useKeyboardOffset() {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    // Typ für Listener, die .remove() haben
-    type ListenerHandle = { remove: () => void };
-
-    let showSub: ListenerHandle | undefined;
-    let hideSub: ListenerHandle | undefined;
+    let showSub: PluginListenerHandle | undefined;
+    let hideSub: PluginListenerHandle | undefined;
 
     // --- NATIVE CAPACITOR APP ---
     if (Capacitor.isNativePlatform()) {
-      showSub = Keyboard.addListener("keyboardWillShow", (info) => {
+      // async Listener setzen
+      Keyboard.addListener("keyboardWillShow", (info) => {
         setOffset(info.keyboardHeight ?? 0);
-      });
+      }).then((sub) => (showSub = sub));
 
-      hideSub = Keyboard.addListener("keyboardWillHide", () => {
+      Keyboard.addListener("keyboardWillHide", () => {
         setOffset(0);
-      });
+      }).then((sub) => (hideSub = sub));
 
       return () => {
         showSub?.remove();
