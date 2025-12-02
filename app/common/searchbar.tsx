@@ -3,7 +3,7 @@
 import React from "react";
 import { TextInput } from "@cooperateDesign";
 import clsx from "clsx";
-import { useKeyboardOffset } from "@/common/useKeyboardOffset";
+import { useKeyboardOffset } from "../useKeyboardOffset";
 
 export default function SearchBar({
   searchQuery,
