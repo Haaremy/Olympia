@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { Main } from "@cooperateDesign";
 import clsx from "clsx";
-import SearchBar from "../common/searchbar";
+import SearchBar from "./common/searchbar";
 
 type TransformedLanguage = {
   content: string;
