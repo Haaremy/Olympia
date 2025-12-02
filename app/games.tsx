@@ -273,4 +273,4 @@ export default function GamesPage({
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} isModalOpen={isModalOpen} />
     </Main>
   );
-}
+} 

@@ -22,7 +22,7 @@ export function useKeyboardOffset() {
       }).then((sub) => (showSub = sub));
 
       Keyboard.addListener("keyboardWillHide", () => {
-        setOffset(0);
+        setOffset(0); 
       }).then((sub) => (hideSub = sub));
 
       return () => {
