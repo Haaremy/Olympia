@@ -10,6 +10,53 @@ import { useSession } from "next-auth/react"; // Import der useSession Hook
 import { Session } from "next-auth";
 import {Main, TextInput} from "@cooperateDesign";
 import clsx from "clsx";
+import { useKeyboardOffset } from "@/common/useKeyboardOffset";
+
+export default function SearchBar({
+  searchQuery,
+  setSearchQuery,
+  isModalOpen,
+}: {
+  searchQuery: string;
+  setSearchQuery: (v: string) => void;
+  isModalOpen: boolean;
+}) {
+  const offset = useKeyboardOffset();
+  const keyboardVisible = offset > 0;
+
+  return (
+    <div
+      className={clsx(
+        isModalOpen ? "hidden" : "block",
+        "fixed left-1/2 -translate-x-1/2 z-[9999] w-[85%] sm:w-[50%] lg:w-[25%] max-w-md transition-all duration-150"
+      )}
+      style={{
+        // Standard: unten
+        bottom: keyboardVisible ? 0 : 20,
+
+        // wenn Taste offen → exakt über Keyboard
+        transform: keyboardVisible
+          ? `translateY(-${offset}px)`
+          : "translateY(0)",
+      }}
+    >
+      <TextInput
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+
+          // Screen nach oben scrollen,
+          // aber Searchbar bleibt fix!
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }, 10);
+        }}
+        className="px-6 py-3 shadow-xl rounded-xl bg-white dark:bg-gray-700"
+      />
+    </div>
+  );
+}
 
 type Game = {
   id: number;
@@ -303,23 +350,7 @@ useEffect(() => {
         {showInfo && selectedGame && <InfoBox message={selectedGame} onClose={handleInfoClose}  />}
         
       </div>
-      <TextInput
-        placeholder={t("searchGame")}
-        value={searchQuery}
-        onChange={(e) => {
-          setSearchQuery(e.target.value);
-          setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }, 10);
-        }}
-        className={clsx(
-          isModalOpen ? "hidden" : "block",
-          isScrolled
-            ? "mx-auto flex items-center justify-center relative"
-            : "fixed bottom-5",
-          "sm:fixed left-1/2 -translate-x-1/2 lg:-translate-x-3/10 lg:left-7/20 xl:left-1/2 xl:-translate-x-1/2 z-50 transform sm:top-15 sm:bottom-auto lg:top-4 w-[85%]  lg:w-[25%] sm:w-[50%] pl-6 pr-6 max-w-md transition"
-        )}
-      />
+   <SearchBar></SearchBar>
 
     </Main>
   );
