@@ -86,11 +86,11 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
 
         // The MAGIC:
         // iOS scrolls the *visual viewport*, so we add its offset
-        bottom: keyboardHeight - viewportOffset,
+        bottom: keyboardHeight - viewportOffset + 10,
       }
     : {
         position: "sticky",
-        bottom: 0,
+        bottom: 10,
         width: "85%",
         margin: "0 auto",
         paddingBottom: "env(safe-area-inset-bottom)",
@@ -103,10 +103,14 @@ export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
         ref={inputRef}
         value={searchQuery}
         onFocus={handleFocus}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }}
         placeholder="Search..."
         className="px-6 py-3 shadow-xl rounded-xl bg-white dark:bg-gray-700 w-full"
       />
+
     </div>
   );
 }

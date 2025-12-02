@@ -55,7 +55,7 @@ export default function GamesPage({
   games: Game[];
   searchQueryRef: string;
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const { isModalOpen } = useUI();
   const { data: session } = useSession();
   const team = session?.user as Session["user"] | undefined;
@@ -68,13 +68,6 @@ export default function GamesPage({
   const [selectedGame, setSelectedGame] = useState<GameData | null>(null);
   const [ending, setEnding] = useState<string>("");
   const [started, setStarted] = useState<boolean>(false);
-  const [hydrated, setHydrated] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Hydration flag
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   // Load settings & set language on mount / language change
   useEffect(() => {
@@ -187,18 +180,7 @@ export default function GamesPage({
     });
   }, [randomizedGames, searchQuery, language]);
 
-  // Scroll detection for UI tweaks
-  useEffect(() => {
-    if (!hydrated) return;
-    const onScroll = () => {
-      const remaining = document.body.scrollHeight - (window.scrollY + window.innerHeight);
-      setIsScrolled(remaining < 50);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [hydrated]);
-
+  
   const openInfo = (game: Game) => {
     const lang = game.languages[language];
     const data: GameData = {
