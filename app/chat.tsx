@@ -179,19 +179,18 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm z-50">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
+      <div className="bg-white dark:bg-gray-900 truedark:bg-black rounded-lg shadow-xl w-full max-w-3xl h-[100dvh] flex flex-col">
         {/* Header */}
         <div
-          className="flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700"
-          style={{ paddingTop: "env(safe-area-inset-top)" }}
+          className={`flex justify-between items-center py-4 px-6 border-b border-gray-200 dark:border-gray-700 truedark:border-white ${Capacitor.getPlatform() === "ios" ? "pt-20" : ""}`}
         >
-          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400">Live Chat</h2>
+          <h2 className="text-2xl font-bold text-pink-600 dark:text-pink-400 truedark:text-white">Live Chat</h2>
           <Button onClick={onClose} aria-label="Close Chat">✕</Button>
         </div>
 
         {/* Messages */}
         <div
-          className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
+          className="flex-grow p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 truedark:bg-black"
           onClick={closeContextMenu}
         >
           {history.map((chat, i) => {
@@ -236,7 +235,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
                     height={36}
                     className="rounded-full object-cover bg-white shadow w-9 h-9 ml-2"
                     unoptimized
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/teamplaceholder.png"; }}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/images/christmas_calender0.jpg"; }}
                   />
                 )}
               </div>
@@ -247,15 +246,15 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
         {/* Input */}
         <div
-          className="flex items-end p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-x-2"
+          className="flex items-end p-3 border-t border-gray-200 dark:border-gray-700 truedark:boder-white bg-white dark:bg-gray-900 truedark:bg-black space-x-2"
           style={{
             position: "sticky",
-            bottom: keyboardHeight - viewportOffset,
+            bottom: keyboardHeight - viewportOffset + 10,
             zIndex: 20,
           }}
         >
           <textarea
-            className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 px-4 py-3 shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 min-h-[48px] max-h-[120px] resize-none"
+            className="flex-grow rounded-xl border border-gray-300 dark:border-gray-600 truedark:border-white px-4 py-3 shadow-sm bg-white dark:bg-gray-700 truedark:bg-black focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-900 dark:text-gray-100 truedark:text-white min-h-[48px] max-h-[120px] resize-none"
             placeholder={session ? t("chatPlaceholder") : t("chatLogin")}
             value={message}
             disabled={!session}
@@ -281,7 +280,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
       {contextMenu && (
         <div
           style={{ top: contextMenu.y, left: contextMenu.x }}
-          className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-50"
+          className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 truedark:border-white truedark:bg-black rounded-md shadow-lg z-50"
         >
           <Button onClick={() => startEdit(contextMenu.chat)}>✏️</Button>
           <Button onClick={handleDelete}>🗑️</Button>
