@@ -1,65 +1,74 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextInput } from "@cooperateDesign";
-import { useKeyboardOffset } from "./useKeyboardOffset";
-import clsx from "clsx";
+import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
+import type { PluginListenerHandle } from '@capacitor/core';
+
 
 type Props = {
   searchQuery: string;
   setSearchQuery: (v: string) => void;
-  isModalOpen: boolean;
 };
 
-export default function SearchBar({ searchQuery, setSearchQuery, isModalOpen }: Props) {
-  const keyboardHeight = useKeyboardOffset();
-  const keyboardOpen = keyboardHeight > 0;
+export default function SearchBar({ searchQuery, setSearchQuery }: Props) {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  //
-  // MODE 1 — STICKY (Tastatur zu)
-  //
-  const stickyStyle: React.CSSProperties = {
-    position: "sticky",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "85%",
-    maxWidth: "420px",
-    zIndex: 20,
-  };
+  useEffect(() => {
+    let showHandler: PluginListenerHandle;
+    let hideHandler: PluginListenerHandle;
 
-  //
-  // MODE 2 — FIXED (Tastatur offen)
-  //
-  const fixedStyle: React.CSSProperties = {
-    position: "fixed",
-    left: 0,
-    right: 0,
-    margin: "0 auto",
-    width: "85%",
-    maxWidth: "420px",
-    bottom: keyboardHeight,
-    zIndex: 9999,
-  };
+    const attach = async () => {
+      showHandler = await Keyboard.addListener(
+        "keyboardWillShow",
+        (info: KeyboardInfo) => {
+          setKeyboardHeight(info.keyboardHeight ?? 0);
+        }
+      );
 
-  //
-  // Android & iOS → zuverlässig zum Top scrollen
-  //
+      hideHandler = await Keyboard.addListener("keyboardWillHide", () => {
+        setKeyboardHeight(0);
+      });
+    };
+
+    attach();
+
+    return () => {
+      showHandler?.remove();
+      hideHandler?.remove();
+    };
+  }, []);
+
+  const keyboardOpen = keyboardHeight > 0;
+
   const handleFocus = () => {
     setTimeout(() => {
       window.scrollTo({ top: 0 });
       inputRef.current?.scrollIntoView({ block: "start" });
-    }, 60); // iOS braucht Delay wegen Keyboard-Animation
+    }, 60);
+  };
+
+  const stickyStyle: React.CSSProperties = {
+    position: "sticky",
+    bottom: 0,
+    paddingBottom: "env(safe-area-inset-bottom)",
+    width: "85%",
+    margin: "0 auto",
+    zIndex: 30,
+  };
+
+  const fixedStyle: React.CSSProperties = {
+    position: "fixed",
+    left: "50%",
+    transform: "translateX(-50%)",
+    bottom: keyboardHeight,
+    width: "85%",
+    zIndex: 9999,
   };
 
   return (
-    <div
-      style={keyboardOpen ? fixedStyle : stickyStyle}
-      className={clsx(isModalOpen && "hidden")}
-    >
+    <div style={keyboardOpen ? fixedStyle : stickyStyle}>
       <TextInput
         ref={inputRef}
         value={searchQuery}
