@@ -9,7 +9,6 @@ import '../lib/i18n';
 import { useSession } from "next-auth/react"; 
 import { useUI } from './context/UIContext';
 import Login from "./login";
-import Link from 'next/link';
 import Report from "./report";
 import { Haptics, ImpactStyle} from '@capacitor/haptics';
 import { Capacitor } from '@capacitor/core';
@@ -336,8 +335,8 @@ const formatTime = (ms: number) => {
                   </summary>
                     {showMap && (
                         
-                    <MapSection
-                      title=""
+                    <MapSection 
+                      title={`${message.id < 10 ? "0" : ""}${message.id}`}
                       imageSrc={`/images/map_${message.station.includes("Erdgeschoss") || message.station.includes("Ground") || message.station.includes("INS") ? t('mapImageGR') : t('mapImage1st') }.jpg`}
                       games={message.station.includes("Erdgeschoss") || message.station.includes("Ground") || message.station.includes("INS") ? gamesEG : gamesOG}
                       searchQuery={`${message.id < 10 ? "0" : ""}${message.id}`} 

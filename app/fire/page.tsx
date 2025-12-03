@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Fire from "./Fire";
-import {Main} from "@cooperateDesign";
+import { Main } from "@cooperateDesign";
 
 type Settings = {
   started: boolean;
@@ -19,7 +19,6 @@ export default function FirePage() {
   const [fireOn, setFireOn] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  /** --- Utility Helpers --- */
   const formatLocalDateTime = (date: string | Date) => {
     const d = new Date(date);
     const pad = (n: number) => String(n).padStart(2, "0");
@@ -29,7 +28,6 @@ export default function FirePage() {
   };
   const toISO = (local: string) => new Date(local).toISOString();
 
-  /** --- Access Control & Settings Load --- */
   useEffect(() => {
     if (status === "loading") return;
 
@@ -37,7 +35,6 @@ export default function FirePage() {
       router.push("/");
       return;
     }
-
     if (session.user.role !== "ADMIN") {
       router.push(session.user.role === "USER" ? "/teampage" : "/");
       return;
@@ -46,7 +43,6 @@ export default function FirePage() {
     (async () => {
       try {
         const res = await fetch("/api/settings");
-        if (!res.ok) throw new Error("Failed to load settings");
         const data: Settings = await res.json();
         if (data.ending) setEnding(formatLocalDateTime(data.ending));
       } catch (err) {
@@ -55,21 +51,21 @@ export default function FirePage() {
         setLoading(false);
       }
     })();
-  }, [session, status, router]);
+  }, [status, session, router]);
 
-  /** --- Fire trigger --- */
   const igniteFire = async () => {
     if (!ending) return;
+
     try {
       const res = await fetch("/api/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ started: true, ending: toISO(ending) }),
       });
+
       if (!res.ok) throw new Error("Fehler beim Starten des Feuers");
       setFireOn(true);
     } catch (e) {
-      console.error(e);
       alert("Das Feuer konnte nicht entzündet werden.");
     }
   };
@@ -83,55 +79,67 @@ export default function FirePage() {
   }
 
   return (
-<Main
-  className=" justify-center overflow-hidden bg-center bg-no-repeat"
-  style={{ backgroundImage: "url('/images/building.jpg')",     backgroundSize: "contain",} }
+    <Main
+      className="
+        flex flex-col items-center justify-start pt-10 
+        bg-center bg-no-repeat overflow-hidden
+      "
+      style={{
+        backgroundImage: "url('/images/building/buildingnew3.png')",
+        backgroundSize: "cover", // WICHTIG: kein contain!
+      }}
+    >
+
+      {/* ---------- FIRE STAGE ---------- */}
+<div
+  className="
+    relative 
+    flex flex-col items-center justify-end
+    w-full 
+    max-w-[900px]
+    h-[65vh]
+    aspect-[3/2]
+    pb-10                /* Schale weiter nach unten */
+  "
 >
-  {/* Inhalt */}
-
-      
-{/* Header */}
-      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-center tracking-wide">
-        Olympisches Feuer
-      </h1>
-
-
-{/* Fire Area */}
-<div className="fixed flex flex-col items-center justify-end w-full bottom-20  scale-120">
-  {/* Animated Fire */}
+  {/* Flame — exakt über der Mitte der Schale */}
   {fireOn && (
-    <div className="absolute bottom-[370px] z-40 scale-300 right-1/2">
+    <div
+      className="
+        absolute 
+        z-40 
+        translate-x-[-50px]
+        bottom-[30%]       /* exakte Flammenhöhe relativ zur Schale */
+        scale-[300%]
+      "
+    >
       <Fire />
     </div>
   )}
 
-  {/* Firepit Image */}
+  {/* Firepit — korrekt zentriert */}
   <div
     onClick={igniteFire}
-    className="cursor-pointer transition-transform z-50"
+    className="cursor-pointer z-50 flex justify-center items-center translate-y-[200px] scale-150"
   >
     <Image
       alt="Firepit"
-      width={1000}
-      height={1000}
+      width={1500}
+      height={1500}
       src="/images/pit.png"
-      className="object-contain w-[600px] h-auto"
+      className="object-contain w-[50%] h-auto mx-auto"
       priority
     />
   </div>
+
+  {/* Glow */}
+  {fireOn && (
+    <div className="absolute inset-0 pointer-events-none flex justify-center items-center">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,200,255,0.2)_0%,transparent_70%)] animate-pulse blur-2xl" />
+    </div>
+  )}
 </div>
 
-
-
-
-      {/* Subtle glow overlay */}
-      {fireOn && (
-        <div className="absolute inset-0 pointer-events-none flex justify-center items-end">
-  {/* Blaue Lichtstrahlen */}
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,200,255,0.2)_0%,transparent_70%)] animate-pulse blur-2xl" />
-</div>
-
-      )}
     </Main>
   );
 }

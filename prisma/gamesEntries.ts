@@ -124,7 +124,7 @@ const game4 = await prisma.game.create({
 });
 
 
-const game5 = await prisma.game.create({
+const game5 = await prisma.game.create({ 
   data: {
     url: 'https://www.youtube.com/embed/8Gcw61fFrD4',
     
@@ -134,7 +134,7 @@ const game5 = await prisma.game.create({
           language: 'de',
           title: 'Verpackung',
           story: 'Der Geschenke Bondage-Kurs ist ein Modul an der Santa-Universität. Prüfungsleistung ist es, alle Geschenke in der Zeit mit einer Schleife zu versehen.',
-          station: 'Obergeschoss 1 - Raum 110',
+          station: 'Erdgeschoss 1 - Raum 110',
           capacity: '1 Team',
           descriptionGame: 'Jedes Mitglied sucht sich 1 Gegenstand aus. Ihr stoppt die Zeit für 30 Sekunden. Anschließend wird die Schleife wieder entfernt.',
           descriptionPoints: 'Jeder Spieler mit einer Schleife (die hält), trägt in sein #Feld eine 1 ein.'
@@ -404,7 +404,7 @@ const game14 = await prisma.game.create({
           language: 'de',
           title: 'Gutes Kind, böses Kind',
           story: 'In den Supermärkten und Einkaufszentren der Erde trifft man häufig auf die gesandten Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiß, hat er sich hin und wieder eine Auszeit verdient und braucht besonders in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten, und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
-          station: 'Obergeschoss 1 - Foyer',
+          station: 'Erdgeschoss 1 - Foyer',
           capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
           descriptionPoints: "In jeder Aussage ist eine Zahl enthalten. Tragt die Zahl der wahren Aussage in das entsprechende Feld ein."
@@ -523,7 +523,7 @@ const game18 = await prisma.game.create({
                     language: 'de',
                     title: 'Wunschlos?',
                     story: 'Der Weihnachtsmann erfüllt jedes Jahr Millionen von Wünschen. Doch, was passiert, wenn ein Kind keine Wünsche äußert? Es nichts träumt? Hat es schon alles, was es braucht? Eine Grundregel ist, dass jeder irgendetwas braucht – auch wenn es tief in einem verborgen liegt. Spielsachen, Geld oder einfach nur ein wenig Liebe?',
-                    station: 'Ergeschoss - Foyer',
+                    station: 'Erdgeschoss - Foyer',
                     capacity: 'Mehrere Teams',
                     descriptionGame: 'Auf dem Tisch liegen Malen-nach-Zahlen-Blätter. Sie zeigen versteckte Wünsche von Kindern, und das entstandene Bild wird mithilfe einer Bild-Zahlen-Tabelle in eine Lösungszahl umgewandelt.',
                     descriptionPoints: 'Tragt die Lösungszahl in das entsprechende Feld ein.'
@@ -584,7 +584,7 @@ const game20 = await prisma.game.create({
                     language: 'de',
                     title: 'Ladezone',
                     story: 'Kurz vor Weihnachten erreichten schlechte Nachrichten den Nordpol. Die Geschenke-Lieferungen sind bedroht, weil sich das Partnerunternehmen DB-Schenker aufgelöst hat. Jetzt müssen in letzter Sekunde alle Lieferungen nach Deutschland auf die traditionelle Art eingepackt und an die Kinder geliefert werden: mit dem Schlitten.',
-                    station: 'Erdgeschoss - Ostflügel Flur',
+                    station: 'Obergeschoss 1 - Ostflügel Flur',
                     capacity: '1 Team oder 2 Teams',
                     descriptionGame: 'Es werden (4 Spieler) 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
                     descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden.'
