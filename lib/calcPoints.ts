@@ -332,16 +332,16 @@ if (game == 8 || game == 13) {
   ////////////////////////////
   ////////////////////////////[2345, 4535, 3265, 4542]
     if (game==21){
-     if(field==1 && userPoints==2345){
+     if(field==1 && userPoints==45374){
       result=10;
     }
-    if(field==2 && userPoints==4535){
+    if(field==2 && userPoints==28992){
       result=10;
     }
-    if(field==3 && userPoints==3265){
+    if(field==3 && userPoints==12610){
       result=10;
     }
-    if(field==4 && userPoints==4542){
+    if(field==4 && userPoints==37720){
       result=10;
     }
   }
