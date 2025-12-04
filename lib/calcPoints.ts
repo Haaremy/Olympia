@@ -144,8 +144,8 @@ if (game == 8 || game == 13) {
     }
 
     if (game == 13) {
-        if (field == 1) check = 6;
-        if (field == 2) check = 10;
+        if (field == 1) check = 59871;
+        if (field == 2) check = ;
         if (field == 3) check = 9;
         if (field == 4) check = 7;
     }
