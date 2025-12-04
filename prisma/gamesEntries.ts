@@ -404,7 +404,7 @@ const game14 = await prisma.game.create({
           language: 'de',
           title: 'Gutes Kind, böses Kind',
           story: 'In den Supermärkten und Einkaufszentren der Erde trifft man häufig auf die gesandten Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiß, hat er sich hin und wieder eine Auszeit verdient und braucht besonders in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten, und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
-          station: 'Erdgeschoss 1 - Foyer',
+          station: 'Erdgeschoss 1 - Raum 109',
           capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
           descriptionPoints: "In jeder Aussage ist eine Zahl enthalten. Tragt die Zahl der wahren Aussage in das entsprechende Feld ein."
