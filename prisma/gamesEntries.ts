@@ -586,7 +586,7 @@ const game20 = await prisma.game.create({
                     story: 'Kurz vor Weihnachten erreichten schlechte Nachrichten den Nordpol. Die Geschenke-Lieferungen sind bedroht, weil sich das Partnerunternehmen DB-Schenker aufgelöst hat. Jetzt müssen in letzter Sekunde alle Lieferungen nach Deutschland auf die traditionelle Art eingepackt und an die Kinder geliefert werden: mit dem Schlitten.',
                     station: 'Obergeschoss 1 - Ostflügel Flur',
                     capacity: '1 Team oder 2 Teams',
-                    descriptionGame: 'Es werden (4 Spieler) 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
+                    descriptionGame: 'Es werden 2 oder 4 Spieler benötigt: 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
                     descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden.'
                 },
                 {
@@ -595,7 +595,7 @@ const game20 = await prisma.game.create({
                     story: 'Bad news reached the North Pole just before Christmas. The gift deliveries are threatened because the partner company DB Schenker has dissolved. Now, at the last minute, all deliveries to Germany must be packed in the traditional way and delivered to the children – by sleigh.',
                     station: 'Ground floor – East wing corridor',
                     capacity: '1 team or 2 teams',
-                    descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
+                    descriptionGame: 'You need 2 or 4 players: 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
                     descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1.'
                 }
             ]
