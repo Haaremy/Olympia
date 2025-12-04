@@ -697,7 +697,7 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
-        tagged: "hideF2,hideF3,hideF4,field1,lowest",
+        tagged: "lowest,overridePlayers",
         languages: {
             create: [
                 {
