@@ -112,21 +112,20 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   //////////////////////////// [9, 9.5, 10, 10.5, 11, 12, 13, 15, 17, 20]
   if (game==7){
     // GAME 7 – Zeitstaffelung korrekt
-    if (userPoints < 6) {
+    if (userPoints < 10) {
         result = 0;
         cheats = 1;
     }
-    else if (userPoints < 7) result = 13;
-    else if (userPoints < 8) result = 12;
-    else if (userPoints < 9) result = 11;
-    else if (userPoints < 10) result = 10;
-    else if (userPoints < 11) result = 9;
-    else if (userPoints < 12) result = 8;
-    else if (userPoints < 13) result = 7;
-    else if (userPoints < 15) result = 6;
-    else if (userPoints < 17) result = 5;
-    else if (userPoints < 19) result = 4;
-    else if (userPoints < 20) result = 1;
+    else if (userPoints < 15) result = 10;
+    else if (userPoints < 16) result = 9;
+    else if (userPoints < 17) result = 8;
+    else if (userPoints < 18) result = 7;
+    else if (userPoints < 19) result = 6;
+    else if (userPoints < 20) result = 5;
+    else if (userPoints < 21) result = 4;
+    else if (userPoints < 22) result = 3;
+    else if (userPoints < 23) result = 2;
+    else if (userPoints < 24) result = 1;
     else result = 0;
 
   }
