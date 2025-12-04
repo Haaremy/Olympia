@@ -370,32 +370,30 @@ if (game == 8 || game == 13) {
   ////////////////////////////[30, 35, 40, 45, 50, 55, 60, 65, 70, 75], [198, 7, 499]
     if (game==24){
       if (field==1){
-        if (userPoints < 15) {
+        if (userPoints < 20) {
             result = 0;
             cheats = 1;
         }
-        else if (userPoints < 20) result = 1;
-        else if (userPoints < 25) result = 2;
-        else if (userPoints < 30) result = 3;
-        else if (userPoints < 35) result = 4;
-        else if (userPoints < 40) result = 5;
-        else if (userPoints < 45) result = 6;
-        else if (userPoints < 50) result = 7;
-        else if (userPoints < 55) result = 8;
-        else if (userPoints < 60) result = 9;
-        else if (userPoints < 65) result = 10;
-        else if (userPoints < 70) result = 11;
-        else if (userPoints < 75) result = 12;
+        else if (userPoints < 30) result = 10;
+        else if (userPoints < 35) result = 9;
+        else if (userPoints < 40) result = 8;
+        else if (userPoints < 45) result = 7;
+        else if (userPoints < 50) result = 6;
+        else if (userPoints < 55) result = 5;
+        else if (userPoints < 60) result = 4;
+        else if (userPoints < 65) result = 3;
+        else if (userPoints < 70) result = 2;
+        else if (userPoints < 75) result = 1;
         else result = 0;
 
       } 
-      if(field==2 && userPoints==198){
+      if(field==2 && userPoints==441){
         result=10;
       }
-      if(field==3 && userPoints==7){
+      if(field==3 && userPoints==938){
         result=10;
       }
-      if(field==4 && userPoints==499){
+      if(field==4 && userPoints==375){
         result=10;
       }
   }
