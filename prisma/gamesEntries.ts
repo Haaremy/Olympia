@@ -676,8 +676,8 @@ const game23 = await prisma.game.create({
                     story: 'Die Weihnachtswerkstatt ist in Aufruhr! Die Elfen haben ein neues Kommunikationsspiel entwickelt, um sicherzustellen, dass alle Geschenke auch wirklich richtig zugeordnet werden. Doch die Zeichnungen von Elf Nr. 21 sorgen immer wieder für Verwirrung – ist das ein Rentier oder ein Kuchen?! Jetzt liegt es an deinem Team, die richtigen Begriffe zu entschlüsseln und die Geschenklisten zu retten!',
                     station: 'Erdgeschoss - Raum 109',
                     capacity: 'Solo Team',
-                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
-                    descriptionPoints: 'Die angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
+                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriff aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner. Zeichnet und erratet so viele Begriffe wie möglich in den 30 Sekunden.',
+                    descriptionPoints: 'Die Anzahl der angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
                 },
                 {
                     language: 'en',
@@ -685,7 +685,7 @@ const game23 = await prisma.game.create({
                     story: 'The Christmas workshop is in turmoil! The elves have developed a new communication game to ensure that all the gifts are actually allocated correctly. But the drawings from Elf No. 21 cause constant confusion – is that a reindeer or a cake?! Now it\'s up to your team to decipher the correct terms and save the gift lists!',
                     station: 'Ground Floor – Room 109',
                     capacity: 'Solo Team',
-                    descriptionGame: 'One player on your team is given a pen and paper and an envelope with words. They draw the words and the other team members guess what is being drawn. The time limit is 2 minutes per person. So you take turns and play 4 rounds with 4 team members. Words that have already been used are put to one side and put back in the envelope at the end.',
+                    descriptionGame: 'One player on your team is given a pen and paper and has to draw words. They draw the words on the whiteboard and the other team members guess what is being drawn. The time limit is 30 seconds per person. So you take turns and each player has its turn. Words that have already been used are put to one side and put back in the bowl afterwards.',
                     descriptionPoints: 'Each player enters the number of words explained and guessed by the team in their #field.'
                 }
             ]
