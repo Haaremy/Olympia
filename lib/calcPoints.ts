@@ -310,21 +310,20 @@ if (game == 8 || game == 13) {
   ////////////////////////////
     if (game==20){
       if (field==1){
-        if (userPoints < 6) {
+        if (userPoints < 10) {
             result = 0;
             cheats = 1;
         }
-        else if (userPoints < 7) result = 13;
-        else if (userPoints < 8) result = 12;
-        else if (userPoints < 9) result = 11;
-        else if (userPoints < 10) result = 10;
-        else if (userPoints < 11) result = 9;
-        else if (userPoints < 12) result = 8;
-        else if (userPoints < 13) result = 7;
-        else if (userPoints < 15) result = 6;
-        else if (userPoints < 17) result = 5;
+        else if (userPoints < 13) result = 10;
+        else if (userPoints < 14) result = 9;
+        else if (userPoints < 15) result = 8;
+        else if (userPoints < 16) result = 7;
+        else if (userPoints < 17) result = 6;
+        else if (userPoints < 18) result = 5;
         else if (userPoints < 19) result = 4;
-        else if (userPoints < 20) result = 1;
+        else if (userPoints < 20) result = 3;
+        else if (userPoints < 21) result = 2;
+        else if (userPoints < 22) result = 1;
         else result = 0;
 
       }
