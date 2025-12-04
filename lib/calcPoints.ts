@@ -145,9 +145,9 @@ if (game == 8 || game == 13) {
 
     if (game == 13) {
         if (field == 1) check = 59871;
-        if (field == 2) check = ;
-        if (field == 3) check = 9;
-        if (field == 4) check = 7;
+        if (field == 2) check = 17471;
+        if (field == 3) check = 25951;
+        if (field == 4) check = 33695;
     }
 
     const diff = Math.abs(userPoints - check);
