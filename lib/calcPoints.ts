@@ -37,16 +37,16 @@ export function calculatePoints({ game, userPoints, multiplier, field }: PointsI
   //////////////////////////
 ////////////////////////////
   if (game==2){
-    if(field==1 && userPoints==14){
+    if(field==1 && userPoints==357){
       result=10;
     }
-    if(field==2 && userPoints==9){
+    if(field==2 && userPoints==179){
       result=10;
     }
-    if(field==3 && userPoints==1){
+    if(field==3 && userPoints==915){
       result=10;
     }
-    if(field==4 && userPoints==3){
+    if(field==4 && userPoints==741){
       result=10;
     }
   }
