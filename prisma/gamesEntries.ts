@@ -106,7 +106,7 @@ const game4 = await prisma.game.create({
           story: "'Junior Geschenke Spezialist' benötigt ein Studium und 10 Jahre Berufserfsahrung. Im X-ErasMAS+ Program werden Schüler von den verschiedenen Ausbildungsstätten kulturell geschult. Für einige ist das eine große Umstellung, insbesondere für die Osterhasen. Die Geschenke werden gar nicht versteckt?",
           station: 'Fachbereich INS',
           capacity: 'Multiple Teams',
-          descriptionGame: 'Folge den Hinweisen: <br />Rätsel <br /><br />#1: Sucht den Ort, wo der Duft von Speisen durch die Luft zieht und Gemeinschaft am Tisch entsteht.<br /><br />#2: Geht dorthin, wo jeder seinen Weg durch das Geäude beginnt.<br /><br />#3: Sucht dort, wo flackernde Bilder ein warmes Feuer vorgaukeln  <br /><br />#4: Sucht den Raum, wo die Realität vor einer grünen Wand verschwindet und kreative Welten entstehen.',
+          descriptionGame: 'Folge den Hinweisen: <br />Rätsel <br /><br />#1: Sucht den Ort, wo der Duft von Speisen durch die Luft zieht und Gemeinschaft am Tisch entsteht.<br />.',
           descriptionPoints: 'Tragt im entsprechenden #Feld die Lösungszahl der Beschriftung ein.'
         },
         {
