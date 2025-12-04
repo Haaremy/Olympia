@@ -138,10 +138,10 @@ if (game == 8 || game == 13) {
     let check = 0;
 
     if (game == 8) {
-        if (field == 1) check = 72;
-        if (field == 2) check = 3534;
-        if (field == 3) check = 99;
-        if (field == 4) check = 115;
+        if (field == 1) check = 144;
+        if (field == 2) check = 232;
+        if (field == 3) check = 177;
+        if (field == 4) check = 2000;
     }
 
     if (game == 13) {
