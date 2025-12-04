@@ -205,7 +205,7 @@ if (game == 8 || game == 13) {
     if(field==3 && userPoints==24){ // greta 7 + zimtstrerne 17 = 24
       result=10;
     }
-    if(field==4 && userPoints==26){ // hannes 5 + vanillekipferl 11 = 26
+    if(field==4 && userPoints==16){ // hannes 5 + vanillekipferl 11 = 16
       result=10;
     }
       
