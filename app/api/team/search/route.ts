@@ -36,7 +36,7 @@ export async function GET(req: Request) {
       points: {
         include: {
           game: {
-            include: { languages: true },
+            include: { gameDetails: true },
           },
         },
       },

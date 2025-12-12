@@ -7,7 +7,7 @@ export async function gameEntries() {
     data: {
       url: 'https://www.youtube.com/embed/709ZC7t-8RU',
       tagged: "hidden,overridePlayers,mapPosx860mapPosx,mapPosy250mapPosy",
-      languages: {
+      gameDetails: {
         create: [
           {
             language: 'de',   // Deutsche Version
@@ -37,7 +37,7 @@ const game2 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/t5hXlxVnxfo',
     tagged: "hidden,overridePlayers",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -53,7 +53,7 @@ const game2 = await prisma.game.create({
           title: 'Forgot your password?',
           story: 'Santa’s wishlist was digitized a few years ago. All letters to the North Pole are scanned and cross-referenced with the Naughty and Nice database. The wish is then added to the list. When retrieving this year´s list, Santa can no longer remember his password! Luckily, he has left himself a clue.',
           station: 'First Floor – Foyer',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: 'There are letters in front of you and you have to fill in the 4 word-boxes (in your head). There are clues next to the boxes, just like in a crossword puzzle. Discuss as a team.',
           descriptionPoints: 'The letters have numerical values. Enter the numerical value in the corresponding #field of the letter.'
         }
@@ -67,7 +67,7 @@ const game3 = await prisma.game.create({
   data: {
     url: '',
     tagged: "overridePlayers,hidden",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -76,7 +76,7 @@ const game3 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 110',
           capacity: '1 Team',
           descriptionGame: 'Auf dem Tisch liegen vier Suchrätsel. In jedem Suchrätsel werden Wörter vorgegeben, die ihr finden müsst. Eines der Wörter ist jedoch nicht im Buchstabensalat zu finden.',
-          descriptionPoints: 'Sucht nach dem Wort, was nicht im Buchstabensalat zu finden ist und tragt dessen Lösungszahl in das entsprechende #Feld ein.'
+          descriptionPoints: 'Sucht nach dem Wort, das nicht im Buchstabensalat zu finden ist und tragt dessen Lösungszahl in das entsprechende #Feld ein.'
         },
         {
           language: "en",
@@ -98,7 +98,7 @@ const game4 = await prisma.game.create({
   data: {
     url: '',
     tagged: "overridePlayers,hidden",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -114,7 +114,7 @@ const game4 = await prisma.game.create({
           title: 'Paper Chase',
           story: "Junior Gift Specialist requires a degree and 10 years of professional experience. In the X-ErasMAS+ Program, students from various educational institutions receive cultural training. For some, this is a big change, especially for the Easter bunnies. What do you mean, the presents are not hidden at all?",
           station: 'INS Department',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: 'Follow the hints: <br />Riddle <br /><br />#1: Look for the place where the aroma of food fills the air and fellowship is built around the table.<br /><br />#2: Go to where everyone starts their journey through the building.<br /><br />#3: Look for places where flickering images create the illusion of a warm fire.<br /><br />#4: Seek out the space where reality disappears in front of a green screen and creative worlds emerge.',
           descriptionPoints: 'Each item has a #number and an answer number. Enter the numbers in the #field as soon as you have them all.'
         }
@@ -128,7 +128,7 @@ const game5 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/8Gcw61fFrD4',
     
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -158,7 +158,7 @@ const game6 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/YyZ09UlBV94',
     tagged:":unit:Treffer:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -167,7 +167,7 @@ const game6 = await prisma.game.create({
           station: 'Erdgeschoss - Flur Westflügel',
           capacity: 'Solo Team',
           descriptionGame: 'Jeder Spieler hat 5 Schuss und es wird nacheinander gespielt. Der Spieler stellt oder hockt sich vor die Markierung und versucht, den Kreis zu treffen, indem er den Puck über den Boden schiebt.',
-          descriptionPoints: 'Jeder Treffer im äußeren Kreis sind 1 Punkt, der innere Kreis gibt 2 Punkte. Rechnet eure Punkte zusammen und tragt Sie in euer #Feld ein.'
+          descriptionPoints: 'Jeder Treffer im äußeren Kreis ist 1 Punkt, der innere Kreis gibt 2 Punkte. Rechnet eure Punkte zusammen und tragt Sie in euer #Feld ein.'
         },
         {
           language: 'en',
@@ -188,7 +188,7 @@ const game7 = await prisma.game.create({
   data: {
     url: '',
     tagged:":unit:sec:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -204,7 +204,7 @@ const game7 = await prisma.game.create({
           title: 'Snowball Run',
           story: 'Ever seen chickens at the North Pole? No? Maybe it\'s because there aren\'t any. So no eggs for breakfast, and even fewer eggs for games. The elves discovered the egg-and-spoon race during the exchange program at the Easter Bunny School and have now taken a liking to it.',
           station: 'First Floor – West wing corridor',
-          capacity: '1 to 2 teams',
+          capacity: '1 to 2 Teams',
           descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time.',
           descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding #field.'
         }
@@ -218,7 +218,7 @@ const game8 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/ucl7HeabPO0',
     tagged: "hidden,overridePlayers",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -234,7 +234,7 @@ const game8 = await prisma.game.create({
           title: '... 22, 23, 24, ...',
           story: 'The Elf Union has established strict regulations, including rules for break times and compensation. Every elf is entitled to 24 breaks in a 24-hour working day. During every break, they must have access to snacks. Since Santa doesn\'t even know how many are left, you\'ll have to guess.',
           station: 'Ground Floor – Foyer',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: 'Estimate the number of sweets.',
           descriptionPoints: 'Enter the estimate in the respective #field.'
         }
@@ -248,7 +248,7 @@ const game9 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/sKCM5yMr4Js',
     tagged:":unit:Treffer:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -278,7 +278,7 @@ const game10 = await prisma.game.create({
   data: {
     url: '',
     tagged: "hidden,overridePlayers",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -287,16 +287,16 @@ const game10 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 110',
           capacity: 'Multiple Teams',
           descriptionGame: 'Vier Freunde – Elias(#1), Fiona(#2), Greta(#3) und Hannes(#4) – backen Kekse für Weihnachten. Jeder von ihnen hat einen anderen Keksfavoriten: Lebkuchen (1), Zimtsterne (2), Vanillekipferl (3) oder Spekulatius (4). Außerdem backt jeder eine andere Anzahl an Keksen (5, 6, 7 oder 9). Findet heraus, wer welchen Keks mag und wie viele Kekse jede Person gebacken hat, basierend auf den folgenden Hinweise: Findet ihr an der Station.',
-          descriptionPoints: "Tragt in jedes #Feld die Anzahl der Kekse mit der Zahl (ID) des Kekses (bspw 2 Zimtstern (9) = 29) ein."
+          descriptionPoints: "Tragt in jedes #Feld die Summe der Kekse und der Zahl (ID) des Kekses (bspw. 2 Zimtstern (9) = 11) ein."
         },
         {
           language: 'en',
           title: 'Baking Competition',
           story: "It is not only at the North Pole that the debate about the best type of cookie is a hot topic. Even in our kitchens, they become a topic of conversation (even though vanilla crescents are objectively the best).",
           station: 'Ground Floor - Room 110',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: "Four friends - Elias(#1), Fiona(#2), Greta(#3) and Hannes(#4) - bake cookies for Christmas. Each of them has a different cookie favorite: gingerbread (1), cinnamon stars (2), vanilla crescents (3) or speculoos (4). In addition, everyone bakes a different number of cookies (5, 6, 7 or 9). Find out who likes which cookie and how many cookies each person has baked based on the following clues: Find them at the station.",
-          descriptionPoints: "Enter into every #field the number of cookies with the number (id) of the cookie (e.g. 2 cinnamon stars (9) = 29)."
+          descriptionPoints: "Enter into every #field the sum of cookies with the number (id) of the cookie (e.g. 2 cinnamon stars (9) = 11)."
         }
       ]
     }
@@ -308,7 +308,7 @@ const game11 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/fZ_udkVJbec',
     tagged:":unit:Punkte:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -338,7 +338,7 @@ const game12 = await prisma.game.create({
   data: {
     url: 'https://www.youtube.com/embed/koXin1tVOHs',
     tagged:":unit:Treffer:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -368,7 +368,7 @@ const game13 = await prisma.game.create({
   data: {
     url: '',
     tagged: "hidden,overridePlayers",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -384,9 +384,9 @@ const game13 = await prisma.game.create({
           title: 'Hawk Eye',
           story: 'Quality is the law at the North Pole. All toys for young and old must be safe. The smallest blemishes can cause serious damage. The elves are already practicing in kindergarten.',
           station: 'Ground Floor - Foyer',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: 'In front of you are #4 pictures. Each image has imperfections compared to its reference image next to it. Tip: take photos of the images and discuss them as a team.',
-          descriptionPoints: "Count the imperfections and enter them in the corresponding #Feld."
+          descriptionPoints: "Count the imperfections and enter them in the corresponding #field."
         }
       ]
     }
@@ -398,7 +398,7 @@ const game14 = await prisma.game.create({
   data: {
     url: '',
     tagged:"overridePlayers,hidden",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -428,7 +428,7 @@ const game15 = await prisma.game.create({
   data: {
     url: '',
     tagged:":unit:Zuckerstangen:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -457,7 +457,7 @@ const game16 = await prisma.game.create({
   data: {
     url: '',
     tagged: ":unit:Etagen:unit:",
-    languages: {
+    gameDetails: {
       create: [
         {
           language: 'de',
@@ -473,7 +473,7 @@ const game16 = await prisma.game.create({
           title: 'Cold Tower of Pisa',
           story: 'Children everywhere make beautifully decorated gingerbread houses, but here they are standard. At the North Pole, we build snowball towers and try to get as high as we can.',
           station: 'First Floor – Room 216',
-          capacity: 'Multiple teams',
+          capacity: 'Multiple Teams',
           descriptionGame: 'Each player builds a snowball tower. You always stack 1 on top of another. Start a 1 minute Timer. The game is over when the timer runs out.',
           descriptionPoints: "Enter the number of ball layers in your respective #field."
         }
@@ -487,7 +487,7 @@ const game17 = await prisma.game.create({
     data: {
       url: 'https://www.youtube.com/embed/M6CUG7MWq30',
       tagged:":unit:Punkte:unit:",
-      languages: {
+      gameDetails: {
         create: [
           {
             language: 'de',   // Deutsche Version
@@ -503,9 +503,9 @@ const game17 = await prisma.game.create({
             title: 'Ice hockey',
             story: 'Our favorite ice hockey team, the "INS ICE Pythons", have revealed their hidden training tips. We take the opportunity to share our knowledge with you (with permission, of course). We then have an important game against the North Polar Bears over the Christmas break.',
             station: 'First Floor - Westwing',
-            capacity: '2 teams',
+            capacity: '2 Teams',
             descriptionGame: 'A goal is set up in front of you, with obstacles in the way. Stand at the starting mark and shoot at the goal. Everyone shoots 5 times.',
-            descriptionPoints: 'Enter your number of hits in your #field.',
+            descriptionPoints: 'Enter your number of hits in your #field. The front goal is worth 1 point, the back goal 2 points.',
           }
         ]
       }
@@ -517,7 +517,7 @@ const game18 = await prisma.game.create({
     data: {
         url: '',
         tagged:"overridePlayers,hidden",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -547,7 +547,7 @@ const game19 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/VvXDp5jZL4A',
         tagged:":unit:Treffer:unit:",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -563,8 +563,8 @@ const game19 = await prisma.game.create({
                     title: 'Mulled Wine Pong',
                     story: 'The season dictates: it\'s getting colder and colder. At the North Pole, it’s always freezing, and classic party games are designed to counteract that. Mulled Wine Pong is a completely new, individual and unique game that is only available here.',
                     station: 'Ground Floor - Room 108',
-                    capacity: '2x 2 teams',
-                    descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. In this version we will play with 6 cups, placed top down from the pyramids tip. The teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
+                    capacity: '2x 2 Teams',
+                    descriptionGame: 'The game requires an opposing team. The water-filled cups are placed on the pyramid marker. In this version we will play with 6 cups, placed top down from the pyramids tip. The Teams and players take turns throwing. If a cup is deemed to have been hit, it is set aside. Once all of a team\'s cups have been hit, the game is over.',
                     descriptionPoints: 'Each player enters the cups they have hit in their #field.'
                 }
             ]
@@ -578,7 +578,7 @@ const game20 = await prisma.game.create({
         url: 'https://www.youtube.com/embed/WXbwk-7uOTg',
         
         tagged: "hideF2,hideF3,hideF4,field1,lowest,:unit:sec:unit:",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -594,7 +594,7 @@ const game20 = await prisma.game.create({
                     title: 'Loading Zone',
                     story: 'Bad news reached the North Pole just before Christmas. The gift deliveries are threatened because the partner company DB Schenker has dissolved. Now, at the last minute, all deliveries to Germany must be packed in the traditional way and delivered to the children – by sleigh.',
                     station: 'Ground floor – East wing corridor',
-                    capacity: '1 team or 2 teams',
+                    capacity: '1 team or 2 Teams',
                     descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
                     descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1.'
                 }
@@ -608,7 +608,7 @@ const game21 = await prisma.game.create({
     data: {
         url: '',
         tagged:"overridePlayers,hidden",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -624,7 +624,7 @@ const game21 = await prisma.game.create({
                     title: 'Boxing Day',
                     story: 'In all the chaos of the delivery, the gift labels were forgotten – which gift is for whom? The #4 #gifts each have a content from the wish list, and you must guess which one it is.',
                     station: 'First Floor – Foyer at the Christmas Tree',
-                    capacity: 'Multiple teams',
+                    capacity: 'Multiple Teams',
                     descriptionGame: 'You can lift, shake, turn and rotate the gifts, but not open them.',
                     descriptionPoints: 'Enter your answer (number) from the wish list in the #field with the gift number.'
                 }
@@ -638,7 +638,7 @@ const game22 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/cKgvAcYoHl0',
         tagged:":unit:Treffer:unit:",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -668,7 +668,7 @@ const game23 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/8eaXJIdMzq0',
         tagged:":unit:Zeichnungen:unit:",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',
@@ -676,7 +676,7 @@ const game23 = await prisma.game.create({
                     story: 'Die Weihnachtswerkstatt ist in Aufruhr! Die Elfen haben ein neues Kommunikationsspiel entwickelt, um sicherzustellen, dass alle Geschenke auch wirklich richtig zugeordnet werden. Doch die Zeichnungen von Elf Nr. 21 sorgen immer wieder für Verwirrung – ist das ein Rentier oder ein Kuchen?! Jetzt liegt es an deinem Team, die richtigen Begriffe zu entschlüsseln und die Geschenklisten zu retten!',
                     station: 'Erdgeschoss - Raum 109',
                     capacity: 'Solo Team',
-                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
+                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 2 Minuten. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
                     descriptionPoints: 'Die angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
                 },
                 {
@@ -698,7 +698,7 @@ const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
         tagged: "hideF2,hideF3,hideF4,field1,lowest",
-        languages: {
+        gameDetails: {
             create: [
                 {
                     language: 'de',

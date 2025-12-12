@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Navigation from "./navigation";
 import SessionProvider from "./session-provider";
 import "./globals.css";
@@ -8,6 +7,7 @@ import { UIProvider } from "./context/UIContext";
 import OngoingNotificationClient from "../app/common/useOngoingNotifications";
 import { MusicProvider } from "./common/music";
 import localFont from "next/font/local";
+import EulaWrapper from './common/EulaWrapper';
 
 const rubicRegular = localFont({
   src: "./fonts/rubic/regular.ttf",
@@ -29,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="de" >
         
@@ -41,7 +43,9 @@ export default function RootLayout({
               <Navigation/>
                 <OngoingNotificationClient />
                 <MusicProvider>
+                  <EulaWrapper>
                   {children}
+                  </EulaWrapper>
                 </MusicProvider>
               <Footer/>
             </UIProvider>

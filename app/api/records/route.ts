@@ -18,7 +18,7 @@ interface Entry {
   team: Team;
   game: {
     id: number;
-    languages: { title: string }[];
+    gameDetails: { title: string }[];
     tagged: string | null;
     points: { value: number; slot: Slot }[];
   };
@@ -82,7 +82,7 @@ export async function GET() {
         id: true,
         tagged: true,
         points: { select: { value: true, slot: true } },
-        languages: { select: { title: true } },
+        gameDetails: { select: { title: true } },
       },
     },
   },
@@ -133,7 +133,7 @@ export async function GET() {
 
     result.push({
       gameId: Number(gid),
-      gameName: topEntry.game.languages.map((l) => l.title).join(', '),
+      gameName: topEntry.game.gameDetails.map((l) => l.title).join(', '),
       tagged: topEntry.game.tagged,
       topPlayer,
       topPoints: topEntry.value,

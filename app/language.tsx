@@ -10,7 +10,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose }) => {
+const LanguageModal: React.FC<ModalProps> = ({ onClose }) => {
     const { setIsModalOpen } = useUI();
     const modalRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
@@ -124,4 +124,4 @@ const setLanguage = (lang: string) => {
     );
 };
 
-export default Modal;
+export default LanguageModal;

@@ -1,12 +1,17 @@
-// app/api/game/route.ts
-
 import { prisma } from "@/lib/db";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
+    const language = url.searchParams.get("language") || "de"; // Default auf "de"
+
     const games = await prisma.game.findMany({
       include: {
-        languages: true,
+        gameDetails: {
+          where: {
+            language: language,
+          },
+        },
       },
     });
 

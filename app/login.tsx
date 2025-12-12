@@ -8,6 +8,7 @@ import { Capacitor } from "@capacitor/core";
 import { Button, TextInput } from '@/cooperateDesign';
 import { useTranslation } from 'next-i18next';
 import Infobox from './infoBox'; 
+import naughtyWords from 'naughty-words';
 import {
   showPopupNotification,
   createNotificationChannel
@@ -62,8 +63,19 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
   }
 };
 
+const bannedWordsCombined: string[] = Object.values(naughtyWords).flatMap(arr => [...arr]);
+const isValidUsername = (username: string) => {
+  const lower = username.toLowerCase();
+  return !bannedWordsCombined.some(word => lower.includes(word));
+};
+
 
   const register = async () => {
+     if (!isValidUsername(realname)) {
+      //alert("Dieser Username ist nicht erlaubt!");
+      setError('Ungültiger Team Name');
+      return;
+    }
   if (!pending) {
     setShowRegister(true);
     setPending(true);
@@ -184,11 +196,17 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             <TextInput
               placeholder="z.B. ABC, Team1, MiMaTe, ..."
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                // Nur Buchstaben A-Z und a-z akzeptieren, max 10 Zeichen
+                const filtered = e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10);
+                setUsername(filtered);
+              }}
               required
               autoCapitalize="off"
               autoCorrect="off"
+              maxLength={10}
             />
+
 
           </div>
 
@@ -207,7 +225,9 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
               {realname.length}/20 Zeichen
             </p>
           </div>
+          
           }
+          
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium mb-1">{t("password")}</label>

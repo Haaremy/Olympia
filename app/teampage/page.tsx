@@ -14,6 +14,7 @@ import MusicSettings from "@/app/common/musicSettings";
 import { Button, Main } from "@/cooperateDesign";
 import ThemeSettings from "../common/themeSettings";
 import TextInput from "@/cooperateDesign/textInput";
+import naughtyWords from 'naughty-words';
 
 
 export default function Page() {
@@ -62,14 +63,35 @@ const [isAndroid, setIsAndroid] = useState(false);
   type playerKey = "user1" | "user2" | "user3" | "user4";
 
   
+const bannedWordsCombined: string[] = Object.values(naughtyWords).flatMap(arr => [...arr]);
+
+const isValidUsername = (username: string) => {
+  const lower = username.toLowerCase();
+  return !bannedWordsCombined.some(word => lower.includes(word));
+};
+
+  const handleSavedMessage = (info: string, title: string, color: string) => {
+    setInfoMessage(info);
+    setInfoTitle(title);
+    setInfoColor(color);
+    handleShowSaved(true);
+  }
 
 
   const handleSave = async () => {
     const name = nameTRef.current?.value || null;
     const uname = user1Ref.current?.value || null;
+    const ref1 = user1Ref.current?.value || "";
+    const ref2 = user2Ref.current?.value || "";
+    const ref3 = user3Ref.current?.value || "";
+    const ref4 = user4Ref.current?.value || "";
+    const ref5 = nameTRef.current?.value || "";
 
-
- 
+     if (!isValidUsername(ref1) || !isValidUsername(ref2) || !isValidUsername(ref3) || !isValidUsername(ref4) || !isValidUsername(ref5)) {
+      //alert("Dieser Username ist nicht erlaubt!");
+      handleSavedMessage('Ungültiger Name', "Fehler", "red");
+      return;
+     }
 
 
     if (!user1Ref.current?.value || !user2Ref.current?.value) {
@@ -115,12 +137,7 @@ const theming = (theme: string) => {
     localStorage.setItem("language", lang);
   };
 
-  const handleSavedMessage = (info: string, title: string, color: string) => {
-    setInfoMessage(info);
-    setInfoTitle(title);
-    setInfoColor(color);
-    handleShowSaved(true);
-  }
+
 
   const handleClose = () => {
     handleShowSaved(false);
@@ -141,7 +158,7 @@ const theming = (theme: string) => {
 
 
  const getUser = useCallback(async () => {
-      const res = await fetch(`/api/team/search?query=${session?.user.uname}`, {
+      const res = await fetch(`/api/team/searchunique?query=${session?.user.uname}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     }); 
@@ -197,6 +214,8 @@ const theming = (theme: string) => {
     setPlayer3(true);
   }
   }
+
+
 
 const renderPlayerInput = (
   label: string,

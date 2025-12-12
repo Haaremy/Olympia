@@ -212,18 +212,18 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
             X
           </Button>
         </div>
-         <div>
+        <div className={Capacitor.getPlatform() === 'ios' ? "hidden" : "visible"}>
                <div className="flex flex-col">
-         <button onClick={openPaypalNative} className="inline-flex items-center">
-  <Image
-    src="/images/paypalbadge.png"
-    alt="Spenden"
-    width={150}
-    height={60}
-    className="hover:scale-105 transition-transform"
-  />
-</button>
-        </div>
+                <button onClick={openPaypalNative} className="inline-flex items-center">
+                  <Image
+                    src="/images/paypalbadge.png"
+                    alt="Spenden"
+                    width={150}
+                    height={60}
+                    className="hover:scale-105 transition-transform"
+                  />
+                </button>
+              </div>
          </div>
 
         <div className="overflow-y-auto max-h-[40vh] pr-2">

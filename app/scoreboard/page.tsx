@@ -64,6 +64,7 @@ export default function ScoreboardTabs() {
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
+  const [endTime, setEndTime] = useState<number>(Date.now() + 86400000); // Default to 24 hours from now
   const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
   const { data: session } = useSession();
   const getLangID = (i18n: i18n) => {
@@ -81,23 +82,23 @@ export default function ScoreboardTabs() {
 
   // Fetch Settings
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        setIsAndroid(Capacitor.getPlatform() === 'android');
-        const settingsRes = await fetch("/api/settings");
-        if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
-        const settings: Settings = await settingsRes.json();
-        if (settings.ending) {
-          const newEnding = new Date(settings.ending);
-          setTimeLeft(newEnding.getTime() - Date.now());  // Using getTime() here for a clean calculation
-        }
-
-      } catch (err) {
-        console.error(err);
+  const fetchSettings = async () => {
+    try {
+      const settingsRes = await fetch("/api/settings");
+      if (!settingsRes.ok) throw new Error("Fehler beim Laden der Einstellungen");
+      const settings: Settings = await settingsRes.json();
+      if (settings.ending) {
+        const newEnding = new Date(settings.ending).getTime();
+        setEndTime(newEnding); // Setze feste Endzeit in Millisekunden
+        setTimeLeft(newEnding - Date.now());
       }
-    };
-    fetchSettings();
-  }, []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchSettings();
+}, []);
+
 
   // Load Files and Names
   const loadFiles = async () => {
@@ -141,19 +142,22 @@ export default function ScoreboardTabs() {
     fetchFilesAndNames();
   }, []);
 
-  // Countdown and Async Image Update Every Second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(prevTime => {
-        if (prevTime <= 1000) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prevTime - 1000;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+ useEffect(() => {
+  const updateTimeLeft = () => {
+    const now = Date.now();
+    const remaining = endTime - now;
+    setTimeLeft(remaining > 0 ? remaining : 0);
+  };
+
+  updateTimeLeft(); // sofort beim Mount
+
+  const interval = setInterval(updateTimeLeft, 1000);
+
+  return () => clearInterval(interval);
+}, [endTime]);
+
+
+
 
   // Format Time
   const formatTime = (ms: number) => {

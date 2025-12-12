@@ -10,7 +10,7 @@ async function cleanDB() {
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Entries'`;
   await prisma.points.deleteMany({});
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Points'`;
-  await prisma.language.deleteMany({});
+  await prisma.gameDetails.deleteMany({});
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Language'`;
   await prisma.team.deleteMany({});
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='Team'`;

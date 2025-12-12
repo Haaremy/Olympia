@@ -1,9 +1,9 @@
 import Games from './games'; // Deine Client-Komponente
 import { prisma } from "../lib/db";  // Dein Prisma Client
-import { Language } from '@prisma/client';  // Importing Language type directly from Prisma
+import { GameDetails } from '@prisma/client';  // Importing Language type directly from Prisma
 
 // Define the TransformedLanguage type based on the structure of the Language model
-type TransformedLanguage = Omit<Language, 'descriptionGame' | 'descriptionPoints'> & {
+type TransformedLanguage = Omit<GameDetails, 'descriptionGame' | 'descriptionPoints'> & {
   content: string;  // Replace 'descriptionGame' with 'content'
   points: string;   // Replace 'descriptionPoints' with 'points'
 };
@@ -13,14 +13,14 @@ export default async function Page() {
   // Fetch all games with their language versions from the database
   const games = await prisma.game.findMany({
     include: {
-      languages: true, // Include the language versions with the game
+      gameDetails: true, // Include the language versions with the game
     },
   });
 
 
   // Transform the language versions from an array to a record
   const transformedGames = games.map(game => {
-    const languages = game.languages.reduce((acc, language) => {
+    const languages = game.gameDetails.reduce((acc, language) => {
       acc[language.language] = {
         ...language, // Keep all fields from the Language model
         content: language.descriptionGame, // Replace 'descriptionGame' with 'content'
