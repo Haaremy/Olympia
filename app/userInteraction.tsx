@@ -64,6 +64,7 @@ const UserInteraction: React.FC<UserInteractionProps> = ({
 
   const handleBlock =  async () => {
     onBlock?.();
+    console.log("Blocking user:", uname);
     try {
          const response = await fetch("/api/team/block", {
       method: "POST",

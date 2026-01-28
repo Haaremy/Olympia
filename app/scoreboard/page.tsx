@@ -174,6 +174,7 @@ export default function ScoreboardTabs() {
 
   const handleUserInteraction = (username: string, uname: string) => {
     setClickedUsername(username);
+    setClickedUname(uname);
     setShowUserInteraction(true);
   }
 

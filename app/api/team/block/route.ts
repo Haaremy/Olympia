@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  console.log("Blocking user:", targetUname);
 
   try {
     // Blocker-Team holen
