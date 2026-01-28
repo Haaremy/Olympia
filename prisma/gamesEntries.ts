@@ -106,7 +106,7 @@ const game4 = await prisma.game.create({
           story: "'Junior Geschenke Spezialist' benötigt ein Studium und 10 Jahre Berufserfsahrung. Im X-ErasMAS+ Program werden Schüler von den verschiedenen Ausbildungsstätten kulturell geschult. Für einige ist das eine große Umstellung, insbesondere für die Osterhasen. Die Geschenke werden gar nicht versteckt?",
           station: 'Fachbereich INS',
           capacity: 'Multiple Teams',
-          descriptionGame: 'Folge den Hinweisen: <br />Rätsel <br /><br />#1: Sucht den Ort, wo der Duft von Speisen durch die Luft zieht und Gemeinschaft am Tisch entsteht.<br /><br />#2: Geht dorthin, wo jeder seinen Weg durch das Geäude beginnt.<br /><br />#3: Sucht dort, wo flackernde Bilder ein warmes Feuer vorgaukeln  <br /><br />#4: Sucht den Raum, wo die Realität vor einer grünen Wand verschwindet und kreative Welten entstehen.',
+          descriptionGame: 'Folge den Hinweisen: <br />Rätsel <br /><br />#1: Sucht den Ort, wo der Duft von Speisen durch die Luft zieht und Gemeinschaft am Tisch entsteht.<br />.',
           descriptionPoints: 'Tragt im entsprechenden #Feld die Lösungszahl der Beschriftung ein.'
         },
         {
@@ -196,7 +196,7 @@ const game7 = await prisma.game.create({
           story: 'Am Nordpol schon mal Hühner gesehen? Nein? Liegt vielleicht daran, dass es keine gibt. Entsprechend gibt es auch kein Frühstücksei und noch weniger Eier für Spiele. Die Elfen haben beim Austauschprogramm zur Osterhasen-Schule Eierlauf kennengelernt und jetzt für sich entdeckt.',
           station: 'Obergeschoss 1 - Flur Westflügel',
           capacity: '1 bis 2 Teams',
-          descriptionGame: 'Jeder Spieler hat einen Versuch. Währenddessen stoppt einer die Zeit. Folgt dem Parkour entlang der Pfeile.',
+          descriptionGame: 'Jeder Spieler hat einen Versuch. Währenddessen stoppt einer die Zeit. Folgt dem Parkour entlang der Pfeile während ihr einen Schneeball auf einem Löffel balanciert.',
           descriptionPoints: 'Trag den Zeitwert des Spielers in Sekunden in das entsprechende #Feld.'
         },
         {
@@ -204,6 +204,8 @@ const game7 = await prisma.game.create({
           title: 'Snowball Run',
           story: 'Ever seen chickens at the North Pole? No? Maybe it\'s because there aren\'t any. So no eggs for breakfast, and even fewer eggs for games. The elves discovered the egg-and-spoon race during the exchange program at the Easter Bunny School and have now taken a liking to it.',
           station: 'First Floor – West wing corridor',
+          capacity: '1 to 2 teams',
+          descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time. The player has to end the pacour whole balancing a snowball on a spoon.',
           capacity: '1 to 2 Teams',
           descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time.',
           descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding #field.'
@@ -376,7 +378,7 @@ const game13 = await prisma.game.create({
           story: 'Qualität steht am Nordpol im Gesetz. Alle Spielzeuge für Groß und Klein müssen sicher sein. Kleinste Makel können schwere Schäden verursachen. Zur Übung wird schon im Elfen-Kindergarten trainiert.',
           station: 'Erdgeschoss - Foyer',
           capacity: 'Multiple Teams',
-          descriptionGame: 'Vor euch liegen #4 Bilder. Jedes Bild hat Makel zu seinem Kontrollbild daneben. Tipp: macht euch Fotos der Bilder und besprecht euch im Team.',
+          descriptionGame: 'An der Pinnwand hängen #4 Bilder. Jedes Bild hat Makel zu seinem Kontrollbild daneben. Tipp: macht euch Fotos der Bilder und besprecht euch im Team.',
           descriptionPoints: "Zählt die Makel und tragt sie im entsprechenden #Feld ein."
         },
         {
@@ -404,7 +406,7 @@ const game14 = await prisma.game.create({
           language: 'de',
           title: 'Gutes Kind, böses Kind',
           story: 'In den Supermärkten und Einkaufszentren der Erde trifft man häufig auf die gesandten Helfer des Weihnachtsmannes. Auch wenn der Weihnachtsmann alles sieht, hört und weiß, hat er sich hin und wieder eine Auszeit verdient und braucht besonders in der Hochsaison Helfer, die die Wünsche und Geschichten der Kinder anhören und bewerten. Die Kinder erzählen den Helfern vielerlei Geschichten, und damit diese die Kinder besser einschätzen können, werden sie mit Fragen geschult, um Lügen und Wahrheiten zu erkennen.',
-          station: 'Erdgeschoss 1 - Foyer',
+          station: 'Erdgeschoss 1 - Raum 109',
           capacity: 'Mehrere Teams',
           descriptionGame: 'Auf dem Tisch liegen Fakten und Lügen. Prüft diese mit eurer Einschätzung.',
           descriptionPoints: "In jeder Aussage ist eine Zahl enthalten. Tragt die Zahl der wahren Aussage in das entsprechende Feld ein."
@@ -437,7 +439,7 @@ const game15 = await prisma.game.create({
           station: 'Erdgeschoss - Raum 109',
           capacity: '1 Team',
           descriptionGame: 'Startet einen Timer für 30 Sekunden und versucht mit euren Angeln die Zuckerstangen aus dem Pool zu fischen.',
-          descriptionPoints: "Jeder trägt sich die gefangenen Zuckerstangen in sein #Feld ein."
+          descriptionPoints: "Jeder trägt sich die Anzahl gefangenen Zuckerstangen in sein #Feld ein."
         },
         {
           language: 'en',
@@ -446,7 +448,7 @@ const game15 = await prisma.game.create({
           station: 'Ground Floor - Room 109',
           capacity: '1 Team',
           descriptionGame: 'Start a timer for 30 seconds and try to fish the candy canes out of the pool with your fishing rods.',
-          descriptionPoints: "Everyone enters the candy canes they have caught in their #field."
+          descriptionPoints: "Everyone enters the number of candy canes they have caught in their #field."
         }
       ]
     }
@@ -466,7 +468,7 @@ const game16 = await prisma.game.create({
           station: 'Obergeschoss 1 - Raum 216',
           capacity: 'Multiple Teams',
           descriptionGame: 'Ihr benötigt einen Timer. Jeder Spieler baut einen Turm aus Stoff-Schneebällen. Das Spiel ist nach 1 Minute beendet.',
-          descriptionPoints: "Tragt die Anzahl der Ball-Etagen in euer jeweiliges #Feld."
+          descriptionPoints: "Tragt die Anzahl der gestapelten Schneebälle in euer jeweiliges #Feld."
         },
         {
           language: 'en',
@@ -475,7 +477,7 @@ const game16 = await prisma.game.create({
           station: 'First Floor – Room 216',
           capacity: 'Multiple Teams',
           descriptionGame: 'Each player builds a snowball tower. You always stack 1 on top of another. Start a 1 minute Timer. The game is over when the timer runs out.',
-          descriptionPoints: "Enter the number of ball layers in your respective #field."
+          descriptionPoints: "Enter the number of stacked snowballs in your respective #field."
         }
       ]
     }
@@ -525,7 +527,7 @@ const game18 = await prisma.game.create({
                     story: 'Der Weihnachtsmann erfüllt jedes Jahr Millionen von Wünschen. Doch, was passiert, wenn ein Kind keine Wünsche äußert? Es nichts träumt? Hat es schon alles, was es braucht? Eine Grundregel ist, dass jeder irgendetwas braucht – auch wenn es tief in einem verborgen liegt. Spielsachen, Geld oder einfach nur ein wenig Liebe?',
                     station: 'Erdgeschoss - Foyer',
                     capacity: 'Mehrere Teams',
-                    descriptionGame: 'Auf dem Tisch liegen Malen-nach-Zahlen-Blätter. Sie zeigen versteckte Wünsche von Kindern, und das entstandene Bild wird mithilfe einer Bild-Zahlen-Tabelle in eine Lösungszahl umgewandelt.',
+                    descriptionGame: 'An der Pinwand hängen Malen-nach-Zahlen-Blätter. Sie zeigen versteckte Wünsche von Kindern, und das entstandene Bild wird mithilfe einer Bild-Zahlen-Tabelle in eine Lösungszahl umgewandelt.',
                     descriptionPoints: 'Tragt die Lösungszahl in das entsprechende Feld ein.'
                 },
                 {
@@ -534,7 +536,7 @@ const game18 = await prisma.game.create({
                     story: 'Every year, Santa fulfills millions of wishes. But what happens when a child makes no wish at all? When it dreams of nothing? Does it already have everything it needs? One basic rule is that everyone needs something — even if it’s hidden deep inside. Toys, money, or simply a little love?',
                     station: 'Ground Floor - Foyer',
                     capacity: 'Multiple Teams',
-                    descriptionGame: 'On the table are “paint by numbers” sheets showing hidden wishes of children. The completed image is then converted into a solution number using the picture-number table.',
+                    descriptionGame: 'On the wall are “paint by numbers” sheets showing hidden wishes of children. The completed image is then converted into a solution number using the picture-number table.',
                     descriptionPoints: 'Enter the solution number into the corresponding field.'
                 }
             ]
@@ -586,7 +588,7 @@ const game20 = await prisma.game.create({
                     story: 'Kurz vor Weihnachten erreichten schlechte Nachrichten den Nordpol. Die Geschenke-Lieferungen sind bedroht, weil sich das Partnerunternehmen DB-Schenker aufgelöst hat. Jetzt müssen in letzter Sekunde alle Lieferungen nach Deutschland auf die traditionelle Art eingepackt und an die Kinder geliefert werden: mit dem Schlitten.',
                     station: 'Obergeschoss 1 - Ostflügel Flur',
                     capacity: '1 Team oder 2 Teams',
-                    descriptionGame: 'Es werden (4 Spieler) 1 Zeit-Stopper, 2 Rentier und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
+                    descriptionGame: 'Es werden 2 oder 4 Spieler benötigt: 1 Zeit-Stopper, und 1 Person die den Schlitten beläd und zieht oder 2 Rentiere und 1 Elf benötigt. Der Stopper gibt das Startsignal zum Beladen und Liefern, ab dann läuft die Zeit. Der Elf belädt den Schlitten mit den Geschenken vom Tisch. Die beiden Rentiere greifen sich (vorab) je ein Seilende am Schlitten. Sobald der Elf fertig beladen hat, laufen die Rentiere los. Wenn die die Markierung am Tannenbaum überschreiten, wird die Zeit gestoppt. Vom Schlitten fallende Gegenstände sind wieder zu beladen!',
                     descriptionPoints: 'In der Spieleauswertung muss im #Feld 1 die Zeit in Sekunden eingetragen werden.'
                 },
                 {
@@ -594,6 +596,8 @@ const game20 = await prisma.game.create({
                     title: 'Loading Zone',
                     story: 'Bad news reached the North Pole just before Christmas. The gift deliveries are threatened because the partner company DB Schenker has dissolved. Now, at the last minute, all deliveries to Germany must be packed in the traditional way and delivered to the children – by sleigh.',
                     station: 'Ground floor – East wing corridor',
+                    capacity: '1 team or 2 teams',
+                    descriptionGame: 'You need 2 or 4 players: 1 time stopper and 1 person who loads the sleight and pulls it or 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
                     capacity: '1 team or 2 Teams',
                     descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
                     descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1.'
@@ -646,8 +650,8 @@ const game22 = await prisma.game.create({
                     story: 'Unsere Rentiere wurden für die neue RedBull-Weihnachts-Werbung gecastet. Vollkommen aufgedreht von 6 Dosen Energie, sind sie weggerannt. Ihr müsst sie wieder einfangen.',
                     station: 'Erdgeschoss - Raum 108',
                     capacity: '2x 1 Team',
-                    descriptionGame: 'Ungleich der Story, ist es ein Teamspiel. Ihr braucht 2 Rentier und 2 Elfen. Jeder Elf hat 5 Würfe und muss auf das Geweih des Rentiers werfen. Das Rentier versucht durch geschickte Bewegung mitzuhelfen.',
-                    descriptionPoints: 'Tragt in euer #Feld, wie viele Ringe ihr getroffen/gefangen habt.'
+                    descriptionGame: 'Ungleich der Story, ist es ein Teamspiel. Ihr braucht 2 Rentier und 2 Elfen. Jeder Elf hat 5 Würfe und muss auf das Geweih des Rentiers werfen. Das Rentier steht im Kreis und versucht durch geschickte Bewegung mitzuhelfen.',
+                    descriptionPoints: 'Tragt in euer #Feld, wie viele Ringe ihr mit dem Geweih gefangen habt.'
                 },
                 {
                     language: 'en',
@@ -655,8 +659,8 @@ const game22 = await prisma.game.create({
                     story: "Our reindeer were cast for the new RedBull Christmas commercial. Completely hyped up from 6 cans of energy drink, they ran away. You need to catch them again.",
                     station: 'Ground Floor – Room 108',
                     capacity: '2x 1 team',
-                    descriptionGame: "Unlike the story, it is a team game. You need 2 reindeer and 2 elves. Each elf has 5 throws and must throw at the reindeer's antlers. The reindeer tries to help by moving skillfully.",
-                    descriptionPoints: "Enter in your #field how many rings you have hit/captured."
+                    descriptionGame: "Unlike the story, it is a team game. You need 2 reindeer and 2 elves. Each elf has 5 throws and must throw at the reindeer's antlers. The reindeer stands in the circle and tries to help by moving skillfully.",
+                    descriptionPoints: "Enter in your #field how many rings you have captured on your antlers."
                 }
             ]
         }
@@ -676,6 +680,8 @@ const game23 = await prisma.game.create({
                     story: 'Die Weihnachtswerkstatt ist in Aufruhr! Die Elfen haben ein neues Kommunikationsspiel entwickelt, um sicherzustellen, dass alle Geschenke auch wirklich richtig zugeordnet werden. Doch die Zeichnungen von Elf Nr. 21 sorgen immer wieder für Verwirrung – ist das ein Rentier oder ein Kuchen?! Jetzt liegt es an deinem Team, die richtigen Begriffe zu entschlüsseln und die Geschenklisten zu retten!',
                     station: 'Erdgeschoss - Raum 109',
                     capacity: 'Solo Team',
+                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriff aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner. Zeichnet und erratet so viele Begriffe wie möglich in den 30 Sekunden.',
+                    descriptionPoints: 'Die Anzahl der angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
                     descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 2 Minuten. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
                     descriptionPoints: 'Die angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
                 },
@@ -685,7 +691,7 @@ const game23 = await prisma.game.create({
                     story: 'The Christmas workshop is in turmoil! The elves have developed a new communication game to ensure that all the gifts are actually allocated correctly. But the drawings from Elf No. 21 cause constant confusion – is that a reindeer or a cake?! Now it\'s up to your team to decipher the correct terms and save the gift lists!',
                     station: 'Ground Floor – Room 109',
                     capacity: 'Solo Team',
-                    descriptionGame: 'One player on your team is given a pen and paper and an envelope with words. They draw the words and the other team members guess what is being drawn. The time limit is 2 minutes per person. So you take turns and play 4 rounds with 4 team members. Words that have already been used are put to one side and put back in the envelope at the end.',
+                    descriptionGame: 'One player on your team is given a pen and paper and has to draw words. They draw the words on the whiteboard and the other team members guess what is being drawn. The time limit is 30 seconds per person. So you take turns and each player has its turn. Words that have already been used are put to one side and put back in the bowl afterwards.',
                     descriptionPoints: 'Each player enters the number of words explained and guessed by the team in their #field.'
                 }
             ]
@@ -697,6 +703,8 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
+        tagged: "lowest,overridePlayers",
+        languages: {
         tagged: "hideF2,hideF3,hideF4,field1,lowest",
         gameDetails: {
             create: [
