@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const { uname: targetUname } = await req.json();
+  const { targetUname } = await req.json();
 
   if (!targetUname) {
     return NextResponse.json(
