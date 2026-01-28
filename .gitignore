@@ -42,3 +42,4 @@ next-env.d.ts
 
 # databases
 /prisma/dev.db
+/prisma/olympia.db

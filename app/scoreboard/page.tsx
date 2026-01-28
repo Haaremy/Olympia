@@ -11,6 +11,7 @@ import Image from 'next/image';
 import socket from "../../lib/socket";
 import { Button, Main } from "@/cooperateDesign";
 import { useSession } from "next-auth/react";
+import UserInteraction from "../userInteraction";
  
 
 
@@ -64,6 +65,9 @@ export default function ScoreboardTabs() {
   const [isAndroid, setIsAndroid] = useState(false);
   const [teamImages, setTeamImages] = useState<string[]>([]);
   const [teamNames, setTeamNames] = useState<string[]>([]);
+  const [showUserInteraction, setShowUserInteraction] = useState(false);
+    const [clickedUsername, setClickedUsername] = useState<string | null>(null);
+    const [clickedUname, setClickedUname] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<number>(Date.now() + 86400000); // Default to 24 hours from now
   const { t, i18n  } = useTranslation();  // Hook innerhalb der Komponente verwenden
   const { data: session } = useSession();
@@ -167,6 +171,11 @@ export default function ScoreboardTabs() {
     const seconds = totalSeconds % 60;
     return `${hours > 0 ? `${hours}h ` : ''}${minutes > 0 || hours > 0 ? `${minutes}m ` : ''}${seconds}s`;
   };
+
+  const handleUserInteraction = (username: string, uname: string) => {
+    setClickedUsername(username);
+    setShowUserInteraction(true);
+  }
 
  
   
@@ -366,9 +375,9 @@ const imageLoader = ({ src }: { src: string }) => {
               ) : (
                 teams.map((team, i) => (
                   <React.Fragment key={team.id}>
-                    <tr className="border-t border-gray-200 dark:border-gray-600">
+                    <tr className="border-t border-gray-200 dark:border-gray-600" onClick={() => handleUserInteraction(team.name, team.uname)} >
                       <td className="px-6 py-4 font-medium">#{i + 1}</td>
-                      {session?.user?.role == "ADMIN" ? <td className="px-6 py-4">#{team.uname}</td> : <td className="px-6 py-4">{team.name}</td> }
+                      {session?.user?.role == "ADMIN" ? <td className="px-6 py-4">#{team.uname}</td> : <td className="px-6 py-4" >{team.name}</td> }
                       <td className="px-6 py-4">{team.pointsTotal}</td>
                      {session?.user?.role == "ADMIN" && <td className="px-6 py-4">{team.cheatPoints}</td>}
                       <td className="px-6 py-4">
@@ -479,6 +488,15 @@ const imageLoader = ({ src }: { src: string }) => {
             ))
           )}
         </div>
+      )}
+      {showUserInteraction && (
+        <UserInteraction
+          username={clickedUsername || "unknown"}
+          uname={clickedUname || "unknown"}
+          onClose={() => setShowUserInteraction(false)}
+          onReport={(reason) => console.log("Reported:", reason)}
+          onBlock={() => console.log("User blocked")}
+        />
       )}
     </Main>
   );

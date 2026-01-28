@@ -25,7 +25,14 @@ interface Chat {
     uname: string;
     name: string;
     cheatPoints: number;
+    blocks: TeamBlock[];
   };
+}
+
+interface TeamBlock {
+  id: number;
+  blockerId: number;
+  blockedId: number;
 }
 
 const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
@@ -45,6 +52,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   const [showUserInteraction, setShowUserInteraction] = useState(false);
   const [clickedUsername, setClickedUsername] = useState<string | null>(null);
+  const [clickedUname, setClickedUname] = useState<string | null>(null);
 
 
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -170,7 +178,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     }
   };
 
-  const handleUserInteraction = (username: string) => {
+  const handleUserInteraction = (username: string, uname: string) => {
     setClickedUsername(username);
     setShowUserInteraction(true);
   }
@@ -226,7 +234,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
                 >
                   {!isOwn && (
                     <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1"
-                    onClick={() => handleUserInteraction(chat.team.name)}>
+                    onClick={() => handleUserInteraction(chat.team.name, chat.team.uname)}>
                       {chat.team.name}
                     </div>
                   )}
@@ -299,6 +307,7 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
       {showUserInteraction && (
         <UserInteraction
           username={clickedUsername || "unknown"}
+          uname={clickedUname || "unknown"}
           onClose={() => setShowUserInteraction(false)}
           onReport={(reason) => console.log("Reported:", reason)}
           onBlock={() => console.log("User blocked")}

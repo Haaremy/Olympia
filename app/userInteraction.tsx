@@ -6,6 +6,7 @@ import { useUI } from "./context/UIContext";
 
 type UserInteractionProps = {
   username: string;
+  uname: string;
   onClose: () => void;
   onReport?: (reason: string) => void;
   onBlock?: () => void;
@@ -13,6 +14,7 @@ type UserInteractionProps = {
 
 const UserInteraction: React.FC<UserInteractionProps> = ({
   username,
+  uname,
   onClose,
   onReport,
   onBlock,
@@ -60,8 +62,24 @@ const UserInteraction: React.FC<UserInteractionProps> = ({
     onClose();
   };
 
-  const handleBlock = () => {
+  const handleBlock =  async () => {
     onBlock?.();
+    try {
+         const response = await fetch("/api/team/block", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ targetUname: uname}),
+    });
+
+    if (!response.ok) throw new Error("Fehler beim Speichern");
+
+
+
+
+  } catch (error) {
+    console.log("Blockierung fehlgeschlagen:", error);
+
+  }
     onClose();
   };
 

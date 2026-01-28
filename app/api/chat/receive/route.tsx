@@ -13,6 +13,7 @@ try {
       select: {
         uname: true,
         name: true,
+        blocks: true,
       },
     },
   },
