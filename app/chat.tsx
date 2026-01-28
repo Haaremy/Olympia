@@ -9,6 +9,8 @@ import socket from "../lib/socket";
 import { Button } from "@/cooperateDesign";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
+import UserInteraction from "./userInteraction";
+
 
 interface ModalProps {
   onClose: () => void;
@@ -40,6 +42,10 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [viewportOffset, setViewportOffset] = useState(0);
+
+  const [showUserInteraction, setShowUserInteraction] = useState(false);
+  const [clickedUsername, setClickedUsername] = useState<string | null>(null);
+
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -164,6 +170,11 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
     }
   };
 
+  const handleUserInteraction = (username: string) => {
+    setClickedUsername(username);
+    setShowUserInteraction(true);
+  }
+
   const openOptions = (chat: Chat, e: React.MouseEvent | React.TouchEvent) => {
     const target = e.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
@@ -214,7 +225,8 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
                   ${isOwn ? "bg-pink-500 text-white rounded-br-none" : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"} break-words whitespace-normal`}
                 >
                   {!isOwn && (
-                    <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1">
+                    <div className="text-xs font-semibold text-pink-600 dark:text-pink-400 mb-1"
+                    onClick={() => handleUserInteraction(chat.team.name)}>
                       {chat.team.name}
                     </div>
                   )}
@@ -282,6 +294,15 @@ const ChatModal: React.FC<ModalProps> = ({ onClose }) => {
           <Button onClick={() => startEdit(contextMenu.chat)}>✏️</Button>
           <Button onClick={handleDelete}>🗑️</Button>
         </div>
+      )}
+
+      {showUserInteraction && (
+        <UserInteraction
+          username={clickedUsername || "unknown"}
+          onClose={() => setShowUserInteraction(false)}
+          onReport={(reason) => console.log("Reported:", reason)}
+          onBlock={() => console.log("User blocked")}
+        />
       )}
     </div>
   );

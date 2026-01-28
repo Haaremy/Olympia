@@ -206,8 +206,6 @@ const game7 = await prisma.game.create({
           station: 'First Floor – West wing corridor',
           capacity: '1 to 2 teams',
           descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time. The player has to end the pacour whole balancing a snowball on a spoon.',
-          capacity: '1 to 2 Teams',
-          descriptionGame: 'Each player has one attempt. Meanwhile, someone stops the time.',
           descriptionPoints: 'Enter the player\'s time value in seconds in the corresponding #field.'
         }
       ]
@@ -598,8 +596,6 @@ const game20 = await prisma.game.create({
                     station: 'Ground floor – East wing corridor',
                     capacity: '1 team or 2 teams',
                     descriptionGame: 'You need 2 or 4 players: 1 time stopper and 1 person who loads the sleight and pulls it or 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
-                    capacity: '1 team or 2 Teams',
-                    descriptionGame: 'You need (4 players) 1 time stopper, 2 reindeer and 1 elf. The stopper gives the starting signal for loading and delivery, and from then on, the clock starts ticking. The elf loads the sleigh with presents from the table. The two reindeer each grab (in advance) one end of the rope on the sleigh. As soon as the elf has finished loading, the reindeer set off. When they pass the mark on the Christmas tree, the time is stopped. Objects that fall off the sleigh must be put back on!',
                     descriptionPoints: 'In the game evaluation, the time in seconds must be entered in #field 1.'
                 }
             ]
@@ -681,9 +677,7 @@ const game23 = await prisma.game.create({
                     station: 'Erdgeschoss - Raum 109',
                     capacity: 'Solo Team',
                     descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 30 Sekunden. Nach Start des Timers zieht der erste Spieler ein Begriff aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner. Zeichnet und erratet so viele Begriffe wie möglich in den 30 Sekunden.',
-                    descriptionPoints: 'Die Anzahl der angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
-                    descriptionGame: 'Ihr braucht einen Timer. Jeder Spieler hat 2 Minuten. Nach Start des Timers zieht der erste Spieler ein Begriffe aus dem Behälter. Am Whiteboard wird gezeichnet und die Mitspieler erraten den Begriff. Jeder Spieler spielt eine Runde als Zeichner.',
-                    descriptionPoints: 'Die angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.'
+                    descriptionPoints: 'Die Anzahl der angezeichneten und erratenen Begriffe, trägt der Künstler in sein #Feld ein.',
                 },
                 {
                     language: 'en',
@@ -703,9 +697,7 @@ const game23 = await prisma.game.create({
 const game24 = await prisma.game.create({
     data: {
         url: 'https://www.youtube.com/embed/eypqWQn2hKk',
-        tagged: "lowest,overridePlayers",
-        languages: {
-        tagged: "hideF2,hideF3,hideF4,field1,lowest",
+        tagged: "hideF2,hideF3,hideF4,field1,lowest,overridePlayers",
         gameDetails: {
             create: [
                 {
