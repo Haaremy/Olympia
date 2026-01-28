@@ -71,6 +71,20 @@
     "shareSubtitle": "3. Weihnachtsolympiade",
     "shareInsta": "@Instagram HS Anhalt & FB Informatik FB.INS",
     "shareText": "Weihnachtliche Grüße von meinem Olympia-Team und der Fachschaft Informatik und Sprachen der Hochschule Anhalt.",
-    "shareDialogTitle": "Mit Freunden teilen."
+    "shareDialogTitle": "Mit Freunden teilen.",
+    "eulaWelcome": "Willkommen zur Olympia App! Mit der Nutzung dieser Anwendung akzeptierst du die folgenden Bedingungen:",
+    "eula1": "Du wirst die App nicht missbräuchlich verwenden.",
+    "eula2": "Inhalte dürfen nicht beleidigend, diskriminierend oder illegal sein.",
+    "eula3": "Die App kann notwendige Cookies verwenden, um deine Einstellungen und Präferenzen zu speichern.",
+    "eula4": "Daten werden gemäß unserer Datenschutzrichtlinie verarbeitet.",
+    "eula5": "Die Weitergabe von Login-Daten an Dritte ist nicht erlaubt.",
+    "eula6": "Du kannst deine Zustimmung jederzeit in den Einstellungen widerrufen.",
+    "eula7": "Die Erstellung von Benutzer-Conent, welche für andere Nutzer sichtbar ist, darf keine anstößigen Inhalte darstellen. Widerleistung führt zu sofortigem Ausschluss.",
+    "eulaInfo": "Diese Lizenzvereinbarung tritt sofort nach Annahme in Kraft. Bitte lese sie sorgfältig durch.",
+    "eulaCookiesConsent": "Ich stimme zusätzlich der Verwendung von sonstigen Cookies zu.",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen",
+    "eulaDeclined": "Du musst die EULA akzeptieren, um die App zu nutzen.",
+    "cookiesDeclined": "Bitte stimme den Cookies zu, um fortzufahren."
   }
   

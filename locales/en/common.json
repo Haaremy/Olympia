@@ -71,7 +71,21 @@
     "shareTitle": "Festival at FB5",
     "shareSubtitle": "3rd Christmas Olympics",
     "shareInsta": "@Instagram HS Anhalt & Dpt. of Computerscience FB.INS",
-   "shareText": "Christmas greetings from my Olympic team and the Computer Science and Languages ​​Student Council at Anhalt University of Applied Sciences.",
-"shareDialogTitle": "Share with friends."
+    "shareText": "Christmas greetings from my Olympic team and the Computer Science and Languages ​​Student Council at Anhalt University of Applied Sciences.",
+    "shareDialogTitle": "Share with friends.",
+    "eulaWelcome": "Welcome to the Olympia App! By using this application, you agree to the following terms:",
+    "eula1": "You will not misuse the app.",
+    "eula2": "Content must not be offensive, discriminatory, or illegal.",
+    "eula3": "The app may use necessary cookies to store your settings and preferences.",
+    "eula4": "Data is processed in accordance with our privacy policy.",
+    "eula5": "Sharing login credentials with third parties is not permitted.",
+    "eula6": "You can withdraw your consent at any time in the settings.",
+    "eula7": "The creation of user content visible to other users must not contain offensive material. Violations will result in immediate exclusion.",
+    "eulaInfo": "This license agreement comes into effect immediately upon acceptance. Please read it carefully.",
+    "eulaCookiesConsent": "I additionally agree to the use of optional cookies.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "eulaDeclined": "You must accept the EULA to use the app.",
+    "cookiesDeclined": "Please agree to the cookies to continue."
 }
   
